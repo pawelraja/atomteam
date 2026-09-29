@@ -1,0 +1,200 @@
+---
+// Next confirmed race of the current season. All three states (next / coming soon / complete)
+// are rendered; the browser re-evaluates with the visitor's date so the page never goes stale.
+import { anchor } from '../lib/anchors';
+import { getData } from '../lib/data';
+import { copy, fill, plural, typo, type Lang } from '../lib/i18n';
+import { formatRange, nextRaceView, raceLocation, raceName } from '../lib/season';
+import Country from './Country.astro';
+import Icon from './Icon.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const { site, calendars, today } = getData();
+const t = copy(lang);
+const season = site.currentSeason;
+const events = calendars.get(season) ?? [];
+const view = nextRaceView(events, season, today);
+const next = view.kind === 'next' ? view : null;
+const soonMonth = view.kind === 'soon' && view.firstMonth ? fill(t.nextRace.soonMonth, { month: t.nextRace.monthsIn[view.firstMonth - 1] }, lang) : null;
+const icsHref = (id: string) => `/ics/${season}/${id}.ics`;
+
+const clientCopy = {
+  locale: t.meta.locale,
+  live: t.nextRace.live,
+  days: t.nextRace.days,
+  soonMonth: t.nextRace.soonMonth,
+  monthsIn: t.nextRace.monthsIn,
+  discipline: t.calendar.discipline,
+  countries: t.calendar.countryNames,
+};
+---
+
+<section class="section section--alt next" id={anchor(lang, 'next-race')} data-section="next-race" aria-labelledby="next-title" data-next-race data-season={season}>
+  <div class="container">
+    <h2 id="next-title" class="next__heading">{t.nextRace.title}</h2>
+
+    <article class="next-card card" data-state="next" hidden={!next} aria-labelledby="next-name">
+      <div class="next-card__when">
+        <p class="next-card__date" data-f="date">{next && formatRange(next.event.start, next.event.end, t.meta.locale)}</p>
+        <p class="next-card__days lead" data-f="days">{next && (next.live ? t.nextRace.live : plural(t.nextRace.days, next.daysToGo, lang))}</p>
+      </div>
+      <div class="next-card__what">
+        <h3 class="next-card__name" id="next-name" data-f="name">{next && typo(lang, raceName(next.event, lang))}</h3>
+        <p class="next-card__where body-lg" data-f="where">
+          {next && <Country lang={lang} location={raceLocation(next.event, lang)} code={next.event.country} />}
+        </p>
+        <p class="next-card__chips">
+          <span class="chip" data-f="discipline">{next && t.calendar.discipline[next.event.discipline]}</span>
+          <span class="chip chip--class" data-f="class" hidden={!next?.event.cls}>{next?.event.cls}</span>
+        </p>
+      </div>
+      <a class="btn btn--primary next-card__ics" data-f="ics" href={next ? icsHref(next.event.id) : '#'} download>
+        <Icon name="calendar" size={20} />
+        {t.nextRace.addToCalendar}
+      </a>
+    </article>
+
+    <div class="next-empty card" data-state="soon" hidden={view.kind !== 'soon'}>
+      <p class="h3">{fill(t.nextRace.soonTitle, { season }, lang)}</p>
+      <p class="body-lg">
+        <span class="next-empty__month" data-f="soonMonth" hidden={!soonMonth}>{soonMonth}</span>
+        <span class="muted"> {t.nextRace.soonLine}</span>
+      </p>
+      <div class="btn-row">
+        <a class="btn btn--primary" href={`#${anchor(lang, 'newsletter')}`}>{fill(t.nextRace.soonCta, { season }, lang)}</a>
+      </div>
+    </div>
+
+    <div class="next-empty card" data-state="complete" hidden={view.kind !== 'complete'}>
+      <p class="h3">{fill(t.nextRace.completeTitle, { season }, lang)}</p>
+      <p class="body-lg muted">{t.nextRace.completeLine}</p>
+      <div class="btn-row">
+        <a class="btn btn--secondary" href={`#${anchor(lang, 'calendar')}`}>{t.nextRace.completeCta}</a>
+      </div>
+    </div>
+  </div>
+  <script type="application/json" id="next-race-data" set:html={JSON.stringify({ events, copy: clientCopy })} />
+</section>
+
+<script>
+  import { clientLang, clientToday, readJSON } from '../lib/client';
+  import { fill, plural, typo } from '../lib/text';
+  import { formatRange, nextRaceView, raceLocation, raceName, type RaceEvent } from '../lib/season';
+
+  type ClientCopy = {
+    locale: string;
+    live: string;
+    days: Record<string, string>;
+    soonMonth: string;
+    monthsIn: string[];
+    discipline: Record<string, string>;
+    countries: Record<string, string>;
+  };
+
+  const root = document.querySelector<HTMLElement>('[data-next-race]');
+  if (root) {
+    const lang = clientLang();
+    const { events, copy: c } = readJSON<{ events: RaceEvent[]; copy: ClientCopy }>('next-race-data');
+    const season = Number(root.dataset.season);
+    const view = nextRaceView(events, season, clientToday());
+    const f = (name: string) => root.querySelector<HTMLElement>(`[data-f="${name}"]`)!;
+
+    root.querySelectorAll<HTMLElement>('[data-state]').forEach((el) => (el.hidden = el.dataset.state !== view.kind));
+
+    if (view.kind === 'next') {
+      const e = view.event;
+      f('date').textContent = formatRange(e.start, e.end, c.locale);
+      f('days').textContent = view.live ? c.live : plural(c.days, view.daysToGo, lang);
+      f('name').textContent = typo(lang, raceName(e, lang));
+      const where = f('where');
+      const place = raceLocation(e, lang);
+      where.replaceChildren();
+      if (place) where.append(`${place} · `);
+      const code = Object.assign(document.createElement('span'), { textContent: e.country });
+      code.setAttribute('aria-hidden', 'true');
+      const full = Object.assign(document.createElement('span'), { textContent: c.countries[e.country] ?? e.country, className: 'visually-hidden' });
+      where.append(code, full);
+      f('discipline').textContent = c.discipline[e.discipline] ?? e.discipline;
+      f('class').textContent = e.cls ?? '';
+      f('class').hidden = !e.cls;
+      f('ics').setAttribute('href', `/ics/${season}/${e.id}.ics`);
+    } else if (view.kind === 'soon') {
+      const m = f('soonMonth');
+      m.hidden = !view.firstMonth;
+      if (view.firstMonth) m.textContent = fill(c.soonMonth, { month: c.monthsIn[view.firstMonth - 1] }, lang);
+    }
+  }
+</script>
+
+<style>
+  .next__heading {
+    margin-bottom: var(--s-5);
+  }
+  .next-card {
+    display: grid;
+    grid-template-columns: minmax(200px, 1fr) 2fr auto;
+    align-items: center;
+    gap: var(--s-5);
+    padding: clamp(24px, 4vw, 48px);
+    background: var(--surface);
+    border: 1px solid var(--accent);
+  }
+  .next-card__date {
+    font-size: var(--fs-h2);
+    line-height: var(--lh-h2);
+    letter-spacing: -0.01em;
+  }
+  .next-card__days {
+    color: var(--accent-strong);
+    margin-top: var(--s-2);
+  }
+  .next-card__what {
+    display: grid;
+    gap: var(--s-2);
+  }
+  .next-card__name {
+    font-size: var(--fs-h3);
+    line-height: 1.25;
+  }
+  .next-card__where {
+    color: var(--ink-muted);
+  }
+  .next-card__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+  }
+  .chip--class {
+    background: var(--ink);
+    color: var(--surface);
+    border-color: var(--ink);
+  }
+  .next-empty {
+    display: grid;
+    gap: var(--s-3);
+    justify-items: start;
+    padding: clamp(24px, 4vw, 48px);
+    background: var(--surface);
+    border: 1px solid var(--accent);
+  }
+  .next-empty__month {
+    font-weight: 700;
+  }
+  .next-empty[hidden],
+  .next-card[hidden],
+  .next-empty__month[hidden] {
+    display: none;
+  }
+  @media (max-width: 899px) {
+    .next-card {
+      grid-template-columns: 1fr;
+      gap: var(--s-4);
+    }
+    .next-card__ics {
+      justify-self: start;
+    }
+  }
+</style>

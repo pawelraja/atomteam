@@ -1,0 +1,89 @@
+/* Design tokens — Mat Atom Deweloper Wrocław. Values are fixed by the brand spec. */
+
+:root {
+  /* Colour — light (default) */
+  --surface: #ffffff;
+  --surface-alt: #f1eef3; /* lilac mist */
+  --surface-muted: #eeeeee;
+  --ink: #000000;
+  --ink-muted: #4f4f4f;
+  --ink-subtle: #949494; /* disabled + borders only, never text */
+  --accent: #ff66ed; /* brand pink: fills, borders, 42px+ display words only on light */
+  --accent-strong: #8c00ff; /* violet: readable "pink family" text on light */
+  --line: #000000;
+  --header-glass: rgba(241, 238, 243, 0.73);
+  --ink-on-accent: #2b0020;
+  --focus: #8c00ff;
+
+  /* Brand scales — tints only */
+  --pink-100: #fecdf8;
+  --pink-200: #fd9cf2;
+  --pink-300: #ff66ed;
+  --pink-400: #7f4e79;
+  --pink-500: #3f273c;
+  --violet-100: #d9aaff;
+  --violet-200: #c580ff;
+  --violet-300: #8c00ff;
+  --violet-400: #5d00aa;
+  --violet-500: #2f0055;
+  --plum-100: #ffd0f4;
+  --plum-200: #ffa1e9;
+  --plum-300: #bf79af;
+  --plum-400: #800060;
+  --plum-500: #2b0020;
+
+  /* Type */
+  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  --fs-display: clamp(44px, 6.2vw, 72px);
+  --lh-display: 1.1;
+  --fs-h2: clamp(32px, 4.2vw, 42px);
+  --lh-h2: 1.2;
+  --fs-h3: 28px;
+  --lh-h3: 1.5;
+  --fs-lead: 22px;
+  --lh-lead: 1.4;
+  --fs-body-lg: 18px;
+  --fs-body: 16px;
+  --fs-body-sm: 14px;
+  --fs-caption: 12px;
+  --lh-body: 1.4;
+
+  /* Shape */
+  --r-xs: 6px;
+  --r-sm: 16px;
+  --r-card: 30px;
+  --r-feature: 40px;
+  --r-pill: 100px;
+
+  /* Depth: hard offsets only, never blurred */
+  --shadow-card: 0 5px 0 0 rgba(255, 102, 237, 0.35);
+  --shadow-feature: 0 5px 0 0 rgba(140, 0, 255, 0.7);
+
+  /* Spacing */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 16px;
+  --s-4: 24px;
+  --s-5: 32px;
+  --s-6: 64px;
+  --s-7: 96px;
+  --s-8: 128px;
+  --section-y: clamp(64px, 9vw, 128px);
+  --gutter: clamp(16px, 4vw, 64px);
+  --content: 1280px;
+  --header-h: 64px;
+}
+
+/* Plum bands */
+[data-theme='dark'] {
+  --surface: #2b0020;
+  --surface-alt: #3f273c;
+  --ink: #f1eef3;
+  --ink-muted: #c0b8be;
+  --accent: #ff66ed;
+  --accent-strong: #c580ff;
+  --line: #605c5f;
+  --focus: #ff66ed;
+  --shadow-card: 0 5px 0 0 rgba(255, 102, 237, 0.35);
+  color-scheme: dark;
+}

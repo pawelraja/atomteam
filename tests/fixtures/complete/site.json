@@ -1,0 +1,14 @@
+{
+  "currentSeason": 2027,
+  "foundedYear": 2016,
+  "phase": "preseason",
+  "rosterConfirmed": true,
+  "calendarConfirmed": true,
+  "partnersConfirmed": true,
+  "teamPresentation": {
+    "date": "2027-01-20",
+    "place": "Wrocław, Hala Stulecia",
+    "url": null
+  },
+  "partnerDeckUrl": "/partners/deck-2027.pdf"
+}

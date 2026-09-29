@@ -1,0 +1,281 @@
+---
+// Editorial photo story + accessible lightbox (native <dialog>: modal focus trap, Esc to close).
+import { getImage } from 'astro:assets';
+import { anchor } from '../lib/anchors';
+import { getData } from '../lib/data';
+import { copy, fill, pick, type Lang } from '../lib/i18n';
+import { findImage } from '../lib/images';
+import Icon from './Icon.astro';
+import Photo from './Photo.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const { gallery } = getData();
+const t = copy(lang);
+const items = await Promise.all(
+  gallery.slice(0, 9).map(async (g, i) => {
+    const img = findImage('photos', g.photo);
+    const large = img ? await getImage({ src: img, width: Math.min(img.width, 1920), format: 'webp' }) : null;
+    return { ...g, alt: pick(lang, g.alt), race: pick(lang, g.race), place: pick(lang, g.place), i, large: large ? { src: large.src, width: large.attributes.width, height: large.attributes.height } : null };
+  }),
+);
+const feature = items.find((g) => g.feature) ?? items[0];
+const rest = items.filter((g) => g !== feature);
+const caption = (g: (typeof items)[number]) => `${g.race} · ${g.place}`;
+---
+
+<section class="section story" id={anchor(lang, 'story')} data-section="story" aria-labelledby="story-title">
+  <div class="container">
+    <h2 id="story-title" class="story__title">{t.story.title}</h2>
+
+    {
+      feature && (
+        <ul class="story__grid" role="list">
+          {[feature, ...rest].map((g) => (
+            <li class:list={['story__item', `story__item--${g.aspect.replace(':', 'x')}`, { 'story__item--feature': g === feature }]}>
+              <figure>
+                <button class="story__open" type="button" data-open={g.i} aria-label={fill(t.story.open, { alt: g.alt })}>
+                  <Photo
+                    lang={lang}
+                    dir="photos"
+                    file={g.photo}
+                    alt=""
+                    decorative
+                    aspect={g.aspect}
+                    sizes={g === feature ? '(min-width: 1024px) 1280px, 100vw' : '(min-width: 768px) 50vw, 100vw'}
+                  />
+                </button>
+                <figcaption class="caption story__cap">
+                  <span>{caption(g)}</span>
+                  <span class="story__credit">{fill(t.story.credit, { credit: g.credit })}</span>
+                </figcaption>
+              </figure>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </div>
+
+  <dialog class="lightbox" data-theme="dark" aria-labelledby="lightbox-caption">
+    <div class="lightbox__frame">
+      <button class="lightbox__btn lightbox__close" type="button" data-close>
+        <Icon name="close" /><span class="visually-hidden">{t.story.close}</span>
+      </button>
+      <div class="lightbox__stage" data-stage></div>
+      <div class="lightbox__bar">
+        <button class="lightbox__btn" type="button" data-prev>
+          <Icon name="prev" /><span class="visually-hidden">{t.story.prev}</span>
+        </button>
+        <p id="lightbox-caption" class="lightbox__caption" aria-live="polite"></p>
+        <button class="lightbox__btn" type="button" data-next>
+          <Icon name="next" /><span class="visually-hidden">{t.story.next}</span>
+        </button>
+      </div>
+    </div>
+  </dialog>
+
+  <script
+    type="application/json"
+    id="story-data"
+    set:html={JSON.stringify({
+      items: items.map((g) => ({ alt: g.alt, caption: caption(g), credit: fill(t.story.credit, { credit: g.credit }), aspect: g.aspect, file: g.photo, large: g.large })),
+      counter: t.story.counter,
+    })}
+  />
+</section>
+
+<script>
+  import { readJSON } from '../lib/client';
+  import { fill } from '../lib/text';
+
+  type Item = { alt: string; caption: string; credit: string; aspect: string; file: string; large: { src: string; width: number; height: number } | null };
+  const dialog = document.querySelector<HTMLDialogElement>('.lightbox');
+  if (dialog) {
+    const { items, counter } = readJSON<{ items: Item[]; counter: string }>('story-data');
+    const stage = dialog.querySelector<HTMLElement>('[data-stage]')!;
+    const cap = dialog.querySelector<HTMLElement>('#lightbox-caption')!;
+    let index = 0;
+    let opener: HTMLElement | null = null;
+
+    const show = (i: number) => {
+      index = (i + items.length) % items.length;
+      const it = items[index];
+      stage.innerHTML = '';
+      if (it.large) {
+        const img = new Image(it.large.width, it.large.height);
+        img.src = it.large.src;
+        img.alt = it.alt;
+        stage.append(img);
+      } else {
+        const ph = document.createElement('div');
+        ph.className = 'ph lightbox__ph';
+        ph.setAttribute('role', 'img');
+        ph.setAttribute('aria-label', it.alt);
+        ph.style.aspectRatio = it.aspect.replace(':', ' / ');
+        ph.textContent = `photos/${it.file} · ${it.aspect}`;
+        stage.append(ph);
+      }
+      cap.textContent = `${it.caption} — ${it.credit} (${fill(counter, { i: index + 1, n: items.length })})`;
+    };
+
+    document.querySelectorAll<HTMLButtonElement>('[data-open]').forEach((btn) =>
+      btn.addEventListener('click', () => {
+        opener = btn;
+        show(Number(btn.dataset.open));
+        dialog.showModal();
+        dialog.querySelector<HTMLButtonElement>('[data-close]')!.focus();
+      }),
+    );
+    dialog.querySelector('[data-close]')!.addEventListener('click', () => dialog.close());
+    dialog.querySelector('[data-prev]')!.addEventListener('click', () => show(index - 1));
+    dialog.querySelector('[data-next]')!.addEventListener('click', () => show(index + 1));
+    dialog.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') show(index - 1);
+      if (e.key === 'ArrowRight') show(index + 1);
+    });
+    // Click on the dimmed area outside the frame closes.
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog) dialog.close();
+    });
+    dialog.addEventListener('close', () => opener?.focus());
+  }
+</script>
+
+<style>
+  .story__title {
+    margin-bottom: var(--s-6);
+  }
+  .story__grid {
+    display: grid;
+    grid-template-columns: 7fr 5fr;
+    gap: var(--s-6) var(--s-5);
+    align-items: start;
+  }
+  .story__item--feature {
+    grid-column: 1 / -1;
+  }
+  /* Stagger the right-hand column for an editorial rhythm. */
+  .story__item:not(.story__item--feature):nth-child(odd) {
+    margin-top: var(--s-7);
+  }
+  .story__item:not(.story__item--feature):nth-child(4n + 2) {
+    padding-right: 12%;
+  }
+  figure {
+    display: grid;
+    gap: var(--s-3);
+  }
+  .story__open {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: zoom-in;
+    border-radius: var(--r-card);
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+  }
+  .story__item--feature .story__open {
+    border-radius: var(--r-feature);
+    box-shadow: var(--shadow-feature);
+  }
+  .story__open :global(img) {
+    transition: transform 0.4s ease;
+  }
+  .story__open:hover :global(img) {
+    transform: scale(1.02);
+  }
+  .story__cap {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--s-1) var(--s-3);
+    font-size: var(--fs-body-sm);
+  }
+  .story__credit {
+    color: var(--ink-muted);
+  }
+  @media (max-width: 767px) {
+    .story__grid {
+      grid-template-columns: 1fr;
+      gap: var(--s-5);
+    }
+    .story__item:not(.story__item--feature):nth-child(odd) {
+      margin-top: 0;
+    }
+    .story__item:not(.story__item--feature):nth-child(4n + 2) {
+      padding-right: 0;
+    }
+  }
+
+  .lightbox {
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    max-height: none;
+    margin: 0;
+    padding: 16px;
+    border: 0;
+    background: rgba(43, 0, 32, 0.96);
+    color: var(--ink);
+  }
+  .lightbox[open] {
+    display: grid;
+    place-items: center;
+  }
+  .lightbox::backdrop {
+    background: rgba(43, 0, 32, 0.8);
+  }
+  .lightbox__frame {
+    position: relative;
+    display: grid;
+    gap: var(--s-3);
+    width: min(100%, 1400px);
+  }
+  .lightbox__stage :global(img),
+  .lightbox__stage :global(.ph) {
+    width: 100%;
+    max-height: calc(100svh - 160px);
+    object-fit: contain;
+    border-radius: var(--r-sm);
+    margin-inline: auto;
+  }
+  .lightbox__stage :global(.ph) {
+    width: auto;
+    max-width: 100%;
+    height: calc(100svh - 200px);
+  }
+  .lightbox__bar {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+  }
+  .lightbox__caption {
+    flex: 1;
+    text-align: center;
+    font-size: var(--fs-body-sm);
+  }
+  .lightbox__btn {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    flex: none;
+    border: 1px solid var(--accent);
+    border-radius: var(--r-pill);
+    background: transparent;
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .lightbox__btn:hover {
+    background: var(--accent);
+    color: var(--ink-on-accent);
+  }
+  .lightbox__close {
+    justify-self: end;
+  }
+</style>

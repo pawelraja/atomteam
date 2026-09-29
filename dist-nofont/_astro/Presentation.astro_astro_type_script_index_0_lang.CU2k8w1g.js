@@ -1,0 +1,1 @@
+import{c as e,n as t,r as n,t as r}from"./client.zXlnUBbj.js";import{r as i}from"./text.BWO8KhfI.js";var a=document.querySelector(`[data-presentation]`);if(a){let o=e({date:a.dataset.date,place:``},t());o?a.querySelector(`[data-days]`).textContent=i(n(`presentation-days`),o.daysToGo,r()):a.remove()}

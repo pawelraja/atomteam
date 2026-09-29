@@ -1,0 +1,671 @@
+---
+// Race calendar: season switch (tabs), discipline filters, month jumps, past toggle.
+// Rows are rendered at build time; the browser re-evaluates past / next / live with the
+// visitor's date, so the calendar stays correct between rebuilds.
+import { anchor, seasonAnchor } from '../lib/anchors';
+import { getData } from '../lib/data';
+import { copy, fill, typo, type Lang } from '../lib/i18n';
+import {
+  category,
+  eventState,
+  formatRange,
+  groupByMonth,
+  monthLabel,
+  monthName,
+  nextRace,
+  raceLocation,
+  raceName,
+  rowStatus,
+} from '../lib/season';
+import Country from './Country.astro';
+import Icon from './Icon.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const { site, calendars, today } = getData();
+const t = copy(lang);
+const tc = t.calendar;
+const current = site.currentSeason;
+const seasons = [...calendars.keys()].filter((s) => s <= current).sort((a, b) => b - a);
+const FILTERS = ['ALL', 'ROAD', 'TRACK', 'CX', 'TTT', 'TRAINING'] as const;
+const JUMP_MONTHS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const INITIAL_GROUPS = 3;
+const pad = (n: number) => String(n).padStart(2, '0');
+
+const panels = seasons.map((season) => {
+  const events = calendars.get(season)!;
+  const next = nextRace(events, today);
+  const isCurrent = season === current;
+  // Past races are hidden by default in the current season; an archive shows everything.
+  const showPast = !isCurrent;
+  const groups = groupByMonth(events).map((g) => ({
+    ...g,
+    rows: g.events.map((e) => ({ e, status: rowStatus(e, today, next?.id ?? null) })),
+  }));
+  return { season, isCurrent, showPast, groups, id: seasonAnchor(lang, season), count: events.length };
+});
+const statusText = tc.status as Record<string, string>;
+const disc = tc.discipline as Record<string, string>;
+---
+
+<section
+  class="section calendar"
+  id={anchor(lang, 'calendar')}
+  data-section="calendar"
+  data-theme="dark"
+  aria-labelledby="calendar-title"
+  data-calendar
+>
+  <div class="container">
+    <div class="cal-head">
+      <h2 id="calendar-title">{tc.title}</h2>
+      <div class="season-tabs" role="tablist" aria-label={tc.seasonSwitch} data-tabs>
+        {
+          panels.map((p, i) => (
+            <button
+              class="season-tab"
+              type="button"
+              role="tab"
+              id={`${p.id}-tab`}
+              aria-controls={p.id}
+              aria-selected={i === 0 ? 'true' : 'false'}
+              tabindex={i === 0 ? 0 : -1}
+              data-season={p.season}
+            >
+              {p.isCurrent ? p.season : fill(tc.archive, { season: p.season }, lang)}
+            </button>
+          ))
+        }
+      </div>
+    </div>
+
+    {
+      panels.map((p, i) => (
+        <div class="cal-panel" role="tabpanel" id={p.id} aria-labelledby={`${p.id}-tab`} hidden={i !== 0} data-panel data-season={p.season}>
+          {p.isCurrent && !site.calendarConfirmed && <p class="cal-note">{tc.provisional}</p>}
+
+          <div class="cal-controls">
+            <div class="chips" role="group" aria-label={tc.filtersLabel}>
+              {FILTERS.map((f) => (
+                <button type="button" class="filter" aria-pressed={f === 'ALL' ? 'true' : 'false'} data-filter={f}>
+                  {tc.filters[f]}
+                </button>
+              ))}
+            </div>
+            <nav class="months-jump" aria-label={tc.monthsLabel}>
+              <ul role="list">
+                {JUMP_MONTHS.map((m) => {
+                  const has = p.groups.some((g) => g.month === m);
+                  return (
+                    <li>
+                      <a
+                        href={has ? `#${p.id}-${pad(m)}` : undefined}
+                        aria-disabled={has ? undefined : 'true'}
+                        data-jump={m}
+                      >
+                        <span aria-hidden="true">{pad(m)}</span>
+                        <span class="visually-hidden">{monthName(m, t.meta.locale)}</span>
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+            </nav>
+            <button type="button" class="past-toggle" aria-pressed={p.showPast ? 'true' : 'false'} data-past-toggle>
+              <span class="past-toggle__box" aria-hidden="true" />
+              {tc.showPast}
+            </button>
+          </div>
+
+          <p class="cal-count visually-hidden" role="status" data-count />
+
+          <ol class="months" role="list" data-show-past={p.showPast ? 'true' : 'false'}>
+            {p.groups.map((g) => (
+              <li class="month" data-month-group={g.month}>
+                <h3 class="month__label" id={`${p.id}-${pad(g.month)}`} tabindex="-1">
+                  {monthLabel(g.month, t.meta.locale)}
+                </h3>
+                <ol class="rows" role="list">
+                  {g.rows.map(({ e, status }) => {
+                    const nameId = `${p.id}-${e.id}`;
+                    return (
+                      <li
+                        class:list={['row-item', { 'is-past-hidden': eventState(e, today) === 'past' && !p.showPast }]}
+                        data-row
+                        data-id={e.id}
+                        data-cat={category(e)}
+                        data-status={e.status}
+                        data-season={e.season}
+                        data-month={e.month}
+                        data-start={e.start ?? undefined}
+                        data-end={e.end ?? undefined}
+                        data-training={e.training ? 'true' : undefined}
+                      >
+                        <article class:list={['row', `row--${status}`]} aria-labelledby={nameId} data-row-article>
+                          <p class="row__date">
+                            {e.start && e.end ? (
+                              <span class:list={{ strike: e.status === 'cancelled' }}>{formatRange(e.start, e.end, t.meta.locale)}</span>
+                            ) : (
+                              <span class="tbc-chip">{statusText.tbc}</span>
+                            )}
+                          </p>
+                          <div class="row__main">
+                            <h4 class:list={['row__name', { strike: e.status === 'cancelled' }]} id={nameId}>
+                              {typo(lang, raceName(e, lang))}
+                            </h4>
+                            <p class="row__place">
+                              <Country lang={lang} location={raceLocation(e, lang)} code={e.country} />
+                            </p>
+                            {e.result && (
+                              <p class="row__result">
+                                <span class="visually-hidden">{tc.result}: </span>
+                                {e.result}
+                              </p>
+                            )}
+                          </div>
+                          <p class="row__meta">
+                            <span class="row__disc">{e.training ? tc.training : disc[e.discipline]}</span>
+                            {e.cls && (
+                              <span class="row__class">
+                                <span class="visually-hidden">{tc.classLabel} </span>
+                                {e.cls}
+                              </span>
+                            )}
+                          </p>
+                          <p class="row__status" data-status-label>
+                            {statusText[status]}
+                          </p>
+                        </article>
+                      </li>
+                    );
+                  })}
+                </ol>
+              </li>
+            ))}
+          </ol>
+
+          <button type="button" class="btn btn--secondary more" data-more hidden aria-expanded="false" />
+
+          {p.isCurrent && (
+            <p class="subscribe">
+              <a class="btn btn--primary" href={`/calendar-${p.season}.ics`} download>
+                <Icon name="calendar" size={20} />
+                {fill(tc.subscribe, { season: p.season }, lang)}
+              </a>
+              <span class="muted body-sm">{fill(tc.subscribeNote, { season: p.season }, lang)}</span>
+            </p>
+          )}
+        </div>
+      ))
+    }
+  </div>
+
+  <script
+    type="application/json"
+    id="calendar-copy"
+    set:html={JSON.stringify({
+      status: tc.status,
+      count: tc.count,
+      showAll: tc.showAllMonths,
+      showFewer: tc.showFewerMonths,
+      initialGroups: INITIAL_GROUPS,
+    })}
+  />
+  <noscript>
+    <style>
+      .calendar .cal-panel[hidden] { display: block !important; }
+      .calendar .is-past-hidden, .calendar .is-collapsed { display: list-item !important; }
+      .calendar .cal-controls, .calendar .season-tabs { display: none !important; }
+    </style>
+  </noscript>
+</section>
+
+<script>
+  import { clientLang, clientToday, readJSON } from '../lib/client';
+  import { fill, plural } from '../lib/text';
+  import { eventState, nextRace, rowStatus, type RaceEvent } from '../lib/season';
+  import { initTabs } from './Tabs';
+
+  type CalCopy = { status: Record<string, string>; count: Record<string, string>; showAll: string; showFewer: string; initialGroups: number };
+
+  const root = document.querySelector<HTMLElement>('[data-calendar]');
+  if (root) {
+    const c = readJSON<CalCopy>('calendar-copy');
+    const lang = clientLang();
+    const today = clientToday();
+
+    const toEvent = (li: HTMLElement) =>
+      ({
+        id: li.dataset.id!,
+        season: Number(li.dataset.season),
+        month: Number(li.dataset.month),
+        start: li.dataset.start ?? null,
+        end: li.dataset.end ?? null,
+        status: li.dataset.status,
+        training: li.dataset.training === 'true',
+      }) as unknown as RaceEvent;
+
+    const panels = [...root.querySelectorAll<HTMLElement>('[data-panel]')].map((panel) => {
+      const rows = [...panel.querySelectorAll<HTMLElement>('[data-row]')];
+      const groups = [...panel.querySelectorAll<HTMLElement>('[data-month-group]')];
+      const list = panel.querySelector<HTMLElement>('.months')!;
+      const more = panel.querySelector<HTMLButtonElement>('[data-more]')!;
+      const pastBtn = panel.querySelector<HTMLButtonElement>('[data-past-toggle]')!;
+      const counter = panel.querySelector<HTMLElement>('[data-count]')!;
+      const state = { filter: 'ALL', showPast: list.dataset.showPast === 'true', expanded: false };
+
+      // Re-evaluate statuses with the visitor's date.
+      const events = rows.map(toEvent);
+      const next = nextRace(events, today);
+      // "Past" follows the date, so a cancelled race also hides once its day has gone.
+      const isPast = new Map<HTMLElement, boolean>();
+      rows.forEach((li, i) => {
+        const s = rowStatus(events[i], today, next?.id ?? null);
+        isPast.set(li, eventState(events[i], today) === 'past');
+        const art = li.querySelector<HTMLElement>('[data-row-article]')!;
+        art.className = art.className.replace(/\brow--\w+/g, '').trim() + ` row--${s}`;
+        li.querySelector<HTMLElement>('[data-status-label]')!.textContent = c.status[s];
+      });
+
+      const matches = (li: HTMLElement) => state.filter === 'ALL' || li.dataset.cat === state.filter;
+
+      const render = () => {
+        let shown = 0;
+        let visibleGroups = 0;
+        let collapsedRows = 0;
+        for (const g of groups) {
+          const gRows = rows.filter((r) => g.contains(r));
+          let groupShown = 0;
+          for (const r of gRows) {
+            const visible = matches(r) && (state.showPast || !isPast.get(r));
+            r.classList.toggle('is-past-hidden', false);
+            r.hidden = !visible;
+            if (visible) groupShown++;
+          }
+          const hasRows = groupShown > 0;
+          const collapsed = hasRows && !state.expanded && visibleGroups >= c.initialGroups;
+          g.hidden = !hasRows;
+          g.classList.toggle('is-collapsed', collapsed);
+          if (hasRows) visibleGroups++;
+          if (collapsed) collapsedRows += groupShown;
+          else shown += groupShown;
+        }
+        // Month jump links: enabled when the month has anything under the current discipline filter.
+        panel.querySelectorAll<HTMLAnchorElement>('[data-jump]').forEach((a) => {
+          const m = a.dataset.jump!;
+          const any = rows.some((r) => r.dataset.month === m && matches(r));
+          if (any) {
+            a.href = `#${panel.id}-${m.padStart(2, '0')}`;
+            a.removeAttribute('aria-disabled');
+          } else {
+            a.removeAttribute('href');
+            a.setAttribute('aria-disabled', 'true');
+          }
+        });
+        more.hidden = collapsedRows === 0 && !state.expanded;
+        if (state.expanded && visibleGroups <= c.initialGroups) more.hidden = true;
+        more.textContent = state.expanded ? c.showFewer : fill(c.showAll, { n: collapsedRows }, lang);
+        more.setAttribute('aria-expanded', String(state.expanded));
+        counter.textContent = plural(c.count, shown + collapsedRows, lang);
+        pastBtn.setAttribute('aria-pressed', String(state.showPast));
+        panel.querySelectorAll<HTMLButtonElement>('[data-filter]').forEach((b) =>
+          b.setAttribute('aria-pressed', String(b.dataset.filter === state.filter)),
+        );
+      };
+
+      panel.querySelectorAll<HTMLButtonElement>('[data-filter]').forEach((b) =>
+        b.addEventListener('click', () => {
+          state.filter = b.dataset.filter!;
+          render();
+        }),
+      );
+      pastBtn.addEventListener('click', () => {
+        state.showPast = !state.showPast;
+        render();
+      });
+      more.addEventListener('click', () => {
+        state.expanded = !state.expanded;
+        render();
+      });
+      panel.querySelectorAll<HTMLAnchorElement>('[data-jump]').forEach((a) =>
+        a.addEventListener('click', (ev) => {
+          if (!a.hasAttribute('href')) return ev.preventDefault();
+          ev.preventDefault();
+          const m = a.dataset.jump!;
+          // A month with only past races turns "show past" on, so the jump never lands on nothing.
+          const monthRows = rows.filter((r) => r.dataset.month === m && matches(r));
+          if (monthRows.every((r) => isPast.get(r))) state.showPast = true;
+          state.expanded = true;
+          render();
+          const heading = document.getElementById(`${panel.id}-${m.padStart(2, '0')}`)!;
+          heading.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+          heading.focus({ preventScroll: true });
+        }),
+      );
+      render();
+      return panel;
+    });
+
+    const tabs = initTabs(root.querySelector<HTMLElement>('[data-tabs]')!);
+    const selectSeason = (season: string) => {
+      const tab = tabs.tabs.find((t) => t.dataset.season === season);
+      if (tab) tabs.select(tab);
+    };
+    // "Full 2026 calendar" links elsewhere on the page open the archive tab.
+    document.querySelectorAll<HTMLAnchorElement>('[data-season-link]').forEach((a) =>
+      a.addEventListener('click', () => selectSeason(a.dataset.seasonLink!)),
+    );
+    const fromHash = panels.find((p) => location.hash === `#${p.id}`);
+    if (fromHash) selectSeason(fromHash.dataset.season!);
+  }
+</script>
+
+<style>
+  .calendar {
+    background: var(--surface);
+  }
+  .cal-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: space-between;
+    gap: var(--s-4);
+    margin-bottom: var(--s-5);
+  }
+  .season-tabs {
+    display: inline-flex;
+    padding: 4px;
+    gap: 4px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+  }
+  .season-tab {
+    min-height: 44px;
+    padding: 8px 20px;
+    border: 0;
+    border-radius: var(--r-pill);
+    background: transparent;
+    color: var(--ink);
+    font: 700 var(--fs-body-sm) / 1.2 var(--font);
+    cursor: pointer;
+  }
+  .season-tab:hover {
+    background: var(--surface-alt);
+  }
+  .season-tab[aria-selected='true'] {
+    background: var(--accent);
+    color: var(--ink-on-accent);
+  }
+  .cal-note {
+    margin-bottom: var(--s-4);
+    padding: 14px 18px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-sm);
+    color: var(--ink-muted);
+    font-size: var(--fs-body-sm);
+    max-width: 820px;
+  }
+  .cal-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-3) var(--s-5);
+    margin-bottom: var(--s-5);
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+  }
+  .filter {
+    min-height: 40px;
+    padding: 6px 16px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+    background: transparent;
+    color: var(--ink);
+    font: 400 var(--fs-body-sm) / 1.2 var(--font);
+    cursor: pointer;
+  }
+  .filter:hover {
+    border-color: var(--accent);
+  }
+  .filter[aria-pressed='true'] {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--ink-on-accent);
+    font-weight: 700;
+  }
+  .months-jump ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+  }
+  .months-jump a {
+    display: grid;
+    place-items: center;
+    min-width: 36px;
+    height: 36px;
+    border-radius: var(--r-xs);
+    font-size: var(--fs-body-sm);
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .months-jump a[href]:hover {
+    background: var(--surface-alt);
+    color: var(--accent);
+  }
+  .months-jump a[aria-disabled='true'] {
+    color: var(--line);
+    cursor: default;
+  }
+  .past-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    min-height: 40px;
+    margin-left: auto;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--ink);
+    font: 400 var(--fs-body-sm) / 1.2 var(--font);
+    cursor: pointer;
+  }
+  .past-toggle__box {
+    width: 36px;
+    height: 20px;
+    border-radius: var(--r-pill);
+    border: 1px solid var(--ink-muted);
+    position: relative;
+  }
+  .past-toggle__box::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--ink-muted);
+    transition: transform 0.15s;
+  }
+  .past-toggle[aria-pressed='true'] .past-toggle__box {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .past-toggle[aria-pressed='true'] .past-toggle__box::after {
+    background: var(--ink-on-accent);
+    transform: translateX(16px);
+  }
+
+  .months {
+    display: grid;
+    gap: var(--s-5);
+  }
+  .month[hidden],
+  .row-item[hidden],
+  .is-collapsed,
+  .is-past-hidden {
+    display: none;
+  }
+  .month__label {
+    padding-bottom: var(--s-2);
+    font-size: var(--fs-h3);
+    line-height: 1.3;
+    color: var(--accent);
+  }
+  .month__label:focus {
+    outline: none;
+  }
+  .month__label:focus-visible {
+    outline: 2px solid var(--focus);
+  }
+  .rows {
+    border-top: 1px solid var(--line);
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 150px minmax(0, 1fr) 190px 130px;
+    gap: var(--s-2) var(--s-4);
+    align-items: center;
+    padding: 14px var(--s-3);
+    border-bottom: 1px solid var(--line);
+  }
+  .row__date {
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .row__name {
+    font-size: var(--fs-body-lg);
+    font-weight: 400;
+    line-height: 1.3;
+  }
+  .row__place,
+  .row__result {
+    font-size: var(--fs-body-sm);
+    color: var(--ink-muted);
+  }
+  .row__result {
+    color: var(--ink);
+  }
+  .row__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-2);
+    font-size: var(--fs-caption);
+  }
+  .row__disc {
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-muted);
+  }
+  .row__class {
+    padding: 2px 8px;
+    border: 1px solid var(--accent);
+    border-radius: var(--r-xs);
+    color: var(--accent);
+  }
+  .row__status {
+    justify-self: end;
+    font-size: var(--fs-caption);
+    color: var(--ink-muted);
+    text-align: right;
+  }
+  .tbc-chip {
+    display: inline-block;
+    padding: 3px 10px;
+    border: 1px dashed var(--ink-muted);
+    border-radius: var(--r-pill);
+    font-size: var(--fs-caption);
+    font-weight: 400;
+    color: var(--ink-muted);
+  }
+  .strike {
+    text-decoration: line-through;
+    text-decoration-color: var(--ink-muted);
+  }
+  .row--past .row__name,
+  .row--past .row__date {
+    color: var(--ink-muted);
+  }
+  .row--next {
+    background: var(--surface-alt);
+    box-shadow: inset 4px 0 0 var(--accent);
+  }
+  .row--next .row__status,
+  .row--live .row__status {
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .row--cancelled .row__status {
+    color: var(--ink);
+    font-weight: 700;
+  }
+  .row--tbc .row__status,
+  .row--upcoming .row__status {
+    visibility: hidden;
+  }
+
+  .more {
+    margin-top: var(--s-5);
+  }
+  .more[hidden] {
+    display: none;
+  }
+  .subscribe {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-3);
+    margin-top: var(--s-6);
+  }
+
+  /* Mobile: two lines — date + name, then place · discipline/class · status. */
+  @media (max-width: 899px) {
+    .row {
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      grid-template-areas:
+        'date name name'
+        'place meta status';
+      gap: 4px var(--s-3);
+      align-items: baseline;
+      padding: 14px 4px;
+    }
+    .row__main {
+      display: contents;
+    }
+    .row__date {
+      grid-area: date;
+      font-size: var(--fs-body-sm);
+    }
+    .row__name {
+      grid-area: name;
+      font-size: var(--fs-body);
+    }
+    .row__place {
+      grid-area: place;
+      white-space: nowrap;
+    }
+    .row__meta {
+      grid-area: meta;
+      flex-wrap: nowrap;
+    }
+    .row__status {
+      grid-area: status;
+    }
+    .row__result {
+      grid-column: 1 / -1;
+    }
+    .row--tbc .row__status,
+    .row--upcoming .row__status {
+      display: none;
+    }
+    .past-toggle {
+      margin-left: 0;
+    }
+  }
+</style>

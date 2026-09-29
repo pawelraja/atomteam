@@ -1,0 +1,50 @@
+[
+  {
+    "title": {
+      "pl": "9 złotych medali na Młodzieżowych Mistrzostwach Polski na torze.",
+      "en": "9 golds at the Youth Polish Track Championships."
+    },
+    "text": {
+      "pl": "Julia Pośpiech i Martyna Szczęsna po cztery tytuły; Gabriela Kaczmarczyk złoto i brąz; Eliza Rabażyńska dwa srebra.",
+      "en": "Julia Pośpiech and Martyna Szczęsna four titles each; Gabriela Kaczmarczyk gold and bronze; Eliza Rabażyńska two silvers."
+    },
+    "photo": "highlight-track.jpg",
+    "alt": {
+      "pl": "Zawodniczki drużyny na podium Młodzieżowych Mistrzostw Polski na torze",
+      "en": "Team riders on the podium at the Youth Polish Track Championships"
+    },
+    "verify": true
+  },
+  {
+    "title": {
+      "pl": "Alicja Matuła mistrzynią Polski U23 w maratonie MTB.",
+      "en": "Alicja Matuła, Polish U23 MTB Marathon champion."
+    },
+    "text": {
+      "pl": "Do tego srebro w elicie. Julia Kołakowska z brązem wśród juniorek.",
+      "en": "Plus silver in the elite race. Julia Kołakowska took junior bronze."
+    },
+    "photo": "highlight-mtb.jpg",
+    "alt": {
+      "pl": "Alicja Matuła na trasie Mistrzostw Polski w maratonie MTB",
+      "en": "Alicja Matuła racing at the Polish MTB Marathon Championships"
+    },
+    "verify": true
+  },
+  {
+    "title": {
+      "pl": "Na starcie w Montrealu.",
+      "en": "On the start line in Montréal."
+    },
+    "text": {
+      "pl": "Nasze zawodniczki startowały w szosowych mistrzostwach świata 2026 w barwach reprezentacji.",
+      "en": "Our riders raced the 2026 Road World Championships for their national teams."
+    },
+    "photo": "highlight-worlds.jpg",
+    "alt": {
+      "pl": "Zawodniczka drużyny w barwach reprezentacji na mistrzostwach świata w Montrealu",
+      "en": "Team rider in national colours at the UCI Road World Championships in Montréal"
+    },
+    "verify": true
+  }
+]

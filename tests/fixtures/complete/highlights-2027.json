@@ -1,0 +1,17 @@
+[
+  {
+    "title": {
+      "pl": "[Przykładowy sukces sezonu 2027].",
+      "en": "[Example 2027 highlight]."
+    },
+    "text": {
+      "pl": "Dane testowe do podglądu fazy „offseason”.",
+      "en": "Test data for previewing the offseason phase."
+    },
+    "photo": "highlight-2027-1.jpg",
+    "alt": {
+      "pl": "Zdjęcie przykładowe",
+      "en": "Example photo"
+    }
+  }
+]

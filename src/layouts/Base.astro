@@ -1,0 +1,106 @@
+---
+import '../styles/global.css';
+import { getData } from '../lib/data';
+import { HERO_DESKTOP_MEDIA, HERO_MOBILE_MEDIA, heroSources } from '../lib/hero';
+import { copy, DEFAULT_LANG, fill, homePath, LANGS, type Lang } from '../lib/i18n';
+import { eventState, isConfirmedRace, raceLocation, raceName } from '../lib/season';
+
+interface Props {
+  lang: Lang;
+  /** Path of this page without the language prefix, e.g. "/" or "/polityka-prywatnosci/". */
+  paths?: Record<Lang, string>;
+  title?: string;
+  noindex?: boolean;
+  jsonLd?: boolean;
+}
+const { lang, jsonLd: withJsonLd = true, noindex = false } = Astro.props;
+const paths = Astro.props.paths ?? { pl: homePath('pl'), en: homePath('en') };
+const { site, calendars, today, todayOverridden } = getData();
+const t = copy(lang);
+const season = site.currentSeason;
+const title = Astro.props.title ?? fill(t.meta.title, { season }, lang);
+const description = fill(t.meta.description, { season, founded: site.foundedYear }, lang);
+const abs = (p: string) => new URL(p, Astro.site).href;
+const canonical = abs(paths[lang]);
+const ogImage = abs(`/og-${lang}.png`);
+const { desktop, mobile } = withJsonLd ? await heroSources() : { desktop: null, mobile: null };
+const homeUrl = abs(homePath(lang));
+const FONTS = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap';
+
+const team = {
+  '@type': 'SportsTeam',
+  '@id': `${abs('/')}#team`,
+  name: t.team.name,
+  sport: 'Cycling',
+  gender: 'Female',
+  foundingDate: String(site.foundedYear),
+  url: homeUrl,
+  email: t.team.email,
+  location: { '@type': 'Place', name: 'Wrocław, Poland', address: { '@type': 'PostalAddress', addressLocality: 'Wrocław', addressCountry: 'PL' } },
+  sameAs: Object.values(t.team.social),
+};
+// Only confirmed, upcoming races are announced to search engines.
+const events = (calendars.get(season) ?? [])
+  .filter(isConfirmedRace)
+  .filter((e) => eventState(e, today) !== 'past')
+  .map((e) => ({
+    '@type': 'SportsEvent',
+    name: raceName(e, lang),
+    startDate: e.start,
+    endDate: e.end,
+    sport: 'Cycling',
+    eventStatus: 'https://schema.org/EventScheduled',
+    eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+    location: {
+      '@type': 'Place',
+      name: [raceLocation(e, lang), e.country].filter(Boolean).join(', '),
+      address: { '@type': 'PostalAddress', addressCountry: e.country, ...(e.location ? { addressLocality: raceLocation(e, lang) } : {}) },
+    },
+    competitor: { '@id': `${abs('/')}#team` },
+  }));
+const jsonLd = { '@context': 'https://schema.org', '@graph': [team, ...events] };
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <link rel="canonical" href={canonical} />
+    {LANGS.map((l) => <link rel="alternate" hreflang={l} href={abs(paths[l])} />)}
+    <link rel="alternate" hreflang="x-default" href={abs(paths[DEFAULT_LANG])} />
+    <meta name="theme-color" content="#2b0020" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={t.team.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={fill(t.meta.ogAlt, { season }, lang)} />
+    <meta property="og:locale" content={t.meta.ogLocale} />
+    {LANGS.filter((l) => l !== lang).map((l) => <meta property="og:locale:alternate" content={copy(l).meta.ogLocale} />)}
+    <meta name="twitter:card" content="summary_large_image" />
+
+    {mobile && <link rel="preload" as="image" imagesrcset={mobile.srcset} imagesizes="100vw" media={HERO_MOBILE_MEDIA} type="image/webp" fetchpriority="high" />}
+    {desktop && <link rel="preload" as="image" imagesrcset={desktop.srcset} imagesizes="100vw" media={HERO_DESKTOP_MEDIA} type="image/webp" fetchpriority="high" />}
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Inter loads without blocking the first paint; text shows in the fallback font until it arrives. -->
+    <link rel="stylesheet" href={FONTS} media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href={FONTS} /></noscript>
+
+    {withJsonLd && <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+  </head>
+  <body data-today={todayOverridden ? today : undefined} data-lang={lang}>
+    <a class="skip-link" href="#main">{t.a11y.skip}</a>
+    <slot />
+  </body>
+</html>

@@ -1,0 +1,86 @@
+---
+// A partner logo at equal optical size inside a fixed box. Until public/partners/<logo> exists,
+// a labelled placeholder shows the partner's name and the expected file name.
+import { copy, fill, type Lang } from '../lib/i18n';
+import { partnerLogoExists } from '../lib/images';
+
+interface Props {
+  lang: Lang;
+  name: string;
+  url: string;
+  logo: string;
+  size: 'xl' | 'l' | 'm';
+}
+const { lang, name, url, logo, size } = Astro.props;
+const t = copy(lang);
+const has = partnerLogoExists(logo);
+---
+
+<a class:list={['logo', `logo--${size}`]} href={url} target="_blank" rel="noopener sponsored">
+  {
+    has ? (
+      <img src={`/partners/${logo}`} alt="" loading="lazy" decoding="async" width="240" height="120" />
+    ) : (
+      <span class="logo__ph" aria-hidden="true">
+        <span class="logo__name">{name.split(' — ')[0]}</span>
+        <span class="logo__file">{fill(t.partners.logoPlaceholder, { file: logo })}</span>
+      </span>
+    )
+  }
+  <span class="visually-hidden">{fill(t.partners.visit, { name })} {t.a11y.newTab}</span>
+</a>
+
+<style>
+  .logo {
+    display: grid;
+    place-items: center;
+    height: var(--logo-box);
+    padding: var(--s-3);
+    border-radius: var(--r-sm);
+    background: var(--surface);
+    border: 1px solid #e4e0e6;
+    text-decoration: none;
+    color: var(--ink);
+    transition: border-color 0.15s;
+  }
+  .logo:hover {
+    border-color: var(--accent);
+    color: var(--ink);
+  }
+  .logo--xl {
+    --logo-box: 160px;
+    --logo-h: 88px;
+  }
+  .logo--l {
+    --logo-box: 112px;
+    --logo-h: 56px;
+  }
+  .logo--m {
+    --logo-box: 88px;
+    --logo-h: 40px;
+  }
+  /* Equal optical size: every logo is fitted into the same box height and max width. */
+  img {
+    max-height: var(--logo-h);
+    max-width: 80%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+  }
+  .logo__ph {
+    display: grid;
+    gap: 2px;
+    text-align: center;
+  }
+  .logo__name {
+    font-size: calc(var(--logo-h) * 0.42);
+    line-height: 1.15;
+  }
+  .logo--m .logo__name {
+    font-size: var(--fs-body-sm);
+  }
+  .logo__file {
+    font-size: 11px;
+    color: var(--ink-muted);
+  }
+</style>

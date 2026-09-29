@@ -1,0 +1,14 @@
+---
+// "Ljubljana · SLO" — the code is shown, the full country name is read by screen readers.
+import { copy, type Lang } from '../lib/i18n';
+
+interface Props {
+  lang: Lang;
+  location: string | null;
+  code: string;
+}
+const { lang, location, code } = Astro.props;
+const names = copy(lang).calendar.countryNames as Record<string, string>;
+---
+
+{location && <>{location} · </>}<span aria-hidden="true">{code}</span><span class="visually-hidden">{names[code] ?? code}</span>

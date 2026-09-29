@@ -1,0 +1,158 @@
+---
+import { anchor } from '../lib/anchors';
+import { getData } from '../lib/data';
+import { copy, fill, pick, type Lang } from '../lib/i18n';
+import { pickRoster } from '../lib/season';
+import PersonCard from './PersonCard.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const { site, riders, staff } = getData();
+const t = copy(lang);
+const ts = t.teamSection;
+const season = site.currentSeason;
+const roster = pickRoster(riders, season);
+const crew = pickRoster(staff, season);
+
+let title: string;
+let note: string | null = null;
+if (roster.isCurrent) {
+  title = fill(site.rosterConfirmed ? ts.titleConfirmed : ts.titleProvisional, { season }, lang);
+  if (!site.rosterConfirmed) note = ts.provisionalNote;
+} else {
+  title = fill(ts.titleFallback, { season: roster.season ?? season }, lang);
+  note = fill(ts.fallbackNote, { next: season }, lang);
+}
+
+const squads = [
+  { id: 'continental', label: ts.tabs.continental, intro: ts.continentalIntro, people: roster.items.filter((r) => r.squad === 'continental') },
+  { id: 'junior', label: ts.tabs.junior, intro: ts.juniorIntro, people: roster.items.filter((r) => r.squad === 'junior') },
+] as const;
+---
+
+<section class="section team" id={anchor(lang, 'team')} data-section="team" aria-labelledby="team-title">
+  <div class="container">
+    <div class="section-head">
+      <h2 id="team-title">{title}</h2>
+      {note && <p>{note}</p>}
+    </div>
+
+    <div class="tabs" data-tabs>
+      <div class="tablist" role="tablist" aria-labelledby="team-title">
+        {
+          [...squads, { id: 'staff', label: ts.tabs.staff }].map((s, i) => (
+            <button
+              class="tab"
+              type="button"
+              role="tab"
+              id={`tab-${s.id}`}
+              aria-controls={`panel-${s.id}`}
+              aria-selected={i === 0 ? 'true' : 'false'}
+              tabindex={i === 0 ? 0 : -1}
+            >
+              {s.label}
+            </button>
+          ))
+        }
+      </div>
+
+      {
+        squads.map((s, i) => (
+          <div class="panel" role="tabpanel" id={`panel-${s.id}`} aria-labelledby={`tab-${s.id}`} tabindex="0" hidden={i !== 0}>
+            <p class="panel__intro body-lg">{s.intro}</p>
+            {s.people.length ? (
+              <ul class="grid" role="list">
+                {s.people.map((r) => (
+                  <li>
+                    <PersonCard
+                      lang={lang}
+                      name={r.name}
+                      nat={r.nat}
+                      role={r.role && pick(lang, r.role)}
+                      photo={r.photo}
+                      instagram={r.instagram}
+                      isNew={roster.isCurrent && r.new ? fill(ts.newPill, { season }, lang) : null}
+                    />
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p class="muted">{ts.emptySquad}</p>
+            )}
+          </div>
+        ))
+      }
+
+      <div class="panel" role="tabpanel" id="panel-staff" aria-labelledby="tab-staff" tabindex="0" hidden>
+        <p class="panel__intro body-lg">{ts.staffIntro}</p>
+        <ul class="grid" role="list">
+          {
+            crew.items.map((s) => (
+              <li>
+                <PersonCard lang={lang} name={s.name} role={pick(lang, s.role)} photo={s.photo} instagram={s.instagram} />
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+  <noscript><style>.team .panel[hidden] { display: block !important; } .team .tablist { display: none; }</style></noscript>
+</section>
+
+<script>
+  import { initTabs } from './Tabs';
+  document.querySelectorAll<HTMLElement>('.team [data-tabs]').forEach((el) => initTabs(el));
+</script>
+
+<style>
+  .tablist {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    margin-bottom: var(--s-5);
+  }
+  .tab {
+    min-height: 48px;
+    padding: 10px 24px;
+    border: 1px solid var(--accent);
+    border-radius: var(--r-pill);
+    background: transparent;
+    color: var(--accent-strong);
+    font: 700 var(--fs-body) / 1.2 var(--font);
+    cursor: pointer;
+  }
+  .tab:hover {
+    background: color-mix(in srgb, var(--accent) 20%, transparent);
+  }
+  .tab[aria-selected='true'] {
+    background: var(--accent);
+    color: var(--ink-on-accent);
+  }
+  .panel__intro {
+    margin-bottom: var(--s-5);
+    color: var(--ink-muted);
+    max-width: 60ch;
+  }
+  .panel:focus-visible {
+    outline-offset: 8px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--s-5) var(--s-4);
+  }
+  @media (max-width: 1099px) {
+    .grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  @media (max-width: 699px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--s-4) var(--s-3);
+    }
+  }
+</style>

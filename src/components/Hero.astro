@@ -1,0 +1,150 @@
+---
+import { anchor } from '../lib/anchors';
+import { getData } from '../lib/data';
+import { HERO_DESKTOP_MEDIA, HERO_MOBILE_MEDIA, heroSources } from '../lib/hero';
+import { copy, fill, type Lang } from '../lib/i18n';
+import { seasonNumber } from '../lib/season';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const { site } = getData();
+const t = copy(lang);
+const season = site.currentSeason;
+const { desktop, mobile } = await heroSources();
+const a = (k: Parameters<typeof anchor>[1]) => `#${anchor(lang, k)}`;
+
+const buttons = {
+  preseason: [
+    { href: a('partner-cta'), label: fill(t.hero.preseason.primary, { season }, lang) },
+    { href: a('calendar'), label: fill(t.hero.preseason.secondary, { season }, lang) },
+  ],
+  racing: [
+    { href: a('next-race'), label: t.hero.racing.primary },
+    { href: a('partner-cta'), label: t.hero.racing.secondary },
+  ],
+  offseason: [
+    { href: a('partner-cta'), label: t.hero.offseason.primary },
+    { href: a('recap'), label: fill(t.hero.offseason.secondary, { season }, lang) },
+  ],
+}[site.phase];
+---
+
+<section class="hero" id={anchor(lang, 'top')} data-section="top" aria-labelledby="hero-title">
+  <div class="hero__media">
+    {
+      desktop || mobile ? (
+        <picture>
+          {mobile && <source media={HERO_MOBILE_MEDIA} srcset={mobile.srcset} sizes="100vw" width={mobile.width} height={mobile.height} type="image/webp" />}
+          {desktop && <source media={HERO_DESKTOP_MEDIA} srcset={desktop.srcset} sizes="100vw" width={desktop.width} height={desktop.height} type="image/webp" />}
+          <img
+            src={(desktop ?? mobile)!.src}
+            alt={t.hero.alt}
+            width={(desktop ?? mobile)!.width}
+            height={(desktop ?? mobile)!.height}
+            fetchpriority="high"
+            loading="eager"
+            decoding="sync"
+          />
+        </picture>
+      ) : (
+        <div class="ph hero__ph" role="img" aria-label={fill(t.a11y.photoPlaceholder, { alt: t.hero.alt })} data-placeholder="photos/hero.jpg">
+          <span class="ph__label" aria-hidden="true">
+            <span class="ph__file">photos/hero.jpg · 16:9</span>
+            <span>photos/hero-mobile.jpg · 4:5</span>
+          </span>
+        </div>
+      )
+    }
+  </div>
+
+  <div class="hero__band" data-theme="dark">
+    <div class="hero__content container">
+      <p class="hero__eyebrow">{fill(t.hero.eyebrow, { season, number: seasonNumber(site) }, lang)}</p>
+      <h1 id="hero-title">{t.hero.title}</h1>
+      <p class="hero__sub">{fill(t.hero.sub, { founded: site.foundedYear }, lang)}</p>
+      <div class="btn-row">
+        <a class="btn btn--primary" href={buttons[0].href}>{buttons[0].label}</a>
+        <a class="btn btn--secondary hero__secondary" href={buttons[1].href}>{buttons[1].label}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    display: grid;
+    min-height: min(100svh, 980px);
+    background: #2b0020;
+    color: #f1eef3;
+    isolation: isolate;
+  }
+  .hero__media {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+  .hero__media picture,
+  .hero__media img,
+  .hero__ph {
+    width: 100%;
+    height: 100%;
+  }
+  .hero__media img {
+    object-fit: cover;
+  }
+  .hero__ph {
+    align-items: start;
+    padding-top: 120px;
+  }
+  /* Scrim: a short fade into a plum wash behind the copy, so text stays readable on any photo. */
+  .hero__band {
+    align-self: end;
+    position: relative;
+    background: transparent;
+  }
+  .hero__band::before {
+    content: '';
+    position: absolute;
+    inset: -120px 0 0 0;
+    z-index: -1;
+    background: linear-gradient(to bottom, rgba(43, 0, 32, 0) 0, rgba(43, 0, 32, 0.86) 120px);
+  }
+  .hero__content {
+    display: grid;
+    justify-items: start;
+    gap: var(--s-4);
+    padding-top: var(--s-4);
+    padding-bottom: clamp(48px, 8vw, 112px);
+    color: var(--ink);
+  }
+  .hero__eyebrow {
+    padding: 5px 14px;
+    border: 1px solid var(--accent);
+    border-radius: var(--r-pill);
+    color: var(--accent);
+    font-size: var(--fs-body-sm);
+  }
+  h1 {
+    max-width: 14ch;
+  }
+  .hero__sub {
+    font-size: var(--fs-body-lg);
+    max-width: 38ch;
+    color: var(--ink-muted);
+  }
+  .hero__secondary {
+    color: var(--ink);
+  }
+  .btn-row {
+    margin-top: var(--s-2);
+  }
+  @media (max-width: 479px) {
+    .btn-row {
+      flex-direction: column;
+      align-self: stretch;
+    }
+  }
+</style>

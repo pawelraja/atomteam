@@ -1,0 +1,1 @@
+import{t as e}from"./Tabs.DDLoaaSF.js";document.querySelectorAll(`.team [data-tabs]`).forEach(t=>e(t));

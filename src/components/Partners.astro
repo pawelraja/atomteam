@@ -1,0 +1,172 @@
+---
+// Partners by tier. Current-season partners appear only once "partnersConfirmed" is true;
+// until then the previous season's partners are thanked — never presented as current.
+import { anchor } from '../lib/anchors';
+import { getData } from '../lib/data';
+import { copy, fill, pick, type Lang } from '../lib/i18n';
+import { pickPartners } from '../lib/season';
+import PartnerLogo from './PartnerLogo.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const { site, partners } = getData();
+const t = copy(lang);
+const tp = t.partners;
+const current = site.currentSeason;
+const shown = pickPartners(partners, current, site.partnersConfirmed);
+const tier = (name: string) => shown.items.filter((p) => p.tier === name);
+const title = tier('title');
+const main = tier('main');
+const technical = tier('technical');
+const institutional = tier('institutional');
+---
+
+{
+  shown.items.length > 0 && (
+    <section class="section partners" id={anchor(lang, 'partners')} data-section="partners" aria-labelledby="partners-title">
+      <div class="container">
+        <div class="section-head">
+          <h2 id="partners-title">
+            {shown.isCurrent ? fill(tp.titleCurrent, { season: current }, lang) : fill(tp.titleThanks, { season: shown.season! }, lang)}
+          </h2>
+          {!shown.isCurrent && <p>{fill(tp.thanksNote, { next: current }, lang)}</p>}
+        </div>
+
+        {title.length > 0 && (
+          <div class="tier tier--title">
+            <h3 class="tier__label">{tp.tiers.title}</h3>
+            <div class="title-row">
+              {title.map((p) => (
+                <PartnerLogo lang={lang} name={p.name} url={p.url} logo={p.logo} size="xl" />
+              ))}
+              <p class="title-thanks lead">{tp.titleThankYou}</p>
+            </div>
+          </div>
+        )}
+
+        {main.length > 0 && (
+          <div class="tier">
+            <h3 class="tier__label">{tp.tiers.main}</h3>
+            <ul class="grid grid--main" role="list">
+              {main.map((p) => (
+                <li>
+                  <PartnerLogo lang={lang} name={p.name} url={p.url} logo={p.logo} size="l" />
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {technical.length > 0 && (
+          <div class="tier">
+            <h3 class="tier__label">{tp.tiers.technical}</h3>
+            <ul class="grid grid--tech" role="list">
+              {technical.map((p) => (
+                <li>
+                  <PartnerLogo lang={lang} name={p.name} url={p.url} logo={p.logo} size="m" />
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {institutional.length > 0 && (
+          <div class="tier">
+            <h3 class="tier__label">{tp.tiers.institutional}</h3>
+            <ul class="grid grid--inst" role="list">
+              {institutional.map((p) => (
+                <li class="inst">
+                  <PartnerLogo lang={lang} name={p.name} url={p.url} logo={p.logo} size="l" />
+                  {p.description && <p class="inst__text">{pick(lang, p.description)}</p>}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .tier + .tier {
+    margin-top: var(--s-6);
+  }
+  .tier__label {
+    margin-bottom: var(--s-3);
+    font-size: var(--fs-body-sm);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+  .title-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    gap: var(--s-5);
+  }
+  .title-row :global(.logo) {
+    background: var(--surface-alt);
+    border-color: transparent;
+    box-shadow: var(--shadow-card);
+    border-radius: var(--r-card);
+  }
+  .title-thanks {
+    max-width: 28ch;
+  }
+  .grid {
+    display: grid;
+    gap: var(--s-3);
+  }
+  .grid--main {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .grid--tech {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+  .grid--inst {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-5);
+  }
+  .inst {
+    display: grid;
+    grid-template-columns: 200px minmax(0, 1fr);
+    align-items: center;
+    gap: var(--s-4);
+  }
+  .inst__text {
+    color: var(--ink-muted);
+    font-size: var(--fs-body-sm);
+  }
+  @media (max-width: 899px) {
+    .title-row,
+    .grid--inst {
+      grid-template-columns: 1fr;
+    }
+    .grid--main,
+    .grid--tech {
+      grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+      gap: var(--s-2);
+    }
+    .grid--main :global(.logo),
+    .grid--tech :global(.logo) {
+      --logo-box: 76px;
+      padding: var(--s-2);
+    }
+    .grid--main :global(.logo__name) {
+      font-size: var(--fs-body-sm);
+    }
+    .grid :global(.logo__file) {
+      font-size: 10px;
+      word-break: break-all;
+    }
+  }
+  @media (max-width: 479px) {
+    .inst {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

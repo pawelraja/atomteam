@@ -1,0 +1,87 @@
+---
+import { anchor } from '../lib/anchors';
+import { getData } from '../lib/data';
+import { copy, fill, homePath, otherLang, plural, type Lang } from '../lib/i18n';
+import { pickPartners } from '../lib/season';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const { site, partners, today } = getData();
+const t = copy(lang);
+const other = otherLang(lang);
+const shown = pickPartners(partners, site.currentSeason, site.partnersConfirmed);
+const named = shown.items.filter((p) => p.tier !== 'technical');
+const technicalCount = shown.items.length - named.length;
+const year = today.slice(0, 4);
+---
+
+<footer class="footer" data-theme="dark">
+  <div class="container footer__inner">
+    {
+      shown.items.length > 0 && (
+        <p class="footer__partners">
+          <span class="footer__label">{fill(t.footer.partnersLabel, { season: shown.season! }, lang)}</span>{' '}
+          {named.map((p, i) => (
+            <>
+              <a href={p.url} rel="noopener sponsored" target="_blank">{p.name.split(' — ')[0]}</a>
+              {i < named.length - 1 && <span aria-hidden="true"> · </span>}
+            </>
+          ))}
+          {technicalCount > 0 && <span> · {plural(t.footer.partnersMore, technicalCount, lang)}</span>}
+        </p>
+      )
+    }
+    <div class="footer__bottom">
+      <p>{fill(t.footer.copyright, { year, team: t.team.name })}</p>
+      <ul class="footer__links" role="list">
+        <li><a href={t.footer.privacyUrl}>{t.footer.privacy}</a></li>
+        <li>
+          <a href={`${homePath(other)}#${anchor(other, 'top')}`} hreflang={other} lang={other} data-lang-link={other}>
+            {t.language.otherVersion}
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--surface);
+    color: var(--ink-muted);
+    border-top: 1px solid var(--surface-alt);
+    padding-block: var(--s-6);
+    font-size: var(--fs-body-sm);
+  }
+  .footer__inner {
+    display: grid;
+    gap: var(--s-5);
+  }
+  .footer__label {
+    color: var(--ink);
+    font-weight: 700;
+  }
+  .footer a {
+    color: var(--ink);
+  }
+  .footer a:hover {
+    color: var(--accent);
+  }
+  .footer__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--s-3);
+  }
+  .footer__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2) var(--s-5);
+  }
+  .footer__links a {
+    display: inline-block;
+    padding-block: 12px;
+  }
+</style>

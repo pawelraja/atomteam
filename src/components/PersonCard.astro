@@ -1,0 +1,88 @@
+---
+// Rider / staff card: 3:4 photo, name, "/POL" tag, role. Links to Instagram when known.
+import { copy, fill, type Lang } from '../lib/i18n';
+import Photo from './Photo.astro';
+
+interface Props {
+  lang: Lang;
+  name: string;
+  nat?: string;
+  role?: string;
+  photo: string;
+  instagram?: string | null;
+  isNew?: string | null;
+}
+const { lang, name, nat, role, photo, instagram, isNew } = Astro.props;
+const t = copy(lang);
+const href = instagram ? `https://www.instagram.com/${instagram}/` : null;
+const Tag = href ? 'a' : 'div';
+const countries = t.calendar.countryNames as Record<string, string>;
+---
+
+<Tag
+  class:list={['person', { 'person--link': href }]}
+  href={href ?? undefined}
+  target={href ? '_blank' : undefined}
+  rel={href ? 'noopener' : undefined}
+>
+  <div class="person__photo card">
+    <Photo lang={lang} dir="riders" file={photo} alt="" decorative aspect="3:4" sizes="(min-width: 1100px) 300px, (min-width: 700px) 30vw, 45vw" widths={[240, 360, 480, 640]} />
+    {isNew && <span class="pill-new person__new">{isNew}</span>}
+  </div>
+  <div class="person__meta">
+    <p class="person__name">
+      {name}
+      {nat && (
+        <span class="person__nat">
+          <span aria-hidden="true">/{nat}</span>
+          <span class="visually-hidden">, {countries[nat] ?? nat}</span>
+        </span>
+      )}
+    </p>
+    {role && <p class="person__role">{role}</p>}
+    {href && <span class="visually-hidden">— {fill(t.a11y.opensInstagram, { name })} {t.a11y.newTab}</span>}
+  </div>
+</Tag>
+
+<style>
+  .person {
+    display: grid;
+    gap: var(--s-3);
+    color: inherit;
+    text-decoration: none;
+  }
+  .person__photo {
+    position: relative;
+    overflow: hidden;
+    background: var(--surface-muted);
+  }
+  .person--link:hover .person__photo {
+    box-shadow: 0 5px 0 0 rgba(255, 102, 237, 0.8);
+  }
+  .person--link:hover .person__name {
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+  }
+  .person__new {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+  }
+  .person__name {
+    font-size: var(--fs-body-lg);
+    line-height: 1.3;
+  }
+  .person__nat {
+    color: var(--accent-strong);
+    font-weight: 700;
+    font-size: var(--fs-body-sm);
+    white-space: nowrap;
+    margin-left: 2px;
+  }
+  .person__role {
+    color: var(--ink-muted);
+    font-size: var(--fs-body-sm);
+  }
+</style>

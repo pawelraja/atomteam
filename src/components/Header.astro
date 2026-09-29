@@ -1,0 +1,265 @@
+---
+import Icon from './Icon.astro';
+import LangSwitch from './LangSwitch.astro';
+import Social from './Social.astro';
+import { anchor } from '../lib/anchors';
+import { copy, type Lang } from '../lib/i18n';
+import { brandLogoExists } from '../lib/images';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = copy(lang);
+const nav = [
+  { href: `#${anchor(lang, 'team')}`, label: t.nav.team },
+  { href: `#${anchor(lang, 'calendar')}`, label: t.nav.calendar },
+  { href: `#${anchor(lang, 'partners')}`, label: t.nav.partners },
+  { href: `#${anchor(lang, 'contact')}`, label: t.nav.contact },
+];
+const ctaHref = `#${anchor(lang, 'partner-cta')}`;
+// Drop the official logo at public/brand/logo.svg and it replaces the text wordmark.
+const hasLogo = brandLogoExists();
+---
+
+<header class="site-header">
+  <div class="bar">
+    <a class="wordmark" href={`#${anchor(lang, 'top')}`} aria-label={t.a11y.home}>
+      {
+        hasLogo ? (
+          <img src="/brand/logo.svg" alt="" width="180" height="40" />
+        ) : (
+          <span aria-hidden="true">
+            {t.team.wordmarkA} <strong>{t.team.wordmarkB}</strong>
+          </span>
+        )
+      }
+    </a>
+
+    <nav class="nav" aria-label={t.a11y.mainNav}>
+      <ul role="list">
+        {nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+      </ul>
+    </nav>
+
+    <div class="end">
+      <LangSwitch lang={lang} class="desk-only" />
+      <Social lang={lang} class="header-social desk-only" />
+      <a class="btn btn--primary cta desk-only" href={ctaHref}>{t.nav.partnerCta}</a>
+      <LangSwitch lang={lang} variant="single" class="mobile-only" />
+      <button class="burger mobile-only" type="button" aria-haspopup="dialog" aria-controls="mobile-menu" aria-expanded="false" data-menu-open>
+        <Icon name="menu" />
+        <span class="visually-hidden">{t.a11y.openMenu}</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<dialog id="mobile-menu" class="menu" data-theme="dark" aria-label={t.a11y.mainNav}>
+  <div class="menu__top">
+    <span class="wordmark" aria-hidden="true">{t.team.wordmarkA} <strong>{t.team.wordmarkB}</strong></span>
+    <button class="burger burger--close" type="button" data-menu-close>
+      <Icon name="close" />
+      <span class="visually-hidden">{t.a11y.closeMenu}</span>
+    </button>
+  </div>
+  <nav aria-label={t.a11y.mainNav}>
+    <ul role="list" class="menu__list">
+      {nav.map((n) => <li><a href={n.href} data-menu-link>{n.label}</a></li>)}
+    </ul>
+  </nav>
+  <div class="menu__foot">
+    <a class="btn btn--primary" href={ctaHref} data-menu-link>{t.nav.partnerCta}</a>
+    <Social lang={lang} size={26} />
+  </div>
+</dialog>
+
+<script>
+  import { ANCHORS, type AnchorKey } from '../lib/anchors';
+  import { homePath, type Lang } from '../lib/text';
+
+  const menu = document.getElementById('mobile-menu') as HTMLDialogElement;
+  const opener = document.querySelector<HTMLButtonElement>('[data-menu-open]')!;
+  opener.addEventListener('click', () => {
+    menu.showModal();
+    opener.setAttribute('aria-expanded', 'true');
+  });
+  menu.addEventListener('close', () => opener.setAttribute('aria-expanded', 'false'));
+  menu.querySelector('[data-menu-close]')!.addEventListener('click', () => menu.close());
+  menu.querySelectorAll('[data-menu-link]').forEach((a) => a.addEventListener('click', () => menu.close()));
+  matchMedia('(min-width: 1100px)').addEventListener('change', (e) => e.matches && menu.open && menu.close());
+
+  // Keep the language links pointing at the section currently on screen.
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-lang-link]')];
+  const sections = [...document.querySelectorAll<HTMLElement>('[data-section]')];
+  const setTarget = (key: AnchorKey) => {
+    for (const a of links) {
+      const l = a.dataset.langLink as Lang;
+      a.href = `${homePath(l)}#${ANCHORS[l][key]}`;
+    }
+  };
+  if (links.length && sections.length && 'IntersectionObserver' in window) {
+    const visible = new Map<HTMLElement, number>();
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) visible.set(e.target as HTMLElement, e.intersectionRatio);
+        const best = [...visible].filter(([, r]) => r > 0).sort((a, b) => b[1] - a[1])[0];
+        if (best) setTarget(best[0].dataset.section as AnchorKey);
+      },
+      { rootMargin: '-35% 0px -55% 0px', threshold: [0, 0.01, 0.5, 1] },
+    );
+    sections.forEach((s) => io.observe(s));
+  }
+</script>
+
+<style>
+  .site-header {
+    position: fixed;
+    inset: 16px 16px auto 16px;
+    z-index: 50;
+  }
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: var(--s-4);
+    height: var(--header-h);
+    padding: 0 8px 0 28px;
+    border-radius: var(--r-feature);
+    background: var(--header-glass);
+    -webkit-backdrop-filter: blur(16px) saturate(1.4);
+    backdrop-filter: blur(16px) saturate(1.4);
+    color: #000;
+  }
+  .wordmark {
+    flex: none;
+    color: inherit;
+    text-decoration: none;
+    font-size: 15px;
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+    white-space: nowrap;
+  }
+  .wordmark strong {
+    font-weight: 700;
+  }
+  .nav {
+    margin-inline: auto;
+  }
+  .nav ul {
+    display: flex;
+    gap: var(--s-1);
+  }
+  .nav a {
+    display: block;
+    padding: 10px 14px;
+    border-radius: var(--r-pill);
+    text-decoration: none;
+  }
+  .nav a:hover {
+    color: #000;
+    background: rgba(255, 102, 237, 0.25);
+  }
+  .end {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    margin-left: auto;
+  }
+  .cta {
+    min-height: 48px;
+    padding-inline: 22px;
+    white-space: nowrap;
+  }
+  .burger {
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border: 0;
+    border-radius: var(--r-pill);
+    background: var(--accent);
+    color: var(--ink-on-accent);
+    cursor: pointer;
+  }
+  .end :global(.mobile-only) {
+    display: none;
+  }
+
+  @media (max-width: 1279px) {
+    .end :global(.header-social) {
+      display: none;
+    }
+  }
+  @media (max-width: 1099px) {
+    .nav,
+    .end :global(.desk-only) {
+      display: none;
+    }
+    .end :global(.mobile-only) {
+      display: grid;
+    }
+    .bar {
+      padding-left: 20px;
+    }
+  }
+  @media (max-width: 400px) {
+    .wordmark {
+      font-size: 13px;
+      white-space: normal;
+      max-width: 170px;
+    }
+  }
+
+  /* Full-screen plum menu */
+  .menu {
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    max-height: none;
+    margin: 0;
+    padding: 16px;
+    border: 0;
+    background: var(--surface);
+    color: var(--ink);
+  }
+  .menu[open] {
+    display: flex;
+    flex-direction: column;
+  }
+  .menu::backdrop {
+    background: #2b0020;
+  }
+  .menu .burger {
+    display: grid;
+  }
+  .menu__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: var(--header-h);
+    padding: 0 8px 0 20px;
+  }
+  .menu__list {
+    display: grid;
+    gap: var(--s-2);
+    padding: var(--s-6) 20px;
+  }
+  .menu__list a {
+    display: inline-block;
+    padding-block: 4px;
+    font-size: var(--fs-h2);
+    line-height: var(--lh-h2);
+    text-decoration: none;
+  }
+  .menu__list a:hover {
+    color: var(--accent);
+  }
+  .menu__foot {
+    margin-top: auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-3);
+    padding: 20px;
+  }
+</style>

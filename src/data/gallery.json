@@ -1,0 +1,59 @@
+[
+  {
+    "photo": "photo-01.jpg",
+    "aspect": "16:9",
+    "feature": true,
+    "alt": { "pl": "Zawodniczki drużyny w peletonie na belgijskim klasyku", "en": "The team riding together in the peloton on a Belgian classic" },
+    "race": { "pl": "Ronde de Mouscron", "en": "Ronde de Mouscron" },
+    "place": { "pl": "Mouscron, BEL", "en": "Mouscron, BEL" },
+    "credit": "[autor / credit]"
+  },
+  {
+    "photo": "photo-02.jpg",
+    "aspect": "3:4",
+    "alt": { "pl": "Zawodniczka w sprincie na ostatnich metrach przed metą", "en": "A rider sprinting out of the saddle towards the finish line" },
+    "race": { "pl": "Umag Classic Ladies", "en": "Umag Classic Ladies" },
+    "place": { "pl": "Umag, CRO", "en": "Umag, CRO" },
+    "credit": "[autor / credit]"
+  },
+  {
+    "photo": "photo-03.jpg",
+    "aspect": "4:3",
+    "alt": { "pl": "Samochód zespołu i mechanik przygotowujący rowery przed startem", "en": "Team car and mechanic preparing bikes before the start" },
+    "race": { "pl": "Tour de Pologne Women", "en": "Tour de Pologne Women" },
+    "place": { "pl": "POL", "en": "POL" },
+    "credit": "[autor / credit]"
+  },
+  {
+    "photo": "photo-04.jpg",
+    "aspect": "3:4",
+    "alt": { "pl": "Juniorka w białej koszulce z różowymi rękawami na podjeździe", "en": "Junior rider in the white jersey with pink sleeves on a climb" },
+    "race": { "pl": "Sowiogórski Tour", "en": "Sowiogórski Tour" },
+    "place": { "pl": "POL", "en": "POL" },
+    "credit": "[autor / credit]"
+  },
+  {
+    "photo": "photo-05.jpg",
+    "aspect": "4:3",
+    "alt": { "pl": "Zawodniczki na torze kolarskim w szyku drużynowym", "en": "Riders on the velodrome in team pursuit formation" },
+    "race": { "pl": "Torowe Mistrzostwa Polski", "en": "Polish Track Championships" },
+    "place": { "pl": "POL", "en": "POL" },
+    "credit": "[autor / credit]"
+  },
+  {
+    "photo": "photo-06.jpg",
+    "aspect": "16:9",
+    "alt": { "pl": "Drużyna na rampie startowej jazdy drużynowej na czas", "en": "The squad on the start ramp of a team time trial" },
+    "race": { "pl": "Mistrzostwa Polski Drużyn na czas", "en": "Polish Team Time Trial Championships" },
+    "place": { "pl": "POL", "en": "POL" },
+    "credit": "[autor / credit]"
+  },
+  {
+    "photo": "photo-07.jpg",
+    "aspect": "3:4",
+    "alt": { "pl": "Zawodniczka świętuje z koleżankami z drużyny po mecie", "en": "A rider celebrating with teammates after the finish" },
+    "race": { "pl": "Puchar Polski", "en": "Polish Cup" },
+    "place": { "pl": "Lubań, POL", "en": "Lubań, POL" },
+    "credit": "[autor / credit]"
+  }
+]
