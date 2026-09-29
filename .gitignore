@@ -29,3 +29,11 @@ tmp/
 temp/
 *.tmp
 *.bak
+
+# Astro / Node
+node_modules/
+dist/
+.astro/
+screenshots/
+test-results/
+playwright-report/
