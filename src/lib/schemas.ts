@@ -32,7 +32,6 @@ export const siteSchema = z.object({
       url: z.url().nullable().optional(),
     })
     .nullable(),
-  partnerDeckUrl: z.string().min(1).nullable(),
 });
 
 export const DISCIPLINES = ['ROAD', 'TRACK', 'CX', 'TTT', 'MTB'] as const;

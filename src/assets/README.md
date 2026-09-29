@@ -100,7 +100,3 @@ SVG preferred (PNG/WebP accepted if the file name in `partners.json` says so). F
 | File | Notes |
 |---|---|
 | `logo.svg` | Official wordmark for the header. When present it replaces the text wordmark automatically. Dark artwork (it sits on the light header). |
-
-## Partner deck
-
-Put the PDF in `public/partners/` (e.g. `deck-2027.pdf`) and set `"partnerDeckUrl": "/partners/deck-2027.pdf"` in `src/data/site.json`. The download button appears only then.

@@ -171,12 +171,11 @@ describe('season model', () => {
   it('orders sections by phase', () => {
     const pre = sectionOrder('preseason');
     expect(pre.indexOf('partners')).toBe(pre.indexOf('recap') + 1);
-    expect(pre.indexOf('partner-cta')).toBe(pre.indexOf('partners') + 1);
     const racing = sectionOrder('racing');
     expect(racing.slice(2, 4)).toEqual(['next-race', 'calendar']);
     expect(sectionOrder('offseason')[1]).toBe('recap');
     for (const p of ['preseason', 'racing', 'offseason'] as const) {
-      expect(new Set(sectionOrder(p)).size).toBe(11);
+      expect(new Set(sectionOrder(p)).size).toBe(10);
     }
   });
 

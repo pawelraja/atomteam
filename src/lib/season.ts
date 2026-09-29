@@ -251,7 +251,6 @@ export type SectionId =
   | 'team'
   | 'calendar'
   | 'partners'
-  | 'partner-cta'
   | 'movement'
   | 'contact';
 
@@ -259,11 +258,11 @@ export type SectionId =
 export function sectionOrder(phase: Phase): SectionId[] {
   switch (phase) {
     case 'preseason':
-      return ['presentation', 'glance', 'recap', 'partners', 'partner-cta', 'next-race', 'story', 'team', 'calendar', 'movement', 'contact'];
+      return ['presentation', 'glance', 'recap', 'partners', 'next-race', 'story', 'team', 'calendar', 'movement', 'contact'];
     case 'racing':
-      return ['presentation', 'glance', 'next-race', 'calendar', 'story', 'team', 'partners', 'partner-cta', 'recap', 'movement', 'contact'];
+      return ['presentation', 'glance', 'next-race', 'calendar', 'story', 'team', 'partners', 'recap', 'movement', 'contact'];
     case 'offseason':
-      return ['presentation', 'recap', 'glance', 'story', 'partners', 'partner-cta', 'team', 'calendar', 'next-race', 'movement', 'contact'];
+      return ['presentation', 'recap', 'glance', 'story', 'partners', 'team', 'calendar', 'next-race', 'movement', 'contact'];
   }
 }
 

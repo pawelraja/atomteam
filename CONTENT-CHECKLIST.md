@@ -15,8 +15,6 @@ How to edit each file: see **README.md → Everyday editing**. Photo sizes and f
 | ☐ | **Team logo** (SVG) | Team | `public/brand/logo.svg` | Replaces the text wordmark in the header. |
 | ☐ | **Race photography**: hero, 7 photo-story images, 3 highlight images, with credits | Team photographers | `src/assets/photos/` + captions in `src/data/gallery.json` | Photos replace grey placeholders. The hero photo is preloaded for speed. |
 | ☐ | **Instagram handles**: copied from the old site | Riders | `src/data/riders.json` → `instagram` | Rider cards link to the right profiles. |
-| ☐ | **Partnership package details** (no prices) | Team manager | `src/content/copy.pl.json` and `copy.en.json` → `partnerCta.packages` and `packagesNote` | The package cards in "Ride with us in 2027." lose the "[details to be supplied]" note. |
-| ☐ | **Partner deck PDF** | Team manager | File in `public/partners/`, then `site.json` → `partnerDeckUrl` | The "Download the 2027 partner deck (PDF)" button appears. |
 | ☐ | **Privacy policy text** | Team / legal | `copy.*.json` → `privacyPage` | Needed before the newsletter goes live. |
 | ☐ | **Newsletter provider** | Team | `NEWSLETTER_ENDPOINT` at build time (see README) | Sign-ups are actually collected. |
 
@@ -33,7 +31,7 @@ How to edit each file: see **README.md → Everyday editing**. Photo sizes and f
 | ☐ | **Team presentation date and place** | `site.json` → `teamPresentation` | A countdown banner under the hero; it removes itself the day after. |
 | ☐ | **2027 partners and tiers**: add `2027` to renewing partners, add new ones | `src/data/partners.json` | Nothing visible yet (by design). |
 | ☐ | **Partners confirmed** | `site.json` → `"partnersConfirmed": true` | Heading changes to "Our 2027 partners." and shows the 2027 list; the footer lists 2027 partners. |
-| ☐ | **Switch phase when racing starts** | `site.json` → `"phase": "racing"` | Next race and calendar move to the top; hero buttons become "Next race" / "Partner with us". |
+| ☐ | **Switch phase when racing starts** | `site.json` → `"phase": "racing"` | Next race and calendar move to the top; hero buttons become "Next race" / "Subscribe". |
 
 ## All season (2027)
 

@@ -16,23 +16,17 @@ const season = site.currentSeason;
 const { desktop, mobile } = await heroSources();
 const a = (k: Parameters<typeof anchor>[1]) => `#${anchor(lang, k)}`;
 
-const buttons = {
-  preseason: [
-    { href: a('partner-cta'), label: fill(t.hero.preseason.primary, { season }, lang) },
-    { href: a('calendar'), label: fill(t.hero.preseason.secondary, { season }, lang) },
-  ],
-  racing: [
-    { href: a('next-race'), label: t.hero.racing.primary },
-    { href: a('partner-cta'), label: t.hero.racing.secondary },
-  ],
+// Primary button depends on the phase; the secondary always invites visitors to subscribe.
+const subscribe = { href: a('newsletter'), label: t.nav.subscribe };
+const primary = {
+  preseason: { href: a('calendar'), label: fill(t.hero.preseason.primary, { season }, lang) },
+  racing: { href: a('next-race'), label: t.hero.racing.primary },
   // Until the season has results or highlights there is no recap section: link the calendar instead.
-  offseason: [
-    { href: a('partner-cta'), label: t.hero.offseason.primary },
-    recapContent().hasContent
-      ? { href: a('recap'), label: fill(t.hero.offseason.secondary, { season }, lang) }
-      : { href: a('calendar'), label: fill(t.hero.preseason.secondary, { season }, lang) },
-  ],
+  offseason: recapContent().hasContent
+    ? { href: a('recap'), label: fill(t.hero.offseason.primary, { season }, lang) }
+    : { href: a('calendar'), label: fill(t.hero.calendarFallback, { season }, lang) },
 }[site.phase];
+const buttons = [primary, subscribe];
 ---
 
 <section class="hero" id={anchor(lang, 'top')} data-section="top" aria-labelledby="hero-title">

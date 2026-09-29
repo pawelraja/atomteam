@@ -68,7 +68,6 @@ writeFileSync(
       calendarConfirmed: true,
       partnersConfirmed: true,
       teamPresentation: { date: '2027-01-20', place: 'Wrocław, Hala Stulecia', url: null },
-      partnerDeckUrl: '/partners/deck-2027.pdf',
     },
     null,
     2,

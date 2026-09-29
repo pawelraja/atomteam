@@ -17,7 +17,7 @@ const nav = [
   { href: `#${anchor(lang, 'partners')}`, label: t.nav.partners },
   { href: `#${anchor(lang, 'contact')}`, label: t.nav.contact },
 ];
-const ctaHref = `#${anchor(lang, 'partner-cta')}`;
+const ctaHref = `#${anchor(lang, 'newsletter')}`;
 // Drop the official logo at public/brand/logo.svg and it replaces the text wordmark.
 const hasLogo = brandLogoExists();
 ---
@@ -45,7 +45,7 @@ const hasLogo = brandLogoExists();
     <div class="end">
       <LangSwitch lang={lang} class="desk-only" />
       <Social lang={lang} class="header-social desk-only" />
-      <a class="btn btn--primary cta desk-only" href={ctaHref}>{t.nav.partnerCta}</a>
+      <a class="btn btn--primary cta desk-only" href={ctaHref}>{t.nav.subscribe}</a>
       <LangSwitch lang={lang} variant="single" class="mobile-only" />
       <button class="burger mobile-only" type="button" aria-haspopup="dialog" aria-controls="mobile-menu" aria-expanded="false" data-menu-open>
         <Icon name="menu" />
@@ -69,7 +69,7 @@ const hasLogo = brandLogoExists();
     </ul>
   </nav>
   <div class="menu__foot">
-    <a class="btn btn--primary" href={ctaHref} data-menu-link>{t.nav.partnerCta}</a>
+    <a class="btn btn--primary" href={ctaHref} data-menu-link>{t.nav.subscribe}</a>
     <Social lang={lang} size={26} />
   </div>
 </dialog>

@@ -46,54 +46,135 @@
     "calendar": "Calendar",
     "partners": "Partners",
     "contact": "Contact",
-    "partnerCta": "Partner with us"
+    "subscribe": "Subscribe"
   },
   "hero": {
     "eyebrow": "Season {season} · Season {number}",
     "title": "We are for women's cycling.",
     "sub": "UCI Continental & Junior team from Wrocław. Since {founded}.",
     "alt": "Mat Atom Deweloper Wrocław riders in the peloton",
-    "preseason": { "primary": "Partner for {season}", "secondary": "See the {season} calendar" },
-    "racing": { "primary": "Next race", "secondary": "Partner with us" },
-    "offseason": { "primary": "Partner with us", "secondary": "Our {season} in review" }
+    "preseason": {
+      "primary": "See the {season} calendar"
+    },
+    "racing": {
+      "primary": "Next race"
+    },
+    "offseason": {
+      "primary": "Our {season} in review"
+    },
+    "calendarFallback": "See the {season} calendar"
   },
   "presentation": {
     "label": "Team presentation {season}",
     "line": "{date} · {place}",
-    "days": { "0": "Today", "1": "Tomorrow", "one": "In {n} day", "few": "In {n} days", "many": "In {n} days", "other": "In {n} days" },
+    "days": {
+      "0": "Today",
+      "1": "Tomorrow",
+      "one": "In {n} day",
+      "few": "In {n} days",
+      "many": "In {n} days",
+      "other": "In {n} days"
+    },
     "link": "Details"
   },
   "glance": {
     "title": "The team at a glance.",
-    "since": { "value": "Since {founded}", "label": "Season {number} in {season}" },
+    "since": {
+      "value": "Since {founded}",
+      "label": "Season {number} in {season}"
+    },
     "riders": {
-      "value": { "0": "{n} riders", "1": "1 rider", "one": "{n} rider", "few": "{n} riders", "many": "{n} riders", "other": "{n} riders" },
+      "value": {
+        "0": "{n} riders",
+        "1": "1 rider",
+        "one": "{n} rider",
+        "few": "{n} riders",
+        "many": "{n} riders",
+        "other": "{n} riders"
+      },
       "label": "U19 · U23 · Elite"
     },
-    "ridersUnconfirmed": { "value": "U19 · U23 · Elite", "label": "{season} roster announcement coming soon" },
-    "level": { "value": "UCI Continental", "label": "+ Junior team" },
-    "clubPro": { "value": "Club Pro", "label": "Ministry of Sport and Tourism programme" }
+    "ridersUnconfirmed": {
+      "value": "U19 · U23 · Elite",
+      "label": "{season} roster announcement coming soon"
+    },
+    "level": {
+      "value": "UCI Continental",
+      "label": "+ Junior team"
+    },
+    "clubPro": {
+      "value": "Club Pro",
+      "label": "Ministry of Sport and Tourism programme"
+    }
   },
   "recap": {
     "title": "{season} in review.",
     "lead": "Titles, podiums and a World Championships start.",
     "stats": {
-      "races": { "0": "races", "1": "race", "one": "race", "few": "races", "many": "races", "other": "races" },
-      "raceDays": { "0": "race days", "1": "race day", "one": "race day", "few": "race days", "many": "race days", "other": "race days" },
-      "countries": { "0": "countries", "1": "country", "one": "country", "few": "countries", "many": "countries", "other": "countries" },
-      "uciRaces": { "0": "UCI races", "1": "UCI race", "one": "UCI race", "few": "UCI races", "many": "UCI races", "other": "UCI races" }
+      "races": {
+        "0": "races",
+        "1": "race",
+        "one": "race",
+        "few": "races",
+        "many": "races",
+        "other": "races"
+      },
+      "raceDays": {
+        "0": "race days",
+        "1": "race day",
+        "one": "race day",
+        "few": "race days",
+        "many": "race days",
+        "other": "race days"
+      },
+      "countries": {
+        "0": "countries",
+        "1": "country",
+        "one": "country",
+        "few": "countries",
+        "many": "countries",
+        "other": "countries"
+      },
+      "uciRaces": {
+        "0": "UCI races",
+        "1": "UCI race",
+        "one": "UCI race",
+        "few": "UCI races",
+        "many": "UCI races",
+        "other": "UCI races"
+      }
     },
     "calendarLink": "Full {season} calendar"
   },
   "nextRace": {
     "title": "Next race.",
     "live": "Racing now",
-    "days": { "0": "Starts today", "1": "Starts tomorrow", "one": "{n} day to go", "few": "{n} days to go", "many": "{n} days to go", "other": "{n} days to go" },
+    "days": {
+      "0": "Starts today",
+      "1": "Starts tomorrow",
+      "one": "{n} day to go",
+      "few": "{n} days to go",
+      "many": "{n} days to go",
+      "other": "{n} days to go"
+    },
     "addToCalendar": "Add to calendar",
     "soonTitle": "{season} calendar coming soon.",
     "soonLine": "Dates are confirmed as race organisers publish them.",
     "soonMonth": "The season opens {month}.",
-    "monthsIn": ["in January", "in February", "in March", "in April", "in May", "in June", "in July", "in August", "in September", "in October", "in November", "in December"],
+    "monthsIn": [
+      "in January",
+      "in February",
+      "in March",
+      "in April",
+      "in May",
+      "in June",
+      "in July",
+      "in August",
+      "in September",
+      "in October",
+      "in November",
+      "in December"
+    ],
     "soonCta": "Get the {season} calendar first",
     "completeTitle": "Season {season} complete.",
     "completeLine": "Thank you for riding along with us.",
@@ -114,7 +195,11 @@
     "provisionalNote": "Roster announcement coming soon.",
     "titleFallback": "Our {season} riders.",
     "fallbackNote": "{next} roster announcement coming soon.",
-    "tabs": { "continental": "Continental team", "junior": "Junior team", "staff": "Staff" },
+    "tabs": {
+      "continental": "Continental team",
+      "junior": "Junior team",
+      "staff": "Staff"
+    },
     "continentalIntro": "Meet our CONTINENTAL team — we race UCI events across Europe.",
     "juniorIntro": "White jersey with pink sleeves? That's our Junior team.",
     "staffIntro": "The people who make every start happen.",
@@ -139,7 +224,14 @@
     "showPast": "Show past races",
     "showAllMonths": "Show all months · {n} more",
     "showFewerMonths": "Show fewer months",
-    "count": { "0": "No races match this filter.", "1": "1 entry", "one": "{n} entry", "few": "{n} entries", "many": "{n} entries", "other": "{n} entries" },
+    "count": {
+      "0": "No races match this filter.",
+      "1": "1 entry",
+      "one": "{n} entry",
+      "few": "{n} entries",
+      "many": "{n} entries",
+      "other": "{n} entries"
+    },
     "status": {
       "past": "Past",
       "live": "Racing now",
@@ -148,7 +240,13 @@
       "tbc": "Dates TBC",
       "cancelled": "Cancelled"
     },
-    "discipline": { "ROAD": "Road", "TRACK": "Track", "CX": "CX", "TTT": "TTT", "MTB": "MTB" },
+    "discipline": {
+      "ROAD": "Road",
+      "TRACK": "Track",
+      "CX": "CX",
+      "TTT": "TTT",
+      "MTB": "MTB"
+    },
     "training": "Training",
     "classLabel": "Class",
     "result": "Result",
@@ -156,10 +254,26 @@
     "subscribe": "Subscribe to the {season} calendar (.ics)",
     "subscribeNote": "The {season} calendar feed lists confirmed races only.",
     "countryNames": {
-      "POL": "Poland", "CRO": "Croatia", "BEL": "Belgium", "NED": "Netherlands", "CZE": "Czechia",
-      "AUT": "Austria", "GER": "Germany", "SVK": "Slovakia", "ITA": "Italy", "SLO": "Slovenia",
-      "TUR": "Türkiye", "FRA": "France", "ESP": "Spain", "SUI": "Switzerland", "CAN": "Canada",
-      "HUN": "Hungary", "LTU": "Lithuania", "DEN": "Denmark", "GBR": "Great Britain", "USA": "United States"
+      "POL": "Poland",
+      "CRO": "Croatia",
+      "BEL": "Belgium",
+      "NED": "Netherlands",
+      "CZE": "Czechia",
+      "AUT": "Austria",
+      "GER": "Germany",
+      "SVK": "Slovakia",
+      "ITA": "Italy",
+      "SLO": "Slovenia",
+      "TUR": "Türkiye",
+      "FRA": "France",
+      "ESP": "Spain",
+      "SUI": "Switzerland",
+      "CAN": "Canada",
+      "HUN": "Hungary",
+      "LTU": "Lithuania",
+      "DEN": "Denmark",
+      "GBR": "Great Britain",
+      "USA": "United States"
     }
   },
   "partners": {
@@ -175,25 +289,6 @@
     "titleThankYou": "Thank you for making every race possible.",
     "visit": "{name} — partner website",
     "logoPlaceholder": "Logo: {file}"
-  },
-  "partnerCta": {
-    "title": "Ride with us in {season}.",
-    "lead": "Put your brand on a UCI Continental team racing across Europe, and behind the next generation of Polish women's cycling.",
-    "values": [
-      { "title": "Visibility at UCI races", "line": "From the Belgian classics to Tour de Pologne Women." },
-      { "title": "Youth development", "line": "A Club Pro club with U19, U23 and Elite riders." },
-      { "title": "A women's sport community", "line": "Fans, riders and partners behind women's cycling." }
-    ],
-    "packagesTitle": "Partnership packages",
-    "packages": [
-      { "tier": "Title partner", "benefits": ["Team name and jersey front", "Team vehicles", "Season-long social content series", "Events and hospitality"] },
-      { "tier": "Main partner", "benefits": ["Kit placement", "Team vehicle branding", "Social content", "Race-day hospitality"] },
-      { "tier": "Technical partner", "benefits": ["Official supplier credit", "Product content with riders", "Website and social mentions"] }
-    ],
-    "packagesNote": "[Package details to be supplied by the team]",
-    "deck": "Download the {season} partner deck (PDF)",
-    "mail": "Email us about {season}",
-    "mailSubject": "Partnership {season}"
   },
   "movement": {
     "title": "More than a team.",
@@ -224,7 +319,14 @@
   "footer": {
     "copyright": "© {year} {team}",
     "partnersLabel": "{season} partners:",
-    "partnersMore": { "0": "", "1": "and 1 technical partner", "one": "and {n} technical partner", "few": "and {n} technical partners", "many": "and {n} technical partners", "other": "and {n} technical partners" },
+    "partnersMore": {
+      "0": "",
+      "1": "and 1 technical partner",
+      "one": "and {n} technical partner",
+      "few": "and {n} technical partners",
+      "many": "and {n} technical partners",
+      "other": "and {n} technical partners"
+    },
     "privacy": "Privacy policy",
     "privacyUrl": "/en/privacy/"
   }

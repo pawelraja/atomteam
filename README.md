@@ -45,8 +45,7 @@ All content lives in data files. Updating the roster, race dates, partners or ph
   "rosterConfirmed": false,
   "calendarConfirmed": false,
   "partnersConfirmed": false,
-  "teamPresentation": null,
-  "partnerDeckUrl": null
+  "teamPresentation": null
 }
 ```
 
@@ -54,12 +53,11 @@ All content lives in data files. Updating the roster, race dates, partners or ph
 |---|---|
 | `currentSeason` | The season the site is about. "Season 12" is worked out from this and `foundedYear`, so never type it anywhere. |
 | `foundedYear` | 2016. Leave it alone. |
-| `phase` | **`"preseason"`** (autumn/winter): the hero asks partners to sign for 2027, and the 2026 recap and partner blocks come first. **`"racing"`**: the next race and the calendar lead. **`"offseason"`** (after the last race): the season recap leads. |
+| `phase` | **`"preseason"`** (autumn/winter): the hero points to the 2027 calendar, and the 2026 recap and partners come first. **`"racing"`**: the next race and the calendar lead. **`"offseason"`** (after the last race): the season recap leads. |
 | `rosterConfirmed` | `false`: the team section says "Roster announcement coming soon" and the strip at the top shows "U19 · U23 · Elite" instead of a rider count. `true`: the section reads "Team 2027." and the rider count appears. |
 | `calendarConfirmed` | `false`: a note above the 2027 calendar says it's provisional. `true`: the note disappears. Set this once most dates are fixed. |
 | `partnersConfirmed` | `false`: the partners section thanks the **2026** partners ("Thank you to our 2026 partners."). No one is presented as a 2027 partner. `true`: it shows partners with `2027` in their `seasons`, under "Our 2027 partners." |
 | `teamPresentation` | `null` means no banner. To show a countdown under the hero, set `{ "date": "2027-01-20", "place": "Wrocław, Hala Stulecia", "url": null }`. The banner disappears by itself the day after. `url` can link to tickets or a stream. |
-| `partnerDeckUrl` | `null` means no download button. Put the PDF in `public/partners/` and set `"/partners/deck-2027.pdf"`; the "Download the 2027 partner deck" button appears. |
 
 **Moving to a new season** (for example 2028): run `npm run draft-season -- 2027 2028` to create a draft calendar, add `2028` to returning riders, staff and partners, set `currentSeason` to 2028, `phase` to `"preseason"`, and the three `*Confirmed` flags back to `false`.
 
@@ -148,7 +146,6 @@ All wording is in `src/content/copy.pl.json` (Polish, the **source**) and `src/c
 - `{season}`, `{n}` and similar are filled in automatically; keep them.
 - Counting phrases have forms for Polish grammar (`"one"`, `"few"`, `"many"`): `1 zawodniczka`, `3 zawodniczki`, `20 zawodniczek`.
 - Polish typography (non-breaking spaces after single-letter words: "w 2027", "i U23") is applied automatically.
-- The partnership package benefits are in `partnerCta.packages`. Replace the placeholder note when the offer is final. **No prices on the page.**
 
 ## Newsletter
 

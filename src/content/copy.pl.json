@@ -46,54 +46,135 @@
     "calendar": "Kalendarz",
     "partners": "Partnerzy",
     "contact": "Kontakt",
-    "partnerCta": "Zostań partnerem"
+    "subscribe": "Subskrybuj"
   },
   "hero": {
     "eyebrow": "Sezon {season} · {number}. sezon",
     "title": "Jesteśmy dla kobiecego kolarstwa.",
     "sub": "Drużyna UCI Continental i juniorska z Wrocławia. Od {founded} roku.",
     "alt": "Zawodniczki Mat Atom Deweloper Wrocław w peletonie",
-    "preseason": { "primary": "Zostań partnerem {season}", "secondary": "Zobacz kalendarz {season}" },
-    "racing": { "primary": "Najbliższy wyścig", "secondary": "Zostań partnerem" },
-    "offseason": { "primary": "Zostań partnerem", "secondary": "Podsumowanie sezonu {season}" }
+    "preseason": {
+      "primary": "Zobacz kalendarz {season}"
+    },
+    "racing": {
+      "primary": "Najbliższy wyścig"
+    },
+    "offseason": {
+      "primary": "Podsumowanie sezonu {season}"
+    },
+    "calendarFallback": "Zobacz kalendarz {season}"
   },
   "presentation": {
     "label": "Prezentacja drużyny {season}",
     "line": "{date} · {place}",
-    "days": { "0": "Dziś", "1": "Jutro", "one": "Za {n} dzień", "few": "Za {n} dni", "many": "Za {n} dni", "other": "Za {n} dnia" },
+    "days": {
+      "0": "Dziś",
+      "1": "Jutro",
+      "one": "Za {n} dzień",
+      "few": "Za {n} dni",
+      "many": "Za {n} dni",
+      "other": "Za {n} dnia"
+    },
     "link": "Szczegóły"
   },
   "glance": {
     "title": "Drużyna w skrócie.",
-    "since": { "value": "Od {founded}", "label": "{number}. sezon w {season}" },
+    "since": {
+      "value": "Od {founded}",
+      "label": "{number}. sezon w {season}"
+    },
     "riders": {
-      "value": { "0": "{n} zawodniczek", "1": "1 zawodniczka", "one": "{n} zawodniczka", "few": "{n} zawodniczki", "many": "{n} zawodniczek", "other": "{n} zawodniczki" },
+      "value": {
+        "0": "{n} zawodniczek",
+        "1": "1 zawodniczka",
+        "one": "{n} zawodniczka",
+        "few": "{n} zawodniczki",
+        "many": "{n} zawodniczek",
+        "other": "{n} zawodniczki"
+      },
       "label": "U19 · U23 · Elita"
     },
-    "ridersUnconfirmed": { "value": "U19 · U23 · Elita", "label": "Skład na {season} ogłosimy wkrótce" },
-    "level": { "value": "UCI Continental", "label": "+ drużyna juniorska" },
-    "clubPro": { "value": "Klub Pro", "label": "Program Ministerstwa Sportu i Turystyki" }
+    "ridersUnconfirmed": {
+      "value": "U19 · U23 · Elita",
+      "label": "Skład na {season} ogłosimy wkrótce"
+    },
+    "level": {
+      "value": "UCI Continental",
+      "label": "+ drużyna juniorska"
+    },
+    "clubPro": {
+      "value": "Klub Pro",
+      "label": "Program Ministerstwa Sportu i Turystyki"
+    }
   },
   "recap": {
     "title": "Sezon {season}.",
     "lead": "Tytuły, podia i start w mistrzostwach świata.",
     "stats": {
-      "races": { "0": "wyścigów", "1": "wyścig", "one": "wyścig", "few": "wyścigi", "many": "wyścigów", "other": "wyścigu" },
-      "raceDays": { "0": "dni ścigania", "1": "dzień ścigania", "one": "dzień ścigania", "few": "dni ścigania", "many": "dni ścigania", "other": "dnia ścigania" },
-      "countries": { "0": "krajów", "1": "kraj", "one": "kraj", "few": "kraje", "many": "krajów", "other": "kraju" },
-      "uciRaces": { "0": "wyścigów UCI", "1": "wyścig UCI", "one": "wyścig UCI", "few": "wyścigi UCI", "many": "wyścigów UCI", "other": "wyścigu UCI" }
+      "races": {
+        "0": "wyścigów",
+        "1": "wyścig",
+        "one": "wyścig",
+        "few": "wyścigi",
+        "many": "wyścigów",
+        "other": "wyścigu"
+      },
+      "raceDays": {
+        "0": "dni ścigania",
+        "1": "dzień ścigania",
+        "one": "dzień ścigania",
+        "few": "dni ścigania",
+        "many": "dni ścigania",
+        "other": "dnia ścigania"
+      },
+      "countries": {
+        "0": "krajów",
+        "1": "kraj",
+        "one": "kraj",
+        "few": "kraje",
+        "many": "krajów",
+        "other": "kraju"
+      },
+      "uciRaces": {
+        "0": "wyścigów UCI",
+        "1": "wyścig UCI",
+        "one": "wyścig UCI",
+        "few": "wyścigi UCI",
+        "many": "wyścigów UCI",
+        "other": "wyścigu UCI"
+      }
     },
     "calendarLink": "Pełny kalendarz {season}"
   },
   "nextRace": {
     "title": "Najbliższy wyścig.",
     "live": "Trwa wyścig",
-    "days": { "0": "Dziś start", "1": "Jutro start", "one": "{n} dzień do startu", "few": "{n} dni do startu", "many": "{n} dni do startu", "other": "{n} dnia do startu" },
+    "days": {
+      "0": "Dziś start",
+      "1": "Jutro start",
+      "one": "{n} dzień do startu",
+      "few": "{n} dni do startu",
+      "many": "{n} dni do startu",
+      "other": "{n} dnia do startu"
+    },
     "addToCalendar": "Dodaj do kalendarza",
     "soonTitle": "Kalendarz {season} już wkrótce.",
     "soonLine": "Daty potwierdzamy, gdy organizatorzy je publikują.",
     "soonMonth": "Sezon rusza {month}.",
-    "monthsIn": ["w styczniu", "w lutym", "w marcu", "w kwietniu", "w maju", "w czerwcu", "w lipcu", "w sierpniu", "we wrześniu", "w październiku", "w listopadzie", "w grudniu"],
+    "monthsIn": [
+      "w styczniu",
+      "w lutym",
+      "w marcu",
+      "w kwietniu",
+      "w maju",
+      "w czerwcu",
+      "w lipcu",
+      "w sierpniu",
+      "we wrześniu",
+      "w październiku",
+      "w listopadzie",
+      "w grudniu"
+    ],
     "soonCta": "Dostań kalendarz {season} przed innymi",
     "completeTitle": "Sezon {season} zakończony.",
     "completeLine": "Dziękujemy, że jechaliście z nami.",
@@ -114,7 +195,11 @@
     "provisionalNote": "Pełny skład ogłosimy wkrótce.",
     "titleFallback": "Nasze zawodniczki {season}.",
     "fallbackNote": "Skład na sezon {next} ogłosimy wkrótce.",
-    "tabs": { "continental": "Drużyna kontynentalna", "junior": "Juniorki", "staff": "Sztab" },
+    "tabs": {
+      "continental": "Drużyna kontynentalna",
+      "junior": "Juniorki",
+      "staff": "Sztab"
+    },
     "continentalIntro": "Poznaj naszą drużynę KONTYNENTALNĄ — ścigamy się na wyścigach UCI w całej Europie.",
     "juniorIntro": "Biała koszulka z różowymi rękawami? To nasze juniorki.",
     "staffIntro": "Ludzie, bez których nie byłoby żadnego startu.",
@@ -139,7 +224,14 @@
     "showPast": "Pokaż zakończone",
     "showAllMonths": "Pokaż wszystkie miesiące · jeszcze {n}",
     "showFewerMonths": "Pokaż mniej",
-    "count": { "0": "Brak wyścigów dla tego filtra.", "1": "1 pozycja", "one": "{n} pozycja", "few": "{n} pozycje", "many": "{n} pozycji", "other": "{n} pozycji" },
+    "count": {
+      "0": "Brak wyścigów dla tego filtra.",
+      "1": "1 pozycja",
+      "one": "{n} pozycja",
+      "few": "{n} pozycje",
+      "many": "{n} pozycji",
+      "other": "{n} pozycji"
+    },
     "status": {
       "past": "Zakończony",
       "live": "Trwa",
@@ -148,7 +240,13 @@
       "tbc": "Termin wkrótce",
       "cancelled": "Odwołany"
     },
-    "discipline": { "ROAD": "Szosa", "TRACK": "Tor", "CX": "Przełaj", "TTT": "TTT", "MTB": "MTB" },
+    "discipline": {
+      "ROAD": "Szosa",
+      "TRACK": "Tor",
+      "CX": "Przełaj",
+      "TTT": "TTT",
+      "MTB": "MTB"
+    },
     "training": "Trening",
     "classLabel": "Kategoria",
     "result": "Wynik",
@@ -156,10 +254,26 @@
     "subscribe": "Subskrybuj kalendarz {season} (.ics)",
     "subscribeNote": "Kalendarz {season} zawiera tylko potwierdzone wyścigi.",
     "countryNames": {
-      "POL": "Polska", "CRO": "Chorwacja", "BEL": "Belgia", "NED": "Holandia", "CZE": "Czechy",
-      "AUT": "Austria", "GER": "Niemcy", "SVK": "Słowacja", "ITA": "Włochy", "SLO": "Słowenia",
-      "TUR": "Turcja", "FRA": "Francja", "ESP": "Hiszpania", "SUI": "Szwajcaria", "CAN": "Kanada",
-      "HUN": "Węgry", "LTU": "Litwa", "DEN": "Dania", "GBR": "Wielka Brytania", "USA": "Stany Zjednoczone"
+      "POL": "Polska",
+      "CRO": "Chorwacja",
+      "BEL": "Belgia",
+      "NED": "Holandia",
+      "CZE": "Czechy",
+      "AUT": "Austria",
+      "GER": "Niemcy",
+      "SVK": "Słowacja",
+      "ITA": "Włochy",
+      "SLO": "Słowenia",
+      "TUR": "Turcja",
+      "FRA": "Francja",
+      "ESP": "Hiszpania",
+      "SUI": "Szwajcaria",
+      "CAN": "Kanada",
+      "HUN": "Węgry",
+      "LTU": "Litwa",
+      "DEN": "Dania",
+      "GBR": "Wielka Brytania",
+      "USA": "Stany Zjednoczone"
     }
   },
   "partners": {
@@ -175,25 +289,6 @@
     "titleThankYou": "Dziękujemy, że każdy nasz wyścig jest możliwy.",
     "visit": "{name} — strona partnera",
     "logoPlaceholder": "Logo: {file}"
-  },
-  "partnerCta": {
-    "title": "Jedź z nami w sezonie {season}.",
-    "lead": "Umieść swoją markę na drużynie UCI Continental, która ściga się w całej Europie, i wspieraj kolejne pokolenie polskiego kobiecego kolarstwa.",
-    "values": [
-      { "title": "Widoczność na wyścigach UCI", "line": "Od belgijskich klasyków po Tour de Pologne Women." },
-      { "title": "Rozwój młodzieży", "line": "Klub Pro z zawodniczkami U19, U23 i Elite." },
-      { "title": "Społeczność kobiecego sportu", "line": "Kibice, zawodniczki i partnerzy, którzy stoją za kobiecym kolarstwem." }
-    ],
-    "packagesTitle": "Pakiety partnerskie",
-    "packages": [
-      { "tier": "Partner tytularny", "benefits": ["Nazwa drużyny i przód koszulki", "Samochody zespołu", "Cykl treści w social media przez cały sezon", "Wydarzenia i hospitality"] },
-      { "tier": "Partner główny", "benefits": ["Logo na strojach", "Branding samochodu zespołu", "Treści w social media", "Hospitality w dniu wyścigu"] },
-      { "tier": "Partner techniczny", "benefits": ["Tytuł oficjalnego dostawcy", "Treści produktowe z zawodniczkami", "Wzmianki na stronie i w social media"] }
-    ],
-    "packagesNote": "[Szczegóły pakietu uzupełni zespół]",
-    "deck": "Pobierz ofertę partnerską {season} (PDF)",
-    "mail": "Napisz do nas w sprawie {season}",
-    "mailSubject": "Partnerstwo {season}"
   },
   "movement": {
     "title": "Więcej niż drużyna.",
@@ -224,7 +319,14 @@
   "footer": {
     "copyright": "© {year} {team}",
     "partnersLabel": "Partnerzy {season}:",
-    "partnersMore": { "0": "", "1": "oraz 1 partner techniczny", "one": "oraz {n} partner techniczny", "few": "oraz {n} partnerzy techniczni", "many": "oraz {n} partnerów technicznych", "other": "oraz {n} partnera technicznego" },
+    "partnersMore": {
+      "0": "",
+      "1": "oraz 1 partner techniczny",
+      "one": "oraz {n} partner techniczny",
+      "few": "oraz {n} partnerzy techniczni",
+      "many": "oraz {n} partnerów technicznych",
+      "other": "oraz {n} partnera technicznego"
+    },
     "privacy": "Polityka prywatności",
     "privacyUrl": "/polityka-prywatnosci/"
   }
