@@ -3,6 +3,7 @@ import { anchor } from '../lib/anchors';
 import { getData } from '../lib/data';
 import { HERO_DESKTOP_MEDIA, HERO_MOBILE_MEDIA, heroSources } from '../lib/hero';
 import { copy, fill, type Lang } from '../lib/i18n';
+import { recapContent } from '../lib/recap';
 import { seasonNumber } from '../lib/season';
 
 interface Props {
@@ -24,9 +25,12 @@ const buttons = {
     { href: a('next-race'), label: t.hero.racing.primary },
     { href: a('partner-cta'), label: t.hero.racing.secondary },
   ],
+  // Until the season has results or highlights there is no recap section: link the calendar instead.
   offseason: [
     { href: a('partner-cta'), label: t.hero.offseason.primary },
-    { href: a('recap'), label: fill(t.hero.offseason.secondary, { season }, lang) },
+    recapContent().hasContent
+      ? { href: a('recap'), label: fill(t.hero.offseason.secondary, { season }, lang) }
+      : { href: a('calendar'), label: fill(t.hero.preseason.secondary, { season }, lang) },
   ],
 }[site.phase];
 ---

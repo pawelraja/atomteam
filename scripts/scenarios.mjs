@@ -38,6 +38,11 @@ for (const s of scenarios) {
   console.log(`\n▶ ${s.name} (today ${s.today})`);
   execSync(`npx astro build --outDir ${outDir}`, { env, stdio: ['ignore', 'ignore', 'inherit'] });
 
+  try {
+    execSync(`node scripts/check-site.mjs --dir ${outDir}`, { stdio: 'inherit' });
+  } catch {
+    failures++;
+  }
   if (!s.data) {
     for (const [lang, file] of [['pl', 'index.html'], ['en', 'en/index.html']]) {
       const html = readFileSync(`${outDir}/${file}`, 'utf8');

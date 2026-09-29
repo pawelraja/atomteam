@@ -5,9 +5,11 @@
 //  - language-switch links point at an anchor that exists on the other page
 import { readFileSync } from 'node:fs';
 
+const dirArg = process.argv.indexOf('--dir');
+const dir = dirArg > -1 ? process.argv[dirArg + 1] : 'dist';
 const pages = {
-  pl: { file: 'dist/index.html', url: 'https://www.atomteam.pl/' },
-  en: { file: 'dist/en/index.html', url: 'https://www.atomteam.pl/en/' },
+  pl: { file: `${dir}/index.html`, url: 'https://www.atomteam.pl/' },
+  en: { file: `${dir}/en/index.html`, url: 'https://www.atomteam.pl/en/' },
 };
 const html = Object.fromEntries(Object.entries(pages).map(([l, p]) => [l, readFileSync(p.file, 'utf8')]));
 const ids = Object.fromEntries(Object.entries(html).map(([l, h]) => [l, new Set([...h.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]))]));

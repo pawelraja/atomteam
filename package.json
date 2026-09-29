@@ -9,9 +9,16 @@
     "preview": "astro preview",
     "check": "astro check",
     "test": "vitest run",
-    "screenshots": "node scripts/screenshots.mjs"
+    "check:site": "node scripts/check-site.mjs",
+    "check:contrast": "node scripts/contrast.mjs",
+    "e2e": "node scripts/e2e.mjs",
+    "verify": "npm run test && npm run check && npm run build && npm run check:site && npm run check:contrast && npm run e2e",
+    "screenshots": "node scripts/screenshots.mjs",
+    "scenarios": "node scripts/make-fixtures.mjs && node scripts/scenarios.mjs",
+    "draft-season": "node scripts/draft-season.mjs"
   },
   "dependencies": {
+    "@fontsource/inter": "^5.3.0",
     "astro": "^7.3.5",
     "zod": "^4.6.5"
   },

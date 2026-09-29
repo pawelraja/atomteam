@@ -2,9 +2,8 @@
 // Season recap: facts computed from the calendar (only races actually ridden), plus highlight
 // cards. Highlights with "verify": true are filtered out (and logged) by the data loader.
 import { anchor, seasonAnchor } from '../lib/anchors';
-import { getData } from '../lib/data';
 import { copy, fill, pick, plural, type Lang } from '../lib/i18n';
-import { eventState, recapSeason, seasonStats } from '../lib/season';
+import { recapContent } from '../lib/recap';
 import Icon from './Icon.astro';
 import Photo from './Photo.astro';
 
@@ -12,12 +11,8 @@ interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
-const { site, calendars, highlights, today } = getData();
 const t = copy(lang);
-const season = recapSeason(site);
-const events = calendars.get(season) ?? [];
-const stats = seasonStats(events.filter((e) => eventState(e, today) === 'past'));
-const cards = (highlights.get(season) ?? []).slice(0, 6);
+const { season, stats, cards, hasCalendar } = recapContent();
 const nf = new Intl.NumberFormat(t.meta.locale);
 const statList = [
   { n: stats.races, forms: t.recap.stats.races },
@@ -37,7 +32,7 @@ const hasContent = statList.length > 0 || cards.length > 0;
             <h2 id="recap-title">{fill(t.recap.title, { season }, lang)}</h2>
             <p class="lead recap__lead">{t.recap.lead}</p>
           </div>
-          {calendars.has(season) && (
+          {hasCalendar && (
             <a class="btn btn--secondary" href={`#${seasonAnchor(lang, season)}`} data-season-link={season}>
               {fill(t.recap.calendarLink, { season }, lang)} <Icon name="arrow" size={18} />
             </a>

@@ -1,4 +1,11 @@
 ---
+// Inter 400/700 (the Google Fonts typeface), self-hosted with font-display: swap: no third-party
+// connection before first paint. latin-ext carries the Polish characters.
+import '@fontsource/inter/latin-400.css';
+import '@fontsource/inter/latin-ext-400.css';
+import '@fontsource/inter/latin-700.css';
+import '@fontsource/inter/latin-ext-700.css';
+import interLatin from '@fontsource/inter/files/inter-latin-400-normal.woff2?url';
 import '../styles/global.css';
 import { getData } from '../lib/data';
 import { HERO_DESKTOP_MEDIA, HERO_MOBILE_MEDIA, heroSources } from '../lib/hero';
@@ -25,7 +32,6 @@ const canonical = abs(paths[lang]);
 const ogImage = abs(`/og-${lang}.png`);
 const { desktop, mobile } = withJsonLd ? await heroSources() : { desktop: null, mobile: null };
 const homeUrl = abs(homePath(lang));
-const FONTS = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap';
 
 const team = {
   '@type': 'SportsTeam',
@@ -91,11 +97,7 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': [team, ...events] }
     {mobile && <link rel="preload" as="image" imagesrcset={mobile.srcset} imagesizes="100vw" media={HERO_MOBILE_MEDIA} type="image/webp" fetchpriority="high" />}
     {desktop && <link rel="preload" as="image" imagesrcset={desktop.srcset} imagesizes="100vw" media={HERO_DESKTOP_MEDIA} type="image/webp" fetchpriority="high" />}
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <!-- Inter loads without blocking the first paint; text shows in the fallback font until it arrives. -->
-    <link rel="stylesheet" href={FONTS} media="print" onload="this.media='all'" />
-    <noscript><link rel="stylesheet" href={FONTS} /></noscript>
+    <link rel="preload" as="font" type="font/woff2" href={interLatin} crossorigin />
 
     {withJsonLd && <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
   </head>
