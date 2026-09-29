@@ -11,6 +11,7 @@ import { getData } from '../lib/data';
 import { HERO_DESKTOP_MEDIA, HERO_MOBILE_MEDIA, heroSources } from '../lib/hero';
 import { copy, DEFAULT_LANG, fill, homePath, LANGS, type Lang } from '../lib/i18n';
 import { eventState, isConfirmedRace, raceLocation, raceName } from '../lib/season';
+import { inject } from '@vercel/analytics';
 
 interface Props {
   lang: Lang;
@@ -65,6 +66,8 @@ const events = (calendars.get(season) ?? [])
     competitor: { '@id': `${abs('/')}#team` },
   }));
 const jsonLd = { '@context': 'https://schema.org', '@graph': [team, ...events] };
+
+inject();
 ---
 
 <!doctype html>
