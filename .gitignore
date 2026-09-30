@@ -38,3 +38,14 @@ screenshots/
 test-results/
 playwright-report/
 dist-scenarios/
+
+# Photos and logos come from Google Drive (npm run sync-photos); only the folders are kept.
+src/assets/photos/*
+!src/assets/photos/.gitkeep
+src/assets/riders/*
+!src/assets/riders/.gitkeep
+public/partners/*
+!public/partners/.gitkeep
+public/brand/*
+!public/brand/.gitkeep
+.vercel

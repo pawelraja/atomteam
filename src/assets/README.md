@@ -2,7 +2,7 @@
 
 Every picture on the site has a fixed slot. Until a file is supplied, the page shows a grey placeholder with the file name and aspect ratio, so nothing looks broken.
 
-**How to supply a photo:** save it under the exact file name below. JPG, PNG or WebP all work (the extension is ignored, the name is not). The site makes the small, fast AVIF/WebP versions itself. Use the largest original you have; never upscale.
+**How to supply a photo:** upload it to the matching folder in the shared Google Drive folder **"MADW Website"** (`hero/`, `photo-story/`, `highlights/`, `riders/`, `partners/`, `brand/`) under the file name below. JPG, PNG or WebP all work; capitals, spaces and Polish letters in the name don't matter. The next build copies it in and makes the small, fast AVIF/WebP versions itself. Use the largest original you have; never upscale.
 
 **Do not** download images from the old Wix site — use originals from the photographers, with permission and a credit.
 

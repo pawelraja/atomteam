@@ -1,0 +1,20 @@
+# Rebuilds the site on Vercel every night, so new Drive photos go live and the date-based
+# parts (next race, past/upcoming, search-engine event data) are refreshed.
+# Needs the repository secret VERCEL_DEPLOY_HOOK (Vercel → Project → Settings → Git → Deploy Hooks).
+name: Nightly rebuild
+
+on:
+  schedule:
+    - cron: '0 2 * * *' # 02:00 UTC = 03:00/04:00 in Wrocław
+  workflow_dispatch: {}
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Vercel deploy hook
+        env:
+          HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$HOOK" ]; then echo "VERCEL_DEPLOY_HOOK secret is not set"; exit 1; fi
+          curl -fsS -X POST "$HOOK"

@@ -5,6 +5,7 @@ The team website for the 2027 season. It's bilingual: **Polish at `/`** and **En
 All content lives in data files. Updating the roster, race dates, partners or photos never needs a code change: edit a file, rebuild, publish.
 
 - [Everyday editing](#everyday-editing): what to change, where
+- [Photos from Google Drive](#photos-from-google-drive) · [Publishing (Vercel)](#publishing-vercel)
 - [The season switches in `site.json`](#the-season-switches-in-sitejson)
 - [Race calendar](#race-calendar) · [Partners](#partners) · [Riders and staff](#riders-and-staff) · [Season highlights](#season-highlights) · [Photos](#photos) · [Texts](#texts-both-languages)
 - [`CONTENT-CHECKLIST.md`](CONTENT-CHECKLIST.md): everything the team still has to supply or confirm
@@ -24,7 +25,7 @@ All content lives in data files. Updating the roster, race dates, partners or ph
 | Announce 2027 partners | `src/data/partners.json`, then `partnersConfirmed` in `site.json` |
 | Add or approve a highlight | `src/data/highlights-2026.json` |
 | Change photo-story captions | `src/data/gallery.json` |
-| Add a photo or logo | Save it under the exact file name listed in `src/assets/README.md` |
+| Add a photo or logo | Upload it to the shared Drive folder "MADW Website", named as listed in `src/assets/README.md` |
 | Change any wording on the page | `src/content/copy.pl.json` **and** `src/content/copy.en.json` |
 
 **Rules that apply to every file**
@@ -136,7 +137,7 @@ Above the cards, the numbers (races, race days, countries, UCI races) are **coun
 
 ## Photos
 
-See **`src/assets/README.md`** for every image slot, with its file name, crop and minimum size. Save a photo under that name and rebuild. The site creates optimised versions automatically. Every photo needs a description (`alt`) in both languages in the data file, for people using screen readers.
+Upload photos to the shared Google Drive folder (see [Photos from Google Drive](#photos-from-google-drive)). **`src/assets/README.md`** lists every image slot, with its file name, crop and minimum size. The site creates optimised versions automatically. Every photo needs a description (`alt`) in both languages in the data file, for people using screen readers.
 
 ## Texts (both languages)
 
@@ -146,6 +147,45 @@ All wording is in `src/content/copy.pl.json` (Polish, the **source**) and `src/c
 - `{season}`, `{n}` and similar are filled in automatically; keep them.
 - Counting phrases have forms for Polish grammar (`"one"`, `"few"`, `"many"`): `1 zawodniczka`, `3 zawodniczki`, `20 zawodniczek`.
 - Polish typography (non-breaking spaces after single-letter words: "w 2027", "i U23") is applied automatically.
+
+## Photos from Google Drive
+
+Photos and logos are managed in the shared Google Drive folder **"MADW Website"**. Every build (on Vercel, and nightly) copies them into the site first, so uploading to Drive is all the team does. They go live with the next build: the nightly one, or straight away with a manual redeploy.
+
+```
+MADW Website/
+  hero/          hero.jpg (16:9), hero-mobile.jpg (4:5)
+  photo-story/   photo-01.jpg … photo-07.jpg
+  highlights/    highlight-track.jpg, highlight-mtb.jpg, highlight-worlds.jpg
+  riders/        one portrait per rider and staff member
+  partners/      partner logos (.svg) and the partner deck (.pdf)
+  brand/         logo.svg
+```
+
+- **File names** follow `src/assets/README.md`. Capitals, spaces and Polish letters don't matter: `Eliza Rabażyńska.JPG` is found as `eliza-rabazynska.jpg`.
+- A file whose name matches no slot is reported in the build log (Vercel → Deployments → the build → "sync-photos") so typos are easy to spot.
+- Photos are **not** stored in git. Drive is the only place to add, replace or remove them.
+
+### One-off setup (about 20 minutes)
+
+1. **Google Cloud:** at console.cloud.google.com, create a project (e.g. "madw-website"), enable the **Google Drive API**, then *IAM & Admin → Service accounts → Create*. Open it → *Keys → Add key → JSON* and download the key file. Keep it private.
+2. **Drive:** share the "MADW Website" folder with the service account's email (`…@….iam.gserviceaccount.com`) as **Viewer**. For a Shared Drive, add it as a member. Copy the folder id: the part after `/folders/` in its URL.
+3. **Vercel:** Project → *Settings → Environment Variables*, for Production and Preview:
+   - `GOOGLE_SERVICE_ACCOUNT_JSON` = the whole content of the key file
+   - `DRIVE_FOLDER_ID` = the folder id
+
+   Redeploy once to check the log says "… file(s) copied".
+4. **Local preview (optional):** copy `.env.example` to `.env`, fill in the same two values, run `npm run sync-photos`.
+
+## Publishing (Vercel)
+
+The site is hosted on Vercel, connected to the GitHub repository `pawelraja/atomteam`.
+
+1. In Vercel: *Add New → Project → Import* `pawelraja/atomteam`. Vercel reads `vercel.json` (Astro, build `npm run sync-photos && npm run build`, output `dist`), so nothing else needs configuring. Add the two environment variables above.
+2. *Settings → Domains*: add `atomteam.pl` and `www.atomteam.pl` and follow the DNS instructions (switch DNS away from Wix only when you're ready to go live).
+3. **Every merge to `main` publishes the site.** Every pull request gets its own preview link, handy for checking a data change before it goes live.
+4. **Nightly rebuild:** *Settings → Git → Deploy Hooks* → create a hook named "nightly" on branch `main`. Copy its URL into GitHub → repository *Settings → Secrets and variables → Actions* as `VERCEL_DEPLOY_HOOK`. The workflow `.github/workflows/nightly-rebuild.yml` then rebuilds every night. Run it by hand from the *Actions* tab any time.
+5. **Checks on every pull request:** `.github/workflows/checks.yml` runs `npm run verify`, so a broken data edit is caught before it can be merged.
 
 ## Newsletter
 
