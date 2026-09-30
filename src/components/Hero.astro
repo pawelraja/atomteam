@@ -1,10 +1,11 @@
 ---
+// Home hero. Evergreen by design: nothing here changes with the season except the year in the
+// partner button. Seasonal news lives in the status bar.
 import { anchor } from '../lib/anchors';
 import { getData } from '../lib/data';
 import { HERO_DESKTOP_MEDIA, HERO_MOBILE_MEDIA, heroSources } from '../lib/hero';
 import { copy, fill, type Lang } from '../lib/i18n';
-import { recapContent } from '../lib/recap';
-import { seasonNumber } from '../lib/season';
+import { route } from '../lib/routes';
 
 interface Props {
   lang: Lang;
@@ -12,21 +13,12 @@ interface Props {
 const { lang } = Astro.props;
 const { site } = getData();
 const t = copy(lang);
-const season = site.currentSeason;
 const { desktop, mobile } = await heroSources();
-const a = (k: Parameters<typeof anchor>[1]) => `#${anchor(lang, k)}`;
-
-// Primary button depends on the phase; the secondary always invites visitors to subscribe.
-const subscribe = { href: a('newsletter'), label: t.nav.subscribe };
-const primary = {
-  preseason: { href: a('calendar'), label: fill(t.hero.preseason.primary, { season }, lang) },
-  racing: { href: a('next-race'), label: t.hero.racing.primary },
-  // Until the season has results or highlights there is no recap section: link the calendar instead.
-  offseason: recapContent().hasContent
-    ? { href: a('recap'), label: fill(t.hero.offseason.primary, { season }, lang) }
-    : { href: a('calendar'), label: fill(t.hero.calendarFallback, { season }, lang) },
-}[site.phase];
-const buttons = [primary, subscribe];
+const c = t.hero.credentials;
+const credentials = [c.licence, c.juniors, c.base, c.founded, c.programme].map((x) => ({
+  term: x.term,
+  value: fill(x.value, { founded: site.foundedYear }, lang),
+}));
 ---
 
 <section class="hero" id={anchor(lang, 'top')} data-section="top" aria-labelledby="hero-title">
@@ -59,13 +51,26 @@ const buttons = [primary, subscribe];
 
   <div class="hero__band" data-theme="dark">
     <div class="hero__content container">
-      <p class="hero__eyebrow">{fill(t.hero.eyebrow, { season, number: seasonNumber(site) }, lang)}</p>
+      <p class="eyebrow">{t.hero.eyebrow}</p>
       <h1 id="hero-title">{t.hero.title}</h1>
-      <p class="hero__sub">{fill(t.hero.sub, { founded: site.foundedYear }, lang)}</p>
+      <p class="hero__mission">{t.hero.mission}</p>
       <div class="btn-row">
-        <a class="btn btn--primary" href={buttons[0].href}>{buttons[0].label}</a>
-        <a class="btn btn--secondary hero__secondary" href={buttons[1].href}>{buttons[1].label}</a>
+        <a class="btn btn--secondary hero__secondary" href={route(lang, 'team')}>{t.hero.secondary}</a>
+        <a class="btn btn--primary" href={`${route(lang, 'partners')}#${anchor(lang, 'cta')}`}>{fill(t.hero.primary, { season: site.currentSeason }, lang)}</a>
       </div>
+    </div>
+
+    <div class="container">
+      <dl class="credentials" aria-label={t.hero.credentialsLabel}>
+        {
+          credentials.map((x) => (
+            <div>
+              <dt>{x.term}</dt>
+              <dd>{x.value}</dd>
+            </div>
+          ))
+        }
+      </dl>
     </div>
   </div>
 </section>
@@ -74,7 +79,7 @@ const buttons = [primary, subscribe];
   .hero {
     position: relative;
     display: grid;
-    min-height: min(100svh, 980px);
+    min-height: min(calc(100svh - var(--status-h)), 1000px);
     background: #2b0020;
     color: #f1eef3;
     isolation: isolate;
@@ -97,40 +102,37 @@ const buttons = [primary, subscribe];
     align-items: start;
     padding-top: 120px;
   }
-  /* Scrim: a short fade into a plum wash behind the copy, so text stays readable on any photo. */
+  /* Scrim: a fade into a plum wash behind the copy, so text stays readable on any photo. */
   .hero__band {
     align-self: end;
     position: relative;
+    padding-top: calc(var(--header-h) + 48px);
     background: transparent;
   }
   .hero__band::before {
     content: '';
     position: absolute;
-    inset: -120px 0 0 0;
+    inset: 0;
     z-index: -1;
-    background: linear-gradient(to bottom, rgba(43, 0, 32, 0) 0, rgba(43, 0, 32, 0.86) 120px);
+    background: linear-gradient(to bottom, rgba(43, 0, 32, 0) 0, rgba(43, 0, 32, 0.88) 180px);
   }
   .hero__content {
     display: grid;
     justify-items: start;
     gap: var(--s-4);
-    padding-top: var(--s-4);
-    padding-bottom: clamp(48px, 8vw, 112px);
+    padding-bottom: clamp(40px, 6vw, 72px);
     color: var(--ink);
   }
-  .hero__eyebrow {
-    padding: 5px 14px;
-    border: 1px solid var(--accent);
-    border-radius: var(--r-pill);
-    color: var(--accent);
-    font-size: var(--fs-body-sm);
-  }
   h1 {
-    max-width: 14ch;
+    max-width: 11ch;
+    font-size: var(--fs-hero);
+    line-height: var(--lh-hero);
+    letter-spacing: var(--ls-hero);
+    text-wrap: balance;
   }
-  .hero__sub {
+  .hero__mission {
     font-size: var(--fs-body-lg);
-    max-width: 38ch;
+    max-width: 46ch;
     color: var(--ink-muted);
   }
   .hero__secondary {
@@ -139,10 +141,43 @@ const buttons = [primary, subscribe];
   .btn-row {
     margin-top: var(--s-2);
   }
+
+  /* Credential strip */
+  .credentials {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: var(--s-3);
+    padding-block: var(--s-4) var(--s-5);
+    border-top: 1px solid var(--line);
+  }
+  .credentials div {
+    display: grid;
+    gap: 2px;
+  }
+  dt {
+    font-size: var(--fs-eyebrow);
+    letter-spacing: var(--ls-eyebrow);
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  dd {
+    font-size: var(--fs-body);
+    color: var(--ink);
+  }
+  @media (max-width: 899px) {
+    .credentials {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      row-gap: var(--s-4);
+    }
+  }
   @media (max-width: 479px) {
     .btn-row {
       flex-direction: column;
       align-self: stretch;
+    }
+    .credentials {
+      grid-template-columns: 1fr 1fr;
     }
   }
 </style>

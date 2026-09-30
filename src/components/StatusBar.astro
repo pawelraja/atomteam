@@ -1,0 +1,123 @@
+---
+// The one place on the site for seasonal news: a plum line above the header. While a team
+// presentation is upcoming it shows the countdown; afterwards (or without one) the status line
+// from site.json. The browser re-checks the date, so an expired countdown disappears by itself.
+import { getData } from '../lib/data';
+import { copy, fill, pick, plural, type Lang } from '../lib/i18n';
+import { resolveHref } from '../lib/routes';
+import { statusBar } from '../lib/showcase';
+import Icon from './Icon.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const { site, today } = getData();
+const t = copy(lang);
+const view = statusBar(site, today);
+const tp = site.teamPresentation;
+const date = tp
+  ? new Intl.DateTimeFormat(t.meta.locale, { day: 'numeric', month: 'long', timeZone: 'UTC' }).format(new Date(tp.date + 'T00:00:00Z'))
+  : '';
+const line = site.statusLine ? pick(lang, site.statusLine) : null;
+const link = site.statusLink ? { href: resolveHref(lang, site.statusLink.href), label: pick(lang, site.statusLink.label) } : null;
+---
+
+{
+  view && (
+    <aside class="status" data-theme="dark" aria-label={t.a11y.status} data-status-bar data-date={tp?.date}>
+      <div class="status__inner">
+        {tp && (
+          <p class="status__text" data-status-presentation hidden={view.kind !== 'presentation'}>
+            <strong>{fill(t.status.presentation, { season: site.currentSeason, date, place: tp.place }, lang)}</strong>
+            <span class="status__days" data-days>
+              {view.kind === 'presentation' && plural(t.status.days, view.daysToGo, lang)}
+            </span>
+            {tp.url && (
+              <a class="status__link" href={tp.url}>
+                {t.status.details}
+              </a>
+            )}
+          </p>
+        )}
+        {line && (
+          <p class="status__text" data-status-line hidden={view.kind !== 'line'}>
+            <span>{line}</span>
+            {link && (
+              <a class="status__link" href={link.href}>
+                {link.label}
+                <Icon name="arrow" size={14} />
+              </a>
+            )}
+          </p>
+        )}
+      </div>
+      <script type="application/json" id="status-days" set:html={JSON.stringify(t.status.days)} />
+    </aside>
+  )
+}
+
+<script>
+  import { clientLang, clientToday, readJSON } from '../lib/client';
+  import { presentationCountdown } from '../lib/season';
+  import { plural } from '../lib/text';
+
+  const bar = document.querySelector<HTMLElement>('[data-status-bar]');
+  const pres = bar?.querySelector<HTMLElement>('[data-status-presentation]');
+  if (bar && pres && bar.dataset.date) {
+    const cd = presentationCountdown({ date: bar.dataset.date, place: '' }, clientToday());
+    const line = bar.querySelector<HTMLElement>('[data-status-line]');
+    pres.hidden = !cd;
+    if (line) line.hidden = Boolean(cd);
+    if (cd) pres.querySelector('[data-days]')!.textContent = plural(readJSON('status-days'), cd.daysToGo, clientLang());
+    if (!cd && !line) bar.remove();
+  }
+</script>
+
+<style>
+  .status {
+    position: relative;
+    z-index: 51;
+    min-height: var(--status-h);
+    display: grid;
+    align-items: center;
+    background: var(--surface);
+    color: var(--ink);
+    font-size: 13px;
+    line-height: 1.35;
+  }
+  .status__inner {
+    max-width: calc(var(--content) + 2 * var(--gutter));
+    width: 100%;
+    margin-inline: auto;
+    padding: 8px var(--gutter);
+  }
+  .status__text {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 2px 12px;
+    text-align: center;
+  }
+  .status__text[hidden] {
+    display: none;
+  }
+  .status__days {
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .status__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    min-height: 24px;
+    color: var(--accent);
+    font-weight: 700;
+    text-decoration-color: currentColor;
+    text-decoration-thickness: 1px;
+  }
+  .status__link:hover {
+    color: var(--ink);
+  }
+</style>

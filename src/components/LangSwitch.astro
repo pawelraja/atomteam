@@ -1,19 +1,19 @@
 ---
 // "PL | EN" segmented control. The active language is a black pill (aria-current); the other is a
 // real link to the same section in the other language. Never redirects automatically.
-import { anchor } from '../lib/anchors';
-import { copy, homePath, LANGS, type Lang } from '../lib/i18n';
+import { copy, LANGS, type Lang } from '../lib/i18n';
 
 interface Props {
   lang: Lang;
+  /** The current page in each language. */
+  paths: Record<Lang, string>;
   /** "segmented" shows both options; "single" shows only the other language (mobile). */
   variant?: 'segmented' | 'single';
   class?: string;
 }
-const { lang, variant = 'segmented' } = Astro.props;
+const { lang, paths, variant = 'segmented' } = Astro.props;
 const t = copy(lang);
 const label = (l: Lang) => copy(l).language.currentShort;
-const hrefFor = (l: Lang) => (l === lang ? `${homePath(l)}#${anchor(l, 'top')}` : homePath(l));
 const names: Record<Lang, string> = { pl: 'Polski', en: 'English' };
 ---
 
@@ -22,12 +22,12 @@ const names: Record<Lang, string> = { pl: 'Polski', en: 'English' };
     <div class:list={['lang-switch', Astro.props.class]} role="group" aria-label={t.language.switchLabel}>
       {LANGS.map((l) =>
         l === lang ? (
-          <a class="lang-opt is-current" href={hrefFor(l)} aria-current="page" lang={l} hreflang={l}>
+          <a class="lang-opt is-current" href={paths[l]} aria-current="page" lang={l} hreflang={l}>
             {label(l)}
             <span class="visually-hidden">, {names[l]}</span>
           </a>
         ) : (
-          <a class="lang-opt" href={hrefFor(l)} lang={l} hreflang={l} data-lang-link={l}>
+          <a class="lang-opt" href={paths[l]} lang={l} hreflang={l} data-lang-link={l} data-lang-base={paths[l]}>
             {label(l)}
             <span class="visually-hidden">, {names[l]}</span>
           </a>
@@ -36,7 +36,7 @@ const names: Record<Lang, string> = { pl: 'Polski', en: 'English' };
     </div>
   ) : (
     LANGS.filter((l) => l !== lang).map((l) => (
-      <a class:list={['lang-single', Astro.props.class]} href={hrefFor(l)} lang={l} hreflang={l} data-lang-link={l}>
+      <a class:list={['lang-single', Astro.props.class]} href={paths[l]} lang={l} hreflang={l} data-lang-link={l} data-lang-base={paths[l]}>
         {label(l)}
         <span class="visually-hidden">, {names[l]}</span>
       </a>

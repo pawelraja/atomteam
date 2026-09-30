@@ -16,6 +16,22 @@ export const localized = z
   .object({ pl: z.string().min(1, 'Polish text is empty'), en: z.string().min(1, 'English text is empty') })
   .strict();
 
+const phone = z.string().regex(/^\+?[0-9 ()-]{6,20}$/, 'must be a phone number like "+48 600 000 000"');
+
+/** A named contact person. Any field may be left out; the card only appears with a name and an e-mail or phone. */
+export const contactSchema = z
+  .object({
+    name: z.string().min(1).nullable().optional(),
+    role: localized.nullable().optional(),
+    phone: phone.nullable().optional(),
+    email: z.email('must be an e-mail address').nullable().optional(),
+    /** Portrait file in src/assets/riders/, e.g. "pawel-bentkowski.jpg". */
+    photo: z.string().min(1).nullable().optional(),
+    /** Promised response time, e.g. { "pl": "w ciągu 24 godzin w dni robocze", "en": "within 24 hours on weekdays" }. */
+    responseTime: localized.nullable().optional(),
+  })
+  .strict();
+
 export const PHASES = ['preseason', 'racing', 'offseason'] as const;
 
 export const siteSchema = z.object({
@@ -32,6 +48,14 @@ export const siteSchema = z.object({
       url: z.url().nullable().optional(),
     })
     .nullable(),
+  /** One line in the plum bar above the header, e.g. "Sezon 2027 · Kalendarz wstępny online". Null hides the bar. */
+  statusLine: localized.nullable(),
+  /** Link at the end of the status bar. "href" is a page name (home, team, calendar, partners, media) or a full URL. */
+  statusLink: z.object({ label: localized, href: z.string().min(1) }).strict().nullable(),
+  /** The 2027 partner deck, e.g. "/partners/oferta-2027.pdf". Until set, the button says "soon". */
+  partnerDeckUrl: z.string().min(1).nullable(),
+  partnerContact: contactSchema.nullable(),
+  pressContact: contactSchema.nullable(),
 });
 
 export const DISCIPLINES = ['ROAD', 'TRACK', 'CX', 'TTT', 'MTB'] as const;
@@ -89,6 +113,8 @@ export const partnerSchema = z
   })
   .strict();
 
+export const CATEGORIES = ['U19', 'U23', 'ELITE'] as const;
+
 export const riderSchema = z
   .object({
     name: z.string().min(1),
@@ -101,6 +127,14 @@ export const riderSchema = z
       .optional(),
     photo: z.string().min(1),
     role: localized.optional(),
+    /** Age category: U19 (juniors), U23 or ELITE. Juniors default to U19. */
+    category: z.enum(CATEGORIES).optional(),
+    /** Web address of the profile page, e.g. "eliza-rabazynska". Made from the name when left out. */
+    slug: z
+      .string()
+      .regex(/^[a-z0-9-]+$/, 'may only use lowercase letters, digits and dashes')
+      .optional(),
+    bio: localized.optional(),
     seasons,
     new: z.boolean().optional(),
   })
@@ -138,6 +172,59 @@ export const gallerySchema = z
   })
   .strict();
 
+export const CHAMPIONSHIPS = ['national', 'continental', 'world', 'other'] as const;
+
+export const resultSchema = z
+  .object({
+    /** Exactly as written in riders.json. */
+    rider: z.string().min(1),
+    event: localized,
+    /** Category or race within the event, e.g. { "pl": "U23", "en": "U23" }. */
+    category: localized.optional(),
+    discipline: z.enum(['ROAD', 'TRACK', 'CX', 'TTT', 'MTB']),
+    championship: z.enum(CHAMPIONSHIPS),
+    place: z.number().int().min(1).max(200),
+    /** How many times this place was won at this event (e.g. 4 golds in 4 different races). */
+    count: z.number().int().min(1).max(20).optional(),
+    date: isoDate.optional(),
+    verify: z.boolean().optional(),
+  })
+  .strict();
+
+const fileName = z
+  .string()
+  .regex(/^[a-z0-9][a-z0-9._-]*\.[a-z0-9]+$/, 'must be a file name in public/media/ like "madw-logotypy.zip" (lowercase, no spaces)');
+
+export const MEDIA_CATEGORIES = ['race', 'track', 'portrait', 'team'] as const;
+
+export const mediaSchema = z
+  .object({
+    files: z.array(
+      z
+        .object({
+          id: z.string().regex(/^[a-z0-9-]+$/, 'may only use lowercase letters, digits and dashes'),
+          name: localized,
+          description: localized,
+          /** One file for both languages, or { "pl": "…", "en": "…" } for language versions. */
+          file: z.union([fileName, z.object({ pl: fileName, en: fileName }).strict()]),
+          format: z.string().min(1),
+          status: z.enum(['ready', 'soon']),
+        })
+        .strict(),
+    ),
+    photos: z.array(
+      z
+        .object({
+          file: z.string().min(1),
+          category: z.enum(MEDIA_CATEGORIES),
+          caption: localized,
+          credit: z.string().min(1),
+        })
+        .strict(),
+    ),
+  })
+  .strict();
+
 export type Localized = z.infer<typeof localized>;
 export type Site = z.infer<typeof siteSchema>;
 export type Phase = Site['phase'];
@@ -149,3 +236,9 @@ export type Rider = z.infer<typeof riderSchema>;
 export type Staff = z.infer<typeof staffSchema>;
 export type Highlight = z.infer<typeof highlightSchema>;
 export type GalleryItem = z.infer<typeof gallerySchema>;
+export type Contact = z.infer<typeof contactSchema>;
+export type Category = (typeof CATEGORIES)[number];
+export type Result = z.infer<typeof resultSchema>;
+export type Media = z.infer<typeof mediaSchema>;
+export type MediaFile = Media['files'][number];
+export type MediaPhoto = Media['photos'][number];

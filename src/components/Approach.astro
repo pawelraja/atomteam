@@ -1,0 +1,224 @@
+---
+// "One team from junior to elite": the pathway U19 → U23 → Elite with rider counts, and three
+// pillars (staff, Club Pro, UCI races) filled from staff.json and the calendar.
+import { anchor } from '../lib/anchors';
+import { getData } from '../lib/data';
+import { copy, fill, pick, plural, typo, type Lang } from '../lib/i18n';
+import { raceName } from '../lib/season';
+import { rosterSplit, topUciRaces } from '../lib/showcase';
+import { officialRosterView, teamView } from '../lib/view';
+
+interface Props {
+  lang: Lang;
+  /** "chapter" on the home page; "compact" on the team page (no pillars). */
+  variant?: 'chapter' | 'compact';
+}
+const { lang, variant = 'chapter' } = Astro.props;
+const { site, calendars } = getData();
+const t = copy(lang);
+const ta = t.approach;
+const roster = officialRosterView();
+const split = rosterSplit(roster.items);
+const combined = split.unknown > 0;
+const stages = (['U19', 'U23', 'ELITE'] as const).map((c) => ({
+  id: c,
+  ...ta.stages[c],
+  count: c === 'U19' || !combined ? plural(ta.stageCount, split[c], lang) : null,
+}));
+const crew = teamView().crew;
+const uci = topUciRaces(calendars, site.currentSeason);
+---
+
+<section
+  class="section section--alt approach"
+  id={variant === 'chapter' ? anchor(lang, 'approach') : undefined}
+  data-section={variant === 'chapter' ? 'approach' : undefined}
+  aria-labelledby={`approach-title-${variant}`}
+>
+  <div class="container">
+    <div class="chapter-head">
+      <p class="eyebrow">{ta.eyebrow}</p>
+      <h2 id={`approach-title-${variant}`} class="chapter">{ta.title}</h2>
+      <p>{ta.lead}</p>
+    </div>
+
+    {
+      roster.items.length > 0 && (
+        <figure class="pathway">
+          <ol class="pathway__steps" role="list" aria-label={ta.pathwayLabel}>
+            {stages.map((s, i) => (
+              <li class="step">
+                <span class="step__sub">{s.sub}</span>
+                <span class="step__name">{s.name}</span>
+                {s.count && <span class="step__count">{s.count}</span>}
+                {i < stages.length - 1 && <span class="step__arrow" aria-hidden="true" />}
+              </li>
+            ))}
+          </ol>
+          {combined && <p class="pathway__combined">{fill(ta.combinedCount, { n: split.total - split.U19 }, lang)}</p>}
+          <figcaption class="caption muted">{fill(ta.rosterSeason, { season: roster.season! }, lang)}</figcaption>
+        </figure>
+      )
+    }
+
+    {
+      variant === 'chapter' && (
+        <div class="pillars">
+          <div class="pillar">
+            <h3 class="pillar__title">{ta.pillars.staff.title}</h3>
+            <p>{ta.pillars.staff.text}</p>
+            <ul role="list" class="pillar__list">
+              {crew.items.map((s) => (
+                <li>
+                  <span class="pillar__name">{s.name}</span>
+                  <span class="pillar__meta">{pick(lang, s.role)}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div class="pillar">
+            <h3 class="pillar__title">{ta.pillars.clubPro.title}</h3>
+            <p>{ta.pillars.clubPro.text}</p>
+          </div>
+          <div class="pillar">
+            <h3 class="pillar__title">{ta.pillars.uci.title}</h3>
+            {uci ? (
+              <>
+                <p>{fill(ta.pillars.uci.text, { season: uci.season }, lang)}</p>
+                <ul role="list" class="pillar__list">
+                  {uci.races.map((e) => (
+                    <li>
+                      <span class="pillar__name">{typo(lang, raceName(e, lang))}</span>
+                      <span class="pillar__meta">UCI {e.cls}</span>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ) : (
+              <p>{fill(ta.pillars.uci.empty, { season: site.currentSeason }, lang)}</p>
+            )}
+          </div>
+        </div>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .pathway {
+    display: grid;
+    gap: var(--s-3);
+    margin-bottom: var(--s-6);
+  }
+  .pathway__steps {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--s-5);
+  }
+  .step {
+    position: relative;
+    display: grid;
+    align-content: start;
+    gap: var(--s-1);
+    padding: var(--s-4);
+    border-radius: var(--r-card);
+    background: var(--surface);
+    box-shadow: var(--shadow-card);
+  }
+  .step__sub {
+    font-size: var(--fs-eyebrow);
+    letter-spacing: var(--ls-eyebrow);
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--accent-strong);
+  }
+  .step__name {
+    font-size: var(--fs-h3);
+    line-height: 1.2;
+  }
+  .step__count {
+    font-weight: 700;
+  }
+  /* Arrow between stages: a pink line with a head, drawn in the gap. */
+  .step__arrow {
+    position: absolute;
+    top: 50%;
+    right: calc(-1 * var(--s-5));
+    width: var(--s-5);
+    height: 2px;
+    background: var(--accent);
+  }
+  .step__arrow::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: -5px;
+    border: 6px solid transparent;
+    border-left: 8px solid var(--accent);
+    border-right: 0;
+  }
+  .pathway__combined {
+    font-weight: 700;
+  }
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--s-5);
+  }
+  .pillar {
+    display: grid;
+    align-content: start;
+    gap: var(--s-3);
+    padding-top: var(--s-4);
+    border-top: 2px solid var(--line);
+  }
+  .pillar__title {
+    font-size: var(--fs-h3);
+    line-height: 1.2;
+  }
+  .pillar > p {
+    color: var(--ink-muted);
+  }
+  .pillar__list {
+    display: grid;
+    gap: var(--s-2);
+  }
+  .pillar__list li {
+    display: grid;
+  }
+  .pillar__name {
+    font-weight: 700;
+  }
+  .pillar__meta {
+    color: var(--ink-muted);
+    font-size: var(--fs-body-sm);
+  }
+  @media (max-width: 899px) {
+    .pillars {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 699px) {
+    .pathway__steps {
+      grid-template-columns: 1fr;
+      gap: var(--s-5);
+    }
+    .step__arrow {
+      top: auto;
+      bottom: calc(-1 * var(--s-5));
+      right: auto;
+      left: 40px;
+      width: 2px;
+      height: var(--s-5);
+    }
+    .step__arrow::after {
+      top: auto;
+      bottom: 0;
+      left: -5px;
+      right: auto;
+      border: 6px solid transparent;
+      border-top: 8px solid var(--accent);
+      border-bottom: 0;
+    }
+  }
+</style>

@@ -1,0 +1,87 @@
+---
+// Four full-bleed race photos at mixed widths (the first four entries of gallery.json), with
+// race, place and photographer credit, followed by the #allezatomówki ticker.
+import { anchor } from '../lib/anchors';
+import { getData } from '../lib/data';
+import { copy, fill, pick, type Lang } from '../lib/i18n';
+import Photo from './Photo.astro';
+import Ticker from './Ticker.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const { gallery } = getData();
+const t = copy(lang);
+const photos = gallery.slice(0, 4);
+// Mixed widths: wide · narrow · narrow · wide (as grid fractions), so the strip never looks like a grid of equals.
+const spans = ['wide', 'narrow', 'narrow', 'wide'];
+---
+
+<section class="strip" id={anchor(lang, 'gallery')} data-section="gallery" aria-labelledby="strip-title">
+  <h2 id="strip-title" class="visually-hidden">{t.gallery.title}</h2>
+  <ul class="strip__row" role="list">
+    {
+      photos.map((p, i) => (
+        <li class:list={['shot', `shot--${spans[i]}`]}>
+          <figure>
+            <Photo
+              lang={lang}
+              dir="photos"
+              file={p.photo}
+              alt={pick(lang, p.alt)}
+              aspect={spans[i] === 'wide' ? '4:3' : '3:4'}
+              sizes={spans[i] === 'wide' ? '(min-width: 900px) 32vw, 50vw' : '(min-width: 900px) 18vw, 50vw'}
+              widths={[360, 540, 720, 1080]}
+              class="shot__img"
+            />
+            <figcaption class="shot__caption">
+              {pick(lang, p.race)} · {pick(lang, p.place)} · {fill(t.gallery.credit, { credit: p.credit })}
+            </figcaption>
+          </figure>
+        </li>
+      ))
+    }
+  </ul>
+  <Ticker lang={lang} />
+</section>
+
+<style>
+  .strip {
+    background: #2b0020;
+  }
+  .strip__row {
+    display: grid;
+    grid-template-columns: 16fr 9fr 9fr 16fr;
+    gap: 4px;
+  }
+  .shot figure {
+    position: relative;
+    height: clamp(280px, 30vw, 520px);
+  }
+  .shot :global(.shot__img) {
+    height: 100%;
+    aspect-ratio: auto !important;
+  }
+  .shot :global(.shot__img img) {
+    height: 100%;
+  }
+  .shot__caption {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 24px 16px 10px;
+    background: linear-gradient(to top, rgba(43, 0, 32, 0.9), rgba(43, 0, 32, 0));
+    color: #f1eef3;
+    font-size: var(--fs-caption);
+  }
+  @media (max-width: 899px) {
+    .strip__row {
+      grid-template-columns: 1fr 1fr;
+    }
+    .shot figure {
+      height: clamp(200px, 56vw, 360px);
+    }
+  }
+</style>

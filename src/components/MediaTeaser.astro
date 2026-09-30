@@ -1,0 +1,106 @@
+---
+// "For media" teaser: four tiles that deep-link into the media centre.
+import { anchor, type AnchorKey } from '../lib/anchors';
+import { copy, type Lang } from '../lib/i18n';
+import { route } from '../lib/routes';
+import Icon from './Icon.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = copy(lang);
+const tm = t.mediaTeaser;
+const media = route(lang, 'media');
+const tiles: { key: keyof typeof tm.tiles; target: AnchorKey; icon: 'file' | 'download' }[] = [
+  { key: 'logos', target: 'files', icon: 'download' },
+  { key: 'photos', target: 'photos', icon: 'download' },
+  { key: 'portraits', target: 'roster', icon: 'download' },
+  { key: 'info', target: 'files', icon: 'file' },
+];
+---
+
+<section class="section media-teaser" id={anchor(lang, 'for-media')} data-section="for-media" aria-labelledby="media-teaser-title">
+  <div class="container">
+    <div class="head">
+      <div class="chapter-head">
+        <p class="eyebrow">{tm.eyebrow}</p>
+        <h2 id="media-teaser-title" class="chapter">{tm.title}</h2>
+        <p>{tm.lead}</p>
+      </div>
+      <a class="btn btn--secondary" href={media}>
+        {tm.link} <Icon name="arrow" size={18} />
+      </a>
+    </div>
+    <ul class="tiles" role="list">
+      {
+        tiles.map((tile) => (
+          <li>
+            <a class="tile card" href={`${media}#${anchor(lang, tile.target)}`}>
+              <Icon name={tile.icon} size={28} />
+              <span class="tile__title">{tm.tiles[tile.key].title}</span>
+              <span class="tile__text">{tm.tiles[tile.key].text}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: end;
+    gap: var(--s-4);
+    margin-bottom: var(--s-6);
+  }
+  .head .chapter-head {
+    margin-bottom: 0;
+  }
+  .tiles {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--s-3);
+  }
+  .tile {
+    display: grid;
+    align-content: start;
+    gap: var(--s-2);
+    height: 100%;
+    min-height: 180px;
+    padding: var(--s-4);
+    background: var(--surface-alt);
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .tile :global(svg) {
+    color: var(--accent-strong);
+    margin-bottom: var(--s-3);
+  }
+  .tile__title {
+    font-size: var(--fs-body-lg);
+    font-weight: 700;
+  }
+  .tile__text {
+    color: var(--ink-muted);
+    font-size: var(--fs-body-sm);
+  }
+  .tile:hover {
+    color: var(--ink);
+    box-shadow: 0 5px 0 0 rgba(255, 102, 237, 0.8);
+  }
+  .tile:hover .tile__title {
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+  }
+  @media (max-width: 899px) {
+    .tiles {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

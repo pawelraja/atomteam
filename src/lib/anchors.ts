@@ -1,36 +1,79 @@
 // Section anchors per language, so /#kalendarz and /en/#calendar point at the same section
 // and the language switch can land on the section the visitor is reading.
 import type { Lang } from './text';
-import type { SectionId } from './season';
 
-export type AnchorKey = SectionId | 'top' | 'newsletter';
+export type AnchorKey =
+  | 'top'
+  // home
+  | 'numbers'
+  | 'approach'
+  | 'results'
+  | 'team'
+  | 'calendar'
+  | 'brand'
+  | 'partners'
+  | 'cta'
+  | 'for-media'
+  | 'gallery'
+  // calendar page
+  | 'next-race'
+  // media page
+  | 'facts'
+  | 'boilerplate'
+  | 'files'
+  | 'photos'
+  | 'roster'
+  | 'press'
+  // rider page
+  | 'profile'
+  // footer (every page)
+  | 'contact'
+  | 'newsletter';
 
 export const ANCHORS: Record<Lang, Record<AnchorKey, string>> = {
   pl: {
     top: 'start',
-    presentation: 'prezentacja',
-    glance: 'w-skrocie',
-    recap: 'podsumowanie',
-    'next-race': 'najblizszy-wyscig',
-    story: 'galeria',
+    numbers: 'liczby',
+    approach: 'podejscie',
+    results: 'wyniki',
     team: 'zespol',
     calendar: 'kalendarz',
+    brand: 'twoja-marka',
     partners: 'partnerzy',
-    movement: 'ruch',
+    cta: 'wspolpraca',
+    'for-media': 'dla-mediow',
+    gallery: 'galeria',
+    'next-race': 'najblizszy-wyscig',
+    facts: 'fakty',
+    boilerplate: 'notka',
+    files: 'pliki',
+    photos: 'zdjecia',
+    roster: 'sklad',
+    press: 'kontakt-prasowy',
+    profile: 'profil',
     contact: 'kontakt',
     newsletter: 'newsletter',
   },
   en: {
     top: 'top',
-    presentation: 'presentation',
-    glance: 'at-a-glance',
-    recap: 'review',
-    'next-race': 'next-race',
-    story: 'photos',
+    numbers: 'numbers',
+    approach: 'approach',
+    results: 'results',
     team: 'team',
     calendar: 'calendar',
+    brand: 'your-brand',
     partners: 'partners',
-    movement: 'movement',
+    cta: 'partner-with-us',
+    'for-media': 'for-media',
+    gallery: 'gallery',
+    'next-race': 'next-race',
+    facts: 'facts',
+    boilerplate: 'boilerplate',
+    files: 'files',
+    photos: 'photos',
+    roster: 'roster',
+    press: 'press-contact',
+    profile: 'profile',
     contact: 'contact',
     newsletter: 'newsletter',
   },

@@ -1,0 +1,147 @@
+---
+// Results as a real table. Place badges differ in more than colour: 1st is a filled pink pill,
+// 2nd a solid outline, 3rd a dashed outline, and each carries the number and a spoken name.
+import { copy, fill, pick, type Lang } from '../lib/i18n';
+import { riderPath } from '../lib/routes';
+import type { Result } from '../lib/schemas';
+import { riderSlug } from '../lib/showcase';
+import { getData } from '../lib/data';
+
+interface Props {
+  lang: Lang;
+  rows: (Result & { season?: number })[];
+  caption: string;
+  /** Rider profile pages leave out the rider column. */
+  showRider?: boolean;
+  showSeason?: boolean;
+  captionHidden?: boolean;
+}
+const { lang, rows, caption, showRider = true, showSeason = false, captionHidden = true } = Astro.props;
+const t = copy(lang);
+const tr = t.results;
+const riders = new Map(getData().riders.map((r) => [r.name, r]));
+const placeName = (p: number) => (p <= 3 ? tr.placeName[String(p) as '1' | '2' | '3'] : fill(tr.placeName.other, { n: p }));
+---
+
+<table class="results-table">
+  <caption class:list={{ 'visually-hidden': captionHidden }}>{caption}</caption>
+  <thead>
+    <tr>
+      <th scope="col">{tr.place}</th>
+      {showRider && <th scope="col">{tr.rider}</th>}
+      <th scope="col">{tr.event}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {
+      rows.map((r) => {
+        const rider = riders.get(r.rider);
+        return (
+          <tr>
+            <td class="place">
+              <span class:list={['badge', `badge--${Math.min(r.place, 4)}`]}>
+                <span aria-hidden="true">{r.place}.</span>
+                <span class="visually-hidden">{placeName(r.place)}</span>
+              </span>
+              {r.count && r.count > 1 && (
+                <span class="times">
+                  <span aria-hidden="true">{fill(tr.times, { n: r.count })}</span>
+                  <span class="visually-hidden">, {fill(tr.timesLong, { n: r.count })}</span>
+                </span>
+              )}
+            </td>
+            {showRider && (
+              <th scope="row" class="rider">
+                {rider ? <a href={riderPath(lang, riderSlug(rider))}>{r.rider}</a> : r.rider}
+              </th>
+            )}
+            <td class="event">
+              <span class="event__name">{pick(lang, r.event)}</span>
+              {(r.category || (showSeason && r.season)) && (
+                <span class="event__meta">
+                  {[r.category && pick(lang, r.category), showSeason && r.season].filter(Boolean).join(' · ')}
+                </span>
+              )}
+            </td>
+          </tr>
+        );
+      })
+    }
+  </tbody>
+</table>
+
+<style>
+  .results-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--fs-body);
+  }
+  caption:not(.visually-hidden) {
+    text-align: left;
+    margin-bottom: var(--s-3);
+    font-weight: 700;
+  }
+  th,
+  td {
+    padding: 14px 12px 14px 0;
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px solid var(--line);
+  }
+  thead th {
+    font-size: var(--fs-eyebrow);
+    letter-spacing: var(--ls-eyebrow);
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--ink-muted);
+    padding-block: 0 10px;
+  }
+  .place {
+    width: 1%;
+    white-space: nowrap;
+  }
+  .badge {
+    display: inline-grid;
+    place-items: center;
+    min-width: 44px;
+    height: 32px;
+    padding: 0 10px;
+    border-radius: var(--r-pill);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  .badge--1 {
+    background: var(--accent);
+    color: var(--ink-on-accent);
+    border: 1.5px solid var(--accent);
+  }
+  .badge--2 {
+    border: 1.5px solid var(--ink);
+  }
+  .badge--3 {
+    border: 1.5px dashed var(--ink);
+  }
+  .badge--4 {
+    border: 1.5px dotted var(--ink-muted);
+    color: var(--ink-muted);
+  }
+  .times {
+    margin-left: 6px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  .rider {
+    font-weight: 400;
+  }
+  .rider a {
+    text-decoration-color: var(--accent);
+  }
+  .event {
+    display: grid;
+    gap: 2px;
+  }
+  .event__meta {
+    color: var(--ink-muted);
+    font-size: var(--fs-body-sm);
+  }
+</style>

@@ -1,0 +1,107 @@
+---
+// The partnership call to action (plum): "Ride with us in 2027." with a mailto button, the
+// partner deck ("coming soon" until partnerDeckUrl is set) and the named partnership contact.
+import { anchor } from '../lib/anchors';
+import { getData } from '../lib/data';
+import { copy, fill, type Lang } from '../lib/i18n';
+import ContactCard from './ContactCard.astro';
+import Icon from './Icon.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const { site } = getData();
+const t = copy(lang);
+const tc = t.cta;
+const season = site.currentSeason;
+const contact = site.partnerContact;
+const email = contact?.email ?? t.team.email;
+const mailto = `mailto:${email}?subject=${encodeURIComponent(fill(tc.mailSubject, { season }))}`;
+---
+
+<section class="section cta" data-theme="dark" id={anchor(lang, 'cta')} data-section="cta" aria-labelledby="cta-title">
+  <div class="container cta__grid">
+    <div class="cta__main">
+      <p class="eyebrow">{fill(tc.eyebrow, { season }, lang)}</p>
+      <h2 id="cta-title" class="cta__title">{fill(tc.title, { season }, lang)}</h2>
+      <p class="cta__lead">{tc.lead}</p>
+      <div class="btn-row">
+        <a class="btn btn--primary" href={mailto}>
+          <Icon name="mail" size={20} />
+          {tc.book}
+        </a>
+        {
+          site.partnerDeckUrl ? (
+            <a class="btn btn--secondary cta__deck" href={site.partnerDeckUrl} download>
+              <Icon name="download" size={20} />
+              {tc.deck}
+            </a>
+          ) : (
+            <span class="btn cta__deck cta__deck--soon" aria-disabled="true">
+              {tc.deck}
+              <span class="cta__soon">· {tc.deckSoon}</span>
+            </span>
+          )
+        }
+      </div>
+    </div>
+    <ContactCard lang={lang} contact={contact} label={tc.contactLabel} />
+  </div>
+</section>
+
+<style>
+  .cta__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+    gap: var(--s-6);
+    align-items: end;
+  }
+  .cta__grid:not(:has(.contact-card)) {
+    grid-template-columns: 1fr;
+  }
+  .cta__main {
+    display: grid;
+    justify-items: start;
+    gap: var(--s-4);
+  }
+  /* Display size (72px): pink is fine on plum at 7.5:1. */
+  .cta__title {
+    font-size: var(--fs-display);
+    line-height: 1.02;
+    letter-spacing: var(--ls-chapter);
+    font-weight: 400;
+    color: var(--accent);
+    max-width: 16ch;
+    text-wrap: balance;
+  }
+  .cta__lead {
+    font-size: var(--fs-body-lg);
+    color: var(--ink-muted);
+    max-width: 56ch;
+  }
+  .cta__deck {
+    color: var(--ink);
+  }
+  .cta__deck--soon {
+    border-style: dashed;
+    border-color: var(--ink-muted);
+    color: var(--ink-muted);
+    cursor: default;
+  }
+  .cta__soon {
+    font-weight: 400;
+  }
+  @media (max-width: 899px) {
+    .cta__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 479px) {
+    .btn-row {
+      flex-direction: column;
+      align-self: stretch;
+      width: 100%;
+    }
+  }
+</style>

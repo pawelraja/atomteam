@@ -1,0 +1,177 @@
+---
+// "Your brand in the peloton": a numbered jersey diagram (inline SVG) with a matching numbered
+// list, plus what partners get beyond the kit. Field names and texts come from copy.*.json.
+import { anchor } from '../lib/anchors';
+import { copy, type Lang } from '../lib/i18n';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = copy(lang);
+const tb = t.brand;
+// Marker positions on the drawing, keyed by field number.
+const markers: Record<number, [number, number][]> = {
+  1: [[200, 142]],
+  2: [
+    [56, 118],
+    [344, 118],
+  ],
+  3: [
+    [121, 238],
+    [258, 398],
+  ],
+};
+---
+
+<section class="section section--alt brand" id={anchor(lang, 'brand')} data-section="brand" aria-labelledby="brand-title">
+  <div class="container brand__grid">
+    <div class="brand__text">
+      <div class="chapter-head">
+        <p class="eyebrow">{tb.eyebrow}</p>
+        <h2 id="brand-title" class="chapter">{tb.title}</h2>
+        <p>{tb.lead}</p>
+      </div>
+
+      <ol class="fields" role="list">
+        {
+          tb.fields.map((f) => (
+            <li class="field">
+              <span class="marker" aria-hidden="true">{f.n}</span>
+              <div>
+                <h3 class="field__title">
+                  <span class="visually-hidden">{f.n}. </span>
+                  {f.title}
+                </h3>
+                <p class="muted">{f.text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+
+      <div class="beyond">
+        <h3 class="beyond__title">{tb.beyondTitle}</h3>
+        <ul role="list" class="beyond__list">
+          {tb.beyond.map((b) => <li class="chip">{b}</li>)}
+        </ul>
+      </div>
+    </div>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 400 460" role="img" aria-labelledby="jersey-title" xmlns="http://www.w3.org/2000/svg">
+        <title id="jersey-title">{tb.diagramLabel}</title>
+        <!-- Jersey -->
+        <path
+          d="M150 30 Q200 58 250 30 L330 58 L382 150 L322 178 L296 132 L296 300 L104 300 L104 132 L78 178 L18 150 L70 58 Z"
+          fill="#ffffff"
+          stroke="#2b0020"
+          stroke-width="3"
+          stroke-linejoin="round"></path>
+        <!-- Pink sleeves (junior kit detail) -->
+        <path d="M70 58 L18 150 L78 178 L104 132 L104 90 Z M330 58 L382 150 L322 178 L296 132 L296 90 Z" fill="#fecdf8" stroke="#2b0020" stroke-width="3" stroke-linejoin="round"></path>
+        <path d="M150 30 Q200 58 250 30" fill="none" stroke="#2b0020" stroke-width="3"></path>
+        <!-- Shorts -->
+        <path d="M108 316 L292 316 L304 440 L218 440 L200 364 L182 440 L96 440 Z" fill="#2b0020"></path>
+
+        <!-- Logo fields -->
+        <g fill="none" stroke="#8c00ff" stroke-width="2.5" stroke-dasharray="6 5">
+          <rect x="138" y="112" width="124" height="60" rx="10"></rect>
+          <rect x="30" y="100" width="54" height="36" rx="8" transform="rotate(-28 57 118)"></rect>
+          <rect x="316" y="100" width="54" height="36" rx="8" transform="rotate(28 343 118)"></rect>
+          <rect x="108" y="190" width="26" height="100" rx="8"></rect>
+        </g>
+        <rect x="232" y="372" width="54" height="52" rx="8" fill="none" stroke="#ff66ed" stroke-width="2.5" stroke-dasharray="6 5"></rect>
+
+        <!-- Numbered markers -->
+        {
+          Object.entries(markers).flatMap(([n, points]) =>
+            points.map(([x, y]) => (
+              <g>
+                <circle cx={x} cy={y} r="17" fill="#8c00ff" stroke="#ffffff" stroke-width="3"></circle>
+                <text x={x} y={y + 6} text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="700" fill="#ffffff">
+                  {n}
+                </text>
+              </g>
+            )),
+          )
+        }
+      </svg>
+      <figcaption class="caption muted">{tb.caption}</figcaption>
+    </figure>
+  </div>
+</section>
+
+<style>
+  .brand__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: var(--s-6);
+    align-items: center;
+  }
+  .fields {
+    display: grid;
+    gap: var(--s-4);
+  }
+  .field {
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr);
+    gap: var(--s-3);
+    align-items: start;
+  }
+  .marker {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--accent-strong);
+    color: #fff;
+    font-weight: 700;
+  }
+  .field__title {
+    font-size: var(--fs-body-lg);
+    font-weight: 700;
+    line-height: 1.4;
+  }
+  .beyond {
+    display: grid;
+    gap: var(--s-3);
+    margin-top: var(--s-5);
+    padding-top: var(--s-4);
+    border-top: 2px solid var(--line);
+  }
+  .beyond__title {
+    font-size: var(--fs-body-lg);
+    font-weight: 700;
+  }
+  .beyond__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+  }
+  .beyond__list .chip {
+    background: var(--surface);
+    border-color: transparent;
+    white-space: normal;
+  }
+  .diagram {
+    display: grid;
+    gap: var(--s-3);
+    padding: clamp(24px, 4vw, 48px);
+    border-radius: var(--r-feature);
+    background: var(--surface);
+    box-shadow: var(--shadow-feature);
+  }
+  .diagram svg {
+    width: 100%;
+    max-width: 360px;
+    height: auto;
+    margin-inline: auto;
+  }
+  @media (max-width: 899px) {
+    .brand__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,31 @@
+---
+// Every page: status bar, floating header, content, footer.
+import Base from '../layouts/Base.astro';
+import Footer from './Footer.astro';
+import Header from './Header.astro';
+import StatusBar from './StatusBar.astro';
+import type { Lang } from '../lib/i18n';
+import type { PageKey } from '../lib/routes';
+
+interface Props {
+  lang: Lang;
+  /** Which nav item is current. Rider profiles belong to "team". */
+  page: PageKey;
+  paths: Record<Lang, string>;
+  title?: string;
+  description?: string;
+  preloadHero?: boolean;
+  events?: boolean;
+  noindex?: boolean;
+}
+const { lang, page, paths, ...base } = Astro.props;
+---
+
+<Base lang={lang} paths={paths} {...base}>
+  <StatusBar lang={lang} />
+  <Header lang={lang} page={page} paths={paths} />
+  <main id="main" tabindex="-1">
+    <slot />
+  </main>
+  <Footer lang={lang} paths={paths} />
+</Base>

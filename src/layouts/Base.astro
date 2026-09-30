@@ -14,23 +14,27 @@ import { eventState, isConfirmedRace, raceLocation, raceName } from '../lib/seas
 
 interface Props {
   lang: Lang;
-  /** Path of this page without the language prefix, e.g. "/" or "/polityka-prywatnosci/". */
+  /** This page's address in each language (for canonical + hreflang). Defaults to the home page. */
   paths?: Record<Lang, string>;
   title?: string;
+  description?: string;
   noindex?: boolean;
-  jsonLd?: boolean;
+  /** Preload the hero photo (home page only). */
+  preloadHero?: boolean;
+  /** Add SportsEvent JSON-LD for confirmed upcoming races (home and calendar pages). */
+  events?: boolean;
 }
-const { lang, jsonLd: withJsonLd = true, noindex = false } = Astro.props;
+const { lang, noindex = false, preloadHero = false, events: withEvents = false } = Astro.props;
 const paths = Astro.props.paths ?? { pl: homePath('pl'), en: homePath('en') };
 const { site, calendars, today, todayOverridden } = getData();
 const t = copy(lang);
 const season = site.currentSeason;
 const title = Astro.props.title ?? fill(t.meta.title, { season }, lang);
-const description = fill(t.meta.description, { season, founded: site.foundedYear }, lang);
+const description = Astro.props.description ?? fill(t.meta.description, { season, founded: site.foundedYear }, lang);
 const abs = (p: string) => new URL(p, Astro.site).href;
 const canonical = abs(paths[lang]);
 const ogImage = abs(`/og-${lang}.png`);
-const { desktop, mobile } = withJsonLd ? await heroSources() : { desktop: null, mobile: null };
+const { desktop, mobile } = preloadHero ? await heroSources() : { desktop: null, mobile: null };
 const homeUrl = abs(homePath(lang));
 
 const team = {
@@ -46,7 +50,7 @@ const team = {
   sameAs: Object.values(t.team.social),
 };
 // Only confirmed, upcoming races are announced to search engines.
-const events = (calendars.get(season) ?? [])
+const events = (withEvents ? (calendars.get(season) ?? []) : [])
   .filter(isConfirmedRace)
   .filter((e) => eventState(e, today) !== 'past')
   .map((e) => ({
@@ -99,7 +103,7 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': [team, ...events] }
 
     <link rel="preload" as="font" type="font/woff2" href={interLatin} crossorigin />
 
-    {withJsonLd && <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+    {!noindex && <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
   </head>
   <body data-today={todayOverridden ? today : undefined} data-lang={lang}>
     <a class="skip-link" href="#main">{t.a11y.skip}</a>

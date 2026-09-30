@@ -162,6 +162,27 @@ a:hover {
 .section--alt {
   background: var(--surface-alt);
 }
+.section[data-theme='dark'] {
+  background: var(--surface);
+}
+/* Sub-pages start with a plum intro that the floating header sits on. */
+.page-intro {
+  padding-top: calc(var(--header-h) + 16px + clamp(48px, 7vw, 96px));
+  padding-bottom: clamp(48px, 6vw, 80px);
+  background: var(--surface);
+  color: var(--ink);
+}
+.page-intro h1 {
+  font-size: var(--fs-chapter);
+  line-height: var(--lh-chapter);
+  letter-spacing: var(--ls-chapter);
+  margin-block: var(--s-3);
+}
+.page-intro p:not(.eyebrow) {
+  font-size: var(--fs-body-lg);
+  color: var(--ink-muted);
+  max-width: 60ch;
+}
 .section-head {
   display: grid;
   gap: var(--s-3);
@@ -238,10 +259,61 @@ a:hover {
 }
 
 .eyebrow {
-  font-size: var(--fs-body-sm);
+  font-size: var(--fs-eyebrow);
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: var(--ls-eyebrow);
   text-transform: uppercase;
+  color: var(--accent-strong);
+}
+[data-theme='dark'] .eyebrow {
+  color: var(--accent);
+}
+
+/* Chapter headings: large, regular weight, tight tracking */
+.chapter {
+  font-size: var(--fs-chapter);
+  line-height: var(--lh-chapter);
+  letter-spacing: var(--ls-chapter);
+  font-weight: 400;
+  text-wrap: balance;
+}
+.chapter-head {
+  display: grid;
+  gap: var(--s-3);
+  margin-bottom: var(--s-6);
+  max-width: 900px;
+}
+.chapter-head p:not(.eyebrow) {
+  font-size: var(--fs-body-lg);
+  color: var(--ink-muted);
+  max-width: 60ch;
+}
+.big-number {
+  font-size: var(--fs-number);
+  line-height: 1;
+  letter-spacing: var(--ls-number);
+  font-variant-numeric: tabular-nums;
+  font-weight: 400;
+}
+.text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-height: 44px;
+  font-weight: 700;
+  color: var(--accent-strong);
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+}
+[data-theme='dark'] .text-link {
+  color: var(--ink);
+}
+
+/* Dashed "coming soon" state: never a broken link */
+.soon {
+  border: 1.5px dashed var(--ink-subtle);
+  border-radius: var(--r-sm);
+  color: var(--ink-muted);
 }
 
 .card {

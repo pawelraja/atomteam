@@ -1,0 +1,77 @@
+[
+  {
+    "rider": "Julia Pośpiech",
+    "event": { "pl": "Młodzieżowe Mistrzostwa Polski na torze", "en": "Youth Polish Track Championships" },
+    "category": { "pl": "Juniorki · konkurencje nieolimpijskie", "en": "Junior · non-Olympic events" },
+    "discipline": "TRACK",
+    "championship": "national",
+    "place": 1,
+    "count": 4,
+    "verify": true
+  },
+  {
+    "rider": "Martyna Szczęsna",
+    "event": { "pl": "Młodzieżowe Mistrzostwa Polski na torze", "en": "Youth Polish Track Championships" },
+    "category": { "pl": "Konkurencje nieolimpijskie", "en": "Non-Olympic events" },
+    "discipline": "TRACK",
+    "championship": "national",
+    "place": 1,
+    "count": 4,
+    "verify": true
+  },
+  {
+    "rider": "Gabriela Kaczmarczyk",
+    "event": { "pl": "Młodzieżowe Mistrzostwa Polski na torze", "en": "Youth Polish Track Championships" },
+    "category": { "pl": "Konkurencje nieolimpijskie", "en": "Non-Olympic events" },
+    "discipline": "TRACK",
+    "championship": "national",
+    "place": 1,
+    "verify": true
+  },
+  {
+    "rider": "Gabriela Kaczmarczyk",
+    "event": { "pl": "Młodzieżowe Mistrzostwa Polski na torze", "en": "Youth Polish Track Championships" },
+    "category": { "pl": "Konkurencje nieolimpijskie", "en": "Non-Olympic events" },
+    "discipline": "TRACK",
+    "championship": "national",
+    "place": 3,
+    "verify": true
+  },
+  {
+    "rider": "Eliza Rabażyńska",
+    "event": { "pl": "Młodzieżowe Mistrzostwa Polski na torze", "en": "Youth Polish Track Championships" },
+    "category": { "pl": "Konkurencje nieolimpijskie", "en": "Non-Olympic events" },
+    "discipline": "TRACK",
+    "championship": "national",
+    "place": 2,
+    "count": 2,
+    "verify": true
+  },
+  {
+    "rider": "Alicja Matuła",
+    "event": { "pl": "Mistrzostwa Polski w maratonie MTB", "en": "Polish MTB Marathon Championships" },
+    "category": { "pl": "U23", "en": "U23" },
+    "discipline": "MTB",
+    "championship": "national",
+    "place": 1,
+    "verify": true
+  },
+  {
+    "rider": "Alicja Matuła",
+    "event": { "pl": "Mistrzostwa Polski w maratonie MTB", "en": "Polish MTB Marathon Championships" },
+    "category": { "pl": "Elita", "en": "Elite" },
+    "discipline": "MTB",
+    "championship": "national",
+    "place": 2,
+    "verify": true
+  },
+  {
+    "rider": "Julia Kołakowska",
+    "event": { "pl": "Mistrzostwa Polski w maratonie MTB", "en": "Polish MTB Marathon Championships" },
+    "category": { "pl": "Juniorki", "en": "Junior" },
+    "discipline": "MTB",
+    "championship": "national",
+    "place": 3,
+    "verify": true
+  }
+]

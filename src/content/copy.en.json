@@ -4,9 +4,31 @@
     "locale": "en-GB",
     "ogLocale": "en_GB",
     "title": "Mat Atom Deweloper Wrocław — UCI women's cycling team · Season {season}",
-    "description": "UCI Continental & Junior women's cycling team from Wrocław, Poland. Since {founded}. The {season} race calendar, our riders and how to partner with us.",
+    "description": "UCI Continental and Junior women's team from Wrocław, Poland. Since {founded}. Team, {season} race calendar, results and partnerships.",
     "ogHeadline": "Season {season}.",
-    "ogAlt": "Mat Atom Deweloper Wrocław — Season {season}"
+    "ogAlt": "Mat Atom Deweloper Wrocław — Season {season}",
+    "pages": {
+      "team": {
+        "title": "Team {season} — Mat Atom Deweloper Wrocław",
+        "description": "Continental and Junior riders and staff of Mat Atom Deweloper Wrocław."
+      },
+      "calendar": {
+        "title": "{season} race calendar — Mat Atom Deweloper Wrocław",
+        "description": "Every race of the {season} season: road, track, cyclocross. Dates, UCI classes and a results archive."
+      },
+      "partners": {
+        "title": "Partners and partnership {season} — Mat Atom Deweloper Wrocław",
+        "description": "Our partners, and what partnering with a UCI Continental team offers: kit placement, vehicles, media, events."
+      },
+      "media": {
+        "title": "Media centre — Mat Atom Deweloper Wrocław",
+        "description": "Team facts, boilerplate, logos, photo downloads, roster and press contact. No login required."
+      },
+      "rider": {
+        "title": "{name} — Mat Atom Deweloper Wrocław",
+        "description": "{name}, {squad} at Mat Atom Deweloper Wrocław. Profile, results and a downloadable portrait."
+      }
+    }
   },
   "team": {
     "name": "Mat Atom Deweloper Wrocław",
@@ -18,7 +40,8 @@
       "instagram": "https://www.instagram.com/atomdeweloper_team/",
       "facebook": "https://www.facebook.com/atom.deweloper.team",
       "linkedin": "https://www.linkedin.com/company/atomteampl/"
-    }
+    },
+    "instagramHandle": "@atomdeweloper_team"
   },
   "language": {
     "switchLabel": "Site language",
@@ -39,112 +62,221 @@
     "newTab": "(opens in a new tab)",
     "pauseTicker": "Pause animation",
     "playTicker": "Play animation",
-    "photoPlaceholder": "Photo coming soon: {alt}"
+    "photoPlaceholder": "Photo coming soon: {alt}",
+    "status": "Season news",
+    "breadcrumb": "You are here",
+    "pageNav": "On this page"
   },
   "nav": {
+    "home": "Home",
     "team": "Team",
     "calendar": "Calendar",
     "partners": "Partners",
+    "media": "Media",
     "contact": "Contact",
-    "subscribe": "Subscribe"
+    "cta": "Partner with us"
+  },
+  "status": {
+    "presentation": "{season} team presentation: {date} · {place}",
+    "days": {
+      "0": "today",
+      "1": "tomorrow",
+      "one": "in {n} day",
+      "other": "in {n} days"
+    },
+    "details": "Details"
   },
   "hero": {
-    "eyebrow": "Season {season} · Season {number}",
+    "eyebrow": "Women's cycling team from Wrocław",
     "title": "We are for women's cycling.",
-    "sub": "UCI Continental & Junior team from Wrocław. Since {founded}.",
+    "mission": "From junior to elite: we take riders through UCI races across Europe and build a sport where women belong.",
+    "primary": "Partner for {season}",
+    "secondary": "Meet the team",
     "alt": "Mat Atom Deweloper Wrocław riders in the peloton",
-    "preseason": {
-      "primary": "See the {season} calendar"
-    },
-    "racing": {
-      "primary": "Next race"
-    },
-    "offseason": {
-      "primary": "Our {season} in review"
-    },
-    "calendarFallback": "See the {season} calendar"
-  },
-  "presentation": {
-    "label": "Team presentation {season}",
-    "line": "{date} · {place}",
-    "days": {
-      "0": "Today",
-      "1": "Tomorrow",
-      "one": "In {n} day",
-      "few": "In {n} days",
-      "many": "In {n} days",
-      "other": "In {n} days"
-    },
-    "link": "Details"
-  },
-  "glance": {
-    "title": "The team at a glance.",
-    "since": {
-      "value": "Since {founded}",
-      "label": "Season {number} in {season}"
-    },
-    "riders": {
-      "value": {
-        "0": "{n} riders",
-        "1": "1 rider",
-        "one": "{n} rider",
-        "few": "{n} riders",
-        "many": "{n} riders",
-        "other": "{n} riders"
-      },
-      "label": "U19 · U23 · Elite"
-    },
-    "ridersUnconfirmed": {
-      "value": "U19 · U23 · Elite",
-      "label": "{season} roster announcement coming soon"
-    },
-    "level": {
-      "value": "UCI Continental",
-      "label": "+ Junior team"
-    },
-    "clubPro": {
-      "value": "Club Pro",
-      "label": "Ministry of Sport and Tourism programme"
+    "credentialsLabel": "The team in facts",
+    "credentials": {
+      "licence": { "term": "Licence", "value": "UCI Continental" },
+      "juniors": { "term": "Juniors", "value": "U19" },
+      "base": { "term": "Based in", "value": "Wrocław /POL" },
+      "founded": { "term": "Founded", "value": "{founded}" },
+      "programme": { "term": "Programme", "value": "Club Pro · Ministry of Sport" }
     }
   },
-  "recap": {
-    "title": "{season} in review.",
-    "lead": "Titles, podiums and a World Championships start.",
-    "stats": {
-      "races": {
-        "0": "races",
-        "1": "race",
-        "one": "race",
-        "few": "races",
-        "many": "races",
-        "other": "races"
-      },
-      "raceDays": {
-        "0": "race days",
-        "1": "race day",
-        "one": "race day",
-        "few": "race days",
-        "many": "race days",
-        "other": "race days"
-      },
-      "countries": {
-        "0": "countries",
-        "1": "country",
-        "one": "country",
-        "few": "countries",
-        "many": "countries",
-        "other": "countries"
-      },
-      "uciRaces": {
-        "0": "UCI races",
-        "1": "UCI race",
-        "one": "UCI race",
-        "few": "UCI races",
-        "many": "UCI races",
-        "other": "UCI races"
-      }
+  "numbers": {
+    "eyebrow": "Season {season} in numbers",
+    "title": "Numbers, not adjectives.",
+    "riders": {
+      "0": "riders",
+      "1": "rider",
+      "one": "rider",
+      "other": "riders"
     },
-    "calendarLink": "Full {season} calendar"
+    "splitFull": "{u19} U19 · {u23} U23 · {elite} Elite",
+    "splitCombined": "{u19} U19 · {rest} U23 and Elite",
+    "races": {
+      "0": "races on the calendar",
+      "1": "race on the calendar",
+      "one": "race on the calendar",
+      "other": "races on the calendar"
+    },
+    "racesNote": "Confirmed starts, training camps excluded",
+    "countries": {
+      "0": "countries raced",
+      "1": "country raced",
+      "one": "country raced",
+      "other": "countries raced"
+    },
+    "disciplines": {
+      "0": "disciplines",
+      "1": "discipline",
+      "one": "discipline",
+      "other": "disciplines"
+    },
+    "source": "Counted from the {season} calendar and roster."
+  },
+  "approach": {
+    "eyebrow": "Our approach",
+    "title": "One team from junior to elite.",
+    "lead": "Juniors train and race alongside our Continental riders. Same staff, same plan, same jersey.",
+    "pathwayLabel": "Rider pathway within the team",
+    "stages": {
+      "U19": { "name": "Juniors", "sub": "U19" },
+      "U23": { "name": "Under 23", "sub": "U23" },
+      "ELITE": { "name": "Elite", "sub": "Elite" }
+    },
+    "stageCount": {
+      "0": "{n} riders",
+      "1": "1 rider",
+      "one": "{n} rider",
+      "other": "{n} riders"
+    },
+    "combinedCount": "{n} across U23 and Elite",
+    "rosterSeason": "{season} roster",
+    "pillars": {
+      "staff": {
+        "title": "Staff",
+        "text": "The professionals who run the team all season:"
+      },
+      "clubPro": {
+        "title": "Club Pro",
+        "text": "We are part of the Ministry of Sport and Tourism and Fundacja Lotto programme for clubs that develop young athletes at the highest level."
+      },
+      "uci": {
+        "title": "UCI races",
+        "text": "The top-class races we rode in {season}:",
+        "empty": "We publish the {season} UCI race calendar as organisers confirm their dates."
+      }
+    }
+  },
+  "results": {
+    "eyebrow": "Results {season}",
+    "title": "Medals from the Polish Championships.",
+    "titles": {
+      "0": "Polish national titles",
+      "1": "Polish national title",
+      "one": "Polish national title",
+      "other": "Polish national titles"
+    },
+    "medals": {
+      "0": "Polish Championship medals",
+      "1": "Polish Championship medal",
+      "one": "Polish Championship medal",
+      "other": "Polish Championship medals"
+    },
+    "figuresNote": "Across all age categories and disciplines.",
+    "tableCaption": "Rider results in the {season} season",
+    "place": "Place",
+    "rider": "Rider",
+    "event": "Event",
+    "placeName": {
+      "1": "gold",
+      "2": "silver",
+      "3": "bronze",
+      "other": "{n}th place"
+    },
+    "times": "{n}×",
+    "timesLong": "{n} times"
+  },
+  "teamSection": {
+    "eyebrow": "Team",
+    "titleConfirmed": "Team {season}.",
+    "titleProvisional": "Team {season}.",
+    "provisionalNote": "Roster announcement coming soon.",
+    "titleFallback": "Our {season} riders.",
+    "fallbackNote": "The {next} roster will be announced soon.",
+    "tabs": {
+      "continental": "Continental team",
+      "junior": "Junior team",
+      "staff": "Staff"
+    },
+    "continentalIntro": "Our CONTINENTAL TEAM races UCI events across Europe.",
+    "juniorIntro": "White jersey with pink sleeves? That's our Junior team.",
+    "staffIntro": "The people without whom no race would happen.",
+    "newPill": "New for {season}",
+    "emptySquad": "This squad will be announced soon.",
+    "profileLink": "Rider profile",
+    "allRiders": "Full team"
+  },
+  "teaser": {
+    "eyebrow": "Calendar {season}",
+    "title": "Where we race.",
+    "provisional": "Provisional calendar. Dates are confirmed as race organisers publish them.",
+    "fullCalendar": "Full calendar",
+    "complete": "Season {season} complete. Every race is in the archive.",
+    "next": "Next",
+    "more": "+ {n} more in the calendar"
+  },
+  "brand": {
+    "eyebrow": "For partners",
+    "title": "Your brand in the peloton.",
+    "lead": "The team kit is seen in every race, on every podium and in every post. Your logo rides with us.",
+    "diagramLabel": "Diagram of the team kit with numbered partner logo positions",
+    "fields": [
+      { "n": 1, "title": "Jersey front", "text": "Chest and stomach: the position seen in finish-line and podium photos." },
+      { "n": 2, "title": "Sleeves", "text": "Visible from the side of the peloton and in motorbike shots." },
+      { "n": 3, "title": "Side panel and shorts", "text": "Jersey sides and shorts legs: visible in every side-on shot." }
+    ],
+    "beyondTitle": "+ Beyond the kit",
+    "beyond": ["Team vehicles", "Social media", "Press materials", "Events and hospitality"],
+    "caption": "Example placement. Final positions are set by the team."
+  },
+  "wall": {
+    "eyebrow": "Partners",
+    "titleCurrent": "Our {season} partners.",
+    "titleThanks": "Thank you to our {season} partners.",
+    "thanksNote": "We will introduce our {next} partners together with the team.",
+    "technical": "Technical partners",
+    "allPartners": "All partners"
+  },
+  "cta": {
+    "eyebrow": "Partnership {season}",
+    "title": "Ride with us in {season}.",
+    "lead": "We are looking for partners who want to build women's cycling with us. Let's talk about what we can do together.",
+    "book": "Book a call",
+    "mailSubject": "Partnership {season}",
+    "deck": "Partner deck PDF",
+    "deckSoon": "coming soon",
+    "contactLabel": "Your contact"
+  },
+  "contactCard": {
+    "call": "Call: {phone}",
+    "write": "Email: {email}"
+  },
+  "mediaTeaser": {
+    "eyebrow": "For media",
+    "title": "Materials, no login.",
+    "lead": "Everything a newsroom needs, one click away.",
+    "tiles": {
+      "logos": { "title": "Logos", "text": "SVG and PNG" },
+      "photos": { "title": "Race photos", "text": "Full resolution" },
+      "portraits": { "title": "Rider portraits", "text": "The whole roster" },
+      "info": { "title": "Team information", "text": "PDF · PL and EN" }
+    },
+    "link": "Media centre"
+  },
+  "gallery": {
+    "title": "From the road.",
+    "credit": "Photo: {credit}"
   },
   "nextRace": {
     "title": "Next race.",
@@ -153,61 +285,38 @@
       "0": "Starts today",
       "1": "Starts tomorrow",
       "one": "{n} day to go",
-      "few": "{n} days to go",
-      "many": "{n} days to go",
       "other": "{n} days to go"
     },
     "addToCalendar": "Add to calendar",
     "soonTitle": "{season} calendar coming soon.",
     "soonLine": "Dates are confirmed as race organisers publish them.",
-    "soonMonth": "The season opens {month}.",
+    "soonMonth": "Season opens in {month}.",
     "monthsIn": [
-      "in January",
-      "in February",
-      "in March",
-      "in April",
-      "in May",
-      "in June",
-      "in July",
-      "in August",
-      "in September",
-      "in October",
-      "in November",
-      "in December"
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December"
     ],
     "soonCta": "Get the {season} calendar first",
     "completeTitle": "Season {season} complete.",
-    "completeLine": "Thank you for riding along with us.",
+    "completeLine": "Thank you for riding with us.",
     "completeCta": "See the full calendar"
   },
-  "story": {
-    "title": "Race days.",
-    "open": "Enlarge photo: {alt}",
-    "credit": "Photo: {credit}",
-    "close": "Close",
-    "prev": "Previous photo",
-    "next": "Next photo",
-    "counter": "{i} of {n}"
-  },
-  "teamSection": {
-    "titleConfirmed": "Team {season}.",
-    "titleProvisional": "Team {season}.",
-    "provisionalNote": "Roster announcement coming soon.",
-    "titleFallback": "Our {season} riders.",
-    "fallbackNote": "{next} roster announcement coming soon.",
-    "tabs": {
-      "continental": "Continental team",
-      "junior": "Junior team",
-      "staff": "Staff"
-    },
-    "continentalIntro": "Meet our CONTINENTAL team — we race UCI events across Europe.",
-    "juniorIntro": "White jersey with pink sleeves? That's our Junior team.",
-    "staffIntro": "The people who make every start happen.",
-    "newPill": "New for {season}",
-    "emptySquad": "This squad will be announced soon."
+  "calendarPage": {
+    "eyebrow": "Season {season} · Season {number} for the team",
+    "title": "Race calendar.",
+    "lead": "Road, track and cyclocross. UCI races across Europe and national events in Poland."
   },
   "calendar": {
-    "title": "Race calendar.",
+    "title": "Every race.",
     "seasonSwitch": "Season",
     "archive": "{season} archive",
     "provisional": "Provisional calendar — dates are confirmed as race organisers publish them. Races without dates show the month only.",
@@ -223,17 +332,15 @@
     "monthsLabel": "Jump to month",
     "showPast": "Show past races",
     "showAllMonths": "Show all months · {n} more",
-    "showFewerMonths": "Show fewer months",
+    "showFewerMonths": "Show fewer",
     "count": {
-      "0": "No races match this filter.",
+      "0": "No races for this filter.",
       "1": "1 entry",
       "one": "{n} entry",
-      "few": "{n} entries",
-      "many": "{n} entries",
       "other": "{n} entries"
     },
     "status": {
-      "past": "Past",
+      "past": "Finished",
       "live": "Racing now",
       "upcoming": "Upcoming",
       "next": "Next race",
@@ -252,7 +359,7 @@
     "result": "Result",
     "dates": "Dates",
     "subscribe": "Subscribe to the {season} calendar (.ics)",
-    "subscribeNote": "The {season} calendar feed lists confirmed races only.",
+    "subscribeNote": "The {season} calendar contains confirmed races only.",
     "countryNames": {
       "POL": "Poland",
       "CRO": "Croatia",
@@ -276,10 +383,15 @@
       "USA": "United States"
     }
   },
+  "partnersPage": {
+    "eyebrow": "Partnership {season}",
+    "title": "Partners.",
+    "lead": "Every race we ride is made possible by the companies and institutions behind the team."
+  },
   "partners": {
     "titleCurrent": "Our {season} partners.",
     "titleThanks": "Thank you to our {season} partners.",
-    "thanksNote": "Our {next} partners will be announced with the team.",
+    "thanksNote": "We will introduce our {next} partners together with the team.",
     "tiers": {
       "title": "Title sponsor",
       "main": "Main sponsors",
@@ -290,26 +402,128 @@
     "visit": "{name} — partner website",
     "logoPlaceholder": "Logo: {file}"
   },
-  "movement": {
-    "title": "More than a team.",
-    "body": "We're not just a cycling team — we're a movement. We empower women, promote diversity and build a culture of inclusivity in the sport, one race at a time."
+  "teamPage": {
+    "eyebrow": "Season {season}",
+    "title": "Team.",
+    "lead": "Continental team, juniors and staff. Choose a rider to see her profile and results."
+  },
+  "rider": {
+    "back": "Full team",
+    "squad": {
+      "continental": "Continental team rider",
+      "junior": "Junior team rider"
+    },
+    "squadShort": {
+      "continental": "Continental",
+      "junior": "Junior"
+    },
+    "category": {
+      "U19": "Junior (U19)",
+      "U23": "U23",
+      "ELITE": "Elite"
+    },
+    "facts": "Rider details",
+    "nationality": "Nationality",
+    "team": "Squad",
+    "categoryLabel": "Category",
+    "seasons": "Seasons with the team",
+    "instagram": "Instagram",
+    "results": "Results.",
+    "download": "Download portrait (JPG, {size})",
+    "downloadSoon": "Portrait download coming soon",
+    "photoCredit": "Credit as “Photo: MADW” when published."
+  },
+  "mediaPage": {
+    "eyebrow": "For media",
+    "title": "Media centre.",
+    "lead": "No login, no forms. Every file is a direct download.",
+    "nav": {
+      "facts": "Facts",
+      "files": "Files",
+      "photos": "Photos",
+      "roster": "Roster",
+      "press": "Contact"
+    },
+    "factsTitle": "Fact sheet.",
+    "facts": {
+      "name": "Full name",
+      "licence": "Licence",
+      "licenceValue": "UCI Continental Team + Junior team",
+      "founded": "Founded",
+      "foundedValue": "{founded}, Wrocław · {season} is season {number}",
+      "roster": "Roster {season}",
+      "rosterValue": "{total} riders: {continental} Continental, {junior} Junior",
+      "management": "Management",
+      "disciplines": "Disciplines",
+      "programme": "Programme",
+      "programmeValue": "Club Pro — Ministry of Sport and Tourism / Fundacja Lotto",
+      "contact": "Contact"
+    },
+    "boilerplateTitle": "Boilerplate.",
+    "boilerplateLangs": "Boilerplate language",
+    "boilerplateText": "Mat Atom Deweloper Wrocław is a women's cycling team from Wrocław, Poland, founded in 2016. It holds a UCI Continental licence and runs a junior team, so riders develop within one squad from U19 to elite. The team races UCI events across Europe and national competitions on the road, on the track and in cyclocross. It is a member of the Club Pro programme of Poland's Ministry of Sport and Tourism and Fundacja Lotto. The title sponsor is Mat Atom Deweloper.",
+    "words": {
+      "0": "{n} words",
+      "1": "1 word",
+      "one": "{n} word",
+      "other": "{n} words"
+    },
+    "copy": "Copy text",
+    "copied": "Copied",
+    "copyFallback": "Text selected — press Ctrl+C to copy",
+    "filesTitle": "Downloads.",
+    "download": "Download",
+    "soon": "Coming soon",
+    "photosTitle": "Photos.",
+    "photosLead": "Originals are at least 3000 px on the long side.",
+    "photoFilters": {
+      "all": "All",
+      "race": "Races",
+      "track": "Track",
+      "portrait": "Portraits",
+      "team": "Team"
+    },
+    "photoFiltersLabel": "Photo category",
+    "downloadOriginal": "Download original · {size}",
+    "photoSoon": "Photo coming soon",
+    "rosterTitle": "Roster {season}.",
+    "rosterNote": "The {next} roster will appear here once it is officially announced.",
+    "rosterTable": {
+      "caption": "Team roster, {season} season",
+      "rider": "Rider",
+      "nationality": "Nationality",
+      "squad": "Squad",
+      "instagram": "Instagram",
+      "materials": "Materials",
+      "profile": "Profile",
+      "portrait": "Portrait"
+    },
+    "pressTitle": "Interviews and accreditation.",
+    "pressLead": "Want to interview a rider or get accredited for a race? Get in touch.",
+    "responseTime": "We reply {time}.",
+    "pressFallback": "Email {email}.",
+    "rulesTitle": "Usage rules.",
+    "rules": [
+      "Materials are for editorial use only.",
+      "Photo credit: “Fot. [photographer] / MADW”.",
+      "Do not alter the logos: no distortion, effects or colour changes.",
+      "Commercial use by agreement with the team only."
+    ]
   },
   "contact": {
-    "title": "Get in touch.",
-    "lead": "Press, partners, future riders — we answer everyone.",
-    "follow": "Follow the team",
+    "title": "Contact.",
     "newsletterTitle": "Get the {season} calendar first.",
     "emailLabel": "Email",
     "required": "(required)",
-    "consent": "Yes, subscribe me to your newsletter. I can unsubscribe at any time.",
+    "consent": "Yes, send me the newsletter. I can unsubscribe at any time.",
     "consentPrivacy": "Privacy policy",
-    "submit": "Submit",
+    "submit": "Sign me up",
     "sending": "Sending…",
-    "success": "You're in. You'll get the {season} calendar first.",
+    "success": "You're on the list. You'll get the {season} calendar first.",
     "errorEmail": "Enter a valid email address.",
     "errorConsent": "Tick the box so we can email you.",
-    "errorNetwork": "That didn't go through. Try again, or write to us at {email}.",
-    "errorNotLive": "Sign-ups open soon. Until then, write to us at {email}."
+    "errorNetwork": "That didn't go through. Try again or email {email}.",
+    "errorNotLive": "Sign-ups open soon. Until then, email us: {email}."
   },
   "privacyPage": {
     "title": "Privacy policy.",
@@ -317,17 +531,15 @@
     "back": "Back to the home page"
   },
   "footer": {
-    "copyright": "© {year} {team}",
-    "partnersLabel": "{season} partners:",
-    "partnersMore": {
-      "0": "",
-      "1": "and 1 technical partner",
-      "one": "and {n} technical partner",
-      "few": "and {n} technical partners",
-      "many": "and {n} technical partners",
-      "other": "and {n} technical partners"
+    "boilerplate": "Women's cycling team from Wrocław. UCI Continental and Junior, since {founded}.",
+    "columns": {
+      "team": "Team",
+      "collab": "Work with us",
+      "follow": "Follow"
     },
-    "privacy": "Privacy policy",
-    "privacyUrl": "/en/privacy/"
+    "results": "Results",
+    "partnerWithUs": "Partner with us",
+    "copyright": "© {year} {team}",
+    "privacy": "Privacy policy"
   }
 }

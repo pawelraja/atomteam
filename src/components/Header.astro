@@ -5,26 +5,32 @@ import Social from './Social.astro';
 import { anchor } from '../lib/anchors';
 import { copy, type Lang } from '../lib/i18n';
 import { brandLogoExists } from '../lib/images';
+import { route, type PageKey } from '../lib/routes';
 
 interface Props {
   lang: Lang;
+  page: PageKey;
+  /** This page in each language, for the language switch. */
+  paths: Record<Lang, string>;
 }
-const { lang } = Astro.props;
+const { lang, page, paths } = Astro.props;
 const t = copy(lang);
 const nav = [
-  { href: `#${anchor(lang, 'team')}`, label: t.nav.team },
-  { href: `#${anchor(lang, 'calendar')}`, label: t.nav.calendar },
-  { href: `#${anchor(lang, 'partners')}`, label: t.nav.partners },
-  { href: `#${anchor(lang, 'contact')}`, label: t.nav.contact },
+  { key: 'team', href: route(lang, 'team'), label: t.nav.team },
+  { key: 'calendar', href: route(lang, 'calendar'), label: t.nav.calendar },
+  { key: 'partners', href: route(lang, 'partners'), label: t.nav.partners },
+  { key: 'media', href: route(lang, 'media'), label: t.nav.media },
+  { key: 'contact', href: `#${anchor(lang, 'contact')}`, label: t.nav.contact },
 ];
-const ctaHref = `#${anchor(lang, 'newsletter')}`;
+const current = (key: string) => (key === page ? 'page' : undefined);
+const ctaHref = `${route(lang, 'partners')}#${anchor(lang, 'cta')}`;
 // Drop the official logo at public/brand/logo.svg and it replaces the text wordmark.
 const hasLogo = brandLogoExists();
 ---
 
 <header class="site-header">
   <div class="bar">
-    <a class="wordmark" href={`#${anchor(lang, 'top')}`} aria-label={t.a11y.home}>
+    <a class="wordmark" href={route(lang, 'home')} aria-label={t.a11y.home} aria-current={current('home')}>
       {
         hasLogo ? (
           <img src="/brand/logo.svg" alt="" width="180" height="40" />
@@ -38,15 +44,15 @@ const hasLogo = brandLogoExists();
 
     <nav class="nav" aria-label={t.a11y.mainNav}>
       <ul role="list">
-        {nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+        {nav.map((n) => <li><a href={n.href} aria-current={current(n.key)}>{n.label}</a></li>)}
       </ul>
     </nav>
 
     <div class="end">
-      <LangSwitch lang={lang} class="desk-only" />
+      <LangSwitch lang={lang} paths={paths} class="desk-only" />
       <Social lang={lang} class="header-social desk-only" />
-      <a class="btn btn--primary cta desk-only" href={ctaHref}>{t.nav.subscribe}</a>
-      <LangSwitch lang={lang} variant="single" class="mobile-only" />
+      <a class="btn btn--primary cta desk-only" href={ctaHref}>{t.nav.cta}</a>
+      <LangSwitch lang={lang} paths={paths} variant="single" class="mobile-only" />
       <button class="burger mobile-only" type="button" aria-haspopup="dialog" aria-controls="mobile-menu" aria-expanded="false" data-menu-open>
         <Icon name="menu" />
         <span class="visually-hidden">{t.a11y.openMenu}</span>
@@ -65,18 +71,19 @@ const hasLogo = brandLogoExists();
   </div>
   <nav aria-label={t.a11y.mainNav}>
     <ul role="list" class="menu__list">
-      {nav.map((n) => <li><a href={n.href} data-menu-link>{n.label}</a></li>)}
+      <li><a href={route(lang, 'home')} data-menu-link aria-current={current('home')}>{t.nav.home}</a></li>
+      {nav.map((n) => <li><a href={n.href} data-menu-link aria-current={current(n.key)}>{n.label}</a></li>)}
     </ul>
   </nav>
   <div class="menu__foot">
-    <a class="btn btn--primary" href={ctaHref} data-menu-link>{t.nav.subscribe}</a>
+    <a class="btn btn--primary" href={ctaHref} data-menu-link>{t.nav.cta}</a>
     <Social lang={lang} size={26} />
   </div>
 </dialog>
 
 <script>
   import { ANCHORS, type AnchorKey } from '../lib/anchors';
-  import { homePath, type Lang } from '../lib/text';
+  import type { Lang } from '../lib/text';
 
   const menu = document.getElementById('mobile-menu') as HTMLDialogElement;
   const opener = document.querySelector<HTMLButtonElement>('[data-menu-open]')!;
@@ -87,15 +94,15 @@ const hasLogo = brandLogoExists();
   menu.addEventListener('close', () => opener.setAttribute('aria-expanded', 'false'));
   menu.querySelector('[data-menu-close]')!.addEventListener('click', () => menu.close());
   menu.querySelectorAll('[data-menu-link]').forEach((a) => a.addEventListener('click', () => menu.close()));
-  matchMedia('(min-width: 1100px)').addEventListener('change', (e) => e.matches && menu.open && menu.close());
+  matchMedia('(min-width: 1180px)').addEventListener('change', (e) => e.matches && menu.open && menu.close());
 
-  // Keep the language links pointing at the section currently on screen.
+  // Keep the language links pointing at the section currently on screen, on the same page.
   const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-lang-link]')];
   const sections = [...document.querySelectorAll<HTMLElement>('[data-section]')];
   const setTarget = (key: AnchorKey) => {
     for (const a of links) {
-      const l = a.dataset.langLink as Lang;
-      a.href = `${homePath(l)}#${ANCHORS[l][key]}`;
+      const hash = ANCHORS[a.dataset.langLink as Lang][key];
+      if (hash) a.href = `${a.dataset.langBase}#${hash}`;
     }
   };
   if (links.length && sections.length && 'IntersectionObserver' in window) {
@@ -113,10 +120,13 @@ const hasLogo = brandLogoExists();
 </script>
 
 <style>
+  /* Floats over the page: sticks 16px from the top; its own height is taken back with a
+     negative margin so the hero / page intro runs underneath it. */
   .site-header {
-    position: fixed;
-    inset: 16px 16px auto 16px;
+    position: sticky;
+    top: 16px;
     z-index: 50;
+    margin: 16px 16px calc(-1 * (var(--header-h) + 16px));
   }
   .bar {
     display: flex;
@@ -159,6 +169,12 @@ const hasLogo = brandLogoExists();
     color: #000;
     background: rgba(255, 102, 237, 0.25);
   }
+  .nav a[aria-current='page'] {
+    text-decoration: underline;
+    text-decoration-color: var(--accent-strong);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 6px;
+  }
   .end {
     display: flex;
     align-items: center;
@@ -184,12 +200,12 @@ const hasLogo = brandLogoExists();
     display: none;
   }
 
-  @media (max-width: 1279px) {
+  @media (max-width: 1439px) {
     .end :global(.header-social) {
       display: none;
     }
   }
-  @media (max-width: 1099px) {
+  @media (max-width: 1179px) {
     .nav,
     .end :global(.desk-only) {
       display: none;
@@ -240,8 +256,8 @@ const hasLogo = brandLogoExists();
   }
   .menu__list {
     display: grid;
-    gap: var(--s-2);
-    padding: var(--s-6) 20px;
+    gap: var(--s-1);
+    padding: var(--s-5) 20px;
   }
   .menu__list a {
     display: inline-block;
@@ -250,7 +266,8 @@ const hasLogo = brandLogoExists();
     line-height: var(--lh-h2);
     text-decoration: none;
   }
-  .menu__list a:hover {
+  .menu__list a:hover,
+  .menu__list a[aria-current='page'] {
     color: var(--accent);
   }
   .menu__foot {

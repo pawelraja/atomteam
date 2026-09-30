@@ -1,0 +1,98 @@
+---
+// A named contact from site.json (partnerContact / pressContact). Renders nothing until the
+// team fills in at least a name and an e-mail or phone — never a placeholder card.
+import { copy, fill, pick, type Lang } from '../lib/i18n';
+import type { Contact } from '../lib/schemas';
+import { isContactComplete } from '../lib/showcase';
+import Icon from './Icon.astro';
+import Photo from './Photo.astro';
+
+interface Props {
+  lang: Lang;
+  contact: Contact | null;
+  label: string;
+}
+const { lang, contact, label } = Astro.props;
+const t = copy(lang);
+const c = isContactComplete(contact) ? contact! : null;
+const tel = c?.phone ? `tel:${c.phone.replace(/[^+0-9]/g, '')}` : null;
+---
+
+{
+  c && (
+    <div class="contact-card">
+      {c.photo && (
+        <div class="contact-card__photo">
+          <Photo lang={lang} dir="riders" file={c.photo} alt="" decorative aspect="1:1" sizes="96px" widths={[96, 192]} />
+        </div>
+      )}
+      <div class="contact-card__body">
+        <p class="eyebrow">{label}</p>
+        <p class="contact-card__name">{c.name}</p>
+        {c.role && <p class="contact-card__role">{pick(lang, c.role)}</p>}
+        <ul role="list" class="contact-card__links">
+          {tel && (
+            <li>
+              <a href={tel}>
+                <Icon name="phone" size={18} />
+                {fill(t.contactCard.call, { phone: c.phone! })}
+              </a>
+            </li>
+          )}
+          {c.email && (
+            <li>
+              <a href={`mailto:${c.email}`}>
+                <Icon name="mail" size={18} />
+                {fill(t.contactCard.write, { email: c.email })}
+              </a>
+            </li>
+          )}
+        </ul>
+      </div>
+    </div>
+  )
+}
+
+<style>
+  .contact-card {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--s-4);
+    align-items: start;
+    padding: var(--s-4);
+    border-radius: var(--r-card);
+    background: var(--surface-alt);
+    box-shadow: var(--shadow-card);
+  }
+  .contact-card:not(:has(.contact-card__photo)) {
+    grid-template-columns: 1fr;
+  }
+  .contact-card__photo {
+    width: 96px;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+  .contact-card__body {
+    display: grid;
+    gap: 4px;
+  }
+  .contact-card__name {
+    font-size: var(--fs-h3);
+    line-height: 1.2;
+  }
+  .contact-card__role {
+    color: var(--ink-muted);
+  }
+  .contact-card__links {
+    display: grid;
+    gap: 2px;
+    margin-top: var(--s-2);
+  }
+  .contact-card__links a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    min-height: 44px;
+    word-break: break-word;
+  }
+</style>

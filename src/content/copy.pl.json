@@ -4,9 +4,31 @@
     "locale": "pl-PL",
     "ogLocale": "pl_PL",
     "title": "Mat Atom Deweloper Wrocław — kobieca drużyna kolarska UCI · Sezon {season}",
-    "description": "Drużyna UCI Continental i juniorska z Wrocławia. Od {founded} roku. Kalendarz wyścigów {season}, zawodniczki i partnerstwo z nami.",
+    "description": "Drużyna UCI Continental i juniorska z Wrocławia. Od {founded} roku. Zespół, kalendarz wyścigów {season}, wyniki i partnerstwo.",
     "ogHeadline": "Sezon {season}.",
-    "ogAlt": "Mat Atom Deweloper Wrocław — Sezon {season}"
+    "ogAlt": "Mat Atom Deweloper Wrocław — Sezon {season}",
+    "pages": {
+      "team": {
+        "title": "Zespół {season} — Mat Atom Deweloper Wrocław",
+        "description": "Zawodniczki drużyny kontynentalnej i juniorskiej oraz sztab Mat Atom Deweloper Wrocław."
+      },
+      "calendar": {
+        "title": "Kalendarz wyścigów {season} — Mat Atom Deweloper Wrocław",
+        "description": "Wszystkie wyścigi sezonu {season}: szosa, tor, przełaj. Daty, kategorie UCI i archiwum wyników."
+      },
+      "partners": {
+        "title": "Partnerzy i partnerstwo {season} — Mat Atom Deweloper Wrocław",
+        "description": "Nasi partnerzy i to, co daje partnerstwo z drużyną UCI Continental: miejsce na stroju, pojazdy, media, wydarzenia."
+      },
+      "media": {
+        "title": "Strefa mediów — Mat Atom Deweloper Wrocław",
+        "description": "Fakty o drużynie, notka prasowa, logotypy, zdjęcia do pobrania, skład i kontakt dla mediów. Bez logowania."
+      },
+      "rider": {
+        "title": "{name} — Mat Atom Deweloper Wrocław",
+        "description": "{name}, {squad} Mat Atom Deweloper Wrocław. Profil, wyniki i portret do pobrania."
+      }
+    }
   },
   "team": {
     "name": "Mat Atom Deweloper Wrocław",
@@ -18,7 +40,8 @@
       "instagram": "https://www.instagram.com/atomdeweloper_team/",
       "facebook": "https://www.facebook.com/atom.deweloper.team",
       "linkedin": "https://www.linkedin.com/company/atomteampl/"
-    }
+    },
+    "instagramHandle": "@atomdeweloper_team"
   },
   "language": {
     "switchLabel": "Język strony",
@@ -39,112 +62,237 @@
     "newTab": "(otwiera się w nowej karcie)",
     "pauseTicker": "Zatrzymaj animację",
     "playTicker": "Wznów animację",
-    "photoPlaceholder": "Zdjęcie wkrótce: {alt}"
+    "photoPlaceholder": "Zdjęcie wkrótce: {alt}",
+    "status": "Aktualności sezonu",
+    "breadcrumb": "Jesteś tutaj",
+    "pageNav": "Na tej stronie"
   },
   "nav": {
+    "home": "Start",
     "team": "Zespół",
     "calendar": "Kalendarz",
     "partners": "Partnerzy",
+    "media": "Media",
     "contact": "Kontakt",
-    "subscribe": "Subskrybuj"
+    "cta": "Zostań partnerem"
+  },
+  "status": {
+    "presentation": "Prezentacja drużyny {season}: {date} · {place}",
+    "days": {
+      "0": "dziś",
+      "1": "jutro",
+      "one": "za {n} dzień",
+      "few": "za {n} dni",
+      "many": "za {n} dni",
+      "other": "za {n} dnia"
+    },
+    "details": "Szczegóły"
   },
   "hero": {
-    "eyebrow": "Sezon {season} · {number}. sezon",
+    "eyebrow": "Kobieca drużyna kolarska z Wrocławia",
     "title": "Jesteśmy dla kobiecego kolarstwa.",
-    "sub": "Drużyna UCI Continental i juniorska z Wrocławia. Od {founded} roku.",
+    "mission": "Od juniorki do elity: prowadzimy zawodniczki przez wyścigi UCI w całej Europie i budujemy sport, w którym kobiety mają swoje miejsce.",
+    "primary": "Zostań partnerem {season}",
+    "secondary": "Poznaj zespół",
     "alt": "Zawodniczki Mat Atom Deweloper Wrocław w peletonie",
-    "preseason": {
-      "primary": "Zobacz kalendarz {season}"
-    },
-    "racing": {
-      "primary": "Najbliższy wyścig"
-    },
-    "offseason": {
-      "primary": "Podsumowanie sezonu {season}"
-    },
-    "calendarFallback": "Zobacz kalendarz {season}"
-  },
-  "presentation": {
-    "label": "Prezentacja drużyny {season}",
-    "line": "{date} · {place}",
-    "days": {
-      "0": "Dziś",
-      "1": "Jutro",
-      "one": "Za {n} dzień",
-      "few": "Za {n} dni",
-      "many": "Za {n} dni",
-      "other": "Za {n} dnia"
-    },
-    "link": "Szczegóły"
-  },
-  "glance": {
-    "title": "Drużyna w skrócie.",
-    "since": {
-      "value": "Od {founded}",
-      "label": "{number}. sezon w {season}"
-    },
-    "riders": {
-      "value": {
-        "0": "{n} zawodniczek",
-        "1": "1 zawodniczka",
-        "one": "{n} zawodniczka",
-        "few": "{n} zawodniczki",
-        "many": "{n} zawodniczek",
-        "other": "{n} zawodniczki"
-      },
-      "label": "U19 · U23 · Elita"
-    },
-    "ridersUnconfirmed": {
-      "value": "U19 · U23 · Elita",
-      "label": "Skład na {season} ogłosimy wkrótce"
-    },
-    "level": {
-      "value": "UCI Continental",
-      "label": "+ drużyna juniorska"
-    },
-    "clubPro": {
-      "value": "Klub Pro",
-      "label": "Program Ministerstwa Sportu i Turystyki"
+    "credentialsLabel": "Drużyna w faktach",
+    "credentials": {
+      "licence": { "term": "Licencja", "value": "UCI Continental" },
+      "juniors": { "term": "Juniorki", "value": "U19" },
+      "base": { "term": "Siedziba", "value": "Wrocław /POL" },
+      "founded": { "term": "Założona", "value": "{founded}" },
+      "programme": { "term": "Program", "value": "Klub Pro · MSiT" }
     }
   },
-  "recap": {
-    "title": "Sezon {season}.",
-    "lead": "Tytuły, podia i start w mistrzostwach świata.",
-    "stats": {
-      "races": {
-        "0": "wyścigów",
-        "1": "wyścig",
-        "one": "wyścig",
-        "few": "wyścigi",
-        "many": "wyścigów",
-        "other": "wyścigu"
-      },
-      "raceDays": {
-        "0": "dni ścigania",
-        "1": "dzień ścigania",
-        "one": "dzień ścigania",
-        "few": "dni ścigania",
-        "many": "dni ścigania",
-        "other": "dnia ścigania"
-      },
-      "countries": {
-        "0": "krajów",
-        "1": "kraj",
-        "one": "kraj",
-        "few": "kraje",
-        "many": "krajów",
-        "other": "kraju"
-      },
-      "uciRaces": {
-        "0": "wyścigów UCI",
-        "1": "wyścig UCI",
-        "one": "wyścig UCI",
-        "few": "wyścigi UCI",
-        "many": "wyścigów UCI",
-        "other": "wyścigu UCI"
-      }
+  "numbers": {
+    "eyebrow": "Sezon {season} w liczbach",
+    "title": "Liczby zamiast przymiotników.",
+    "riders": {
+      "0": "zawodniczek",
+      "1": "zawodniczka",
+      "one": "zawodniczka",
+      "few": "zawodniczki",
+      "many": "zawodniczek",
+      "other": "zawodniczki"
     },
-    "calendarLink": "Pełny kalendarz {season}"
+    "splitFull": "{u19} U19 · {u23} U23 · {elite} Elita",
+    "splitCombined": "{u19} U19 · {rest} U23 i Elita",
+    "races": {
+      "0": "wyścigów w kalendarzu",
+      "1": "wyścig w kalendarzu",
+      "one": "wyścig w kalendarzu",
+      "few": "wyścigi w kalendarzu",
+      "many": "wyścigów w kalendarzu",
+      "other": "wyścigu w kalendarzu"
+    },
+    "racesNote": "Potwierdzone starty, bez obozów",
+    "countries": {
+      "0": "krajów na trasie",
+      "1": "kraj na trasie",
+      "one": "kraj na trasie",
+      "few": "kraje na trasie",
+      "many": "krajów na trasie",
+      "other": "kraju na trasie"
+    },
+    "disciplines": {
+      "0": "dyscyplin",
+      "1": "dyscyplina",
+      "one": "dyscyplina",
+      "few": "dyscypliny",
+      "many": "dyscyplin",
+      "other": "dyscypliny"
+    },
+    "source": "Policzone z kalendarza i składu sezonu {season}."
+  },
+  "approach": {
+    "eyebrow": "Nasze podejście",
+    "title": "Jedna drużyna od juniorki do elity.",
+    "lead": "Juniorki trenują i ścigają się obok zawodniczek kontynentalnych. Ten sam sztab, ten sam plan, ta sama koszulka.",
+    "pathwayLabel": "Ścieżka rozwoju w drużynie",
+    "stages": {
+      "U19": { "name": "Juniorki", "sub": "U19" },
+      "U23": { "name": "Młodzieżowczynie", "sub": "U23" },
+      "ELITE": { "name": "Elita", "sub": "Elite" }
+    },
+    "stageCount": {
+      "0": "{n} zawodniczek",
+      "1": "1 zawodniczka",
+      "one": "{n} zawodniczka",
+      "few": "{n} zawodniczki",
+      "many": "{n} zawodniczek",
+      "other": "{n} zawodniczki"
+    },
+    "combinedCount": "{n} łącznie w U23 i Elicie",
+    "rosterSeason": "Skład sezonu {season}",
+    "pillars": {
+      "staff": {
+        "title": "Sztab",
+        "text": "Profesjonaliści, którzy prowadzą drużynę przez cały sezon:"
+      },
+      "clubPro": {
+        "title": "Klub Pro",
+        "text": "Jesteśmy w programie Ministerstwa Sportu i Turystyki oraz Fundacji Lotto dla klubów, które szkolą młodzież na najwyższym poziomie."
+      },
+      "uci": {
+        "title": "Wyścigi UCI",
+        "text": "Najwyższe kategorie, w których startowałyśmy w sezonie {season}:",
+        "empty": "Kalendarz wyścigów UCI na sezon {season} publikujemy, gdy organizatorzy potwierdzają daty."
+      }
+    }
+  },
+  "results": {
+    "eyebrow": "Wyniki {season}",
+    "title": "Medale z mistrzostw Polski.",
+    "titles": {
+      "0": "tytułów mistrzyni Polski",
+      "1": "tytuł mistrzyni Polski",
+      "one": "tytuł mistrzyni Polski",
+      "few": "tytuły mistrzyni Polski",
+      "many": "tytułów mistrzyni Polski",
+      "other": "tytułu mistrzyni Polski"
+    },
+    "medals": {
+      "0": "medali mistrzostw Polski",
+      "1": "medal mistrzostw Polski",
+      "one": "medal mistrzostw Polski",
+      "few": "medale mistrzostw Polski",
+      "many": "medali mistrzostw Polski",
+      "other": "medalu mistrzostw Polski"
+    },
+    "figuresNote": "We wszystkich kategoriach wiekowych i dyscyplinach.",
+    "tableCaption": "Wyniki zawodniczek w sezonie {season}",
+    "place": "Miejsce",
+    "rider": "Zawodniczka",
+    "event": "Zawody",
+    "placeName": {
+      "1": "złoto",
+      "2": "srebro",
+      "3": "brąz",
+      "other": "{n}. miejsce"
+    },
+    "times": "{n}×",
+    "timesLong": "{n} razy"
+  },
+  "teamSection": {
+    "eyebrow": "Zespół",
+    "titleConfirmed": "Zespół {season}.",
+    "titleProvisional": "Zespół {season}.",
+    "provisionalNote": "Pełny skład ogłosimy wkrótce.",
+    "titleFallback": "Nasze zawodniczki {season}.",
+    "fallbackNote": "Skład na sezon {next} ogłosimy wkrótce.",
+    "tabs": {
+      "continental": "Drużyna kontynentalna",
+      "junior": "Juniorki",
+      "staff": "Sztab"
+    },
+    "continentalIntro": "Nasza drużyna KONTYNENTALNA ściga się w wyścigach UCI w całej Europie.",
+    "juniorIntro": "Biała koszulka z różowymi rękawami? To nasze juniorki.",
+    "staffIntro": "Ludzie, bez których nie byłoby żadnego startu.",
+    "newPill": "Nowa w {season}",
+    "emptySquad": "Skład tej drużyny ogłosimy wkrótce.",
+    "profileLink": "Profil zawodniczki",
+    "allRiders": "Cały zespół"
+  },
+  "teaser": {
+    "eyebrow": "Kalendarz {season}",
+    "title": "Gdzie się ścigamy.",
+    "provisional": "Kalendarz wstępny. Daty potwierdzamy, gdy publikują je organizatorzy.",
+    "fullCalendar": "Pełny kalendarz",
+    "complete": "Sezon {season} zakończony. Wszystkie starty są w archiwum.",
+    "next": "Najbliższy",
+    "more": "+ {n} więcej w kalendarzu"
+  },
+  "brand": {
+    "eyebrow": "Dla partnerów",
+    "title": "Twoja marka w peletonie.",
+    "lead": "Strój drużyny widać w każdym wyścigu, na każdym podium i w każdym poście. Twoje logo jedzie z nami.",
+    "diagramLabel": "Schemat stroju drużyny z ponumerowanymi polami na logo partnerów",
+    "fields": [
+      { "n": 1, "title": "Przód koszulki", "text": "Pierś i brzuch: pole, które widać na zdjęciach z mety i z podium." },
+      { "n": 2, "title": "Rękawy", "text": "Widoczne z boku peletonu i w ujęciach z motocykla." },
+      { "n": 3, "title": "Panel boczny i spodenki", "text": "Boki koszulki i nogawki: widoczne w każdym ujęciu z boku." }
+    ],
+    "beyondTitle": "+ Poza strojem",
+    "beyond": ["Samochody drużyny", "Media społecznościowe", "Materiały prasowe", "Wydarzenia i hospitality"],
+    "caption": "Przykładowe rozmieszczenie. Ostateczne pola ustala zespół."
+  },
+  "wall": {
+    "eyebrow": "Partnerzy",
+    "titleCurrent": "Nasi partnerzy sezonu {season}.",
+    "titleThanks": "Dziękujemy partnerom sezonu {season}.",
+    "thanksNote": "Partnerów na sezon {next} przedstawimy razem z zespołem.",
+    "technical": "Partnerzy techniczni",
+    "allPartners": "Wszyscy partnerzy"
+  },
+  "cta": {
+    "eyebrow": "Partnerstwo {season}",
+    "title": "Jedź z nami w sezonie {season}.",
+    "lead": "Szukamy partnerów, którzy chcą budować kobiece kolarstwo razem z nami. Porozmawiajmy o tym, co możemy zrobić wspólnie.",
+    "book": "Umów rozmowę",
+    "mailSubject": "Partnerstwo {season}",
+    "deck": "Oferta partnerska PDF",
+    "deckSoon": "wkrótce",
+    "contactLabel": "Osoba kontaktowa"
+  },
+  "contactCard": {
+    "call": "Zadzwoń: {phone}",
+    "write": "Napisz: {email}"
+  },
+  "mediaTeaser": {
+    "eyebrow": "Dla mediów",
+    "title": "Materiały bez logowania.",
+    "lead": "Wszystko, czego potrzebuje redakcja: pobierasz jednym kliknięciem.",
+    "tiles": {
+      "logos": { "title": "Logotypy", "text": "SVG i PNG" },
+      "photos": { "title": "Zdjęcia z wyścigów", "text": "W pełnej rozdzielczości" },
+      "portraits": { "title": "Portrety zawodniczek", "text": "Cały skład" },
+      "info": { "title": "Informacja o drużynie", "text": "PDF · PL i EN" }
+    },
+    "link": "Strefa mediów"
+  },
+  "gallery": {
+    "title": "Z trasy.",
+    "credit": "Fot. {credit}"
   },
   "nextRace": {
     "title": "Najbliższy wyścig.",
@@ -180,34 +328,13 @@
     "completeLine": "Dziękujemy, że jechaliście z nami.",
     "completeCta": "Zobacz cały kalendarz"
   },
-  "story": {
-    "title": "Dni wyścigów.",
-    "open": "Powiększ zdjęcie: {alt}",
-    "credit": "Fot. {credit}",
-    "close": "Zamknij",
-    "prev": "Poprzednie zdjęcie",
-    "next": "Następne zdjęcie",
-    "counter": "{i} z {n}"
-  },
-  "teamSection": {
-    "titleConfirmed": "Zespół {season}.",
-    "titleProvisional": "Zespół {season}.",
-    "provisionalNote": "Pełny skład ogłosimy wkrótce.",
-    "titleFallback": "Nasze zawodniczki {season}.",
-    "fallbackNote": "Skład na sezon {next} ogłosimy wkrótce.",
-    "tabs": {
-      "continental": "Drużyna kontynentalna",
-      "junior": "Juniorki",
-      "staff": "Sztab"
-    },
-    "continentalIntro": "Poznaj naszą drużynę KONTYNENTALNĄ — ścigamy się na wyścigach UCI w całej Europie.",
-    "juniorIntro": "Biała koszulka z różowymi rękawami? To nasze juniorki.",
-    "staffIntro": "Ludzie, bez których nie byłoby żadnego startu.",
-    "newPill": "Nowa w {season}",
-    "emptySquad": "Skład tej drużyny ogłosimy wkrótce."
+  "calendarPage": {
+    "eyebrow": "Sezon {season} · {number}. sezon drużyny",
+    "title": "Kalendarz wyścigów.",
+    "lead": "Szosa, tor i przełaj. Wyścigi UCI w całej Europie i krajowe starty w Polsce."
   },
   "calendar": {
-    "title": "Kalendarz wyścigów.",
+    "title": "Wszystkie starty.",
     "seasonSwitch": "Sezon",
     "archive": "Archiwum {season}",
     "provisional": "Kalendarz wstępny — daty potwierdzamy, gdy organizatorzy je publikują. Przy wyścigach bez dat podajemy tylko miesiąc.",
@@ -276,6 +403,11 @@
       "USA": "Stany Zjednoczone"
     }
   },
+  "partnersPage": {
+    "eyebrow": "Partnerstwo {season}",
+    "title": "Partnerzy.",
+    "lead": "Każdy nasz start jest możliwy dzięki firmom i instytucjom, które stoją za drużyną."
+  },
   "partners": {
     "titleCurrent": "Nasi partnerzy {season}.",
     "titleThanks": "Dziękujemy naszym partnerom sezonu {season}.",
@@ -290,14 +422,118 @@
     "visit": "{name} — strona partnera",
     "logoPlaceholder": "Logo: {file}"
   },
-  "movement": {
-    "title": "Więcej niż drużyna.",
-    "body": "Nie jesteśmy tylko drużyną kolarską — jesteśmy ruchem. Wzmacniamy kobiety, promujemy różnorodność i budujemy w sporcie kulturę otwartości, wyścig po wyścigu."
+  "teamPage": {
+    "eyebrow": "Sezon {season}",
+    "title": "Zespół.",
+    "lead": "Drużyna kontynentalna, juniorki i sztab. Kliknij zawodniczkę, żeby zobaczyć jej profil i wyniki."
+  },
+  "rider": {
+    "back": "Cały zespół",
+    "squad": {
+      "continental": "zawodniczka drużyny kontynentalnej",
+      "junior": "zawodniczka drużyny juniorskiej"
+    },
+    "squadShort": {
+      "continental": "Kontynentalna",
+      "junior": "Juniorki"
+    },
+    "category": {
+      "U19": "Juniorka (U19)",
+      "U23": "U23",
+      "ELITE": "Elita"
+    },
+    "facts": "Dane zawodniczki",
+    "nationality": "Narodowość",
+    "team": "Drużyna",
+    "categoryLabel": "Kategoria",
+    "seasons": "Sezony w drużynie",
+    "instagram": "Instagram",
+    "results": "Wyniki.",
+    "download": "Pobierz portret (JPG, {size})",
+    "downloadSoon": "Portret do pobrania wkrótce",
+    "photoCredit": "Do publikacji z podpisem „Fot. MADW”."
+  },
+  "mediaPage": {
+    "eyebrow": "Dla mediów",
+    "title": "Strefa mediów.",
+    "lead": "Bez logowania i bez formularzy. Każdy plik pobierasz bezpośrednio.",
+    "nav": {
+      "facts": "Fakty",
+      "files": "Pliki",
+      "photos": "Zdjęcia",
+      "roster": "Skład",
+      "press": "Kontakt"
+    },
+    "factsTitle": "Fakty w skrócie.",
+    "facts": {
+      "name": "Pełna nazwa",
+      "licence": "Licencja",
+      "licenceValue": "UCI Continental Team + drużyna juniorska",
+      "founded": "Założona",
+      "foundedValue": "{founded}, Wrocław · {season} to {number}. sezon",
+      "roster": "Skład {season}",
+      "rosterValue": "{total} zawodniczek: {continental} w drużynie kontynentalnej, {junior} juniorek",
+      "management": "Kierownictwo",
+      "disciplines": "Dyscypliny",
+      "programme": "Program",
+      "programmeValue": "Klub Pro — Ministerstwo Sportu i Turystyki / Fundacja Lotto",
+      "contact": "Kontakt"
+    },
+    "boilerplateTitle": "Notka o drużynie.",
+    "boilerplateLangs": "Wersja językowa notki",
+    "boilerplateText": "Mat Atom Deweloper Wrocław to kobieca drużyna kolarska z Wrocławia, założona w 2016 roku. Ma licencję UCI Continental i prowadzi drużynę juniorską, dzięki czemu zawodniczki rozwijają się w jednym zespole od kategorii U19 do elity. Drużyna startuje w wyścigach UCI w całej Europie oraz w krajowych zawodach na szosie, torze i w przełaju. Jest członkiem programu Klub Pro Ministerstwa Sportu i Turystyki oraz Fundacji Lotto. Sponsorem tytularnym jest Mat Atom Deweloper.",
+    "words": {
+      "0": "{n} słów",
+      "1": "1 słowo",
+      "one": "{n} słowo",
+      "few": "{n} słowa",
+      "many": "{n} słów",
+      "other": "{n} słowa"
+    },
+    "copy": "Kopiuj tekst",
+    "copied": "Skopiowano",
+    "copyFallback": "Tekst zaznaczony — skopiuj go skrótem Ctrl+C",
+    "filesTitle": "Pliki do pobrania.",
+    "download": "Pobierz",
+    "soon": "Wkrótce",
+    "photosTitle": "Zdjęcia.",
+    "photosLead": "Oryginały mają co najmniej 3000 px na dłuższym boku.",
+    "photoFilters": {
+      "all": "Wszystkie",
+      "race": "Wyścigi",
+      "track": "Tor",
+      "portrait": "Portrety",
+      "team": "Zespół"
+    },
+    "photoFiltersLabel": "Kategoria zdjęć",
+    "downloadOriginal": "Pobierz oryginał · {size}",
+    "photoSoon": "Zdjęcie wkrótce",
+    "rosterTitle": "Skład {season}.",
+    "rosterNote": "Skład na sezon {next} pojawi się tu po oficjalnym ogłoszeniu.",
+    "rosterTable": {
+      "caption": "Skład drużyny w sezonie {season}",
+      "rider": "Zawodniczka",
+      "nationality": "Narodowość",
+      "squad": "Drużyna",
+      "instagram": "Instagram",
+      "materials": "Materiały",
+      "profile": "Profil",
+      "portrait": "Portret"
+    },
+    "pressTitle": "Wywiady i akredytacje.",
+    "pressLead": "Chcesz porozmawiać z zawodniczką albo akredytować się na wyścig? Napisz do nas.",
+    "responseTime": "Odpowiadamy {time}.",
+    "pressFallback": "Napisz na {email}.",
+    "rulesTitle": "Zasady korzystania.",
+    "rules": [
+      "Materiały służą wyłącznie do publikacji redakcyjnych.",
+      "Podpis zdjęcia: „Fot. [autor] / MADW”.",
+      "Logotypów nie zmieniamy: bez przekształceń, efektów i zmiany kolorów.",
+      "Użycie komercyjne wyłącznie po uzgodnieniu z drużyną."
+    ]
   },
   "contact": {
-    "title": "Napisz do nas.",
-    "lead": "Media, partnerzy, przyszłe zawodniczki — odpisujemy każdemu.",
-    "follow": "Obserwuj drużynę",
+    "title": "Kontakt.",
     "newsletterTitle": "Dostań kalendarz {season} przed innymi.",
     "emailLabel": "E-mail",
     "required": "(wymagane)",
@@ -317,17 +553,15 @@
     "back": "Wróć na stronę główną"
   },
   "footer": {
-    "copyright": "© {year} {team}",
-    "partnersLabel": "Partnerzy {season}:",
-    "partnersMore": {
-      "0": "",
-      "1": "oraz 1 partner techniczny",
-      "one": "oraz {n} partner techniczny",
-      "few": "oraz {n} partnerzy techniczni",
-      "many": "oraz {n} partnerów technicznych",
-      "other": "oraz {n} partnera technicznego"
+    "boilerplate": "Kobieca drużyna kolarska z Wrocławia. UCI Continental i juniorki, od {founded} roku.",
+    "columns": {
+      "team": "Drużyna",
+      "collab": "Współpraca",
+      "follow": "Obserwuj"
     },
-    "privacy": "Polityka prywatności",
-    "privacyUrl": "/polityka-prywatnosci/"
+    "results": "Wyniki",
+    "partnerWithUs": "Zostań partnerem",
+    "copyright": "© {year} {team}",
+    "privacy": "Polityka prywatności"
   }
 }

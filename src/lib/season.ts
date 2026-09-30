@@ -1,5 +1,5 @@
 // Pure season + calendar logic. No file system, no DOM: used at build time and in the browser.
-import type { CalendarEntry, Discipline, Phase, Site, Status } from './schemas';
+import type { CalendarEntry, Discipline, Site, Status } from './schemas';
 
 export type ISODate = string; // YYYY-MM-DD
 
@@ -242,31 +242,10 @@ export function seasonNumber(site: Pick<Site, 'currentSeason' | 'foundedYear'>):
   return site.currentSeason - site.foundedYear + 1;
 }
 
-export type SectionId =
-  | 'presentation'
-  | 'glance'
-  | 'recap'
-  | 'next-race'
-  | 'story'
-  | 'team'
-  | 'calendar'
-  | 'partners'
-  | 'movement'
-  | 'contact';
-
-/** Section order per phase. The hero is always first and the footer always last. */
-export function sectionOrder(phase: Phase): SectionId[] {
-  switch (phase) {
-    case 'preseason':
-      return ['presentation', 'glance', 'recap', 'partners', 'next-race', 'story', 'team', 'calendar', 'movement', 'contact'];
-    case 'racing':
-      return ['presentation', 'glance', 'next-race', 'calendar', 'story', 'team', 'partners', 'recap', 'movement', 'contact'];
-    case 'offseason':
-      return ['presentation', 'recap', 'glance', 'story', 'partners', 'team', 'calendar', 'next-race', 'movement', 'contact'];
-  }
-}
-
-/** Which season the "in review" section recaps. */
+/**
+ * The season the home page looks back on (numbers, results): the previous season while the
+ * new one is being prepared or raced, the current one once it is over.
+ */
 export function recapSeason(site: Pick<Site, 'currentSeason' | 'phase'>): number {
   return site.phase === 'offseason' ? site.currentSeason : site.currentSeason - 1;
 }

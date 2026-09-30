@@ -1,0 +1,90 @@
+{
+  "files": [
+    {
+      "id": "logos",
+      "name": { "pl": "Logotypy drużyny", "en": "Team logos" },
+      "description": { "pl": "Wersje pełnokolorowe, czarne i białe. SVG i PNG w jednym archiwum.", "en": "Full colour, black and white versions. SVG and PNG in one archive." },
+      "file": "madw-logotypy.zip",
+      "format": "ZIP · SVG, PNG",
+      "status": "soon"
+    },
+    {
+      "id": "team-info",
+      "name": { "pl": "Informacja o drużynie", "en": "Team information" },
+      "description": { "pl": "Dwie strony: historia, skład, sztab, kalendarz i kontakt.", "en": "Two pages: history, roster, staff, calendar and contacts." },
+      "file": { "pl": "madw-informacja-pl.pdf", "en": "madw-team-information-en.pdf" },
+      "format": "PDF",
+      "status": "soon"
+    },
+    {
+      "id": "season-photos",
+      "name": { "pl": "Wybór zdjęć sezonu", "en": "Season photo selection" },
+      "description": { "pl": "Najlepsze zdjęcia z wyścigów w pełnej rozdzielczości.", "en": "The best race photos in full resolution." },
+      "file": "madw-zdjecia-sezonu.zip",
+      "format": "ZIP · JPG",
+      "status": "soon"
+    },
+    {
+      "id": "portraits",
+      "name": { "pl": "Portrety zawodniczek", "en": "Rider portraits" },
+      "description": { "pl": "Portrety całego składu w strojach drużyny.", "en": "Portraits of the whole roster in team kit." },
+      "file": "madw-portrety.zip",
+      "format": "ZIP · JPG",
+      "status": "soon"
+    },
+    {
+      "id": "kit",
+      "name": { "pl": "Zdjęcia strojów", "en": "Kit photos" },
+      "description": { "pl": "Stroje drużyny kontynentalnej i juniorskiej.", "en": "Continental and junior team kits." },
+      "file": "madw-stroje.zip",
+      "format": "ZIP · JPG",
+      "status": "soon"
+    },
+    {
+      "id": "brand-guide",
+      "name": { "pl": "Księga znaku", "en": "Brand guide" },
+      "description": { "pl": "Kolory, krój pisma i zasady użycia logo.", "en": "Colours, typeface and logo usage rules." },
+      "file": "madw-ksiega-znaku.pdf",
+      "format": "PDF",
+      "status": "soon"
+    }
+  ],
+  "photos": [
+    {
+      "file": "media-race-01.jpg",
+      "category": "race",
+      "caption": { "pl": "Ronde de Mouscron, Belgia, 2026", "en": "Ronde de Mouscron, Belgium, 2026" },
+      "credit": "[autor / credit]"
+    },
+    {
+      "file": "media-race-02.jpg",
+      "category": "race",
+      "caption": { "pl": "Tour de Pologne Women, 2026", "en": "Tour de Pologne Women, 2026" },
+      "credit": "[autor / credit]"
+    },
+    {
+      "file": "media-track-01.jpg",
+      "category": "track",
+      "caption": { "pl": "Torowe Mistrzostwa Polski, 2026", "en": "Polish Track Championships, 2026" },
+      "credit": "[autor / credit]"
+    },
+    {
+      "file": "media-portrait-01.jpg",
+      "category": "portrait",
+      "caption": { "pl": "Portret zawodniczki w stroju drużyny", "en": "Rider portrait in team kit" },
+      "credit": "[autor / credit]"
+    },
+    {
+      "file": "media-team-01.jpg",
+      "category": "team",
+      "caption": { "pl": "Zdjęcie drużynowe, sezon 2026", "en": "Team photo, 2026 season" },
+      "credit": "[autor / credit]"
+    },
+    {
+      "file": "media-team-02.jpg",
+      "category": "team",
+      "caption": { "pl": "Sztab i zawodniczki na zgrupowaniu", "en": "Staff and riders at a training camp" },
+      "credit": "[autor / credit]"
+    }
+  ]
+}

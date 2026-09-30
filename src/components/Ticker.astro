@@ -1,0 +1,96 @@
+---
+// #allezatomówki repeating in h2 size on a plum strip (pink is 7.5:1 there). A pause button
+// stops it; prefers-reduced-motion stops it entirely and hides the button.
+import { copy, type Lang } from '../lib/i18n';
+import Icon from './Icon.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = copy(lang);
+const repeats = Array.from({ length: 8 });
+---
+
+<div class="ticker" data-ticker data-theme="dark">
+  <p class="visually-hidden">{t.team.hashtag}</p>
+  <div class="ticker__track" aria-hidden="true">
+    {repeats.map(() => <span class="ticker__item">{t.team.hashtag}</span>)}
+    {repeats.map(() => <span class="ticker__item">{t.team.hashtag}</span>)}
+  </div>
+  <button class="ticker__toggle" type="button" aria-pressed="false" data-ticker-toggle>
+    <span class="ticker__icon-pause"><Icon name="pause" size={18} /></span>
+    <span class="ticker__icon-play"><Icon name="play" size={18} /></span>
+    <span class="visually-hidden">{t.a11y.pauseTicker}</span>
+  </button>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-ticker]').forEach((ticker) => {
+    const btn = ticker.querySelector<HTMLButtonElement>('[data-ticker-toggle]')!;
+    btn.addEventListener('click', () => {
+      const paused = btn.getAttribute('aria-pressed') !== 'true';
+      btn.setAttribute('aria-pressed', String(paused));
+      ticker.classList.toggle('is-paused', paused);
+    });
+  });
+</script>
+
+<style>
+  .ticker {
+    position: relative;
+    overflow: hidden;
+    padding-block: var(--s-4);
+    background: var(--surface);
+  }
+  .ticker__track {
+    display: flex;
+    width: max-content;
+    animation: ticker 40s linear infinite;
+  }
+  .ticker.is-paused .ticker__track {
+    animation-play-state: paused;
+  }
+  .ticker__item {
+    padding-right: 0.8em;
+    font-size: 42px;
+    line-height: 1.2;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+  @keyframes ticker {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ticker__track {
+      animation: none;
+    }
+    .ticker__toggle {
+      display: none;
+    }
+  }
+  .ticker__toggle {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    translate: 0 -50%;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--accent);
+    border-radius: var(--r-pill);
+    background: var(--surface);
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .ticker__icon-play,
+  .ticker.is-paused .ticker__icon-pause {
+    display: none;
+  }
+  .ticker.is-paused .ticker__icon-play {
+    display: block;
+  }
+</style>

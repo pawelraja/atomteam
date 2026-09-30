@@ -1,20 +1,26 @@
 ---
+// Team tabs: Continental / Junior / Staff. Shows current-season riders as soon as any are
+// listed (with an "announcement coming soon" note until rosterConfirmed); otherwise the latest roster.
 import { anchor } from '../lib/anchors';
 import { getData } from '../lib/data';
 import { copy, fill, pick, type Lang } from '../lib/i18n';
-import { pickRoster } from '../lib/season';
+import { riderPath, route } from '../lib/routes';
+import { riderCategory, riderSlug } from '../lib/showcase';
+import { teamView } from '../lib/view';
+import Icon from './Icon.astro';
 import PersonCard from './PersonCard.astro';
 
 interface Props {
   lang: Lang;
+  /** "home" adds a link to the team page. */
+  variant?: 'home' | 'page';
 }
-const { lang } = Astro.props;
-const { site, riders, staff } = getData();
+const { lang, variant = 'home' } = Astro.props;
+const { site } = getData();
 const t = copy(lang);
 const ts = t.teamSection;
 const season = site.currentSeason;
-const roster = pickRoster(riders, season);
-const crew = pickRoster(staff, season);
+const { roster, crew } = teamView();
 
 let title: string;
 let note: string | null = null;
@@ -30,12 +36,18 @@ const squads = [
   { id: 'continental', label: ts.tabs.continental, intro: ts.continentalIntro, people: roster.items.filter((r) => r.squad === 'continental') },
   { id: 'junior', label: ts.tabs.junior, intro: ts.juniorIntro, people: roster.items.filter((r) => r.squad === 'junior') },
 ] as const;
+const roleOf = (r: (typeof roster.items)[number]) => {
+  if (r.role) return pick(lang, r.role);
+  const c = riderCategory(r);
+  return c ? t.rider.category[c] : null;
+};
 ---
 
 <section class="section team" id={anchor(lang, 'team')} data-section="team" aria-labelledby="team-title">
   <div class="container">
-    <div class="section-head">
-      <h2 id="team-title">{title}</h2>
+    <div class="chapter-head">
+      <p class="eyebrow">{ts.eyebrow}</p>
+      <h2 id="team-title" class="chapter">{title}</h2>
       {note && <p>{note}</p>}
     </div>
 
@@ -70,9 +82,9 @@ const squads = [
                       lang={lang}
                       name={r.name}
                       nat={r.nat}
-                      role={r.role && pick(lang, r.role)}
+                      role={roleOf(r)}
                       photo={r.photo}
-                      instagram={r.instagram}
+                      href={riderPath(lang, riderSlug(r))}
                       isNew={roster.isCurrent && r.new ? fill(ts.newPill, { season }, lang) : null}
                     />
                   </li>
@@ -91,13 +103,23 @@ const squads = [
           {
             crew.items.map((s) => (
               <li>
-                <PersonCard lang={lang} name={s.name} role={pick(lang, s.role)} photo={s.photo} instagram={s.instagram} />
+                <PersonCard lang={lang} name={s.name} role={pick(lang, s.role)} photo={s.photo} />
               </li>
             ))
           }
         </ul>
       </div>
     </div>
+
+    {
+      variant === 'home' && (
+        <p class="team__more">
+          <a class="text-link" href={route(lang, 'team')}>
+            {ts.allRiders} <Icon name="arrow" size={18} />
+          </a>
+        </p>
+      )
+    }
   </div>
   <noscript><style>.team .panel[hidden] { display: block !important; } .team .tablist { display: none; }</style></noscript>
 </section>
@@ -141,17 +163,25 @@ const squads = [
   }
   .grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(6, minmax(0, 1fr));
     gap: var(--s-5) var(--s-4);
   }
-  @media (max-width: 1099px) {
+  .team__more {
+    margin-top: var(--s-5);
+  }
+  @media (max-width: 1279px) {
     .grid {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
   }
-  @media (max-width: 699px) {
+  @media (max-width: 899px) {
     .grid {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 599px) {
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: var(--s-4) var(--s-3);
     }
   }

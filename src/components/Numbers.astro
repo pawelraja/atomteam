@@ -1,0 +1,117 @@
+---
+// Four big figures, all counted at build time from calendar/<year>.json and riders.json.
+import { anchor } from '../lib/anchors';
+import { getData } from '../lib/data';
+import { copy, fill, plural, type Lang } from '../lib/i18n';
+import { numbersView } from '../lib/view';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = copy(lang);
+const tn = t.numbers;
+const view = numbersView();
+const { calendars } = getData();
+const countryNames = t.calendar.countryNames as Record<string, string>;
+
+const figures = view && [
+  {
+    n: view.riders.total,
+    label: plural(tn.riders, view.riders.total, lang),
+    sub:
+      view.riders.unknown === 0
+        ? fill(tn.splitFull, { u19: view.riders.U19, u23: view.riders.U23, elite: view.riders.ELITE }, lang)
+        : fill(tn.splitCombined, { u19: view.riders.U19, rest: view.riders.total - view.riders.U19 }, lang),
+  },
+  { n: view.races, label: plural(tn.races, view.races, lang), sub: tn.racesNote },
+  {
+    n: view.countries,
+    label: plural(tn.countries, view.countries, lang),
+    codes: [...new Set((calendars.get(view.season) ?? []).filter((e) => e.status === 'confirmed' && !e.training).map((e) => e.country))],
+  },
+  {
+    n: view.disciplines.length,
+    label: plural(tn.disciplines, view.disciplines.length, lang),
+    sub: view.disciplines.map((d) => t.calendar.discipline[d]).join(' · '),
+  },
+];
+---
+
+{
+  view && figures && (
+    <section class="section numbers" id={anchor(lang, 'numbers')} data-section="numbers" aria-labelledby="numbers-title">
+      <div class="container">
+        <div class="chapter-head">
+          <p class="eyebrow">{fill(tn.eyebrow, { season: view.season }, lang)}</p>
+          <h2 id="numbers-title" class="chapter">{tn.title}</h2>
+        </div>
+        <dl class="figures">
+          {figures.map((f) => (
+            <div class="figure">
+              <dt class="figure__label">{f.label}</dt>
+              <dd class="figure__n big-number">{f.n}</dd>
+              {f.sub && <dd class="figure__sub">{f.sub}</dd>}
+              {f.codes && (
+                <dd class="figure__sub">
+                  {f.codes.map((c, i) => (
+                    <>
+                      <abbr title={countryNames[c] ?? c}>{c}</abbr>
+                      {i < f.codes.length - 1 && <span aria-hidden="true"> · </span>}
+                    </>
+                  ))}
+                </dd>
+              )}
+            </div>
+          ))}
+        </dl>
+        <p class="numbers__source caption muted">{fill(tn.source, { season: view.season }, lang)}</p>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .figures {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--s-5);
+  }
+  /* Label reads after the number visually, but comes first for screen readers ("dt, dd"). */
+  .figure {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    padding-top: var(--s-4);
+    border-top: 2px solid var(--line);
+  }
+  .figure__n {
+    order: -1;
+  }
+  .figure__label {
+    font-size: var(--fs-body-lg);
+    font-weight: 700;
+  }
+  .figure__sub {
+    color: var(--ink-muted);
+    font-size: var(--fs-body-sm);
+  }
+  abbr {
+    text-decoration: none;
+  }
+  .numbers__source {
+    margin-top: var(--s-5);
+  }
+  @media (max-width: 999px) {
+    .figures {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      row-gap: var(--s-6);
+    }
+  }
+  @media (max-width: 419px) {
+    .figures {
+      grid-template-columns: 1fr;
+      row-gap: var(--s-5);
+    }
+  }
+</style>

@@ -36,6 +36,18 @@
   --font: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
   --fs-display: clamp(44px, 6.2vw, 72px);
   --lh-display: 1.1;
+  /* Showcase (sports-editorial) scale */
+  --fs-hero: clamp(48px, 8.4vw, 112px);
+  --lh-hero: 0.95;
+  --ls-hero: -0.035em;
+  --fs-chapter: clamp(36px, 5.2vw, 64px);
+  --lh-chapter: 1.02;
+  --ls-chapter: -0.03em;
+  --fs-number: clamp(60px, 7.4vw, 96px);
+  --ls-number: -0.04em;
+  --fs-eyebrow: 13px;
+  --ls-eyebrow: 0.08em;
+  --status-h: 40px;
   --fs-h2: clamp(32px, 4.2vw, 42px);
   --lh-h2: 1.2;
   --fs-h3: 28px;

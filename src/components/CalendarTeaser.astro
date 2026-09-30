@@ -1,0 +1,177 @@
+---
+// Calendar teaser: the next four months that still have races, in columns. Month-only (TBC)
+// entries show a "dates TBC" chip; the next confirmed race is marked.
+import { anchor } from '../lib/anchors';
+import { getData } from '../lib/data';
+import { copy, fill, typo, type Lang } from '../lib/i18n';
+import { route } from '../lib/routes';
+import { formatRange, monthLabel, raceLocation, raceName } from '../lib/season';
+import { teaserMonths } from '../lib/showcase';
+import Country from './Country.astro';
+import Icon from './Icon.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const { site, calendars, today } = getData();
+const t = copy(lang);
+const tt = t.teaser;
+const season = site.currentSeason;
+const PER_MONTH = 5;
+const months = teaserMonths(calendars.get(season) ?? [], today).map((m) => ({
+  ...m,
+  shown: m.events.slice(0, PER_MONTH),
+  more: Math.max(0, m.events.length - PER_MONTH),
+}));
+---
+
+<section class="section teaser" data-theme="dark" id={anchor(lang, 'calendar')} data-section="calendar" aria-labelledby="teaser-title">
+  <div class="container">
+    <div class="teaser__head">
+      <div class="chapter-head">
+        <p class="eyebrow">{fill(tt.eyebrow, { season }, lang)}</p>
+        <h2 id="teaser-title" class="chapter">{tt.title}</h2>
+        {months.length > 0 && !site.calendarConfirmed && <p>{tt.provisional}</p>}
+        {months.length === 0 && <p>{fill(tt.complete, { season }, lang)}</p>}
+      </div>
+      <a class="btn btn--secondary teaser__link" href={route(lang, 'calendar')}>
+        {tt.fullCalendar} <Icon name="arrow" size={18} />
+      </a>
+    </div>
+
+    {
+      months.length > 0 && (
+        <ol class="months" role="list">
+          {months.map((m) => (
+            <li class="month">
+              <h3 class="month__label">{monthLabel(m.month, t.meta.locale)}</h3>
+              <ul role="list" class="races">
+                {m.shown.map((e) => (
+                  <li class:list={['race', { 'race--next': e.id === m.nextId, 'race--cancelled': e.status === 'cancelled' }]}>
+                    <p class="race__when">
+                      {e.start && e.end ? (
+                        <span class:list={{ strike: e.status === 'cancelled' }}>{formatRange(e.start, e.end, t.meta.locale)}</span>
+                      ) : (
+                        <span class="chip chip--tbc">{t.calendar.status.tbc}</span>
+                      )}
+                      {e.id === m.nextId && <span class="chip chip--next">{tt.next}</span>}
+                      {e.status === 'cancelled' && <span class="chip">{t.calendar.status.cancelled}</span>}
+                    </p>
+                    <p class:list={['race__name', { strike: e.status === 'cancelled' }]}>{typo(lang, raceName(e, lang))}</p>
+                    <p class="race__where">
+                      <Country lang={lang} location={raceLocation(e, lang)} code={e.country} />
+                      {e.cls && <span class="race__cls"> · {e.cls}</span>}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+              {m.more > 0 && (
+                <a class="month__more" href={`${route(lang, 'calendar')}#${anchor(lang, 'calendar')}-${season}-${String(m.month).padStart(2, '0')}`}>
+                  {fill(tt.more, { n: m.more }, lang)}
+                </a>
+              )}
+            </li>
+          ))}
+        </ol>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .teaser__head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: end;
+    gap: var(--s-4);
+    margin-bottom: var(--s-6);
+  }
+  .teaser__head .chapter-head {
+    margin-bottom: 0;
+  }
+  .teaser__link {
+    color: var(--ink);
+  }
+  .months {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--s-5);
+  }
+  .month__label {
+    padding-bottom: var(--s-2);
+    margin-bottom: var(--s-3);
+    border-bottom: 2px solid var(--accent);
+    color: var(--accent);
+    font-size: var(--fs-body-lg);
+    font-weight: 700;
+  }
+  .races {
+    display: grid;
+    gap: var(--s-4);
+  }
+  .month__more {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    margin-top: var(--s-2);
+    font-weight: 700;
+  }
+  .race {
+    display: grid;
+    gap: 4px;
+  }
+  .race--next {
+    padding: var(--s-3);
+    margin-inline: calc(-1 * var(--s-3));
+    border-radius: var(--r-sm);
+    background: var(--surface-alt);
+  }
+  .race__when {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  .race__name {
+    font-size: var(--fs-body-lg);
+    line-height: 1.3;
+  }
+  .race__where {
+    color: var(--ink-muted);
+    font-size: var(--fs-body-sm);
+  }
+  .chip {
+    min-height: 24px;
+    padding: 0 10px;
+    font-size: var(--fs-caption);
+    font-weight: 700;
+    border-color: var(--line);
+  }
+  .chip--tbc {
+    border-style: dashed;
+    border-color: var(--ink-muted);
+  }
+  .chip--next {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--ink-on-accent);
+  }
+  .strike {
+    text-decoration: line-through;
+  }
+  @media (max-width: 1099px) {
+    .months {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      row-gap: var(--s-6);
+    }
+  }
+  @media (max-width: 559px) {
+    .months {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
