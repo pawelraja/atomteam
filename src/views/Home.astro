@@ -1,0 +1,37 @@
+---
+// Home page. Evergreen: sections in a fixed order (the approved v2 mockup); seasonal facts live
+// only in the status bar and in computed numbers.
+import Approach from '../components/Approach.astro';
+import BrandPlacement from '../components/BrandPlacement.astro';
+import CalendarTeaser from '../components/CalendarTeaser.astro';
+import Hero from '../components/Hero.astro';
+import MediaTeaser from '../components/MediaTeaser.astro';
+import Numbers from '../components/Numbers.astro';
+import PartnerCta from '../components/PartnerCta.astro';
+import PartnerWall from '../components/PartnerWall.astro';
+import PhotoStrip from '../components/PhotoStrip.astro';
+import Results from '../components/Results.astro';
+import Shell from '../components/Shell.astro';
+import Team from '../components/Team.astro';
+import type { Lang } from '../lib/i18n';
+import { ROUTES } from '../lib/routes';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+---
+
+<Shell lang={lang} page="home" paths={ROUTES.home} preloadHero events>
+  <Hero lang={lang} />
+  <Numbers lang={lang} />
+  <Approach lang={lang} />
+  <Results lang={lang} />
+  <Team lang={lang} />
+  <CalendarTeaser lang={lang} />
+  <BrandPlacement lang={lang} />
+  <PartnerWall lang={lang} />
+  <PartnerCta lang={lang} />
+  <MediaTeaser lang={lang} />
+  <PhotoStrip lang={lang} />
+</Shell>

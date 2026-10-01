@@ -28,59 +28,38 @@ const check = (ok, msg) => {
   if (!ok) failures++;
 };
 
-// --- Polish page, desktop ---
+// --- Home, Polish, desktop ---
 {
   const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
   await page.goto(`${base}/`, { waitUntil: 'networkidle' });
 
+  const skipBox = await page.locator('.skip-link').boundingBox();
+  check(!skipBox || skipBox.y + skipBox.height <= 0, 'Skip link is off-screen until focused');
   await page.keyboard.press('Tab');
   check((await page.evaluate(() => document.activeElement?.className)).includes('skip-link'), 'First Tab focuses the skip link');
   check(await page.locator('.skip-link').isVisible(), 'Skip link is visible when focused');
 
-  // Team tabs: arrow keys move selection, panels follow.
-  const firstTab = page.locator('.team [role="tab"]').first();
-  await firstTab.focus();
+  check((await page.locator('.site-header .wordmark').getAttribute('aria-current')) === 'page', 'Header marks the home page as current');
+
+  // Team tabs: arrow keys move selection, panels follow; the junior intro shows only on that tab.
+  await page.locator('#tab-continental').focus();
   await page.keyboard.press('ArrowRight');
-  check((await page.locator('.team [role="tab"][aria-selected="true"]').getAttribute('id')) === 'tab-junior', 'Team tabs: ArrowRight selects the Junior tab');
-  check(await page.locator('#panel-junior').isVisible(), 'Team tabs: Junior panel is shown');
+  check((await page.locator('.team [role="tab"][aria-selected="true"]').getAttribute('id')) === 'tab-junior', 'Team tabs: ArrowRight selects Juniors');
+  check(await page.locator('#panel-junior .team__junior').isVisible(), 'Team tabs: the junior intro line is shown');
   await page.keyboard.press('End');
-  check((await page.evaluate(() => document.activeElement?.id)) === 'tab-staff', 'Team tabs: End moves focus to the last tab');
+  check((await page.evaluate(() => document.activeElement?.id)) === 'tab-staff', 'Team tabs: End moves focus to Staff');
+  check(!(await page.locator('#panel-continental').isVisible()), 'Team tabs: other panels are hidden');
 
-  // Calendar: season switch, filters, past toggle.
-  await page.locator('#kalendarz-2026-tab').click();
-  check(await page.locator('#kalendarz-2026').isVisible(), 'Season switch shows the 2026 archive');
-  const archive = page.locator('#kalendarz-2026');
-  await archive.locator('[data-filter="TRACK"]').click();
-  check((await archive.locator('[data-filter="TRACK"]').getAttribute('aria-pressed')) === 'true', 'Filter chip reports aria-pressed');
-  const shownCats = await archive.locator('[data-row]:not([hidden])').evaluateAll((els) => [...new Set(els.map((e) => e.dataset.cat))]);
-  check(shownCats.length === 1 && shownCats[0] === 'TRACK', `Track filter shows only track rows (${shownCats.join(',')})`);
-  check(((await archive.locator('[data-count]').textContent()) ?? '').length > 0, 'Filter result count is announced in a status region');
-
-  await page.locator('#kalendarz-2027-tab').click();
-  const current = page.locator('#kalendarz-2027');
-  const hiddenPast = await current.locator('[data-row][hidden]').count();
-  await current.locator('[data-past-toggle]').click();
-  check((await current.locator('[data-past-toggle]').getAttribute('aria-pressed')) === 'true', 'Show-past toggle reports aria-pressed');
-  check((await current.locator('[data-row][hidden]').count()) <= hiddenPast, 'Show-past toggle reveals past rows');
+  // Results: headline figures and 8 featured rows with row headers.
+  check((await page.locator('.honours dd').allTextContents()).join(',') === '30,58', 'Results: 30 titles and 58 medals');
+  check((await page.locator('.results-table tbody tr').count()) === 8, 'Results: 8 featured rows');
+  check((await page.locator('.results-table th[scope="col"]').count()) === 3, 'Results: column headers use <th scope="col">');
 
   // Language switch follows the section in view.
-  await page.locator('#kalendarz').scrollIntoViewIfNeeded();
-  await page.evaluate(() => document.getElementById('kalendarz').scrollIntoView());
-  await page.waitForTimeout(400);
+  await page.evaluate(() => document.getElementById('kalendarz').scrollIntoView({ behavior: 'instant' }));
+  await page.waitForTimeout(600);
   const href = await page.locator('.lang-switch [data-lang-link="en"]').getAttribute('href');
   check(href === '/en/#calendar', `Language switch points to the same section in English (${href})`);
-
-  // Lightbox: opens, traps focus in a modal dialog, Esc closes and restores focus.
-  const opener = page.locator('[data-open]').first();
-  await opener.scrollIntoViewIfNeeded();
-  await opener.click();
-  check(await page.locator('dialog.lightbox[open]').isVisible(), 'Lightbox opens as a modal dialog');
-  check((await page.evaluate(() => document.activeElement?.closest('dialog')?.className ?? '')).includes('lightbox'), 'Focus moves into the lightbox');
-  await page.keyboard.press('ArrowRight');
-  check(((await page.locator('#lightbox-caption').textContent()) ?? '').includes('2 z'), 'ArrowRight shows the next photo');
-  await page.keyboard.press('Escape');
-  check(!(await page.locator('dialog.lightbox[open]').count()), 'Esc closes the lightbox');
-  check(await page.evaluate(() => document.activeElement?.hasAttribute('data-open')), 'Focus returns to the photo that opened it');
 
   // Newsletter: validation and "not live" state without an endpoint.
   await page.locator('[data-newsletter] button[type="submit"]').click();
@@ -90,13 +69,58 @@ const check = (ok, msg) => {
   await page.locator('#nl-consent').check();
   await page.locator('[data-newsletter] button[type="submit"]').click();
   check((await page.locator('[data-newsletter]').getAttribute('data-state')) === 'error', 'Newsletter: without NEWSLETTER_ENDPOINT, shows the friendly error state');
+  check((await page.locator('[data-newsletter] input[name="lang"]').inputValue()) === 'pl', 'Newsletter: sends the page language');
   await page.close();
 }
 
-// --- Mobile menu ---
+// --- Calendar page ---
+{
+  const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  await page.goto(`${base}/kalendarz/`, { waitUntil: 'networkidle' });
+  check((await page.locator('.site-header .nav a[aria-current="page"]').textContent())?.trim() === 'Kalendarz', 'Calendar page is marked current in the nav');
+  await page.locator('#kalendarz-2026-tab').click();
+  check(await page.locator('#kalendarz-2026').isVisible(), 'Season switch shows the 2026 archive');
+  const archive = page.locator('#kalendarz-2026');
+  await archive.locator('[data-filter="TRACK"]').click();
+  check((await archive.locator('[data-filter="TRACK"]').getAttribute('aria-pressed')) === 'true', 'Filter chip reports aria-pressed');
+  const shownCats = await archive.locator('[data-row]:not([hidden])').evaluateAll((els) => [...new Set(els.map((e) => e.dataset.cat))]);
+  check(shownCats.length === 1 && shownCats[0] === 'TRACK', `Track filter shows only track rows (${shownCats.join(',')})`);
+  await page.locator('#kalendarz-2027-tab').click();
+  const current = page.locator('#kalendarz-2027');
+  await current.locator('[data-past-toggle]').click();
+  check((await current.locator('[data-past-toggle]').getAttribute('aria-pressed')) === 'true', 'Show-past toggle reports aria-pressed');
+  await page.close();
+}
+
+// --- Media centre ---
+{
+  const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 }, permissions: ['clipboard-read', 'clipboard-write'] });
+  const page = await ctx.newPage();
+  await page.goto(`${base}/media/`, { waitUntil: 'networkidle' });
+  check(await page.locator('#boiler-pl').isVisible(), 'Boilerplate: Polish text shown first');
+  check(!(await page.locator('#boiler-en').isVisible()), 'Boilerplate: English text hidden until chosen');
+  await page.locator('#boiler-tab-en').click();
+  check(await page.locator('#boiler-en').isVisible() && !(await page.locator('#boiler-pl').isVisible()), 'Boilerplate: EN tab switches the text');
+  await page.locator('#boiler-en [data-copy]').click();
+  await page.waitForTimeout(200);
+  const clip = await page.evaluate(() => navigator.clipboard.readText());
+  check(clip.startsWith('Mat Atom Deweloper Wrocław is'), 'Boilerplate: "Copy text" puts the text on the clipboard');
+  check(((await page.locator('#boiler-en [data-copy-status]').textContent()) ?? '').length > 0, 'Boilerplate: confirmation is announced (aria-live)');
+
+  const soon = page.locator('.file__soon');
+  check((await soon.count()) > 0 && (await page.locator('.file a[href=""]').count()) === 0, 'Downloads: "soon" items are not links');
+  await page.locator('[data-photo-filter="track"]').click();
+  const visibleCats = await page.locator('[data-photo-library] li[data-cat]:not([hidden])').evaluateAll((els) => [...new Set(els.map((e) => e.dataset.cat))]);
+  check(visibleCats.join() === 'track', `Photo filter shows only track photos (${visibleCats.join()})`);
+  check((await page.locator('[data-photo-filter="track"]').getAttribute('aria-pressed')) === 'true', 'Photo filter reports aria-pressed');
+  check((await page.locator('table.roster tbody tr').count()) === 20, 'Roster table lists the 20-rider roster');
+  await ctx.close();
+}
+
+// --- Mobile menu and language link ---
 {
   const page = await browser.newPage({ viewport: { width: 360, height: 780 } });
-  await page.goto(`${base}/en/`, { waitUntil: 'networkidle' });
+  await page.goto(`${base}/en/team/`, { waitUntil: 'networkidle' });
   await page.locator('[data-menu-open]').click();
   check(await page.locator('#mobile-menu[open]').isVisible(), 'Mobile: hamburger opens the full-screen menu');
   check((await page.locator('[data-menu-open]').getAttribute('aria-expanded')) === 'true', 'Mobile: hamburger reports aria-expanded');
@@ -104,6 +128,9 @@ const check = (ok, msg) => {
   check(!(await page.locator('#mobile-menu[open]').count()), 'Mobile: Esc closes the menu');
   const box = await page.locator('.lang-single').boundingBox();
   check(box && box.width >= 44 && box.height >= 44, `Mobile: language link is a 44px touch target (${box?.width}×${box?.height})`);
+  check((await page.locator('.lang-single').getAttribute('href'))?.startsWith('/zespol/'), 'Mobile: language link goes to the Polish team page');
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
+  check(overflow <= 0, 'Mobile: no horizontal scroll on the team page');
   await page.close();
 }
 

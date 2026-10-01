@@ -2,7 +2,7 @@
 
 Every picture on the site has a fixed slot. Until a file is supplied, the page shows a grey placeholder with the file name and aspect ratio, so nothing looks broken.
 
-**How to supply a photo:** upload it to the matching folder in the shared Google Drive folder **"MADW Website"** (`hero/`, `photo-story/`, `highlights/`, `riders/`, `partners/`, `brand/`) under the file name below. JPG, PNG or WebP all work; capitals, spaces and Polish letters in the name don't matter. The next build copies it in and makes the small, fast AVIF/WebP versions itself. Use the largest original you have; never upscale.
+**How to supply a photo:** upload it to the matching folder in the shared Google Drive folder **"MADW Website"** (`hero/`, `photo-story/`, `highlights/`, `riders/`, `partners/`, `brand/`, `media/`, `media-files/`) under the file name below. JPG, PNG or WebP all work; capitals, spaces and Polish letters in the name don't matter. The next build copies it in and makes the small, fast AVIF/WebP versions itself. Use the largest original you have; never upscale.
 
 **Do not** download images from the old Wix site — use originals from the photographers, with permission and a credit.
 
@@ -13,21 +13,20 @@ Every picture on the site has a fixed slot. Until a file is supplied, the page s
 | `hero.jpg` | 16:9 | 2560 × 1440 | Desktop. Keep the lower third calm: the headline sits there on a plum wash. |
 | `hero-mobile.jpg` | 4:5 | 1080 × 1350 | Phones. Optional — without it, `hero.jpg` is centre-cropped. |
 
-## Photo story (`src/assets/photos/`)
+## Photo strip on the home page (`src/assets/photos/`)
 
-Edit captions, credits and alt text in `src/data/gallery.json`.
+Four photos at mixed widths above the #allezatomówki ticker. Edit captions, credits ("Fot. …") and alt text in `src/data/gallery.json`. Each photo is cropped to fill its frame, so keep the subject near the centre.
 
-| File | Crop | Minimum width | Caption |
+| File | Shape | Minimum width | Caption |
 |---|---|---|---|
-| `photo-01.jpg` | 16:9 | 2400 px | Ronde de Mouscron · Mouscron, BEL (feature image) |
-| `photo-02.jpg` | 3:4 | 1600 px | Umag Classic Ladies · Umag, CRO |
-| `photo-03.jpg` | 4:3 | 1600 px | Tour de Pologne Women · POL |
-| `photo-04.jpg` | 3:4 | 1600 px | Sowiogórski Tour · POL |
-| `photo-05.jpg` | 4:3 | 1600 px | Torowe Mistrzostwa Polski · POL |
-| `photo-06.jpg` | 16:9 | 2400 px | Mistrzostwa Polski Drużyn na czas · POL |
-| `photo-07.jpg` | 3:4 | 1600 px | Puchar Polski · Lubań, POL |
+| `photo-01.jpg` | landscape (the wide one) | 2000 px | Ronde de Mouscron · Mouscron, BEL |
+| `photo-02.jpg` | portrait | 1200 px | Umag Classic Ladies · Umag, CRO |
+| `photo-03.jpg` | portrait or square | 1400 px | Tour de Pologne Women · POL |
+| `photo-04.jpg` | portrait | 1200 px | Sowiogórski Tour · POL |
 
 ## Season highlights (`src/assets/photos/`)
+
+Shown as cards under the results once their wording is checked (`verify` removed in `highlights-2026.json`).
 
 | File | Crop | Minimum size | Highlight |
 |---|---|---|---|
@@ -67,6 +66,32 @@ Portrait 3:4, at least 960 × 1280, ideally in the 2027 kit. File names come fro
 | `marcin-zarebski.jpg` | Marcin Zarębski (staff) |
 | `szymon-galczynski.jpg` | Szymon Gałczyński (staff) |
 
+## Press photo library (`src/assets/media/`, Drive `media/`)
+
+Full-resolution originals for journalists: **at least 3000 px on the long side** (the build stops on a smaller file). Captions, categories and photographer credits are in `src/data/media.json` → `photos`. Journalists download the original as it is, so export a high-quality JPG.
+
+| File | Category | Caption |
+|---|---|---|
+| `media-race-01.jpg` | Races | Ronde de Mouscron, Belgium, 2026 |
+| `media-race-02.jpg` | Races | Tour de Pologne Women, 2026 |
+| `media-track-01.jpg` | Track | Polish Track Championships, 2026 |
+| `media-portrait-01.jpg` | Portraits | Rider portrait in team kit |
+| `media-team-01.jpg` | Team | Team photo, 2026 season |
+| `media-team-02.jpg` | Team | Staff and riders at a training camp |
+
+## Downloads for journalists (`public/media/`, Drive `media-files/`)
+
+Named exactly as in `src/data/media.json` → `files`. After uploading, set that entry's `"status"` to `"ready"`.
+
+| File | What it is |
+|---|---|
+| `madw-logotypy.zip` | Team logos: colour, black, white; SVG and PNG |
+| `madw-informacja-pl.pdf` / `madw-team-information-en.pdf` | Team information, Polish and English |
+| `madw-zdjecia-sezonu.zip` | Season photo selection with credits |
+| `madw-portrety.zip` | Rider portraits, 3:4 and 1:1 |
+| `madw-stroje.zip` | Kit product photos |
+| `madw-ksiega-znaku.pdf` | Brand guide |
+
 ## Partner logos (`public/partners/`)
 
 SVG preferred (PNG/WebP accepted if the file name in `partners.json` says so). Full colour, trimmed tight to the artwork with no extra margins — the site sizes every logo to the same optical height.
@@ -99,4 +124,4 @@ SVG preferred (PNG/WebP accepted if the file name in `partners.json` says so). F
 
 | File | Notes |
 |---|---|
-| `logo.svg` | Official wordmark for the header. When present it replaces the text wordmark automatically. Dark artwork (it sits on the light header). |
+| `logo.svg` | The team's round logo mark, shown at 40 × 40 px next to the text wordmark in the header (it replaces the dashed "LOGO" circle). Square artwork, dark on transparent (it sits on the light glass header). |

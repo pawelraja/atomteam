@@ -1,7 +1,9 @@
 ---
-// Results as a real table. Place badges differ in more than colour: 1st is a filled pink pill,
-// 2nd a solid outline, 3rd a dashed outline, and each carries the number and a spoken name.
-import { copy, fill, pick, type Lang } from '../lib/i18n';
+// Results as a real table. Places never rely on colour alone: 1st is a filled pink pill, 2nd a
+// solid outline, 3rd a dashed outline, 4th and lower plain text — each with the number and a
+// spoken name ("1. miejsce").
+import { copy, fill, type Lang } from '../lib/i18n';
+import { resultLabel, teamLine, type EventIndex } from '../lib/results';
 import { riderPath } from '../lib/routes';
 import type { Result } from '../lib/schemas';
 import { riderSlug } from '../lib/showcase';
@@ -9,60 +11,68 @@ import { getData } from '../lib/data';
 
 interface Props {
   lang: Lang;
-  rows: (Result & { season?: number })[];
+  rows: Result[];
+  events: EventIndex;
   caption: string;
-  /** Rider profile pages leave out the rider column. */
-  showRider?: boolean;
-  showSeason?: boolean;
+  /** "featured": place · rider · race (home). "rider": place · race · date · source (profile). */
+  variant?: 'featured' | 'rider';
   captionHidden?: boolean;
 }
-const { lang, rows, caption, showRider = true, showSeason = false, captionHidden = true } = Astro.props;
+const { lang, rows, events, caption, variant = 'featured', captionHidden = false } = Astro.props;
 const t = copy(lang);
 const tr = t.results;
 const riders = new Map(getData().riders.map((r) => [r.name, r]));
 const placeName = (p: number) => (p <= 3 ? tr.placeName[String(p) as '1' | '2' | '3'] : fill(tr.placeName.other, { n: p }));
+const dateFmt = new Intl.DateTimeFormat(t.meta.locale, { day: 'numeric', month: 'short', timeZone: 'UTC' });
 ---
 
-<table class="results-table">
+<table class:list={['results-table', `results-table--${variant}`]}>
   <caption class:list={{ 'visually-hidden': captionHidden }}>{caption}</caption>
   <thead>
     <tr>
-      <th scope="col">{tr.place}</th>
-      {showRider && <th scope="col">{tr.rider}</th>}
+      <th scope="col" class="col-place">{tr.place}</th>
+      {variant === 'featured' && <th scope="col">{tr.rider}</th>}
       <th scope="col">{tr.event}</th>
+      {variant === 'rider' && <th scope="col" class="col-date">{tr.date}</th>}
+      {variant === 'rider' && <th scope="col" class="col-source">{tr.source}</th>}
     </tr>
   </thead>
   <tbody>
     {
       rows.map((r) => {
         const rider = riders.get(r.rider);
+        const team = teamLine(r);
+        const label = resultLabel(r, events, lang, tr);
         return (
           <tr>
             <td class="place">
-              <span class:list={['badge', `badge--${Math.min(r.place, 4)}`]}>
-                <span aria-hidden="true">{r.place}.</span>
-                <span class="visually-hidden">{placeName(r.place)}</span>
+              <span class:list={['badge', `badge--${Math.min(r.position ?? 4, 4)}`]}>
+                <span aria-hidden="true">{r.position}.</span>
+                <span class="visually-hidden">{placeName(r.position ?? 0)}</span>
               </span>
-              {r.count && r.count > 1 && (
-                <span class="times">
-                  <span aria-hidden="true">{fill(tr.times, { n: r.count })}</span>
-                  <span class="visually-hidden">, {fill(tr.timesLong, { n: r.count })}</span>
-                </span>
-              )}
             </td>
-            {showRider && (
+            {variant === 'featured' && (
               <th scope="row" class="rider">
-                {rider ? <a href={riderPath(lang, riderSlug(rider))}>{r.rider}</a> : r.rider}
+                {team ? team : rider ? <a href={riderPath(lang, riderSlug(rider))}>{r.rider}</a> : r.rider}
               </th>
             )}
-            <td class="event">
-              <span class="event__name">{pick(lang, r.event)}</span>
-              {(r.category || (showSeason && r.season)) && (
-                <span class="event__meta">
-                  {[r.category && pick(lang, r.category), showSeason && r.season].filter(Boolean).join(' · ')}
-                </span>
-              )}
-            </td>
+            {variant === 'featured' ? (
+              <td class="event">{label}</td>
+            ) : (
+              <th scope="row" class="event event--rider">
+                {label}
+                {team && <span class="event__team">{team}</span>}
+              </th>
+            )}
+            {variant === 'rider' && <td class="date">{r.date ? dateFmt.format(new Date(r.date + 'T00:00:00Z')) : ''}</td>}
+            {variant === 'rider' && (
+              <td class="source">
+                <a href={r.source} target="_blank" rel="noopener">
+                  {new URL(r.source).hostname.replace(/^www\./, '')}
+                  <span class="visually-hidden"> {t.a11y.newTab}</span>
+                </a>
+              </td>
+            )}
           </tr>
         );
       })
@@ -74,74 +84,111 @@ const placeName = (p: number) => (p <= 3 ? tr.placeName[String(p) as '1' | '2' |
   .results-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: var(--fs-body);
+    font-size: 15px;
+    line-height: 1.4;
   }
-  caption:not(.visually-hidden) {
+  caption {
     text-align: left;
-    margin-bottom: var(--s-3);
-    font-weight: 700;
-  }
-  th,
-  td {
-    padding: 14px 12px 14px 0;
-    text-align: left;
-    vertical-align: top;
-    border-bottom: 1px solid var(--line);
-  }
-  thead th {
-    font-size: var(--fs-eyebrow);
+    padding-bottom: 12px;
+    font-size: 12px;
     letter-spacing: var(--ls-eyebrow);
     text-transform: uppercase;
-    font-weight: 700;
     color: var(--ink-muted);
-    padding-block: 0 10px;
   }
-  .place {
-    width: 1%;
-    white-space: nowrap;
+  thead th {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+  tbody td,
+  tbody th {
+    padding: 18px 16px 18px 0;
+    border-bottom: 1px solid var(--surface-alt);
+    text-align: left;
+    vertical-align: top;
+    font-weight: 400;
+  }
+  .col-place {
+    width: 96px;
   }
   .badge {
-    display: inline-grid;
-    place-items: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     min-width: 44px;
-    height: 32px;
+    height: 30px;
     padding: 0 10px;
     border-radius: var(--r-pill);
+    font-size: 14px;
     font-weight: 700;
     font-variant-numeric: tabular-nums;
   }
   .badge--1 {
     background: var(--accent);
     color: var(--ink-on-accent);
-    border: 1.5px solid var(--accent);
   }
   .badge--2 {
-    border: 1.5px solid var(--ink);
+    border: 2px solid var(--ink);
   }
   .badge--3 {
-    border: 1.5px dashed var(--ink);
+    border: 2px dashed var(--ink-muted);
   }
   .badge--4 {
-    border: 1.5px dotted var(--ink-muted);
     color: var(--ink-muted);
   }
-  .times {
-    margin-left: 6px;
-    font-weight: 700;
-    font-variant-numeric: tabular-nums;
-  }
   .rider {
-    font-weight: 400;
+    font-size: 18px;
+    color: var(--ink);
   }
   .rider a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .rider a:hover {
+    text-decoration: underline;
     text-decoration-color: var(--accent);
   }
   .event {
-    display: grid;
-    gap: 2px;
-  }
-  .event__meta {
     color: var(--ink-muted);
-    font-size: var(--fs-body-sm);
+  }
+  .event--rider {
+    color: var(--ink);
+  }
+  .event__team {
+    display: block;
+    color: var(--ink-muted);
+    font-size: 14px;
+  }
+  .date,
+  .col-date {
+    white-space: nowrap;
+    color: var(--ink-muted);
+  }
+  .source a {
+    font-size: 14px;
+  }
+  @media (max-width: 599px) {
+    .col-place {
+      width: 64px;
+    }
+    .rider {
+      font-size: 16px;
+    }
+    tbody td,
+    tbody th {
+      padding: 14px 10px 14px 0;
+    }
+    .event {
+      font-size: 14px;
+    }
+    .col-source,
+    .source {
+      display: none;
+    }
   }
 </style>

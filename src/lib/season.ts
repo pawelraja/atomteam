@@ -8,6 +8,8 @@ export interface RaceEvent {
   season: number;
   name: string;
   nameEn: string | null;
+  /** Short name for running text, e.g. "Scheldeprijs". */
+  short: string | null;
   location: string | null;
   locationEn: string | null;
   country: string;
@@ -16,6 +18,7 @@ export interface RaceEvent {
   cls: string | null;
   status: Status;
   training: boolean;
+  nationalChampionship: boolean;
   start: ISODate | null;
   end: ISODate | null;
   month: number;
@@ -97,13 +100,16 @@ export function normalizeCalendar(season: number, entries: CalendarEntry[]): Rac
       season,
       name: e.name,
       nameEn: e.name_en ?? null,
+      short: e.short ?? null,
       location: e.location,
       locationEn: e.location_en ?? null,
-      country: e.country,
+      // Entries on the team calendar always have a country (checked by the schema).
+      country: e.country ?? '',
       discipline: e.discipline,
       cls: e.verify ? null : e.class,
       status: e.status,
       training: e.type === 'training',
+      nationalChampionship: Boolean(e.nationalChampionship),
       start: e.start ?? null,
       end: e.end ?? null,
       month,

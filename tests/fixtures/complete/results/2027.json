@@ -1,0 +1,6 @@
+[
+  {"eventId":"F30","date":"2027-06-24","stage":"ITT","category":"U23","rider":"Maja Tracka","position":1,"featured":true,"status":"Classified","note":"[fixture]","source":"https://example.com/results","verify":false},
+  {"eventId":"F30","date":"2027-06-24","stage":"Road race","category":"U19","rider":"Zofia Glinka","position":2,"featured":true,"status":"Classified","note":"[fixture]","source":"https://example.com/results","verify":false},
+  {"eventId":"F33","date":"2027-07-25","stage":"General classification (final)","category":"Elite","rider":"Olga Wankiewicz","position":6,"featured":true,"status":"Classified","note":"[fixture]","source":"https://example.com/results","verify":false},
+  {"eventId":"F38","date":"2027-08-15","stage":"General classification (final)","category":"Elite","rider":"Martyna Szczęsna","position":1,"featured":true,"status":"Classified","note":"[fixture]","source":"https://example.com/results","verify":false}
+]

@@ -15,13 +15,16 @@ const { site } = getData();
 const t = copy(lang);
 const { desktop, mobile } = await heroSources();
 const c = t.hero.credentials;
-const credentials = [c.licence, c.juniors, c.base, c.founded, c.programme].map((x) => ({
-  term: x.term,
-  value: fill(x.value, { founded: site.foundedYear }, lang),
-}));
+const credentials = [
+  { ...c.licence, mobile: true },
+  { ...c.juniors, mobile: false },
+  { ...c.base, mobile: false },
+  { ...c.founded, mobile: true },
+  { ...c.programme, mobile: true },
+].map((x) => ({ ...x, value: fill(x.value, { founded: site.foundedYear }, lang) }));
 ---
 
-<section class="hero" id={anchor(lang, 'top')} data-section="top" aria-labelledby="hero-title">
+<section class="hero" id={anchor(lang, 'top')} data-section="top" data-theme="dark" aria-labelledby="hero-title">
   <div class="hero__media">
     {
       desktop || mobile ? (
@@ -39,39 +42,33 @@ const credentials = [c.licence, c.juniors, c.base, c.founded, c.programme].map((
           />
         </picture>
       ) : (
-        <div class="ph hero__ph" role="img" aria-label={fill(t.a11y.photoPlaceholder, { alt: t.hero.alt })} data-placeholder="photos/hero.jpg">
-          <span class="ph__label" aria-hidden="true">
-            <span class="ph__file">photos/hero.jpg · 16:9</span>
-            <span>photos/hero-mobile.jpg · 4:5</span>
-          </span>
+        <div class="hero__ph" role="img" aria-label={fill(t.a11y.photoPlaceholder, { alt: t.hero.alt })} data-placeholder="photos/hero.jpg">
+          <span class="hero__ph-label" aria-hidden="true">hero.jpg · 16:9 · hero-mobile.jpg · 4:5</span>
         </div>
       )
     }
   </div>
 
-  <div class="hero__band" data-theme="dark">
-    <div class="hero__content container">
-      <p class="eyebrow">{t.hero.eyebrow}</p>
-      <h1 id="hero-title">{t.hero.title}</h1>
-      <p class="hero__mission">{t.hero.mission}</p>
-      <div class="btn-row">
+  <div class="hero__content container">
+    <p class="hero__eyebrow">{t.hero.eyebrow}</p>
+    <h1 id="hero-title">{t.hero.title}</h1>
+    <div class="hero__row">
+      <p class="hero__mission">{fill(t.hero.mission, { founded: site.foundedYear }, lang)}</p>
+      <div class="hero__buttons">
         <a class="btn btn--secondary hero__secondary" href={route(lang, 'team')}>{t.hero.secondary}</a>
         <a class="btn btn--primary" href={`${route(lang, 'partners')}#${anchor(lang, 'cta')}`}>{fill(t.hero.primary, { season: site.currentSeason }, lang)}</a>
       </div>
     </div>
-
-    <div class="container">
-      <dl class="credentials" aria-label={t.hero.credentialsLabel}>
-        {
-          credentials.map((x) => (
-            <div>
-              <dt>{x.term}</dt>
-              <dd>{x.value}</dd>
-            </div>
-          ))
-        }
-      </dl>
-    </div>
+    <dl class="credentials" aria-label={t.hero.credentialsLabel}>
+      {
+        credentials.map((x) => (
+          <div class:list={{ 'desk-only': !x.mobile }}>
+            <dt>{x.term}</dt>
+            <dd>{x.value}</dd>
+          </div>
+        ))
+      }
+    </dl>
   </div>
 </section>
 
@@ -79,10 +76,12 @@ const credentials = [c.licence, c.juniors, c.base, c.founded, c.programme].map((
   .hero {
     position: relative;
     display: grid;
-    min-height: min(calc(100svh - var(--status-h)), 1000px);
-    background: #2b0020;
-    color: #f1eef3;
+    align-items: end;
+    min-height: min(calc(100svh - var(--status-h)), 820px);
+    background: #3f273c;
+    color: var(--ink);
     isolation: isolate;
+    overflow: hidden;
   }
   .hero__media {
     position: absolute;
@@ -98,86 +97,142 @@ const credentials = [c.licence, c.juniors, c.base, c.founded, c.programme].map((
   .hero__media img {
     object-fit: cover;
   }
-  .hero__ph {
-    align-items: start;
-    padding-top: 120px;
-  }
-  /* Scrim: a fade into a plum wash behind the copy, so text stays readable on any photo. */
-  .hero__band {
-    align-self: end;
-    position: relative;
-    padding-top: calc(var(--header-h) + 48px);
-    background: transparent;
-  }
-  .hero__band::before {
+  /* Plum scrim: keeps the copy at 4.5:1+ over the lightest part of any photo. */
+  .hero__media::after {
     content: '';
     position: absolute;
     inset: 0;
-    z-index: -1;
-    background: linear-gradient(to bottom, rgba(43, 0, 32, 0) 0, rgba(43, 0, 32, 0.88) 180px);
+    background: linear-gradient(to bottom, rgba(43, 0, 32, 0.15) 0, rgba(43, 0, 32, 0.35) 35%, rgba(43, 0, 32, 0.9) 70%);
+  }
+  .hero__ph {
+    position: relative;
+    background: #3f273c;
+  }
+  .hero__ph-label {
+    position: absolute;
+    right: 32px;
+    top: 104px;
+    padding: 6px 12px;
+    border-radius: var(--r-pill);
+    background: rgba(0, 0, 0, 0.35);
+    color: #f1eef3;
+    font-size: 12px;
   }
   .hero__content {
     display: grid;
-    justify-items: start;
-    gap: var(--s-4);
-    padding-bottom: clamp(40px, 6vw, 72px);
-    color: var(--ink);
+    gap: 28px;
+    padding-top: calc(var(--header-h) + 96px);
+  }
+  .hero__eyebrow {
+    font-size: 14px;
+    letter-spacing: var(--ls-eyebrow);
+    text-transform: uppercase;
+    color: var(--accent);
   }
   h1 {
-    max-width: 11ch;
+    max-width: 1180px;
     font-size: var(--fs-hero);
     line-height: var(--lh-hero);
     letter-spacing: var(--ls-hero);
     text-wrap: balance;
   }
+  .hero__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: var(--s-4) 48px;
+  }
   .hero__mission {
-    font-size: var(--fs-body-lg);
-    max-width: 46ch;
+    max-width: 560px;
+    font-size: 20px;
+    line-height: 1.4;
     color: var(--ink-muted);
+  }
+  .hero__buttons {
+    display: flex;
+    gap: 12px;
+    flex: none;
   }
   .hero__secondary {
     color: var(--ink);
-  }
-  .btn-row {
-    margin-top: var(--s-2);
+    font-weight: 400;
   }
 
   /* Credential strip */
   .credentials {
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: var(--s-3);
-    padding-block: var(--s-4) var(--s-5);
-    border-top: 1px solid var(--line);
+    margin-top: 20px;
+    border-top: 1px solid rgba(241, 238, 243, 0.28);
   }
   .credentials div {
-    display: grid;
-    gap: 2px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 20px 20px 28px;
+  }
+  .credentials div:first-child {
+    padding-left: 0;
+  }
+  .credentials div + div {
+    border-left: 1px solid rgba(241, 238, 243, 0.28);
   }
   dt {
-    font-size: var(--fs-eyebrow);
+    font-size: 12px;
     letter-spacing: var(--ls-eyebrow);
     text-transform: uppercase;
-    font-weight: 700;
-    color: var(--accent);
+    color: var(--ink-muted);
   }
   dd {
-    font-size: var(--fs-body);
+    font-size: 18px;
     color: var(--ink);
   }
-  @media (max-width: 899px) {
-    .credentials {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      row-gap: var(--s-4);
+  @media (max-width: 1023px) {
+    .hero__row {
+      flex-direction: column;
+      align-items: start;
     }
   }
-  @media (max-width: 479px) {
-    .btn-row {
-      flex-direction: column;
+  @media (max-width: 699px) {
+    .hero__content {
+      gap: 18px;
+      padding-top: calc(var(--header-h) + 64px);
+    }
+    .hero__eyebrow {
+      font-size: 12px;
+    }
+    .hero__mission {
+      font-size: 16px;
+    }
+    .hero__buttons {
+      flex-direction: column-reverse;
       align-self: stretch;
+      gap: 10px;
     }
     .credentials {
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin-top: 0;
+    }
+    .credentials .desk-only {
+      display: none;
+    }
+    .credentials div {
+      padding: 14px 0 20px 12px;
+    }
+    .credentials div:nth-child(1) {
+      padding-left: 0;
+    }
+    /* Terms stay for screen readers; phones show the values only. */
+    dt {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+    dd {
+      font-size: 14px;
     }
   }
 </style>

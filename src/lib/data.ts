@@ -8,6 +8,7 @@
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { z } from 'zod';
+import { eventInfo, type EventIndex } from './results';
 import {
   calendarEntrySchema,
   gallerySchema,
@@ -52,6 +53,10 @@ function readJSON(rel: string): unknown {
 
 function describe(item: unknown): string {
   if (item && typeof item === 'object' && 'name' in item) return ` ("${String((item as { name: unknown }).name)}")`;
+  if (item && typeof item === 'object' && 'rider' in item && 'eventId' in item) {
+    const r = item as { rider: unknown; eventId: unknown };
+    return ` (${String(r.rider)}, ${String(r.eventId)})`;
+  }
   if (item && typeof item === 'object' && 'title' in item) {
     const title = (item as { title: unknown }).title;
     return ` ("${typeof title === 'object' && title ? String((title as { pl?: unknown }).pl) : String(title)}")`;
@@ -105,7 +110,10 @@ function loadAll() {
     throw new DataError('Problem in src/data/site.json: "foundedYear" is after "currentSeason"');
   }
 
+  // calendars: the published team calendar per season. events: every event results may refer to,
+  // including races ridden outside the team calendar ("onTeamCalendar": false).
   const calendars = new Map<number, RaceEvent[]>();
+  const events = new Map<number, EventIndex>();
   for (const file of listFiles('calendar', /^\d{4}\.json$/)) {
     const season = Number(file.slice(0, 4));
     const entries = load(z.array(calendarEntrySchema), `calendar/${file}`);
@@ -116,22 +124,27 @@ function loadAll() {
           wrongYear.map((e) => `"${e.name}" (${e.start})`).join(', '),
       );
     }
-    const events = normalizeCalendar(season, entries);
-    const dupes = duplicateIds(events);
+    const onCalendar = entries.filter((e) => e.onTeamCalendar !== false);
+    const normalized = normalizeCalendar(season, onCalendar);
+    const dupes = duplicateIds(normalized);
+    const idCount = new Map<string, number>();
+    for (const e of entries) if (e.id) idCount.set(e.id, (idCount.get(e.id) ?? 0) + 1);
+    dupes.push(...[...idCount].filter(([, n]) => n > 1).map(([id]) => id));
     if (dupes.length) {
       throw new DataError(
-        `Problem in src/data/calendar/${file}: two or more entries share the same name and place (${dupes.join(', ')}).\n` +
+        `Problem in src/data/calendar/${file}: two or more entries share the same id or the same name and place (${[...new Set(dupes)].join(', ')}).\n` +
           '  Give each of them a unique "id", e.g. "id": "polish-cup-lubawa-june".',
       );
     }
-    const unverified = events.filter((e) => e.verify);
+    const unverified = normalized.filter((e) => e.verify);
     if (unverified.length) {
       console.warn(
         `[data] calendar/${file}: ${unverified.length} entr${unverified.length === 1 ? 'y has' : 'ies have'} "verify": true — race class hidden until checked: ` +
           unverified.map((e) => e.name).join('; '),
       );
     }
-    calendars.set(season, events);
+    calendars.set(season, normalized);
+    events.set(season, new Map(entries.filter((e): e is typeof e & { id: string } => Boolean(e.id)).map((e) => [e.id, eventInfo(e)])));
   }
   if (!calendars.has(site.currentSeason)) calendars.set(site.currentSeason, []);
 
@@ -147,9 +160,8 @@ function loadAll() {
     const slug = riderSlug(r);
     if (slugs.has(slug)) {
       throw new DataError(
-        `Problem in src/data/riders.json: "${r.name}" and "${slugs.get(slug)}" would share the profile address /zespol/${slug}/.
-` +
-          '  Give one of them a "slug", e.g. "slug": "' + slug + '-2".',
+        `Problem in src/data/riders.json: "${r.name}" and "${slugs.get(slug)}" would share the profile address /zespol/${slug}/.\n` +
+          `  Give one of them a "slug", e.g. "slug": "${slug}-2".`,
       );
     }
     slugs.set(slug, r.name);
@@ -157,7 +169,10 @@ function loadAll() {
 
   const results = new Map<number, Result[]>();
   for (const file of listFiles('results', /^\d{4}\.json$/)) {
-    results.set(Number(file.slice(0, 4)), visibleResults(load(z.array(resultSchema), `results/${file}`), `results/${file}`, riders));
+    const season = Number(file.slice(0, 4));
+    const rows = load(z.array(resultSchema), `results/${file}`);
+    checkResults(rows, `results/${file}`, riders, events.get(season) ?? new Map());
+    results.set(season, rows);
   }
 
   const today = process.env.MADW_TODAY ?? todayISO();
@@ -166,6 +181,7 @@ function loadAll() {
   return {
     site,
     calendars,
+    events,
     partners: load(z.array(partnerSchema), 'partners.json'),
     riders,
     results,
@@ -189,24 +205,30 @@ function visibleHighlights<T extends { verify?: boolean; title: { pl: string } }
   return list.filter((h) => !h.verify);
 }
 
-function visibleResults(list: Result[], file: string, riders: Rider[]): Result[] {
+/**
+ * Every result must name a rider from riders.json and an event from the same season's calendar.
+ * Rows still marked "verify" are shown (they carry a source link), but listed at build time.
+ */
+function checkResults(rows: Result[], file: string, riders: Rider[], events: EventIndex) {
   const names = new Set(riders.map((r) => r.name));
-  const unknown = list.filter((r) => !names.has(r.rider));
-  if (unknown.length) {
+  const unknownRiders = [...new Set(rows.filter((r) => !names.has(r.rider)).map((r) => r.rider))];
+  if (unknownRiders.length) {
     throw new DataError(
-      `Problem in src/data/${file}: ${unknown.map((r) => `"${r.rider}"`).join(', ')} not found in riders.json.
-` +
-        '  Write the rider's name exactly as in riders.json (including Polish letters).',
+      `Problem in src/data/${file}: ${unknownRiders.map((n) => `"${n}"`).join(', ')} not found in riders.json.\n` +
+        "  Write the rider's name exactly as in riders.json (including Polish letters).",
     );
   }
-  const hidden = list.filter((r) => r.verify);
-  if (hidden.length) {
-    console.warn(
-      `[data] ${file}: hiding ${hidden.length} result(s) marked "verify": true until the team checks them: ` +
-        hidden.map((r) => `${r.rider} (${r.event.pl}, ${r.place}.)`).join('; '),
+  const unknownEvents = [...new Set(rows.filter((r) => !events.has(r.eventId)).map((r) => r.eventId))];
+  if (unknownEvents.length) {
+    throw new DataError(
+      `Problem in src/data/${file}: event id(s) ${unknownEvents.join(', ')} not found in the calendar of the same year.\n` +
+        '  Add the event to src/data/calendar/<year>.json (use "onTeamCalendar": false for races outside the team calendar).',
     );
   }
-  return list.filter((r) => !r.verify);
+  const unchecked = rows.filter((r) => r.verify).length;
+  if (unchecked) {
+    console.warn(`[data] ${file}: ${unchecked} of ${rows.length} result rows are not yet signed off by the team ("verify": true).`);
+  }
 }
 
 /** Where downloadable media files live. */
@@ -236,10 +258,7 @@ function loadMedia(): { files: MediaFileView[]; photos: Media['photos'] } {
   });
   if (missing.length) {
     throw new DataError(
-      `Problem in src/data/media.json: these downloads are marked "ready" but the file is missing:
-  - ${missing.join('
-  - ')}
-` +
+      `Problem in src/data/media.json: these downloads are marked "ready" but the file is missing:\n  - ${missing.join('\n  - ')}\n` +
         '  Add the file to public/media/, or set "status": "soon" until it is ready.',
     );
   }

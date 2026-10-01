@@ -8,7 +8,7 @@ describe('Drive photo sync', () => {
     expect(slots.hero).toEqual(['hero.jpg', 'hero-mobile.jpg']);
     expect(slots.riders).toContain('eliza-rabazynska.jpg');
     expect(slots.partners).toContain('budus.svg');
-    expect(slots['photo-story']).toHaveLength(7);
+    expect(slots['photo-story']).toHaveLength(4);
   });
 
   it('matches names regardless of case, spaces and Polish letters', () => {
@@ -37,5 +37,17 @@ describe('Drive photo sync', () => {
   it('skips files the site cannot use', () => {
     expect(planFile('riders', 'notes.docx', slots.riders).target).toBeNull();
     expect(planFile('partners', 'deck-2027.pdf', slots.partners).target).toBe('deck-2027.pdf');
+  });
+});
+
+describe('Drive sync for the media centre', () => {
+  const slots = expectedSlots();
+  it('knows the press photos and the downloads from media.json', () => {
+    expect(slots.media).toContain('media-race-01.jpg');
+    expect(slots['media-files']).toEqual(expect.arrayContaining(['madw-logotypy.zip', 'madw-informacja-pl.pdf', 'madw-team-information-en.pdf']));
+  });
+  it('copies downloads under the exact name media.json uses', () => {
+    expect(planFile('media-files', 'MADW Logotypy.zip', slots['media-files'])).toEqual({ target: 'madw-logotypy.zip', warning: null });
+    expect(planFile('media-files', 'notes.docx', slots['media-files']).target).toBeNull();
   });
 });

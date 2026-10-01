@@ -42,9 +42,8 @@ export function assertPressQuality(file: string) {
   const o = findOriginal('media', file);
   if (o && Math.max(o.width, o.height) < MEDIA_MIN_LONG_SIDE) {
     throw new Error(
-      `Problem with src/assets/media/${o.name}: it is ${o.width} × ${o.height} px. Press photos must be at least ${MEDIA_MIN_LONG_SIDE} px on the long side.
-` +
-        '  Upload the photographer's original instead of a resized copy.',
+      `Problem with src/assets/media/${o.name}: it is ${o.width} × ${o.height} px. Press photos must be at least ${MEDIA_MIN_LONG_SIDE} px on the long side.\n` +
+        "  Upload the photographer's original instead of a resized copy.",
     );
   }
   return o;

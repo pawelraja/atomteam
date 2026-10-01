@@ -1,7 +1,9 @@
 ---
-// "For media" teaser: four tiles that deep-link into the media centre.
+// "For media" teaser: four tiles that deep-link into the media centre. A tile whose file is
+// still "soon" in media.json says so.
 import { anchor, type AnchorKey } from '../lib/anchors';
-import { copy, type Lang } from '../lib/i18n';
+import { getData } from '../lib/data';
+import { copy, fill, type Lang } from '../lib/i18n';
 import { route } from '../lib/routes';
 import Icon from './Icon.astro';
 
@@ -9,88 +11,107 @@ interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
+const { site, media } = getData();
 const t = copy(lang);
 const tm = t.mediaTeaser;
-const media = route(lang, 'media');
-const tiles: { key: keyof typeof tm.tiles; target: AnchorKey; icon: 'file' | 'download' }[] = [
-  { key: 'logos', target: 'files', icon: 'download' },
-  { key: 'photos', target: 'photos', icon: 'download' },
-  { key: 'portraits', target: 'roster', icon: 'download' },
-  { key: 'info', target: 'files', icon: 'file' },
+const base = route(lang, 'media');
+const status = (id: string) => media.files.find((f) => f.id === id)?.status ?? 'soon';
+const tiles: { key: keyof typeof tm.tiles; target: AnchorKey; file: string }[] = [
+  { key: 'logos', target: 'files', file: 'logos' },
+  { key: 'photos', target: 'photos', file: 'season-photos' },
+  { key: 'portraits', target: 'roster', file: 'portraits' },
+  { key: 'info', target: 'files', file: 'team-info' },
 ];
 ---
 
-<section class="section media-teaser" id={anchor(lang, 'for-media')} data-section="for-media" aria-labelledby="media-teaser-title">
-  <div class="container">
+<section class="media-teaser" id={anchor(lang, 'for-media')} data-section="for-media" aria-labelledby="media-teaser-title">
+  <div class="container media-teaser__inner">
     <div class="head">
-      <div class="chapter-head">
+      <div class="head__title">
         <p class="eyebrow">{tm.eyebrow}</p>
         <h2 id="media-teaser-title" class="chapter">{tm.title}</h2>
-        <p>{tm.lead}</p>
       </div>
-      <a class="btn btn--secondary" href={media}>
-        {tm.link} <Icon name="arrow" size={18} />
+      <a class="btn btn--secondary" href={base}>
+        {tm.link} <Icon name="arrow" size={16} />
       </a>
     </div>
     <ul class="tiles" role="list">
       {
-        tiles.map((tile) => (
-          <li>
-            <a class="tile card" href={`${media}#${anchor(lang, tile.target)}`}>
-              <Icon name={tile.icon} size={28} />
-              <span class="tile__title">{tm.tiles[tile.key].title}</span>
-              <span class="tile__text">{tm.tiles[tile.key].text}</span>
-            </a>
-          </li>
-        ))
+        tiles.map((tile) => {
+          const x = tm.tiles[tile.key];
+          const text = fill(x.text, { season: site.currentSeason }, lang);
+          return (
+            <li>
+              <a class="tile" href={`${base}#${anchor(lang, tile.target)}`}>
+                <span class="tile__format">{x.format}</span>
+                <span class="tile__body">
+                  <span class="tile__title">{x.title}</span>
+                  <span class="tile__text">{status(tile.file) === 'soon' && tile.key === 'portraits' ? `${text} · ${tm.soon}` : text}</span>
+                </span>
+              </a>
+            </li>
+          );
+        })
       }
     </ul>
   </div>
 </section>
 
 <style>
+  .media-teaser {
+    padding-block: 120px;
+  }
+  .media-teaser__inner {
+    display: grid;
+    gap: 48px;
+  }
   .head {
     display: flex;
-    flex-wrap: wrap;
     justify-content: space-between;
-    align-items: end;
-    gap: var(--s-4);
-    margin-bottom: var(--s-6);
+    align-items: flex-end;
+    gap: 24px 32px;
+    flex-wrap: wrap;
   }
-  .head .chapter-head {
-    margin-bottom: 0;
+  .head__title {
+    display: grid;
+    gap: 16px;
+  }
+  .head .btn {
+    font-weight: 400;
+    white-space: nowrap;
   }
   .tiles {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: var(--s-3);
+    gap: 24px;
   }
   .tile {
-    display: grid;
-    align-content: start;
-    gap: var(--s-2);
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
     height: 100%;
-    min-height: 180px;
-    padding: var(--s-4);
-    background: var(--surface-alt);
-    color: var(--ink);
+    padding: 28px;
+    border: 1px solid #e4e0e6;
+    border-radius: var(--r-card);
+    color: #000;
     text-decoration: none;
   }
-  .tile :global(svg) {
+  .tile:hover {
+    border-color: var(--accent);
+    color: #000;
+  }
+  .tile__format {
+    font-size: 12px;
+    font-weight: 700;
     color: var(--accent-strong);
-    margin-bottom: var(--s-3);
+  }
+  .tile__body {
+    display: grid;
+    gap: 4px;
   }
   .tile__title {
-    font-size: var(--fs-body-lg);
-    font-weight: 700;
-  }
-  .tile__text {
-    color: var(--ink-muted);
-    font-size: var(--fs-body-sm);
-  }
-  .tile:hover {
-    color: var(--ink);
-    box-shadow: 0 5px 0 0 rgba(255, 102, 237, 0.8);
+    font-size: 22px;
+    line-height: 28px;
   }
   .tile:hover .tile__title {
     text-decoration: underline;
@@ -98,9 +119,33 @@ const tiles: { key: keyof typeof tm.tiles; target: AnchorKey; icon: 'file' | 'do
     text-decoration-thickness: 2px;
     text-underline-offset: 4px;
   }
-  @media (max-width: 899px) {
+  .tile__text {
+    font-size: 14px;
+    color: var(--ink-muted);
+  }
+  @media (max-width: 1023px) {
     .tiles {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 599px) {
+    .media-teaser {
+      padding-block: 64px;
+    }
+    .media-teaser__inner {
+      gap: 24px;
+    }
+    .tiles {
+      gap: 10px;
+    }
+    .tile {
+      gap: 18px;
+      padding: 16px;
+      border-radius: 20px;
+    }
+    .tile__title {
+      font-size: 16px;
+      line-height: 1.3;
     }
   }
 </style>

@@ -4,35 +4,36 @@
     "locale": "en-GB",
     "ogLocale": "en_GB",
     "title": "Mat Atom Deweloper Wrocław — UCI women's cycling team · Season {season}",
-    "description": "UCI Continental and Junior women's team from Wrocław, Poland. Since {founded}. Team, {season} race calendar, results and partnerships.",
+    "description": "UCI Continental women's cycling team and junior team from Wrocław, Poland. Since {founded}. Team, {season} calendar, results and partnerships.",
     "ogHeadline": "Season {season}.",
     "ogAlt": "Mat Atom Deweloper Wrocław — Season {season}",
     "pages": {
       "team": {
-        "title": "Team {season} — Mat Atom Deweloper Wrocław",
-        "description": "Continental and Junior riders and staff of Mat Atom Deweloper Wrocław."
+        "title": "Team — Mat Atom Deweloper Wrocław",
+        "description": "Continental and junior riders and the staff of Mat Atom Deweloper Wrocław."
       },
       "calendar": {
-        "title": "{season} race calendar — Mat Atom Deweloper Wrocław",
-        "description": "Every race of the {season} season: road, track, cyclocross. Dates, UCI classes and a results archive."
+        "title": "{season} calendar — Mat Atom Deweloper Wrocław",
+        "description": "The {season} season: road, track, cyclocross. Dates, UCI classes and a season archive."
       },
       "partners": {
-        "title": "Partners and partnership {season} — Mat Atom Deweloper Wrocław",
-        "description": "Our partners, and what partnering with a UCI Continental team offers: kit placement, vehicles, media, events."
+        "title": "Partners — Mat Atom Deweloper Wrocław",
+        "description": "Our partners, and partnering with a UCI Continental women's team: kit placement, team vehicles, media and events."
       },
       "media": {
         "title": "Media centre — Mat Atom Deweloper Wrocław",
-        "description": "Team facts, boilerplate, logos, photo downloads, roster and press contact. No login required."
+        "description": "Team facts, boilerplate, logos, photos, roster and press contact. No login needed."
       },
       "rider": {
         "title": "{name} — Mat Atom Deweloper Wrocław",
-        "description": "{name}, {squad} at Mat Atom Deweloper Wrocław. Profile, results and a downloadable portrait."
+        "description": "{name}, {squad}, Mat Atom Deweloper Wrocław. Profile, results and a downloadable portrait."
       }
     }
   },
   "team": {
     "name": "Mat Atom Deweloper Wrocław",
-    "wordmarkA": "MAT ATOM DEWELOPER",
+    "wordmarkLead": "MAT",
+    "wordmarkA": "ATOM DEWELOPER",
     "wordmarkB": "WROCŁAW",
     "email": "kontakt@atomteam.pl",
     "hashtag": "#allezatomówki",
@@ -41,18 +42,17 @@
       "facebook": "https://www.facebook.com/atom.deweloper.team",
       "linkedin": "https://www.linkedin.com/company/atomteampl/"
     },
-    "instagramHandle": "@atomdeweloper_team"
+    "logoPlaceholder": "LOGO"
   },
   "language": {
-    "switchLabel": "Site language",
+    "switchLabel": "Język / Language",
     "otherVersion": "Wersja polska",
     "otherShort": "PL",
     "currentShort": "EN"
   },
   "a11y": {
     "skip": "Skip to content",
-    "home": "Mat Atom Deweloper Wrocław, home",
-    "mainNav": "Main",
+    "mainNav": "Main menu",
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
     "opensInstagram": "{name} on Instagram",
@@ -64,16 +64,18 @@
     "playTicker": "Play animation",
     "photoPlaceholder": "Photo coming soon: {alt}",
     "status": "Season news",
-    "breadcrumb": "You are here",
-    "pageNav": "On this page"
+    "pageNav": "On this page",
+    "sitemap": "Site map",
+    "phone": "Phone",
+    "email": "Email"
   },
   "nav": {
     "home": "Home",
     "team": "Team",
+    "approach": "Approach",
     "calendar": "Calendar",
     "partners": "Partners",
     "media": "Media",
-    "contact": "Contact",
     "cta": "Partner with us"
   },
   "status": {
@@ -82,6 +84,8 @@
       "0": "today",
       "1": "tomorrow",
       "one": "in {n} day",
+      "few": "in {n} days",
+      "many": "in {n} days",
       "other": "in {n} days"
     },
     "details": "Details"
@@ -89,193 +93,320 @@
   "hero": {
     "eyebrow": "Women's cycling team from Wrocław",
     "title": "We are for women's cycling.",
-    "mission": "From junior to elite: we take riders through UCI races across Europe and build a sport where women belong.",
-    "primary": "Partner for {season}",
+    "mission": "Since {founded} we have taken riders from their first junior races to UCI races across Europe.",
+    "primary": "Partner with us in {season}",
     "secondary": "Meet the team",
-    "alt": "Mat Atom Deweloper Wrocław riders in the peloton",
+    "alt": "The peloton in motion: Mat Atom Deweloper Wrocław riders in team kit",
     "credentialsLabel": "The team in facts",
     "credentials": {
-      "licence": { "term": "Licence", "value": "UCI Continental" },
-      "juniors": { "term": "Juniors", "value": "U19" },
-      "base": { "term": "Based in", "value": "Wrocław /POL" },
-      "founded": { "term": "Founded", "value": "{founded}" },
-      "programme": { "term": "Programme", "value": "Club Pro · Ministry of Sport" }
+      "licence": {
+        "term": "Licence",
+        "value": "UCI Continental"
+      },
+      "juniors": {
+        "term": "Juniors",
+        "value": "U19 team"
+      },
+      "base": {
+        "term": "Base",
+        "value": "Wrocław /POL"
+      },
+      "founded": {
+        "term": "Founded",
+        "value": "{founded}"
+      },
+      "programme": {
+        "term": "Programme",
+        "value": "Club Pro · Ministry of Sport"
+      }
     }
   },
   "numbers": {
-    "eyebrow": "Season {season} in numbers",
-    "title": "Numbers, not adjectives.",
+    "label": "Season {season} in numbers",
     "riders": {
-      "0": "riders",
-      "1": "rider",
-      "one": "rider",
-      "other": "riders"
+      "0": "riders in {season}:",
+      "1": "rider in {season}:",
+      "one": "rider in {season}:",
+      "few": "riders in {season}:",
+      "many": "riders in {season}:",
+      "other": "riders in {season}:"
     },
-    "splitFull": "{u19} U19 · {u23} U23 · {elite} Elite",
-    "splitCombined": "{u19} U19 · {rest} U23 and Elite",
+    "split": "{u19} × U19, {u23} × U23, {elite} × Elite",
     "races": {
-      "0": "races on the calendar",
-      "1": "race on the calendar",
-      "one": "race on the calendar",
-      "other": "races on the calendar"
+      "0": "races and championships on the {season} calendar",
+      "1": "race on the {season} calendar",
+      "one": "race on the {season} calendar",
+      "few": "races and championships on the {season} calendar",
+      "many": "races and championships on the {season} calendar",
+      "other": "races and championships on the {season} calendar"
     },
-    "racesNote": "Confirmed starts, training camps excluded",
     "countries": {
-      "0": "countries raced",
-      "1": "country raced",
-      "one": "country raced",
-      "other": "countries raced"
+      "0": "countries raced in {season},",
+      "1": "country raced in {season},",
+      "one": "country raced in {season},",
+      "few": "countries raced in {season},",
+      "many": "countries raced in {season},",
+      "other": "countries raced in {season},"
     },
+    "countriesNote": "including with national teams",
     "disciplines": {
       "0": "disciplines",
-      "1": "discipline",
-      "one": "discipline",
-      "other": "disciplines"
+      "1": "discipline:",
+      "one": "discipline:",
+      "few": "disciplines:",
+      "many": "disciplines:",
+      "other": "disciplines:"
     },
-    "source": "Counted from the {season} calendar and roster."
+    "disciplineNames": {
+      "ROAD": "road",
+      "TRACK": "track",
+      "CX": "cyclocross",
+      "TTT": "team time trial",
+      "MTB": "MTB"
+    }
   },
   "approach": {
     "eyebrow": "Our approach",
     "title": "One team from junior to elite.",
-    "lead": "Juniors train and race alongside our Continental riders. Same staff, same plan, same jersey.",
+    "lead": "Riders develop in one structure: the same staff, the same standards for training and equipment, and a steadily higher level of racing.",
     "pathwayLabel": "Rider pathway within the team",
     "stages": {
-      "U19": { "name": "Juniors", "sub": "U19" },
-      "U23": { "name": "Under 23", "sub": "U23" },
-      "ELITE": { "name": "Elite", "sub": "Elite" }
+      "U19": {
+        "badge": "U19",
+        "name": "Juniors",
+        "text": "Road, track and cyclocross; Polish and European junior championships."
+      },
+      "U23": {
+        "badge": "U23",
+        "name": "Under-23s",
+        "text": "The UCI calendar in Europe and Polish national titles."
+      },
+      "Elite": {
+        "badge": "Elite",
+        "name": "Elite",
+        "text": "Team leaders in 1.Pro and 2.Pro races."
+      }
     },
     "stageCount": {
-      "0": "{n} riders",
-      "1": "1 rider",
-      "one": "{n} rider",
-      "other": "{n} riders"
+      "0": "No riders in {season}.",
+      "1": "1 rider in {season}.",
+      "one": "{n} rider in {season}.",
+      "few": "{n} riders in {season}.",
+      "many": "{n} riders in {season}.",
+      "other": "{n} riders in {season}."
     },
-    "combinedCount": "{n} across U23 and Elite",
-    "rosterSeason": "{season} roster",
     "pillars": {
       "staff": {
-        "title": "Staff",
-        "text": "The professionals who run the team all season:"
+        "eyebrow": "Staff",
+        "title": {
+          "3": "A three-person staff, one plan.",
+          "4": "A four-person staff, one plan.",
+          "5": "A five-person staff, one plan.",
+          "6": "A six-person staff, one plan.",
+          "7": "A seven-person staff, one plan.",
+          "8": "An eight-person staff, one plan.",
+          "other": "A {n}-person staff, one plan."
+        },
+        "text": "Sport directors, a coach, a team manager, a mechanic and a doctor. Racing, training and recovery are planned in one place."
       },
       "clubPro": {
-        "title": "Club Pro",
-        "text": "We are part of the Ministry of Sport and Tourism and Fundacja Lotto programme for clubs that develop young athletes at the highest level."
+        "eyebrow": "Club Pro",
+        "title": "Part of the Ministry of Sport's elite programme.",
+        "text": "The programme supports clubs with the best results in developing children and young athletes, as ranked by Poland's Youth Sport System."
       },
       "uci": {
-        "title": "UCI races",
-        "text": "The top-class races we rode in {season}:",
+        "eyebrow": "UCI races",
+        "title": "On the start line with Europe's best.",
+        "text": "In {season}: {races}.",
+        "groupJoin": ", and ",
         "empty": "We publish the {season} UCI race calendar as organisers confirm their dates."
       }
     }
   },
   "results": {
-    "eyebrow": "Results {season}",
-    "title": "Medals from the Polish Championships.",
+    "eyebrow": "Results",
+    "title": "{season} season results.",
+    "lead": "UCI races, European championships and Polish national championships on the road, the track, in cyclocross and MTB.",
     "titles": {
-      "0": "Polish national titles",
-      "1": "Polish national title",
-      "one": "Polish national title",
-      "other": "Polish national titles"
+      "0": "Polish national titles,",
+      "1": "Polish national title,",
+      "one": "Polish national title,",
+      "few": "Polish national titles,",
+      "many": "Polish national titles,",
+      "other": "Polish national titles,"
     },
+    "titlesNote": "individual and team",
     "medals": {
-      "0": "Polish Championship medals",
-      "1": "Polish Championship medal",
-      "one": "Polish Championship medal",
-      "other": "Polish Championship medals"
+      "0": "Polish championship medals",
+      "1": "Polish championship medal",
+      "one": "Polish championship medal",
+      "few": "Polish championship medals",
+      "many": "Polish championship medals",
+      "other": "Polish championship medals"
     },
-    "figuresNote": "Across all age categories and disciplines.",
-    "tableCaption": "Rider results in the {season} season",
+    "medalsNote": "across all categories",
+    "archive": "{season} archive",
+    "tableCaption": "Selected {season} results · NC = Polish national championships · EC = European championships",
+    "riderTableCaption": "Results: {name}, {season} season",
     "place": "Place",
     "rider": "Rider",
-    "event": "Event",
+    "event": "Race",
+    "date": "Date",
+    "source": "Source",
     "placeName": {
-      "1": "gold",
-      "2": "silver",
-      "3": "bronze",
-      "other": "{n}th place"
+      "1": "1st place",
+      "2": "2nd place",
+      "3": "3rd place",
+      "other": "place {n}"
     },
-    "times": "{n}×",
-    "timesLong": "{n} times"
+    "nationalChampionship": "NC",
+    "europeanChampionship": "EC",
+    "worldChampionship": "Worlds",
+    "stages": {
+      "One-day race": "",
+      "Cyclocross": "",
+      "Road race": "road race",
+      "Team pursuit": "team pursuit",
+      "Madison": "madison",
+      "Omnium": "omnium",
+      "Stage 1 (TTT, 12 km)": "stage 1 (team time trial)",
+      "Stage 3 (ITT)": "stage 3 (time trial)",
+      "Stage III (ITT)": "stage III (time trial)",
+      "General classification (final)": "overall",
+      "Mountains classification (final)": "mountains classification",
+      "Points classification (final)": "points classification",
+      "Youth classification (final)": "youth classification",
+      "Elimination race": "elimination race",
+      "Individual pursuit": "individual pursuit",
+      "Points race": "points race",
+      "Scratch": "scratch",
+      "Pairs TT": "pairs time trial",
+      "Team TT": "team time trial",
+      "Prologue": "prologue",
+      "Mountain road championship": "mountain road race",
+      "Criterium": "criterium",
+      "Criterium final": "criterium final",
+      "MP criterium series – final classification": "criterium series, final classification",
+      "Mixed relay": "mixed relay",
+      "Marathon": "marathon",
+      "XCO": "XCO",
+      "XCC": "XCC",
+      "1000 m time trial": "1000 m time trial",
+      "1 km time trial": "1 km time trial",
+      "/^Stage (\\d+)$/": "stage $1",
+      "/^Stage ([IVX]+)$/": "stage $1",
+      "/^ITT/": "time trial",
+      "/^Road race/": "road race",
+      "/^(\\d+) km individual pursuit$/": "individual pursuit, $1 km",
+      "/^(\\d+) km individual race$/": "individual race, $1 km"
+    },
+    "categories": {
+      "Elite": "",
+      "U23": "U23",
+      "U19": "junior",
+      "Junior": "junior",
+      "Women open": "open",
+      "Women open (U23 + junior)": "open",
+      "Mixed": "mixed",
+      "Women (category not stated)": ""
+    },
+    "fullProfile": "Full results list",
+    "sourceNote": "Every result links to its source."
   },
   "teamSection": {
-    "eyebrow": "Team",
-    "titleConfirmed": "Team {season}.",
-    "titleProvisional": "Team {season}.",
-    "provisionalNote": "Roster announcement coming soon.",
-    "titleFallback": "Our {season} riders.",
-    "fallbackNote": "The {next} roster will be announced soon.",
+    "eyebrow": "Team · {season} roster",
+    "title": "Meet the riders.",
+    "provisionalNote": "We will announce the full {season} roster at the team presentation.",
+    "fallbackNote": "We will announce the {next} roster at the team presentation.",
+    "tabsLabel": "Squads",
     "tabs": {
-      "continental": "Continental team",
-      "junior": "Junior team",
+      "continental": "Continental",
+      "junior": "Juniors",
       "staff": "Staff"
     },
-    "continentalIntro": "Our CONTINENTAL TEAM races UCI events across Europe.",
-    "juniorIntro": "White jersey with pink sleeves? That's our Junior team.",
-    "staffIntro": "The people without whom no race would happen.",
+    "juniorIntro": "White jersey with pink sleeves? That's our junior team.",
+    "roles": {
+      "continental": "Continental team",
+      "junior": "Junior · U19"
+    },
+    "staffChip": "STAFF",
     "newPill": "New for {season}",
     "emptySquad": "This squad will be announced soon.",
     "profileLink": "Rider profile",
     "allRiders": "Full team"
   },
   "teaser": {
-    "eyebrow": "Calendar {season}",
-    "title": "Where we race.",
-    "provisional": "Provisional calendar. Dates are confirmed as race organisers publish them.",
+    "eyebrowProvisional": "Calendar · provisional",
+    "eyebrow": "Calendar",
+    "title": "{season} calendar.",
+    "provisional": "We confirm dates as organisers publish them.",
     "fullCalendar": "Full calendar",
-    "complete": "Season {season} complete. Every race is in the archive.",
-    "next": "Next",
-    "more": "+ {n} more in the calendar"
+    "tbc": "date TBC",
+    "next": "next",
+    "more": "+ {n} more",
+    "complete": "Season {season} complete. Every race is in the archive."
   },
   "brand": {
     "eyebrow": "For partners",
     "title": "Your brand in the peloton.",
-    "lead": "The team kit is seen in every race, on every podium and in every post. Your logo rides with us.",
-    "diagramLabel": "Diagram of the team kit with numbered partner logo positions",
+    "lead": "A team partner is seen wherever the riders are: at the start, on the podium, in race coverage and on social media.",
+    "diagramLabel": "Jersey diagram with partner positions: 1 front, 2 sleeves, 3 side panel",
     "fields": [
-      { "n": 1, "title": "Jersey front", "text": "Chest and stomach: the position seen in finish-line and podium photos." },
-      { "n": 2, "title": "Sleeves", "text": "Visible from the side of the peloton and in motorbike shots." },
-      { "n": 3, "title": "Side panel and shorts", "text": "Jersey sides and shorts legs: visible in every side-on shot." }
+      { "n": "1", "title": "Jersey front", "text": "Title sponsor. In every finish and podium photo." },
+      { "n": "2", "title": "Sleeves and shoulders", "text": "Main sponsors. Visible in side-on shots of the peloton." },
+      { "n": "3", "title": "Side panel and shorts", "text": "Main and technical sponsors." },
+      { "n": "+", "title": "Beyond the kit", "text": "Team vehicles, social media, press materials, the website and partner events." }
     ],
-    "beyondTitle": "+ Beyond the kit",
-    "beyond": ["Team vehicles", "Social media", "Press materials", "Events and hospitality"],
-    "caption": "Example placement. Final positions are set by the team."
+    "caption": "Example placement. The team sets the final positions."
   },
   "wall": {
-    "eyebrow": "Partners",
     "titleCurrent": "Our {season} partners.",
     "titleThanks": "Thank you to our {season} partners.",
-    "thanksNote": "We will introduce our {next} partners together with the team.",
-    "technical": "Technical partners",
+    "thanksNote": "We will announce our {next} partners with the team.",
+    "title": "Title sponsor",
+    "institutional": "institutional support",
+    "technical": "Technical partners:",
     "allPartners": "All partners"
   },
   "cta": {
-    "eyebrow": "Partnership {season}",
     "title": "Ride with us in {season}.",
-    "lead": "We are looking for partners who want to build women's cycling with us. Let's talk about what we can do together.",
+    "lead": "Three partnership levels: title, main and technical. We will prepare an offer that fits your brand.",
     "book": "Book a call",
     "mailSubject": "Partnership {season}",
     "deck": "Partner deck PDF",
     "deckSoon": "coming soon",
-    "contactLabel": "Your contact"
-  },
-  "contactCard": {
-    "call": "Call: {phone}",
-    "write": "Email: {email}"
+    "contactLabel": "Partnership contact"
   },
   "mediaTeaser": {
     "eyebrow": "For media",
-    "title": "Materials, no login.",
-    "lead": "Everything a newsroom needs, one click away.",
+    "title": "Ready-to-publish materials.",
+    "link": "Media centre",
+    "soon": "coming soon",
     "tiles": {
-      "logos": { "title": "Logos", "text": "SVG and PNG" },
-      "photos": { "title": "Race photos", "text": "Full resolution" },
-      "portraits": { "title": "Rider portraits", "text": "The whole roster" },
-      "info": { "title": "Team information", "text": "PDF · PL and EN" }
-    },
-    "link": "Media centre"
+      "logos": {
+        "format": "SVG · PNG",
+        "title": "Logos",
+        "text": "Colour, black, white"
+      },
+      "photos": {
+        "format": "JPG · high resolution",
+        "title": "Race photos",
+        "text": "With photographer credit"
+      },
+      "portraits": {
+        "format": "JPG · 3:4 and 1:1",
+        "title": "Rider portraits",
+        "text": "{season} season"
+      },
+      "info": {
+        "format": "PDF · PL / EN",
+        "title": "Team information",
+        "text": "Facts, roster, staff, contact"
+      }
+    }
   },
   "gallery": {
-    "title": "From the road.",
+    "title": "Gallery",
     "credit": "Photo: {credit}"
   },
   "nextRace": {
@@ -285,6 +416,8 @@
       "0": "Starts today",
       "1": "Starts tomorrow",
       "one": "{n} day to go",
+      "few": "{n} days to go",
+      "many": "{n} days to go",
       "other": "{n} days to go"
     },
     "addToCalendar": "Add to calendar",
@@ -313,7 +446,7 @@
   "calendarPage": {
     "eyebrow": "Season {season} · Season {number} for the team",
     "title": "Race calendar.",
-    "lead": "Road, track and cyclocross. UCI races across Europe and national events in Poland."
+    "lead": "Road, track and cyclocross. UCI races across Europe and national races in Poland. Past seasons are in the archive."
   },
   "calendar": {
     "title": "Every race.",
@@ -337,6 +470,8 @@
       "0": "No races for this filter.",
       "1": "1 entry",
       "one": "{n} entry",
+      "few": "{n} entries",
+      "many": "{n} entries",
       "other": "{n} entries"
     },
     "status": {
@@ -380,7 +515,9 @@
       "LTU": "Lithuania",
       "DEN": "Denmark",
       "GBR": "Great Britain",
-      "USA": "United States"
+      "USA": "United States",
+      "HKG": "Hong Kong",
+      "MAS": "Malaysia"
     }
   },
   "partnersPage": {
@@ -403,40 +540,42 @@
     "logoPlaceholder": "Logo: {file}"
   },
   "teamPage": {
-    "eyebrow": "Season {season}",
-    "title": "Team.",
-    "lead": "Continental team, juniors and staff. Choose a rider to see her profile and results."
+    "eyebrow": "Team",
+    "title": "Riders and staff.",
+    "lead": "The Continental team, the juniors and the staff. Every rider has a profile with results and a downloadable portrait."
   },
   "rider": {
     "back": "Full team",
     "squad": {
       "continental": "Continental team rider",
-      "junior": "Junior team rider"
+      "junior": "junior rider"
     },
     "squadShort": {
       "continental": "Continental",
-      "junior": "Junior"
+      "junior": "Juniors U19"
     },
     "category": {
-      "U19": "Junior (U19)",
+      "U19": "U19 · junior",
       "U23": "U23",
-      "ELITE": "Elite"
+      "Elite": "Elite"
     },
     "facts": "Rider details",
-    "nationality": "Nationality",
+    "nationality": "Country",
     "team": "Squad",
     "categoryLabel": "Category",
     "seasons": "Seasons with the team",
     "instagram": "Instagram",
     "results": "Results.",
+    "resultsLead": "Top-10 places. Every result links to its source.",
+    "noResults": "Her results will appear here during the season.",
     "download": "Download portrait (JPG, {size})",
     "downloadSoon": "Portrait download coming soon",
-    "photoCredit": "Credit as “Photo: MADW” when published."
+    "photoCredit": "Photo credit: Photo: [photographer] / MADW."
   },
   "mediaPage": {
-    "eyebrow": "For media",
-    "title": "Media centre.",
-    "lead": "No login, no forms. Every file is a direct download.",
+    "eyebrow": "Media centre",
+    "title": "Everything you need to cover the team.",
+    "lead": "Logos, photos, portraits and facts in one place. No login needed. For editorial use.",
     "nav": {
       "facts": "Facts",
       "files": "Files",
@@ -444,38 +583,50 @@
       "roster": "Roster",
       "press": "Contact"
     },
-    "factsTitle": "Fact sheet.",
+    "factsTitle": "Facts at a glance.",
     "facts": {
       "name": "Full name",
       "licence": "Licence",
-      "licenceValue": "UCI Continental Team + Junior team",
+      "licenceValue": "UCI Continental + junior team",
       "founded": "Founded",
-      "foundedValue": "{founded}, Wrocław · {season} is season {number}",
-      "roster": "Roster {season}",
-      "rosterValue": "{total} riders: {continental} Continental, {junior} Junior",
+      "foundedValue": "{founded}, Wrocław, Poland",
+      "roster": "{season} roster",
+      "rosterValue": "{riders}: {u19} × U19, {u23} × U23, {elite} × Elite",
       "management": "Management",
       "disciplines": "Disciplines",
       "programme": "Programme",
-      "programmeValue": "Club Pro — Ministry of Sport and Tourism / Fundacja Lotto",
-      "contact": "Contact"
+      "programmeValue": "Club Pro, Polish Ministry of Sport and Tourism"
     },
-    "boilerplateTitle": "Boilerplate.",
+    "riderCount": {
+      "0": "{n} riders",
+      "1": "1 rider",
+      "one": "{n} rider",
+      "few": "{n} riders",
+      "many": "{n} riders",
+      "other": "{n} riders"
+    },
+    "boilerplateTitle": "About the team.",
     "boilerplateLangs": "Boilerplate language",
-    "boilerplateText": "Mat Atom Deweloper Wrocław is a women's cycling team from Wrocław, Poland, founded in 2016. It holds a UCI Continental licence and runs a junior team, so riders develop within one squad from U19 to elite. The team races UCI events across Europe and national competitions on the road, on the track and in cyclocross. It is a member of the Club Pro programme of Poland's Ministry of Sport and Tourism and Fundacja Lotto. The title sponsor is Mat Atom Deweloper.",
+    "boilerplateText": "Mat Atom Deweloper Wrocław is a UCI Continental women’s cycling team with a junior squad. Founded in Wrocław in {founded}, it had {riders} across the U19, U23 and Elite categories in {season}. The team races on the road, on the track and in cyclocross in Poland and abroad, and the club takes part in the Club Pro programme of Poland’s Ministry of Sport and Tourism.",
     "words": {
       "0": "{n} words",
       "1": "1 word",
       "one": "{n} word",
+      "few": "{n} words",
+      "many": "{n} words",
       "other": "{n} words"
     },
+    "wordsNote": "free to use in publications",
     "copy": "Copy text",
     "copied": "Copied",
     "copyFallback": "Text selected — press Ctrl+C to copy",
     "filesTitle": "Downloads.",
     "download": "Download",
+    "downloadName": "Download: {name} ({format}, {size})",
     "soon": "Coming soon",
+    "soonName": "{name}: coming soon",
     "photosTitle": "Photos.",
-    "photosLead": "Originals are at least 3000 px on the long side.",
+    "photosLead": "Full resolution, at least 3000 px on the long side. Credit: Photo: [photographer] / MADW.",
     "photoFilters": {
       "all": "All",
       "race": "Races",
@@ -483,39 +634,42 @@
       "portrait": "Portraits",
       "team": "Team"
     },
-    "photoFiltersLabel": "Photo category",
-    "downloadOriginal": "Download original · {size}",
-    "photoSoon": "Photo coming soon",
-    "rosterTitle": "Roster {season}.",
-    "rosterNote": "The {next} roster will appear here once it is officially announced.",
+    "photoFiltersLabel": "Photo filter",
+    "credit": "Photo: {credit}",
+    "downloadJpg": "Download JPG",
+    "downloadJpgName": "Download JPG: {caption} ({size})",
+    "photoSoon": "Coming soon",
+    "rosterTitle": "{season} roster.",
+    "rosterNote": "The {next} roster will appear here on the day of the team presentation.",
     "rosterTable": {
       "caption": "Team roster, {season} season",
       "rider": "Rider",
-      "nationality": "Nationality",
+      "nationality": "Country",
       "squad": "Squad",
       "instagram": "Instagram",
       "materials": "Materials",
       "profile": "Profile",
-      "portrait": "Portrait"
+      "portrait": "Portrait JPG",
+      "portraitSoon": "portrait coming soon"
     },
     "pressTitle": "Interviews and accreditation.",
-    "pressLead": "Want to interview a rider or get accredited for a race? Get in touch.",
+    "pressLead": "Interviews with riders and staff, access to the team area at races, and materials on request.",
     "responseTime": "We reply {time}.",
-    "pressFallback": "Email {email}.",
-    "rulesTitle": "Usage rules.",
+    "pressLabel": "Press contact",
+    "rulesTitle": "Terms of use",
     "rules": [
       "Materials are for editorial use only.",
-      "Photo credit: “Fot. [photographer] / MADW”.",
-      "Do not alter the logos: no distortion, effects or colour changes.",
-      "Commercial use by agreement with the team only."
+      "Photo credit: Photo: [photographer] / MADW.",
+      "Do not alter or crop the logos.",
+      "Commercial use by agreement with the team."
     ]
   },
-  "contact": {
-    "title": "Contact.",
-    "newsletterTitle": "Get the {season} calendar first.",
+  "newsletter": {
+    "title": "The {season} calendar in your inbox.",
+    "lead": "A few emails a season: the roster, the calendar and key results.",
     "emailLabel": "Email",
-    "required": "(required)",
-    "consent": "Yes, send me the newsletter. I can unsubscribe at any time.",
+    "placeholder": "you@example.com",
+    "consent": "I agree to receive the newsletter.",
     "consentPrivacy": "Privacy policy",
     "submit": "Sign me up",
     "sending": "Sending…",
@@ -531,14 +685,21 @@
     "back": "Back to the home page"
   },
   "footer": {
-    "boilerplate": "Women's cycling team from Wrocław. UCI Continental and Junior, since {founded}.",
+    "boilerplate": "UCI Continental women's cycling team and junior team. Wrocław, since {founded}.",
     "columns": {
       "team": "Team",
       "collab": "Work with us",
       "follow": "Follow"
     },
-    "results": "Results",
-    "partnerWithUs": "Partner with us",
+    "links": {
+      "riders": "Riders",
+      "approach": "Approach",
+      "results": "Results",
+      "calendar": "Calendar",
+      "partners": "Partners",
+      "media": "Media centre",
+      "clubPro": "Club Pro programme"
+    },
     "copyright": "© {year} {team}",
     "privacy": "Privacy policy"
   }

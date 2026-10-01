@@ -32,8 +32,8 @@ describe('Polish typography', () => {
   });
 
   it('is applied to Polish copy but not English', () => {
-    expect(copy('pl').glance.since.label).toContain('w {season}');
-    expect(copy('en').glance.since.label).not.toContain(' ');
+    expect(copy('pl').numbers.countries.many).toContain('w {season}');
+    expect(copy('en').numbers.countries.other).not.toContain(' ');
   });
 
   it('is applied after placeholders are filled', () => {
@@ -42,7 +42,7 @@ describe('Polish typography', () => {
 });
 
 describe('plurals', () => {
-  const riders = copy('pl').glance.riders.value;
+  const riders = copy('pl').mediaPage.riderCount;
   it('use Polish plural categories', () => {
     expect(plural(riders, 1, 'pl')).toBe('1 zawodniczka');
     expect(plural(riders, 3, 'pl')).toBe('3 zawodniczki');
@@ -50,8 +50,8 @@ describe('plurals', () => {
     expect(plural(riders, 22, 'pl')).toBe('22 zawodniczki');
   });
   it('use English plural categories', () => {
-    expect(plural(copy('en').glance.riders.value, 1, 'en')).toBe('1 rider');
-    expect(plural(copy('en').glance.riders.value, 20, 'en')).toBe('20 riders');
+    expect(plural(copy('en').mediaPage.riderCount, 1, 'en')).toBe('1 rider');
+    expect(plural(copy('en').mediaPage.riderCount, 20, 'en')).toBe('20 riders');
   });
 });
 

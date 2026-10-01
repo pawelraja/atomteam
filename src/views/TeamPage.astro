@@ -1,0 +1,30 @@
+---
+// /zespol and /en/team: the full team tabs, then the pathway with its rider counts.
+import Approach from '../components/Approach.astro';
+import PageIntro from '../components/PageIntro.astro';
+import Shell from '../components/Shell.astro';
+import Team from '../components/Team.astro';
+import { getData } from '../lib/data';
+import { copy, fill, type Lang } from '../lib/i18n';
+import { ROUTES } from '../lib/routes';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const { site } = getData();
+const t = copy(lang);
+const season = site.currentSeason;
+---
+
+<Shell
+  lang={lang}
+  page="team"
+  paths={ROUTES.team}
+  title={fill(t.meta.pages.team.title, { season })}
+  description={fill(t.meta.pages.team.description, { season }, lang)}
+>
+  <PageIntro lang={lang} eyebrow={t.teamPage.eyebrow} title={t.teamPage.title} lead={t.teamPage.lead} />
+  <Team lang={lang} variant="page" />
+  <Approach lang={lang} variant="pathway" />
+</Shell>

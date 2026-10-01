@@ -1,103 +1,105 @@
 ---
-// "One team from junior to elite": the pathway U19 → U23 → Elite with rider counts, and three
-// pillars (staff, Club Pro, UCI races) filled from staff.json and the calendar.
+// "One team from junior to elite": the pathway U19 → U23 → Elite with rider counts from
+// riders.json, and three pillars. Staff size comes from staff.json, the UCI races from the calendar.
 import { anchor } from '../lib/anchors';
 import { getData } from '../lib/data';
-import { copy, fill, pick, plural, typo, type Lang } from '../lib/i18n';
-import { raceName } from '../lib/season';
-import { rosterSplit, topUciRaces } from '../lib/showcase';
+import { copy, fill, plural, typo, type Lang } from '../lib/i18n';
+import { CATEGORY_ORDER, listJoin, rosterSplit, topUciRaces } from '../lib/showcase';
 import { officialRosterView, teamView } from '../lib/view';
 
 interface Props {
   lang: Lang;
-  /** "chapter" on the home page; "compact" on the team page (no pillars). */
-  variant?: 'chapter' | 'compact';
+  /** "chapter" on the home page; "pathway" on the team page (diagram only). */
+  variant?: 'chapter' | 'pathway';
 }
 const { lang, variant = 'chapter' } = Astro.props;
 const { site, calendars } = getData();
 const t = copy(lang);
 const ta = t.approach;
+const tp = ta.pillars;
 const roster = officialRosterView();
 const split = rosterSplit(roster.items);
-const combined = split.unknown > 0;
-const stages = (['U19', 'U23', 'ELITE'] as const).map((c) => ({
+const stages = CATEGORY_ORDER.map((c) => ({
   id: c,
   ...ta.stages[c],
-  count: c === 'U19' || !combined ? plural(ta.stageCount, split[c], lang) : null,
+  count: plural(ta.stageCount, split[c], lang, { season: roster.season ?? site.currentSeason }),
 }));
-const crew = teamView().crew;
+const crew = teamView().crew.items;
+
+// "Scheldeprijs, De Brabantse Pijl i Lotto Thüringen (1.Pro) oraz Tour de Pologne Women (2.Pro)"
 const uci = topUciRaces(calendars, site.currentSeason);
+const uciText = uci
+  ? fill(
+      tp.uci.text,
+      {
+        season: uci.season,
+        races: [...new Set(uci.races.map((e) => e.cls!))]
+          .sort()
+          .map((cls) => `${listJoin(uci.races.filter((e) => e.cls === cls).map((e) => e.short ?? e.name), t.meta.locale)} (${cls})`)
+          .join(tp.uci.groupJoin),
+      },
+      lang,
+    )
+  : fill(tp.uci.empty, { season: site.currentSeason }, lang);
+const id = variant === 'chapter' ? 'approach-title' : 'pathway-title';
 ---
 
 <section
-  class="section section--alt approach"
+  class:list={['approach', { 'approach--pathway': variant === 'pathway' }]}
   id={variant === 'chapter' ? anchor(lang, 'approach') : undefined}
   data-section={variant === 'chapter' ? 'approach' : undefined}
-  aria-labelledby={`approach-title-${variant}`}
+  aria-labelledby={id}
 >
-  <div class="container">
-    <div class="chapter-head">
-      <p class="eyebrow">{ta.eyebrow}</p>
-      <h2 id={`approach-title-${variant}`} class="chapter">{ta.title}</h2>
-      <p>{ta.lead}</p>
+  <div class="container approach__inner">
+    <div class="approach__head">
+      <div class="approach__title">
+        <p class="eyebrow">{ta.eyebrow}</p>
+        <h2 id={id} class="chapter">{ta.title}</h2>
+      </div>
+      <p class="approach__lead">{ta.lead}</p>
     </div>
 
     {
       roster.items.length > 0 && (
-        <figure class="pathway">
-          <ol class="pathway__steps" role="list" aria-label={ta.pathwayLabel}>
-            {stages.map((s, i) => (
-              <li class="step">
-                <span class="step__sub">{s.sub}</span>
-                <span class="step__name">{s.name}</span>
-                {s.count && <span class="step__count">{s.count}</span>}
-                {i < stages.length - 1 && <span class="step__arrow" aria-hidden="true" />}
-              </li>
-            ))}
-          </ol>
-          {combined && <p class="pathway__combined">{fill(ta.combinedCount, { n: split.total - split.U19 }, lang)}</p>}
-          <figcaption class="caption muted">{fill(ta.rosterSeason, { season: roster.season! }, lang)}</figcaption>
-        </figure>
+        <ol class="pathway" role="list" aria-label={ta.pathwayLabel}>
+          {stages.map((s) => (
+            <li class="stage">
+              <span class:list={['stage__badge', { 'stage__badge--top': s.id === 'Elite' }]} aria-hidden="true">
+                {s.badge}
+              </span>
+              <div class="stage__text">
+                <h3 class="stage__name">
+                  {s.name}
+                  <span class="stage__inline-count" aria-hidden="true"> · {split[s.id]}</span>
+                </h3>
+                <p class="stage__desc">
+                  <span class="stage__count">{s.count}</span> {s.text}
+                </p>
+              </div>
+            </li>
+          ))}
+        </ol>
       )
     }
 
     {
       variant === 'chapter' && (
         <div class="pillars">
-          <div class="pillar">
-            <h3 class="pillar__title">{ta.pillars.staff.title}</h3>
-            <p>{ta.pillars.staff.text}</p>
-            <ul role="list" class="pillar__list">
-              {crew.items.map((s) => (
-                <li>
-                  <span class="pillar__name">{s.name}</span>
-                  <span class="pillar__meta">{pick(lang, s.role)}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div class="pillar">
-            <h3 class="pillar__title">{ta.pillars.clubPro.title}</h3>
-            <p>{ta.pillars.clubPro.text}</p>
-          </div>
-          <div class="pillar">
-            <h3 class="pillar__title">{ta.pillars.uci.title}</h3>
-            {uci ? (
-              <>
-                <p>{fill(ta.pillars.uci.text, { season: uci.season }, lang)}</p>
-                <ul role="list" class="pillar__list">
-                  {uci.races.map((e) => (
-                    <li>
-                      <span class="pillar__name">{typo(lang, raceName(e, lang))}</span>
-                      <span class="pillar__meta">UCI {e.cls}</span>
-                    </li>
-                  ))}
-                </ul>
-              </>
-            ) : (
-              <p>{fill(ta.pillars.uci.empty, { season: site.currentSeason }, lang)}</p>
-            )}
-          </div>
+          <article class="pillar">
+            <p class="eyebrow">{tp.staff.eyebrow}</p>
+            <h3 class="pillar__title">{plural(tp.staff.title, crew.length, lang)}</h3>
+            <p class="pillar__text">{tp.staff.text}</p>
+          </article>
+          <article class="pillar">
+            <p class="eyebrow">{tp.clubPro.eyebrow}</p>
+            <h3 class="pillar__title">{tp.clubPro.title}</h3>
+            <p class="pillar__text">{tp.clubPro.text}</p>
+          </article>
+          <article class="pillar">
+            <p class="eyebrow">{tp.uci.eyebrow}</p>
+            <h3 class="pillar__title">{tp.uci.title}</h3>
+            <p class="pillar__text">{typo(lang, uciText)}</p>
+          </article>
         </div>
       )
     }
@@ -105,120 +107,173 @@ const uci = topUciRaces(calendars, site.currentSeason);
 </section>
 
 <style>
-  .pathway {
-    display: grid;
-    gap: var(--s-3);
-    margin-bottom: var(--s-6);
+  .approach {
+    padding-block: 120px;
   }
-  .pathway__steps {
+  .approach__inner {
+    display: grid;
+    gap: 64px;
+  }
+  .approach__head {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--grid-gap);
+    align-items: end;
+  }
+  .approach__title {
+    grid-column: span 7;
+    display: grid;
+    gap: 16px;
+  }
+  .approach__lead {
+    grid-column: 9 / span 4;
+    font-size: 17px;
+    line-height: 1.47;
+    color: var(--ink-muted);
+  }
+  .approach--pathway .approach__head {
+    display: none;
+  }
+
+  /* Pathway: a violet line through three circles. Violet, not pink: pink on white is 2.5:1. */
+  .pathway {
+    position: relative;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--s-5);
   }
-  .step {
+  .pathway::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 36px;
+    height: 2px;
+    background: var(--accent-strong);
+  }
+  .stage {
     position: relative;
     display: grid;
     align-content: start;
-    gap: var(--s-1);
-    padding: var(--s-4);
-    border-radius: var(--r-card);
+    gap: 20px;
+    padding-right: 32px;
+  }
+  .stage__badge {
+    display: grid;
+    place-items: center;
+    width: 72px;
+    height: 72px;
+    border-radius: var(--r-pill);
     background: var(--surface);
-    box-shadow: var(--shadow-card);
-  }
-  .step__sub {
-    font-size: var(--fs-eyebrow);
-    letter-spacing: var(--ls-eyebrow);
-    text-transform: uppercase;
-    font-weight: 700;
-    color: var(--accent-strong);
-  }
-  .step__name {
-    font-size: var(--fs-h3);
-    line-height: 1.2;
-  }
-  .step__count {
+    border: 2px solid var(--accent-strong);
+    font-size: 20px;
     font-weight: 700;
   }
-  /* Arrow between stages: a pink line with a head, drawn in the gap. */
-  .step__arrow {
-    position: absolute;
-    top: 50%;
-    right: calc(-1 * var(--s-5));
-    width: var(--s-5);
-    height: 2px;
+  .stage__badge--top {
     background: var(--accent);
+    color: var(--ink-on-accent);
+    font-size: 18px;
   }
-  .step__arrow::after {
-    content: '';
-    position: absolute;
-    right: 0;
-    top: -5px;
-    border: 6px solid transparent;
-    border-left: 8px solid var(--accent);
-    border-right: 0;
+  .stage__text {
+    display: grid;
+    gap: 6px;
   }
-  .pathway__combined {
-    font-weight: 700;
+  .stage__name {
+    font-size: 28px;
+    line-height: 36px;
   }
+  .stage__inline-count {
+    display: none;
+  }
+  .stage__desc {
+    font-size: 15px;
+    line-height: 1.4;
+    color: var(--ink-muted);
+  }
+
   .pillars {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--s-5);
+    gap: 32px;
   }
   .pillar {
     display: grid;
     align-content: start;
-    gap: var(--s-3);
-    padding-top: var(--s-4);
-    border-top: 2px solid var(--line);
+    gap: 12px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
   }
   .pillar__title {
-    font-size: var(--fs-h3);
-    line-height: 1.2;
+    font-size: 24px;
+    line-height: 32px;
   }
-  .pillar > p {
+  .pillar__text {
+    font-size: 15px;
+    line-height: 1.47;
     color: var(--ink-muted);
   }
-  .pillar__list {
-    display: grid;
-    gap: var(--s-2);
-  }
-  .pillar__list li {
-    display: grid;
-  }
-  .pillar__name {
-    font-weight: 700;
-  }
-  .pillar__meta {
-    color: var(--ink-muted);
-    font-size: var(--fs-body-sm);
-  }
+
   @media (max-width: 899px) {
+    .approach {
+      padding-block: 64px;
+    }
+    .approach__inner {
+      gap: 28px;
+    }
+    .approach__head,
     .pillars {
       grid-template-columns: 1fr;
     }
-  }
-  @media (max-width: 699px) {
-    .pathway__steps {
+    .approach__title,
+    .approach__lead {
+      grid-column: auto;
+    }
+    /* Phones: the pathway runs down a vertical violet line. */
+    .pathway {
       grid-template-columns: 1fr;
-      gap: var(--s-5);
+      gap: 24px;
+      margin-left: 18px;
+      padding-left: 36px;
+      border-left: 2px solid var(--accent-strong);
     }
-    .step__arrow {
-      top: auto;
-      bottom: calc(-1 * var(--s-5));
-      right: auto;
-      left: 40px;
-      width: 2px;
-      height: var(--s-5);
+    .pathway::before {
+      display: none;
     }
-    .step__arrow::after {
-      top: auto;
-      bottom: 0;
-      left: -5px;
-      right: auto;
-      border: 6px solid transparent;
-      border-top: 8px solid var(--accent);
-      border-bottom: 0;
+    .stage {
+      padding-right: 0;
+      gap: 4px;
+    }
+    .stage__badge {
+      position: absolute;
+      left: -57px;
+      top: -4px;
+      width: 40px;
+      height: 40px;
+      font-size: 12px;
+    }
+    .stage__badge--top {
+      font-size: 11px;
+    }
+    .stage__name {
+      font-size: 20px;
+      line-height: 1.3;
+    }
+    .stage__inline-count {
+      display: inline;
+    }
+    .stage__count {
+      /* The count is in the heading on phones; keep it for screen readers only. */
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+    .stage__desc {
+      font-size: 14px;
+    }
+    .pillars {
+      gap: 28px;
     }
   }
 </style>

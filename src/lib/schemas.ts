@@ -63,28 +63,41 @@ export const STATUSES = ['confirmed', 'tbc', 'cancelled'] as const;
 
 export const calendarEntrySchema = z
   .object({
+    /** Event id from the results workbook (e.g. "E14"), or any unique slug. Results refer to it. */
     id: z
       .string()
-      .regex(/^[a-z0-9-]+$/, 'may only use lowercase letters, digits and dashes')
+      .regex(/^[A-Za-z0-9-]+$/, 'may only use letters, digits and dashes')
       .optional(),
     start: isoDate.optional(),
     end: isoDate.optional(),
     month: z.number().int().min(1).max(12).optional(),
     name: z.string().min(1),
     name_en: z.string().min(1).optional(),
+    /** Short name for running text, e.g. "Scheldeprijs". */
+    short: z.string().min(1).optional(),
     location: z.string().min(1).nullable(),
     location_en: z.string().min(1).optional(),
-    country: countryCode,
+    country: countryCode.nullable(),
     discipline: z.enum(DISCIPLINES),
     class: z.string().min(1).nullable(),
     status: z.enum(STATUSES),
     type: z.enum(['race', 'training']).optional(),
+    /** false = a race riders did outside the published team calendar (kept for results only). */
+    onTeamCalendar: z.boolean().optional(),
+    /** A national championship: its podiums count as titles and medals. */
+    nationalChampionship: z.boolean().optional(),
+    note: z.string().min(1).optional(),
     result: z.string().min(1).optional(),
     url: z.url().optional(),
     verify: z.boolean().optional(),
   })
   .strict()
   .superRefine((e, ctx) => {
+    // Races outside the team calendar only need to exist for results; dates may be unknown.
+    if (e.onTeamCalendar === false) return;
+    if (e.country === null) {
+      ctx.addIssue({ code: 'custom', message: '"country" is needed for races on the team calendar' });
+    }
     if (e.status === 'confirmed' && (!e.start || !e.end)) {
       ctx.addIssue({
         code: 'custom',
@@ -108,18 +121,22 @@ export const partnerSchema = z
     url: z.url(),
     tier: z.enum(['title', 'main', 'technical', 'institutional']),
     logo: z.string().regex(/^[a-z0-9-]+\.(svg|png|webp)$/, 'must be a file name like "budus.svg"'),
+    /** Shorter display name, e.g. { "pl": "Klub Pro · MSiT", "en": "Club Pro · Ministry of Sport" }. */
+    label: localized.optional(),
     description: localized.optional(),
     seasons,
   })
   .strict();
 
-export const CATEGORIES = ['U19', 'U23', 'ELITE'] as const;
+export const CATEGORIES = ['U19', 'U23', 'Elite'] as const;
 
 export const riderSchema = z
   .object({
     name: z.string().min(1),
     nat: countryCode,
     squad: z.enum(['continental', 'junior']),
+    /** Age category: "U19" (juniors), "U23" or "Elite". */
+    category: z.enum(CATEGORIES),
     instagram: z
       .string()
       .regex(/^[A-Za-z0-9._]+$/, 'is the Instagram handle only, without @ or https://')
@@ -127,16 +144,18 @@ export const riderSchema = z
       .optional(),
     photo: z.string().min(1),
     role: localized.optional(),
-    /** Age category: U19 (juniors), U23 or ELITE. Juniors default to U19. */
-    category: z.enum(CATEGORIES).optional(),
     /** Web address of the profile page, e.g. "eliza-rabazynska". Made from the name when left out. */
     slug: z
       .string()
       .regex(/^[a-z0-9-]+$/, 'may only use lowercase letters, digits and dashes')
       .optional(),
     bio: localized.optional(),
+    /** Full results list on an external site (CyclingFlash etc.). */
+    resultsProfile: z.url().optional(),
     seasons,
     new: z.boolean().optional(),
+    /** Internal note for the team; never shown. */
+    note: z.string().optional(),
   })
   .strict();
 
@@ -172,22 +191,25 @@ export const gallerySchema = z
   })
   .strict();
 
-export const CHAMPIONSHIPS = ['national', 'continental', 'world', 'other'] as const;
-
+/** One row per rider per classification, exactly as exported from the results workbook. */
 export const resultSchema = z
   .object({
+    /** Id of the event in calendar/<year>.json, e.g. "E33". */
+    eventId: z.string().min(1),
+    date: isoDate.nullable(),
+    /** Stage or discipline as written in the workbook, e.g. "Stage 2", "ITT", "Team pursuit". */
+    stage: z.string().min(1),
+    category: z.string().min(1),
     /** Exactly as written in riders.json. */
     rider: z.string().min(1),
-    event: localized,
-    /** Category or race within the event, e.g. { "pl": "U23", "en": "U23" }. */
-    category: localized.optional(),
-    discipline: z.enum(['ROAD', 'TRACK', 'CX', 'TTT', 'MTB']),
-    championship: z.enum(CHAMPIONSHIPS),
-    place: z.number().int().min(1).max(200),
-    /** How many times this place was won at this event (e.g. 4 golds in 4 different races). */
-    count: z.number().int().min(1).max(20).optional(),
-    date: isoDate.optional(),
-    verify: z.boolean().optional(),
+    position: z.number().int().min(1).nullable(),
+    status: z.enum(['Classified', 'DNF', 'DNS', 'DSQ', 'LAP', 'OTL']),
+    note: z.string().nullable(),
+    source: z.url(),
+    /** Shown in the selected-results table on the home page. */
+    featured: z.boolean(),
+    /** true until the team signs the row off ("Checked by team" in the workbook). */
+    verify: z.boolean(),
   })
   .strict();
 

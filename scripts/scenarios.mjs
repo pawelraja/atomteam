@@ -22,9 +22,17 @@ const scenarios = [
 
 // Strings that must NOT appear while the matching fact is unconfirmed.
 const forbiddenWhenIncomplete = {
-  pl: ['Nasi partnerzy 2027.<', 'zawodniczek</dd>', 'Najbliższy</p>', 'Nowa w 2027'],
-  en: ['Our 2027 partners.<', 'riders</dd>', 'Next race</p>', 'New for 2027'],
+  pl: ['Nasi partnerzy sezonu 2027', 'Nasi partnerzy 2027', 'Nowa w 2027', 'Zespół · skład 2027', 'Skład 2027.<', 'najbliższy</span>'],
+  en: ['Our 2027 partners', 'New for 2027', 'Team · 2027 roster', '2027 roster.<', 'next</span>'],
 };
+const checkedPages = [
+  ['pl', 'index.html'],
+  ['en', 'en/index.html'],
+  ['pl', 'media/index.html'],
+  ['en', 'en/media/index.html'],
+  ['pl', 'partnerzy/index.html'],
+  ['en', 'en/partners/index.html'],
+];
 
 let failures = 0;
 for (const s of scenarios) {
@@ -44,12 +52,12 @@ for (const s of scenarios) {
     failures++;
   }
   if (!s.data) {
-    for (const [lang, file] of [['pl', 'index.html'], ['en', 'en/index.html']]) {
+    for (const [lang, file] of checkedPages) {
       const html = readFileSync(`${outDir}/${file}`, 'utf8');
       for (const bad of forbiddenWhenIncomplete[lang]) {
         if (html.includes(bad)) {
           failures++;
-          console.error(`  ✗ ${lang}: page claims an unconfirmed fact: "${bad}"`);
+          console.error(`  ✗ ${file}: page claims an unconfirmed fact: "${bad}"`);
         }
       }
     }

@@ -1,0 +1,41 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
+
+.at-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  font: 400 14px/19.6px var(--font-sans);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--accent);
+  background: var(--accent); color: var(--on-accent);
+  cursor: pointer; text-decoration: none; min-width: 120px;
+  transition: background .15s, color .15s;
+}
+.at-btn:hover { background: var(--pink-200); border-color: var(--pink-200); }
+.at-btn:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.at-btn--accessible { color: var(--ink-on-accent); }
+.at-btn--outline { background: transparent; color: var(--accent-strong); border-color: var(--accent); }
+.at-btn--outline:hover { background: var(--accent); color: var(--ink-on-accent); }
+.at-btn:disabled { background: var(--ink-subtle); border-color: var(--ink-subtle); color: #ffffff; cursor: not-allowed; }
+
+.at-card {
+  width: 240px; border-radius: var(--radius-card); overflow: hidden;
+  background: var(--surface-alt); box-shadow: var(--shadow-card);
+  font-family: var(--font-sans); color: var(--ink);
+}
+.at-card--feature { box-shadow: var(--shadow-feature); border-radius: var(--radius-lg); }
+.at-card__media { aspect-ratio: 3 / 4; background: var(--surface-muted); display: block; width: 100%; }
+.at-card__body { padding: var(--space-3); }
+.at-card__name { font: 700 22px/30.8px var(--font-sans); margin: 0; }
+.at-card__tag { font: 400 14px/19.6px var(--font-sans); color: var(--ink-muted); margin: 0; }
+
+.at-header {
+  display: flex; align-items: center; justify-content: space-between;
+  height: var(--space-5); padding: 0 24px; border-radius: var(--radius-lg);
+  background: var(--header-glass); font-family: var(--font-sans); color: var(--ink);
+  backdrop-filter: blur(8px);
+}
+.at-header__brand { font: 400 16px/1 var(--font-sans); letter-spacing: .02em; text-transform: uppercase; }
+.at-header__brand b { font-weight: 700; }
+.at-header__actions { display: flex; gap: 20px; align-items: center; }
+.at-burger { width: 24px; display: grid; gap: 5px; background: none; border: 0; padding: 0; cursor: pointer; }
+.at-burger span { height: 2px; background: var(--accent); border-radius: 2px; }

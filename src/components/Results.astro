@@ -1,11 +1,12 @@
 ---
-// Results chapter (plum): national titles and national-championship medals counted from
-// results/<year>.json, verified highlights, and the full results table. Hidden entirely until
-// at least one result has been checked by the team ("verify" removed).
-import { anchor } from '../lib/anchors';
-import { copy, fill, pick, plural, type Lang } from '../lib/i18n';
+// Results chapter (plum): Polish national titles and national-championship medals counted from
+// results/<year>.json with the workbook's rules, and the rows marked "featured". Rows stay
+// "verify": true until the team signs them off; each carries a source link.
+import { anchor, seasonAnchor } from '../lib/anchors';
+import { copy, fill, plural, type Lang } from '../lib/i18n';
+import { route } from '../lib/routes';
 import { resultsView } from '../lib/view';
-import Photo from './Photo.astro';
+import Icon from './Icon.astro';
 import ResultsTable from './ResultsTable.astro';
 
 interface Props {
@@ -19,41 +20,37 @@ const view = resultsView();
 
 {
   view && (
-    <section class="section results" data-theme="dark" id={anchor(lang, 'results')} data-section="results" aria-labelledby="results-title">
-      <div class="container">
-        <div class="results__grid">
-          <div class="results__intro">
-            <div class="chapter-head">
-              <p class="eyebrow">{fill(tr.eyebrow, { season: view.season }, lang)}</p>
-              <h2 id="results-title" class="chapter">{tr.title}</h2>
+    <section class="results" data-theme="dark" id={anchor(lang, 'results')} data-section="results" aria-labelledby="results-title">
+      <div class="container results__grid">
+        <div class="results__intro">
+          <p class="eyebrow">{tr.eyebrow}</p>
+          <h2 id="results-title" class="chapter">{fill(tr.title, { season: view.season }, lang)}</h2>
+          <p class="results__lead">{tr.lead}</p>
+          <dl class="honours">
+            <div>
+              <dt>
+                {plural(tr.titles, view.honours.titles, lang)}
+                <span class="honours__note">{tr.titlesNote}</span>
+              </dt>
+              <dd>{view.honours.titles}</dd>
             </div>
-            <dl class="figures">
-              <div>
-                <dt>{plural(tr.titles, view.figures.titles, lang)}</dt>
-                <dd class="big-number">{view.figures.titles}</dd>
-              </div>
-              <div>
-                <dt>{plural(tr.medals, view.figures.medals, lang)}</dt>
-                <dd class="big-number">{view.figures.medals}</dd>
-              </div>
-            </dl>
-            <p class="caption muted">{tr.figuresNote}</p>
-          </div>
-          <div class="results__table">
-            <ResultsTable lang={lang} rows={view.rows} caption={fill(tr.tableCaption, { season: view.season }, lang)} />
-          </div>
+            <div>
+              <dt>
+                {plural(tr.medals, view.honours.medals, lang)}
+                <span class="honours__note">{tr.medalsNote}</span>
+              </dt>
+              <dd>{view.honours.medals}</dd>
+            </div>
+          </dl>
+          <a class="results__archive" href={`${route(lang, 'calendar')}#${seasonAnchor(lang, view.season)}`}>
+            {fill(tr.archive, { season: view.season }, lang)}
+            <Icon name="arrow" size={16} />
+          </a>
         </div>
-
-        {view.highlights.length > 0 && (
-          <ul class="highlights" role="list">
-            {view.highlights.map((h) => (
-              <li class="highlight">
-                <Photo lang={lang} dir="photos" file={h.photo} alt={pick(lang, h.alt)} aspect="4:3" sizes="(min-width: 900px) 400px, 100vw" class="highlight__photo" />
-                <h3 class="highlight__title">{pick(lang, h.title)}</h3>
-                <p class="muted">{pick(lang, h.text)}</p>
-              </li>
-            ))}
-          </ul>
+        {view.featured.length > 0 && (
+          <div class="results__table">
+            <ResultsTable lang={lang} rows={view.featured} events={view.events} caption={fill(tr.tableCaption, { season: view.season }, lang)} />
+          </div>
         )}
       </div>
     </section>
@@ -61,55 +58,77 @@ const view = resultsView();
 }
 
 <style>
+  .results {
+    padding-block: 120px;
+    background: var(--surface);
+    color: var(--ink);
+  }
   .results__grid {
     display: grid;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-    gap: var(--s-6);
-    align-items: start;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--grid-gap);
   }
-  .figures {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--s-4);
-    margin-bottom: var(--s-3);
-  }
-  .figures div {
+  .results__intro {
+    grid-column: span 4;
     display: flex;
     flex-direction: column;
-    gap: var(--s-2);
-    padding-top: var(--s-3);
-    border-top: 2px solid var(--accent);
+    gap: 20px;
   }
-  .figures dd {
+  .results__table {
+    grid-column: 6 / span 7;
+  }
+  .results__lead {
+    font-size: 17px;
+    line-height: 1.47;
+    color: var(--ink-muted);
+  }
+  .honours {
+    display: flex;
+    gap: 40px;
+    margin-top: 16px;
+  }
+  .honours div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .honours dd {
     order: -1;
+    font-size: 72px;
+    line-height: 1;
+    letter-spacing: var(--ls-number);
+    font-variant-numeric: tabular-nums;
     color: var(--accent);
   }
-  .figures dt {
-    font-weight: 700;
+  .honours dt {
+    font-size: 14px;
+    line-height: 1.36;
+    color: var(--ink-muted);
   }
-  .highlights {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--s-4);
-    margin-top: var(--s-6);
+  .honours__note {
+    display: block;
   }
-  .highlight {
-    display: grid;
-    align-content: start;
-    gap: var(--s-2);
+  .results__archive {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    align-self: flex-start;
+    min-height: 44px;
+    margin-top: 16px;
+    color: var(--accent);
   }
-  .highlight :global(.highlight__photo) {
-    border-radius: var(--r-card);
-    margin-bottom: var(--s-2);
+  @media (max-width: 1023px) {
+    .results__intro,
+    .results__table {
+      grid-column: 1 / -1;
+    }
   }
-  .highlight__title {
-    font-size: var(--fs-body-lg);
-    line-height: 1.3;
-  }
-  @media (max-width: 999px) {
-    .results__grid,
-    .highlights {
-      grid-template-columns: 1fr;
+  @media (max-width: 699px) {
+    .results {
+      padding-block: 64px;
+    }
+    .honours dd {
+      font-size: 56px;
     }
   }
 </style>

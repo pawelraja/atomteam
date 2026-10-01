@@ -1,115 +1,131 @@
 ---
-// Rider / staff card: 3:4 portrait, name, nationality chip, role. Riders link to their profile.
-import { copy, type Lang } from '../lib/i18n';
+// Rider / staff card: 3:4 portrait with a chip ("POL", "SZTAB"), name, role, and — for riders — a
+// link to the profile page. The whole card is not a link, so the link text stays the accessible name.
 import Icon from './Icon.astro';
 import Photo from './Photo.astro';
+import type { Lang } from '../lib/i18n';
 
 interface Props {
   lang: Lang;
   name: string;
-  nat?: string;
+  chip: string;
+  /** Spoken version of the chip, e.g. the full country name. */
+  chipLabel?: string;
   role?: string | null;
   photo: string;
-  /** Profile page; staff cards have none. */
   href?: string | null;
+  linkLabel?: string;
   isNew?: string | null;
 }
-const { lang, name, nat, role, photo, href, isNew } = Astro.props;
-const t = copy(lang);
-const countries = t.calendar.countryNames as Record<string, string>;
-const Tag = href ? 'a' : 'div';
+const { lang, name, chip, chipLabel, role, photo, href, linkLabel, isNew } = Astro.props;
 ---
 
-<Tag class:list={['person', { 'person--link': href }]} href={href ?? undefined}>
-  <div class="person__photo card">
-    <Photo lang={lang} dir="riders" file={photo} alt="" decorative aspect="3:4" sizes="(min-width: 1280px) 200px, (min-width: 900px) 22vw, (min-width: 600px) 30vw, 45vw" widths={[200, 300, 400, 600]} />
+<article class="person card">
+  <div class="person__photo">
+    <Photo lang={lang} dir="riders" file={photo} alt="" decorative aspect="3:4" sizes="(min-width: 1280px) 190px, (min-width: 900px) 22vw, (min-width: 600px) 30vw, 45vw" widths={[200, 300, 400, 600]} />
+    <span class="person__chip">
+      <span aria-hidden={chipLabel ? 'true' : undefined}>{chip}</span>
+      {chipLabel && <span class="visually-hidden">{chipLabel}</span>}
+    </span>
     {isNew && <span class="pill-new person__new">{isNew}</span>}
   </div>
   <div class="person__meta">
-    <p class="person__name">{name}</p>
-    <p class="person__line">
-      {
-        nat && (
-          <span class="person__nat">
-            <span aria-hidden="true">/{nat}</span>
-            <span class="visually-hidden">{countries[nat] ?? nat}</span>
-          </span>
-        )
-      }
-      {role && <span class="person__role">{role}</span>}
-    </p>
+    <h3 class="person__name">{name}</h3>
+    {role && <p class="person__role">{role}</p>}
     {
       href && (
-        <span class="person__more">
-          {t.teamSection.profileLink}
-          <Icon name="arrow" size={16} />
-        </span>
+        <a class="person__link" href={href}>
+          {linkLabel}
+          <span class="visually-hidden">: {name}</span>
+          <Icon name="arrow" size={14} />
+        </a>
       )
     }
   </div>
-</Tag>
+</article>
 
 <style>
   .person {
-    display: grid;
-    align-content: start;
-    gap: var(--s-3);
-    color: inherit;
-    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: #ffffff;
+    color: #000000;
+    height: 100%;
   }
   .person__photo {
     position: relative;
-    overflow: hidden;
     background: var(--surface-muted);
   }
-  .person--link:hover .person__photo {
-    box-shadow: 0 5px 0 0 rgba(255, 102, 237, 0.8);
+  /* Placeholder until the portrait is supplied: file name small, bottom-left, clear of the chip. */
+  .person__photo :global(.ph) {
+    position: relative;
+  }
+  .person__photo :global(.ph__label) {
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    bottom: 12px;
+    text-align: left;
+    font-size: 11px;
+  }
+  .person__photo :global(.ph__file) {
+    font-weight: 400;
+    word-break: normal;
+    overflow-wrap: anywhere;
+  }
+  .person__chip {
+    position: absolute;
+    left: 14px;
+    top: 12px;
+    padding: 3px 9px;
+    border-radius: var(--r-pill);
+    background: rgba(255, 255, 255, 0.9);
+    font-size: 11px;
+    line-height: 15px;
+    font-weight: 700;
+    color: #2b0020;
   }
   .person__new {
     position: absolute;
-    top: 12px;
-    left: 12px;
+    left: 14px;
+    bottom: 12px;
   }
   .person__meta {
-    display: grid;
-    gap: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 14px 16px 18px;
   }
   .person__name {
-    font-size: var(--fs-body-lg);
-    line-height: 1.25;
-  }
-  .person__line {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 6px 8px;
-    font-size: var(--fs-body-sm);
-    color: var(--ink-muted);
-  }
-  .person__nat {
-    display: inline-flex;
-    align-items: center;
-    height: 22px;
-    padding: 0 8px;
-    border-radius: var(--r-pill);
-    background: var(--surface-alt);
-    color: var(--accent-strong);
-    font-size: var(--fs-caption);
+    font-size: 16px;
+    line-height: 1.3;
     font-weight: 700;
   }
-  .person__more {
+  .person__role {
+    font-size: 13px;
+    line-height: 1.4;
+    color: #4f4f4f;
+  }
+  .person__link {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    font-size: var(--fs-body-sm);
-    font-weight: 700;
+    gap: 4px;
+    min-height: 32px;
+    margin-top: 2px;
+    font-size: 14px;
     color: var(--accent-strong);
   }
-  .person--link:hover .person__more,
-  .person--link:focus-visible .person__more {
-    text-decoration: underline;
-    text-decoration-color: var(--accent);
-    text-decoration-thickness: 2px;
-    text-underline-offset: 4px;
+  /* Grow the link's hit area to the whole card without making the card itself a link. */
+  .person {
+    position: relative;
+  }
+  .person__link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+  .person:has(.person__link:hover) {
+    box-shadow: 0 5px 0 0 rgba(255, 102, 237, 0.8);
   }
 </style>

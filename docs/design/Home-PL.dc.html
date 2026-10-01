@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>MADW — strona główna (PL)</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;color:#000000;background:#ffffff;-webkit-font-smoothing:antialiased}
+a{color:#8c00ff}a:hover{color:#5d00aa}
+button{font-family:inherit}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #8c00ff;outline-offset:2px}
+.dark a:focus-visible,.dark button:focus-visible,.dark input:focus-visible{outline-color:#ff66ed}
+.dark .light a:focus-visible,.dark .light button:focus-visible{outline-color:#2b0020}
+.dark input::placeholder{color:#c0b8be}
+</style>
+</helmet>
+<div style="width: 100%; min-width: 1280px; background: #ffffff; color: #000000; font-family: Inter, system-ui, sans-serif; font-variant-numeric: tabular-nums;">
+
+<!-- PASEK STATUSU: jedyna linijka, którą zmienia się w ciągu roku -->
+<div class="dark" style="background: #2b0020; color: #f1eef3; height: 40px; display: flex; align-items: center;">
+  <div style="width: 100%; max-width: 1280px; margin: 0 auto; padding: 0 80px; box-sizing: border-box; display: flex; justify-content: space-between; align-items: center; font-size: 13px; line-height: 18px;">
+    <span style="display: flex; gap: 12px; align-items: center;"><span style="width: 8px; height: 8px; border-radius: 100px; background: #ff66ed;"></span><span><b>Sezon 2027</b> · Kalendarz wstępny online · Skład ogłosimy wkrótce</span></span>
+    <a href="#partnerzy" style="color: #ff66ed; text-decoration: none;">Partnerstwa na sezon 2027 →</a>
+  </div>
+</div>
+
+<!-- HERO -->
+<section id="top" class="dark" style="position: relative; height: 820px; background: #3f273c; overflow: hidden;">
+  <span style="position: absolute; right: 32px; top: 104px; padding: 6px 12px; border-radius: 100px; background: rgba(0,0,0,0.35); color: #f1eef3; font-size: 12px; line-height: 16.8px;">hero.jpg · peleton w ruchu, zawodniczki w strojach 2027 · 16:9</span>
+  <header class="light" style="position: absolute; top: 16px; left: 16px; right: 16px; height: 64px; border-radius: 40px; background: rgba(241,238,243,0.73); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: space-between; padding: 0 12px 0 16px; box-sizing: border-box; z-index: 2;">
+    <a href="#top" style="display: flex; align-items: center; gap: 12px; color: #000000; text-decoration: none;">
+      <span style="width: 40px; height: 40px; border-radius: 100px; border: 1px dashed #4f4f4f; display: flex; align-items: center; justify-content: center; font-size: 9px; color: #4f4f4f; letter-spacing: 0.04em;">LOGO</span>
+      <span style="font-size: 15px; letter-spacing: 0.02em;"><b>MAT</b> ATOM DEWELOPER <b>WROCŁAW</b></span>
+    </a>
+    <nav aria-label="Menu główne" style="display: flex; gap: 28px; font-size: 15px;">
+      <a href="#zespol" style="color: #000000; text-decoration: none;">Zespół</a>
+      <a href="#podejscie" style="color: #000000; text-decoration: none;">Podejście</a>
+      <a href="#kalendarz" style="color: #000000; text-decoration: none;">Kalendarz</a>
+      <a href="#partnerzy" style="color: #000000; text-decoration: none;">Partnerzy</a>
+      <a href="Media-PL.dc.html" style="color: #000000; text-decoration: none;">Media</a>
+    </nav>
+    <div style="display: flex; align-items: center; gap: 14px;">
+      <div role="group" aria-label="Język / Language" style="display: flex; padding: 3px; border-radius: 100px; border: 1px solid #4f4f4f; gap: 2px;">
+        <span aria-current="true" style="padding: 4px 10px; border-radius: 100px; background: #000000; color: #ffffff; font-size: 12px; line-height: 16.8px; font-weight: 700;">PL</span>
+        <a href="Home-EN.dc.html" hreflang="en" lang="en" aria-label="English version" style="padding: 4px 10px; border-radius: 100px; color: #000000; font-size: 12px; line-height: 16.8px; text-decoration: none;">EN</a>
+      </div>
+      <a href="https://www.instagram.com/atomdeweloper_team/" aria-label="Instagram" style="color: #000000; display: flex; width: 36px; height: 36px; align-items: center; justify-content: center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="0.8" fill="currentColor"></circle></svg></a>
+      <a href="#partnerzy" style="padding: 11px 20px; border-radius: 100px; background: #ff66ed; color: #2b0020; font-size: 14px; line-height: 19.6px; text-decoration: none;">Zostań partnerem</a>
+    </div>
+  </header>
+
+  <div style="position: absolute; left: 0; right: 0; bottom: 0;">
+    <div style="max-width: 1280px; margin: 0 auto; padding: 0 80px; box-sizing: border-box; display: flex; flex-direction: column; gap: 28px;">
+      <span style="align-self: flex-start; font-size: 14px; line-height: 19.6px; letter-spacing: 0.08em; text-transform: uppercase; color: #ff66ed;">Kobieca drużyna kolarska z Wrocławia</span>
+      <h1 style="margin: 0; font-size: 112px; line-height: 0.95; letter-spacing: -0.035em; font-weight: 400; color: #f1eef3; max-width: 1180px; text-wrap: balance;">Jesteśmy dla kobiecego kolarstwa.</h1>
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 48px;">
+        <p style="margin: 0; max-width: 560px; font-size: 20px; line-height: 28px; color: #c0b8be;">Od 2016 roku prowadzimy zawodniczki od pierwszych startów juniorskich do wyścigów UCI w całej Europie.</p>
+        <div style="display: flex; gap: 12px;">
+          <a href="#zespol" style="padding: 13px 27px; border-radius: 100px; border: 1px solid #ff66ed; color: #f1eef3; font-size: 16px; text-decoration: none;">Poznaj zespół</a>
+          <a href="#partnerzy" style="padding: 14px 28px; border-radius: 100px; background: #ff66ed; color: #2b0020; font-size: 16px; font-weight: 700; text-decoration: none;">Zostań partnerem 2027</a>
+        </div>
+      </div>
+      <dl style="margin: 20px 0 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border-top: 1px solid rgba(241,238,243,0.28);">
+        <div style="padding: 20px 20px 28px 0; display: flex; flex-direction: column; gap: 4px;"><dt style="font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #c0b8be;">Licencja</dt><dd style="margin: 0; font-size: 18px; color: #f1eef3;">UCI Continental</dd></div>
+        <div style="padding: 20px; border-left: 1px solid rgba(241,238,243,0.28); display: flex; flex-direction: column; gap: 4px;"><dt style="font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #c0b8be;">Juniorki</dt><dd style="margin: 0; font-size: 18px; color: #f1eef3;">Drużyna U19</dd></div>
+        <div style="padding: 20px; border-left: 1px solid rgba(241,238,243,0.28); display: flex; flex-direction: column; gap: 4px;"><dt style="font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #c0b8be;">Siedziba</dt><dd style="margin: 0; font-size: 18px; color: #f1eef3;">Wrocław /POL</dd></div>
+        <div style="padding: 20px; border-left: 1px solid rgba(241,238,243,0.28); display: flex; flex-direction: column; gap: 4px;"><dt style="font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #c0b8be;">Założona</dt><dd style="margin: 0; font-size: 18px; color: #f1eef3;">2016</dd></div>
+        <div style="padding: 20px; border-left: 1px solid rgba(241,238,243,0.28); display: flex; flex-direction: column; gap: 4px;"><dt style="font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #c0b8be;">Program</dt><dd style="margin: 0; font-size: 18px; color: #f1eef3;">Klub Pro · MSiT</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<!-- LICZBY -->
+<section aria-label="Sezon 2026 w liczbach" style="padding: 88px 0 96px; border-bottom: 1px solid #e4e0e6;">
+  <div style="max-width: 1280px; margin: 0 auto; padding: 0 80px; box-sizing: border-box; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px;">
+    <div style="display: flex; flex-direction: column; gap: 10px;"><span style="font-size: 96px; line-height: 1; letter-spacing: -0.04em;">20</span><span style="font-size: 15px; line-height: 21px; color: #4f4f4f;">zawodniczek w sezonie 2026:<br>8 × U19, 10 × U23, 2 × Elita</span></div>
+    <div style="display: flex; flex-direction: column; gap: 10px;"><span style="font-size: 96px; line-height: 1; letter-spacing: -0.04em;">47</span><span style="font-size: 15px; line-height: 21px; color: #4f4f4f;">wyścigów i mistrzostw<br>w kalendarzu 2026</span></div>
+    <div style="display: flex; flex-direction: column; gap: 10px;"><span style="font-size: 96px; line-height: 1; letter-spacing: -0.04em;">13</span><span style="font-size: 15px; line-height: 21px; color: #4f4f4f;">krajów startów w 2026,<br>także w reprezentacji</span></div>
+    <div style="display: flex; flex-direction: column; gap: 10px;"><span style="font-size: 96px; line-height: 1; letter-spacing: -0.04em;">4</span><span style="font-size: 15px; line-height: 21px; color: #4f4f4f;">dyscypliny: szosa, tor,<br>przełaj i MTB</span></div>
+  </div>
+</section>
+
+<!-- PODEJŚCIE -->
+<section id="podejscie" aria-labelledby="pod-h" style="padding: 120px 0;">
+  <div style="max-width: 1280px; margin: 0 auto; padding: 0 80px; box-sizing: border-box; display: flex; flex-direction: column; gap: 64px;">
+    <div style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 32px; align-items: end;">
+      <div style="grid-column: span 7; display: flex; flex-direction: column; gap: 16px;">
+        <span style="font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: #8c00ff;">Nasze podejście</span>
+        <h2 style="margin: 0; font-size: 64px; line-height: 1.02; letter-spacing: -0.03em; font-weight: 400; text-wrap: balance;">Jedna drużyna od juniorki do elity.</h2>
+      </div>
+      <p style="grid-column: 9 / span 4; margin: 0; font-size: 17px; line-height: 25px; color: #4f4f4f;">Zawodniczki rosną u nas w jednej strukturze: ten sam sztab, te same standardy treningu i sprzętu, coraz wyższy poziom wyścigów.</p>
+    </div>
+
+    <!-- Ścieżka rozwoju -->
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; position: relative;">
+      <div style="position: absolute; left: 0; right: 0; top: 36px; height: 2px; background: #8c00ff;"></div>
+      <div style="display: flex; flex-direction: column; gap: 20px; padding-right: 32px; position: relative;">
+        <span style="width: 72px; height: 72px; border-radius: 100px; background: #ffffff; border: 2px solid #8c00ff; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700;">U19</span>
+        <div style="display: flex; flex-direction: column; gap: 6px;"><span style="font-size: 28px; line-height: 36px;">Juniorki</span><span style="font-size: 15px; line-height: 21px; color: #4f4f4f;">8 zawodniczek w 2026. Szosa, tor i przełaj, mistrzostwa Polski i Europy juniorek.</span></div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 20px; padding-right: 32px; position: relative;">
+        <span style="width: 72px; height: 72px; border-radius: 100px; background: #ffffff; border: 2px solid #8c00ff; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700;">U23</span>
+        <div style="display: flex; flex-direction: column; gap: 6px;"><span style="font-size: 28px; line-height: 36px;">Młodzieżowczynie</span><span style="font-size: 15px; line-height: 21px; color: #4f4f4f;">10 zawodniczek w 2026. Kalendarz UCI w Europie i tytuły mistrzyń Polski.</span></div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 20px; position: relative;">
+        <span style="width: 72px; height: 72px; border-radius: 100px; background: #ff66ed; border: 2px solid #8c00ff; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; color: #2b0020;">Elita</span>
+        <div style="display: flex; flex-direction: column; gap: 6px;"><span style="font-size: 28px; line-height: 36px;">Elita</span><span style="font-size: 15px; line-height: 21px; color: #4f4f4f;">2 zawodniczki w 2026. Liderki drużyny w wyścigach klasy 1.Pro i 2.Pro.</span></div>
+      </div>
+    </div>
+
+    <!-- Filary -->
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px;">
+      <article style="border-top: 1px solid #000000; padding-top: 24px; display: flex; flex-direction: column; gap: 12px;">
+        <span style="font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: #8c00ff;">Sztab</span>
+        <h3 style="margin: 0; font-size: 24px; line-height: 32px; font-weight: 400;">Pięcioosobowy sztab, jeden plan.</h3>
+        <p style="margin: 0; font-size: 15px; line-height: 22px; color: #4f4f4f;">Dyrektorki sportowe, trenerka, menedżer zespołu, mechanik i lekarz. Plan startów, treningu i regeneracji prowadzony w jednym miejscu.</p>
+      </article>
+      <article style="border-top: 1px solid #000000; padding-top: 24px; display: flex; flex-direction: column; gap: 12px;">
+        <span style="font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: #8c00ff;">Klub Pro</span>
+        <h3 style="margin: 0; font-size: 24px; line-height: 32px; font-weight: 400;">W elitarnym programie Ministerstwa Sportu.</h3>
+        <p style="margin: 0; font-size: 15px; line-height: 22px; color: #4f4f4f;">Program wspiera kluby z najlepszymi wynikami w szkoleniu dzieci i młodzieży, ocenianymi w Systemie Sportu Młodzieżowego.</p>
+      </article>
+      <article style="border-top: 1px solid #000000; padding-top: 24px; display: flex; flex-direction: column; gap: 12px;">
+        <span style="font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: #8c00ff;">Wyścigi UCI</span>
+        <h3 style="margin: 0; font-size: 24px; line-height: 32px; font-weight: 400;">Na starcie z najlepszymi w Europie.</h3>
+        <p style="margin: 0; font-size: 15px; line-height: 22px; color: #4f4f4f;">W 2026: Scheldeprijs, De Brabantse Pijl i Lotto Thüringen (1.Pro) oraz Tour de Pologne Women (2.Pro).</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- WYNIKI 2026 -->
+<section id="wyniki" class="dark" aria-labelledby="wyn-h" style="background: #2b0020; color: #f1eef3; padding: 120px 0;">
+  <div style="max-width: 1280px; margin: 0 auto; padding: 0 80px; box-sizing: border-box; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 32px;">
+    <div style="grid-column: span 4; display: flex; flex-direction: column; gap: 20px;">
+      <span style="font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: #ff66ed;">Wyniki</span>
+      <h2 id="wyn-h" style="margin: 0; font-size: 64px; line-height: 1.02; letter-spacing: -0.03em; font-weight: 400;">Wyniki sezonu 2026.</h2>
+      <p style="margin: 0; font-size: 17px; line-height: 25px; color: #c0b8be;">Wyścigi UCI, mistrzostwa Europy i mistrzostwa Polski na szosie, torze, w przełaju i MTB.</p>
+      <div style="display: flex; gap: 40px; margin-top: 16px;">
+        <div style="display: flex; flex-direction: column; gap: 4px;"><span style="font-size: 72px; line-height: 1; letter-spacing: -0.04em; color: #ff66ed;">30</span><span style="font-size: 14px; line-height: 19px; color: #c0b8be;">tytułów mistrzyń Polski,<br>indywidualnie i drużynowo</span></div>
+        <div style="display: flex; flex-direction: column; gap: 4px;"><span style="font-size: 72px; line-height: 1; letter-spacing: -0.04em; color: #ff66ed;">58</span><span style="font-size: 14px; line-height: 19px; color: #c0b8be;">medali mistrzostw Polski<br>we wszystkich kategoriach</span></div>
+      </div>
+      <a href="#kalendarz" style="margin-top: 16px; align-self: flex-start; color: #ff66ed; font-size: 16px;">Archiwum 2026 →</a>
+    </div>
+    <div style="grid-column: 6 / span 7;">
+      <table style="width: 100%; border-collapse: collapse; font-size: 15px; line-height: 21px;">
+        <caption style="text-align: left; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #908a8e; padding-bottom: 12px;">Wybrane wyniki 2026 · MP = mistrzostwa Polski · ME = mistrzostwa Europy</caption>
+        <thead>
+          <tr style="text-align: left; color: #908a8e; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase;">
+            <th scope="col" style="padding: 12px 0; border-bottom: 1px solid #605c5f; font-weight: 400; width: 96px;">Miejsce</th>
+            <th scope="col" style="padding: 12px 0; border-bottom: 1px solid #605c5f; font-weight: 400;">Zawodniczka</th>
+            <th scope="col" style="padding: 12px 0; border-bottom: 1px solid #605c5f; font-weight: 400;">Zawody</th>
+          </tr>
+        </thead>
+        <tbody>
+          <sc-for list="{{ results }}" as="r" hint-placeholder-count="6">
+            <tr>
+              <td style="padding: 18px 0; border-bottom: 1px solid #3f273c;"><span style="{{ r.badgeStyle }}">{{ r.place }}</span></td>
+              <td style="padding: 18px 16px 18px 0; border-bottom: 1px solid #3f273c; font-size: 18px; color: #f1eef3;">{{ r.rider }}</td>
+              <td style="padding: 18px 0; border-bottom: 1px solid #3f273c; color: #c0b8be;">{{ r.event }}</td>
+            </tr>
+          </sc-for>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ZESPÓŁ -->
+<section id="zespol" aria-labelledby="team-h" style="padding: 120px 0; background: #f1eef3;">
+  <div style="max-width: 1280px; margin: 0 auto; padding: 0 80px; box-sizing: border-box; display: flex; flex-direction: column; gap: 48px;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 32px;">
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <span style="font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: #8c00ff;">Zespół · skład 2026</span>
+        <h2 id="team-h" style="margin: 0; font-size: 64px; line-height: 1.02; letter-spacing: -0.03em; font-weight: 400;">Poznaj zawodniczki.</h2>
+        <p style="margin: 0; font-size: 17px; line-height: 25px; color: #4f4f4f;">Skład na sezon 2027 ogłosimy podczas prezentacji drużyny.</p>
+      </div>
+      <div role="tablist" aria-label="Składy" style="display: flex; gap: 8px;">
+        <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3">
+          <button type="button" role="tab" aria-selected="{{ t.selected }}" onClick="{{ t.pick }}" style="{{ t.style }}">{{ t.label }}</button>
+        </sc-for>
+      </div>
+    </div>
+    <sc-if value="{{ isJunior }}" hint-placeholder-val="{{ false }}">
+      <p style="margin: 0; font-size: 22px; line-height: 30.8px; font-weight: 700; color: #8c00ff;">Biała koszulka z różowymi rękawami? To nasze juniorki.</p>
+    </sc-if>
+    <div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 24px;">
+      <sc-for list="{{ people }}" as="r" hint-placeholder-count="12">
+        <article style="border-radius: 30px; overflow: hidden; background: #ffffff; box-shadow: 0 5px 0 0 rgba(255,102,237,0.35); display: flex; flex-direction: column;">
+          <div style="{{ r.photoStyle }}">
+            <span style="position: absolute; left: 14px; top: 12px; padding: 3px 9px; border-radius: 100px; background: rgba(255,255,255,0.85); font-size: 11px; line-height: 15px; font-weight: 700; color: #2b0020;">{{ r.nat }}</span>
+            <span style="position: absolute; left: 14px; bottom: 12px; font-size: 11px; color: #3f273c;">portret · 3:4</span>
+          </div>
+          <div style="padding: 14px 16px 18px; display: flex; flex-direction: column; gap: 4px;">
+            <span style="font-size: 16px; line-height: 21px; font-weight: 700;">{{ r.name }}</span>
+            <span style="font-size: 13px; line-height: 18px; color: #4f4f4f;">{{ r.role }}</span>
+            <a href="{{ r.link }}" style="font-size: 13px; line-height: 18px; margin-top: 4px;">{{ r.linkLabel }}</a>
+          </div>
+        </article>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<!-- KALENDARZ (zapowiedź) -->
+<section id="kalendarz" aria-labelledby="cal-h" style="padding: 120px 0;">
+  <div style="max-width: 1280px; margin: 0 auto; padding: 0 80px; box-sizing: border-box; display: flex; flex-direction: column; gap: 40px;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 32px;">
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <span style="font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: #8c00ff;">Kalendarz · wstępny</span>
+        <h2 id="cal-h" style="margin: 0; font-size: 64px; line-height: 1.02; letter-spacing: -0.03em; font-weight: 400;">Kalendarz 2027.</h2>
+      </div>
+      <div style="display: flex; gap: 12px; align-items: center;">
+        <span style="font-size: 14px; color: #4f4f4f;">Daty potwierdzamy, gdy publikują je organizatorzy.</span>
+        <a href="#kalendarz" style="padding: 13px 27px; border-radius: 100px; border: 1px solid #ff66ed; color: #8c00ff; font-size: 16px; text-decoration: none;">Pełny kalendarz</a>
+      </div>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px;">
+      <sc-for list="{{ calTeaser }}" as="m" hint-placeholder-count="4">
+        <div style="border-top: 2px solid #000000; padding-top: 16px; display: flex; flex-direction: column; gap: 14px;">
+          <span style="font-size: 22px; line-height: 28px;">{{ m.label }}</span>
+          <ol style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 12px;">
+            <sc-for list="{{ m.items }}" as="r" hint-placeholder-count="3">
+              <li style="display: flex; flex-direction: column; gap: 4px; padding-bottom: 12px; border-bottom: 1px solid #e4e0e6;">
+                <span style="font-size: 15px; line-height: 21px;">{{ r.name }}</span>
+                <span style="display: flex; gap: 8px; align-items: center; font-size: 12px; line-height: 16.8px; color: #4f4f4f;"><span style="padding: 1px 8px; border-radius: 100px; border: 1px dashed #949494;">termin wkrótce</span>{{ r.meta }}</span>
+              </li>
+            </sc-for>
+          </ol>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<!-- PARTNERZY: widoczność -->
+<section id="partnerzy" aria-labelledby="vis-h" style="padding: 120px 0; background: #f1eef3;">
+  <div style="max-width: 1280px; margin: 0 auto; padding: 0 80px; box-sizing: border-box; display: flex; flex-direction: column; gap: 64px;">
+    <div style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 32px; align-items: end;">
+      <div style="grid-column: span 7; display: flex; flex-direction: column; gap: 16px;">
+        <span style="font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: #8c00ff;">Dla partnerów</span>
+        <h2 id="vis-h" style="margin: 0; font-size: 64px; line-height: 1.02; letter-spacing: -0.03em; font-weight: 400; text-wrap: balance;">Twoja marka w peletonie.</h2>
+      </div>
+      <p style="grid-column: 9 / span 4; margin: 0; font-size: 17px; line-height: 25px; color: #4f4f4f;">Partner drużyny jest widoczny wszędzie tam, gdzie są zawodniczki: na starcie, na podium, w relacjach i w mediach społecznościowych.</p>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 32px; align-items: center;">
+      <figure style="grid-column: span 5; margin: 0; border-radius: 40px; background: #ffffff; padding: 40px; display: flex; flex-direction: column; gap: 16px; align-items: center;">
+        <svg width="380" height="340" viewBox="0 0 380 340" role="img" aria-label="Schemat koszulki z polami dla partnerów: 1 przód, 2 rękawy, 3 pas boczny">
+          <path d="M140 24 L100 36 L28 84 L58 150 L92 134 L92 316 L288 316 L288 134 L322 150 L352 84 L280 36 L240 24 Q190 64 140 24 Z" fill="#f1eef3" stroke="#2b0020" stroke-width="2" stroke-linejoin="round"></path>
+          <rect x="140" y="104" width="100" height="44" rx="6" fill="#ff66ed"></rect>
+          <rect x="44" y="92" width="44" height="22" rx="4" fill="#d9aaff" transform="rotate(-28 66 103)"></rect>
+          <rect x="292" y="92" width="44" height="22" rx="4" fill="#d9aaff" transform="rotate(28 314 103)"></rect>
+          <rect x="112" y="236" width="156" height="26" rx="4" fill="#c580ff"></rect>
+          <circle cx="190" cy="126" r="13" fill="#2b0020"></circle><text x="190" y="131" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff" font-family="Inter, sans-serif">1</text>
+          <circle cx="66" cy="72" r="13" fill="#2b0020"></circle><text x="66" y="77" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff" font-family="Inter, sans-serif">2</text>
+          <circle cx="190" cy="249" r="13" fill="#2b0020"></circle><text x="190" y="254" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff" font-family="Inter, sans-serif">3</text>
+        </svg>
+        <figcaption style="font-size: 12px; line-height: 16.8px; color: #4f4f4f; text-align: center;">Przykładowe rozmieszczenie. Ostateczne pola ustala zespół.</figcaption>
+      </figure>
+      <ol style="grid-column: 7 / span 6; margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column;">
+        <li style="display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 16px; padding: 18px 0; border-bottom: 1px solid #c0b8be;"><span style="font-size: 15px; font-weight: 700; color: #8c00ff;">1</span><div style="display: flex; flex-direction: column; gap: 2px;"><span style="font-size: 20px; line-height: 28px;">Przód koszulki</span><span style="font-size: 14px; line-height: 19.6px; color: #4f4f4f;">Partner tytularny. Na każdym zdjęciu z mety i podium.</span></div></li>
+        <li style="display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 16px; padding: 18px 0; border-bottom: 1px solid #c0b8be;"><span style="font-size: 15px; font-weight: 700; color: #8c00ff;">2</span><div style="display: flex; flex-direction: column; gap: 2px;"><span style="font-size: 20px; line-height: 28px;">Rękawy i ramiona</span><span style="font-size: 14px; line-height: 19.6px; color: #4f4f4f;">Sponsorzy główni. Widoczne w ujęciach z boku peletonu.</span></div></li>
+        <li style="display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 16px; padding: 18px 0; border-bottom: 1px solid #c0b8be;"><span style="font-size: 15px; font-weight: 700; color: #8c00ff;">3</span><div style="display: flex; flex-direction: column; gap: 2px;"><span style="font-size: 20px; line-height: 28px;">Pas boczny i spodenki</span><span style="font-size: 14px; line-height: 19.6px; color: #4f4f4f;">Sponsorzy główni i techniczni.</span></div></li>
+        <li style="display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 16px; padding: 18px 0; border-bottom: 1px solid #c0b8be;"><span style="font-size: 15px; font-weight: 700; color: #8c00ff;">+</span><div style="display: flex; flex-direction: column; gap: 2px;"><span style="font-size: 20px; line-height: 28px;">Poza strojem</span><span style="font-size: 14px; line-height: 19.6px; color: #4f4f4f;">Samochody zespołu, social media, materiały prasowe, strona i wydarzenia dla partnerów.</span></div></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- PARTNERZY: ściana logotypów -->
+<section aria-labelledby="wall-h" style="padding: 96px 0;">
+  <div style="max-width: 1280px; margin: 0 auto; padding: 0 80px; box-sizing: border-box; display: flex; flex-direction: column; gap: 32px;">
+    <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 32px;">
+      <h2 id="wall-h" style="margin: 0; font-size: 34px; line-height: 42px; font-weight: 400;">Dziękujemy partnerom sezonu 2026.</h2>
+      <span style="font-size: 14px; color: #4f4f4f;">Partnerów 2027 przedstawimy z zespołem.</span>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 16px;">
+      <a href="https://www.atomdeweloper.pl/" rel="noopener sponsored" style="grid-column: span 6; grid-row: span 2; border-radius: 30px; background: #f1eef3; display: flex; flex-direction: column; justify-content: space-between; padding: 28px; color: #000000; text-decoration: none; min-height: 208px; box-sizing: border-box;"><span style="font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #4f4f4f;">Sponsor tytularny</span><span style="font-size: 40px; line-height: 1.1; letter-spacing: -0.02em;">Mat Atom Deweloper</span></a>
+      <a href="https://budus.pl/" rel="noopener sponsored" style="grid-column: span 2; border-radius: 16px; border: 1px solid #e4e0e6; height: 96px; display: flex; align-items: center; justify-content: center; color: #000000; text-decoration: none; font-size: 18px;">Budus</a>
+      <a href="https://velo.pl/marki/accent" rel="noopener sponsored" style="grid-column: span 2; border-radius: 16px; border: 1px solid #e4e0e6; height: 96px; display: flex; align-items: center; justify-content: center; color: #000000; text-decoration: none; font-size: 18px;">Accent</a>
+      <a href="https://no-limited.pl/" rel="noopener sponsored" style="grid-column: span 2; border-radius: 16px; border: 1px solid #e4e0e6; height: 96px; display: flex; align-items: center; justify-content: center; color: #000000; text-decoration: none; font-size: 18px;">No Limited</a>
+      <a href="http://bip.um.wroc.pl/" rel="noopener sponsored" style="grid-column: span 3; border-radius: 16px; border: 1px solid #e4e0e6; height: 96px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; color: #000000; text-decoration: none; font-size: 16px;">Miasto Wrocław<span style="font-size: 11px; color: #4f4f4f;">wsparcie instytucjonalne</span></a>
+      <a href="https://www.fundacjalotto.pl/klub-pro/" rel="noopener sponsored" style="grid-column: span 3; border-radius: 16px; border: 1px solid #e4e0e6; height: 96px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; color: #000000; text-decoration: none; font-size: 16px;">Klub Pro · MSiT<span style="font-size: 11px; color: #4f4f4f;">wsparcie instytucjonalne</span></a>
+    </div>
+    <p style="margin: 0; font-size: 14px; line-height: 22px; color: #4f4f4f;"><span style="color: #000000;">Partnerzy techniczni:</span> Finish Line · Sidi · MET Helmets · Škoda Gall ICM · Park Tool · Quest Sport · Dolakakol · Inpeak · Vittoria · San Marco · Jako Sport · MPWiK Wrocław · Weron · NamedSport · Connex</p>
+  </div>
+</section>
+
+<!-- CTA PARTNERSKIE -->
+<section class="dark" aria-labelledby="cta-h" style="background: #2b0020; color: #f1eef3; padding: 104px 0;">
+  <div style="max-width: 1280px; margin: 0 auto; padding: 0 80px; box-sizing: border-box; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 32px; align-items: center;">
+    <div style="grid-column: span 7; display: flex; flex-direction: column; gap: 20px;">
+      <h2 id="cta-h" style="margin: 0; font-size: 72px; line-height: 1; letter-spacing: -0.035em; font-weight: 400; color: #ff66ed;">Jedź z nami w sezonie 2027.</h2>
+      <p style="margin: 0; max-width: 560px; font-size: 18px; line-height: 26px;">Trzy poziomy partnerstwa: tytularny, główny i techniczny. Przygotujemy ofertę dopasowaną do Twojej marki.</p>
+      <div style="display: flex; gap: 12px; margin-top: 8px;">
+        <a href="mailto:kontakt@atomteam.pl?subject=Partnerstwo%202027" style="padding: 14px 28px; border-radius: 100px; background: #ff66ed; color: #2b0020; font-size: 16px; font-weight: 700; text-decoration: none;">Umów rozmowę</a>
+        <span style="padding: 13px 27px; border-radius: 100px; border: 1px dashed #908a8e; color: #c0b8be; font-size: 16px;">Oferta partnerska PDF · wkrótce</span>
+      </div>
+    </div>
+    <div style="grid-column: 9 / span 4; border-radius: 30px; background: #3f273c; box-shadow: 0 5px 0 0 rgba(140,0,255,0.7); padding: 32px; display: flex; flex-direction: column; gap: 16px;">
+      <span style="font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #c0b8be;">Kontakt dla partnerów</span>
+      <div style="display: flex; gap: 16px; align-items: center;">
+        <span style="width: 64px; height: 64px; border-radius: 100px; background: #605c5f; flex-shrink: 0;"></span>
+        <div style="display: flex; flex-direction: column; gap: 2px;"><span style="font-size: 20px;">[Imię Nazwisko]</span><span style="font-size: 14px; color: #c0b8be;">[Rola w zespole]</span></div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px; font-size: 16px;">
+        <span>[+48 000 000 000]</span>
+        <span>kontakt@atomteam.pl</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MEDIA -->
+<section id="media" aria-labelledby="media-h" style="padding: 120px 0;">
+  <div style="max-width: 1280px; margin: 0 auto; padding: 0 80px; box-sizing: border-box; display: flex; flex-direction: column; gap: 48px;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 32px;">
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <span style="font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: #8c00ff;">Dla mediów</span>
+        <h2 id="media-h" style="margin: 0; font-size: 64px; line-height: 1.02; letter-spacing: -0.03em; font-weight: 400;">Materiały gotowe do publikacji.</h2>
+      </div>
+      <a href="Media-PL.dc.html" style="padding: 13px 27px; border-radius: 100px; border: 1px solid #ff66ed; color: #8c00ff; font-size: 16px; text-decoration: none; white-space: nowrap;">Strefa mediów →</a>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px;">
+      <a href="Media-PL.dc.html" style="border-radius: 30px; border: 1px solid #e4e0e6; padding: 28px; display: flex; flex-direction: column; gap: 40px; color: #000000; text-decoration: none;"><span style="font-size: 12px; font-weight: 700; color: #8c00ff;">SVG · PNG</span><div style="display: flex; flex-direction: column; gap: 4px;"><span style="font-size: 22px; line-height: 28px;">Logotypy</span><span style="font-size: 13px; color: #4f4f4f;">Wersje kolor, czerń, biel</span></div></a>
+      <a href="Media-PL.dc.html" style="border-radius: 30px; border: 1px solid #e4e0e6; padding: 28px; display: flex; flex-direction: column; gap: 40px; color: #000000; text-decoration: none;"><span style="font-size: 12px; font-weight: 700; color: #8c00ff;">JPG · wysoka rozdzielczość</span><div style="display: flex; flex-direction: column; gap: 4px;"><span style="font-size: 22px; line-height: 28px;">Zdjęcia z wyścigów</span><span style="font-size: 13px; color: #4f4f4f;">Z podpisem fotografa</span></div></a>
+      <a href="Media-PL.dc.html" style="border-radius: 30px; border: 1px solid #e4e0e6; padding: 28px; display: flex; flex-direction: column; gap: 40px; color: #000000; text-decoration: none;"><span style="font-size: 12px; font-weight: 700; color: #8c00ff;">JPG · 3:4 i 1:1</span><div style="display: flex; flex-direction: column; gap: 4px;"><span style="font-size: 22px; line-height: 28px;">Portrety zawodniczek</span><span style="font-size: 13px; color: #4f4f4f;">Sezon 2027 · wkrótce</span></div></a>
+      <a href="Media-PL.dc.html" style="border-radius: 30px; border: 1px solid #e4e0e6; padding: 28px; display: flex; flex-direction: column; gap: 40px; color: #000000; text-decoration: none;"><span style="font-size: 12px; font-weight: 700; color: #8c00ff;">PDF · PL / EN</span><div style="display: flex; flex-direction: column; gap: 4px;"><span style="font-size: 22px; line-height: 28px;">Informacja o drużynie</span><span style="font-size: 13px; color: #4f4f4f;">Fakty, skład, sztab, kontakt</span></div></a>
+    </div>
+  </div>
+</section>
+
+<!-- ZDJĘCIA -->
+<section aria-label="Galeria" style="padding: 0 0 120px; overflow: hidden;">
+  <div style="display: grid; grid-template-columns: 2fr 1fr 1.4fr 1fr; gap: 16px; padding: 0 16px; height: 420px;">
+    <div style="border-radius: 40px; background: #3f273c; position: relative;"><span style="position: absolute; left: 20px; bottom: 18px; font-size: 12px; color: #f1eef3;">photo-01.jpg · atak na podjeździe</span></div>
+    <div style="border-radius: 30px; background: #fecdf8; position: relative;"><span style="position: absolute; left: 20px; bottom: 18px; font-size: 12px; color: #3f273c;">photo-02.jpg · portret</span></div>
+    <div style="border-radius: 30px; background: #d9aaff; position: relative;"><span style="position: absolute; left: 20px; bottom: 18px; font-size: 12px; color: #2f0055;">photo-03.jpg · tor, Pruszków</span></div>
+    <div style="border-radius: 30px; background: #c0b8be; position: relative;"><span style="position: absolute; left: 20px; bottom: 18px; font-size: 12px; color: #302e2f;">photo-04.jpg · mechanik</span></div>
+  </div>
+  <div aria-hidden="true" style="white-space: nowrap; font-size: 42px; line-height: 50.4px; color: #ff66ed; margin-top: 56px;">#allezatomówki   #allezatomówki   #allezatomówki   #allezatomówki   #allezatomówki   #allezatomówki</div>
+</section>
+
+<!-- NEWSLETTER + STOPKA -->
+<footer class="dark" style="background: #2b0020; color: #c0b8be; padding: 96px 0 40px;">
+  <div style="max-width: 1280px; margin: 0 auto; padding: 0 80px; box-sizing: border-box; display: flex; flex-direction: column; gap: 72px;">
+    <div style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 32px; align-items: end;">
+      <div style="grid-column: span 6; display: flex; flex-direction: column; gap: 12px;">
+        <h2 style="margin: 0; font-size: 42px; line-height: 50.4px; font-weight: 400; color: #f1eef3;">Kalendarz 2027 prosto na maila.</h2>
+        <p style="margin: 0; font-size: 15px; line-height: 22px;">Kilka wiadomości w sezonie: skład, kalendarz, najważniejsze wyniki.</p>
+      </div>
+      <form style="grid-column: 8 / span 5; display: flex; flex-direction: column; gap: 10px;">
+        <label for="nl" style="font-size: 13px; color: #f1eef3;">E-mail</label>
+        <div style="display: flex; gap: 8px;">
+          <input id="nl" type="email" placeholder="ty@przyklad.pl" style="flex-grow: 1; height: 48px; padding: 0 18px; border-radius: 100px; border: 1px solid #908a8e; background: #3f273c; color: #f1eef3; font-size: 15px; font-family: inherit;">
+          <button type="button" style="height: 48px; padding: 0 24px; border-radius: 100px; border: 0; background: #ff66ed; color: #2b0020; font-size: 15px; font-weight: 700;">Zapisz mnie</button>
+        </div>
+        <label style="display: flex; gap: 8px; align-items: center; font-size: 12px;"><input type="checkbox" style="accent-color: #ff66ed;"> Zgadzam się na otrzymywanie newslettera.</label>
+      </form>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 32px; padding-top: 40px; border-top: 1px solid #3f273c;">
+      <div style="grid-column: span 4; display: flex; flex-direction: column; gap: 14px;">
+        <span style="font-size: 15px; letter-spacing: 0.02em; color: #f1eef3;"><b>MAT</b> ATOM DEWELOPER <b>WROCŁAW</b></span>
+        <span style="font-size: 14px; line-height: 20px;">Kobieca drużyna kolarska UCI Continental i drużyna juniorska. Wrocław, od 2016.</span>
+        <span style="font-size: 16px; color: #f1eef3;">kontakt@atomteam.pl</span>
+      </div>
+      <nav aria-label="Mapa strony" style="grid-column: 6 / span 2; display: flex; flex-direction: column; gap: 10px; font-size: 14px;">
+        <span style="font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #908a8e;">Drużyna</span>
+        <a href="#zespol" style="color: #f1eef3; text-decoration: none;">Zawodniczki</a>
+        <a href="#podejscie" style="color: #f1eef3; text-decoration: none;">Podejście</a>
+        <a href="#wyniki" style="color: #f1eef3; text-decoration: none;">Wyniki</a>
+        <a href="#kalendarz" style="color: #f1eef3; text-decoration: none;">Kalendarz</a>
+      </nav>
+      <nav aria-label="Współpraca" style="grid-column: span 2; display: flex; flex-direction: column; gap: 10px; font-size: 14px;">
+        <span style="font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #908a8e;">Współpraca</span>
+        <a href="#partnerzy" style="color: #f1eef3; text-decoration: none;">Partnerzy</a>
+        <a href="Media-PL.dc.html" style="color: #f1eef3; text-decoration: none;">Strefa mediów</a>
+        <a href="#top" style="color: #f1eef3; text-decoration: none;">Program Klub Pro</a>
+      </nav>
+      <nav aria-label="Social media" style="grid-column: span 2; display: flex; flex-direction: column; gap: 10px; font-size: 14px;">
+        <span style="font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #908a8e;">Obserwuj</span>
+        <a href="https://www.instagram.com/atomdeweloper_team/" style="color: #f1eef3; text-decoration: none;">Instagram</a>
+        <a href="https://www.facebook.com/atom.deweloper.team" style="color: #f1eef3; text-decoration: none;">Facebook</a>
+        <a href="https://www.linkedin.com/company/atomteampl/" style="color: #f1eef3; text-decoration: none;">LinkedIn</a>
+      </nav>
+    </div>
+    <div style="display: flex; justify-content: space-between; font-size: 12px; line-height: 16.8px;">
+      <span>© 2026 Mat Atom Deweloper Wrocław</span>
+      <div style="display: flex; gap: 24px;"><a href="Home-EN.dc.html" hreflang="en" lang="en" style="color: #f1eef3;">English version</a><a href="#top" style="color: #f1eef3;">Polityka prywatności</a></div>
+    </div>
+  </div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+var CONT = [['Eliza Rabażyńska','POL'],['Sofia Ungerová','SVK'],['Olga Wankiewicz','POL'],['Tamara Szalińska','POL'],['Maja Tracka','POL'],['Urszula Sipko','POL'],['Alicja Matuła','POL'],['Gabriela Kaczmarczyk','POL'],['Daria Dębicka','POL'],['Martyna Szczęsna','POL'],['Anna Gaborska','POL'],['Nadia Hartman','POL']];
+var JUN = [['Linda Sitková','CZE'],['Kinga Słomka','POL'],['Julia Pośpiech','POL'],['Julia Kołakowska','POL'],['Aniela Augustyniak','POL'],['Agata Sekta','POL'],['Zofia Glinka','POL'],['Natalia Gacek','POL']];
+var STAFF = [['Paulina Brzeźna-Bentkowska','Dyrektorka sportowa, trenerka'],['Paweł Bentkowski','Menedżer zespołu, dyrektor sportowy'],['Katarzyna Wilkos','Dyrektorka sportowa'],['Marcin Zarębski','Mechanik'],['Szymon Gałczyński','Lekarz']];
+var TINTS = ['#fecdf8','#f0e6ed','#d9aaff','#ffd0f4','#c0b8be','#fd9cf2'];
+
+function pill(on) {
+  var base = 'padding: 9px 18px; border-radius: 100px; font-size: 14px; line-height: 19.6px; cursor: pointer; border: 1px solid #ff66ed; ';
+  return base + (on ? 'background: #ff66ed; color: #2b0020;' : 'background: transparent; color: #8c00ff;');
+}
+function badge(p) {
+  var base = 'display: inline-flex; align-items: center; justify-content: center; min-width: 44px; height: 30px; padding: 0 10px; border-radius: 100px; font-size: 14px; font-weight: 700; box-sizing: border-box; ';
+  var n = p.replace(/^.*?(\d+)\.$/, '$1');
+  if (n === '1') return base + 'background: #ff66ed; color: #2b0020;';
+  if (n === '2') return base + 'border: 2px solid #f1eef3; color: #f1eef3;';
+  if (n === '3') return base + 'border: 2px dashed #c0b8be; color: #f1eef3;';
+  return base + 'color: #c0b8be;';
+}
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { squad: 'continental' };
+  }
+  renderVals() {
+    var self = this, st = this.state;
+    var tabs = [['continental', 'Continental'], ['junior', 'Juniorki'], ['staff', 'Sztab']].map(function (t) {
+      return { label: t[1], selected: st.squad === t[0] ? 'true' : 'false', style: pill(st.squad === t[0]), pick: function () { self.setState({ squad: t[0] }); } };
+    });
+    var isStaff = st.squad === 'staff';
+    var src = st.squad === 'continental' ? CONT : st.squad === 'junior' ? JUN : STAFF;
+    var people = src.map(function (p, i) {
+      return {
+        name: p[0],
+        nat: isStaff ? 'SZTAB' : p[1],
+        role: isStaff ? p[1] : (st.squad === 'junior' ? 'Juniorka · U19' : 'Drużyna Continental'),
+        link: isStaff ? '#zespol' : 'Media-PL.dc.html',
+        linkLabel: isStaff ? 'Kontakt przez biuro' : 'Profil zawodniczki →',
+        photoStyle: 'aspect-ratio: 3 / 4; position: relative; background: ' + TINTS[i % TINTS.length] + ';'
+      };
+    });
+    var results = [
+      { place: '1.', rider: 'Sofia Ungerová', event: 'Gracia Orlová (2.2): 5. etap · 3. w klasyfikacji generalnej' },
+      { place: '2.', rider: 'Olga Wankiewicz', event: 'POREČ Classic Ladies (1.2)' },
+      { place: '3.', rider: 'Sofia Ungerová', event: 'Tour de Feminin (2.2): klasyfikacja generalna' },
+      { place: '9.', rider: 'Olga Wankiewicz', event: 'Tour de Pologne Women (2.Pro): klasyfikacja generalna' },
+      { place: '3.', rider: 'Sipko, Tracka, Szczęsna, Rabażyńska', event: 'ME U23 na torze: wyścig drużynowy na dochodzenie (Polska)' },
+      { place: '1.', rider: 'Maja Tracka', event: 'MP: jazda indywidualna na czas U23' },
+      { place: '1.', rider: 'Zofia Glinka', event: 'MP: wyścig ze startu wspólnego juniorek' },
+      { place: '1.', rider: 'Martyna Szczęsna', event: 'Sowiogórski Tour i górskie MP (elita i U23)' }
+    ].map(function (r) { r.badgeStyle = badge(r.place); return r; });
+    var calTeaser = [
+      { label: '01/ Styczeń', items: [{ name: '4. Przełaj im. Z. Hanusika', meta: 'Tychy · przełaj' }, { name: 'Przełajowe Mistrzostwa Polski', meta: 'Ełk · NCh.' }] },
+      { label: '02/ Luty', items: [{ name: 'Torowe Mistrzostwa Europy UEC', meta: 'tor · ECh.' }, { name: 'Puchar Polski', meta: 'Pruszków · tor' }] },
+      { label: '03/ Marzec', items: [{ name: 'Umag Classic Ladies', meta: 'CRO · 1.2' }, { name: 'Poreč Classic Ladies', meta: 'CRO · 1.2' }, { name: 'Midwest Cycling Classic', meta: 'BEL · 1.1' }] },
+      { label: '04/ Kwiecień', items: [{ name: 'Scheldeprijs Vrouwen Elite', meta: 'BEL · 1.Pro' }, { name: 'De Brabantse Pijl', meta: 'BEL · 1.Pro' }, { name: 'Ronde de Mouscron', meta: 'BEL · 1.1' }] }
+    ];
+    return { tabs: tabs, people: people, isJunior: st.squad === 'junior', results: results, calTeaser: calTeaser };
+  }
+}
+</script>
+</body>
+</html>

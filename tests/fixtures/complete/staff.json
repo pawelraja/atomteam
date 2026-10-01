@@ -1,7 +1,7 @@
 [
-  {"name":"Paulina Brzeźna-Bentkowska","role":{"pl":"Dyrektorka sportowa, trenerka","en":"Sport Director, Coach"},"photo":"paulina-brzezna-bentkowska.jpg","seasons":[2026,2027]},
-  {"name":"Paweł Bentkowski","role":{"pl":"Menedżer zespołu, dyrektor sportowy","en":"Team Manager, Sport Director"},"photo":"pawel-bentkowski.jpg","seasons":[2026,2027]},
-  {"name":"Katarzyna Wilkos","role":{"pl":"Dyrektorka sportowa","en":"Sport Director"},"photo":"katarzyna-wilkos.jpg","seasons":[2026,2027]},
+  {"name":"Paulina Brzeźna-Bentkowska","role":{"pl":"Dyrektorka sportowa, trenerka","en":"Sport director, coach"},"photo":"paulina-brzezna-bentkowska.jpg","seasons":[2026,2027]},
+  {"name":"Paweł Bentkowski","role":{"pl":"Menedżer zespołu, dyrektor sportowy","en":"Team manager, sport director"},"photo":"pawel-bentkowski.jpg","seasons":[2026,2027]},
+  {"name":"Katarzyna Wilkos","role":{"pl":"Dyrektorka sportowa","en":"Sport director"},"photo":"katarzyna-wilkos.jpg","seasons":[2026,2027]},
   {"name":"Marcin Zarębski","role":{"pl":"Mechanik","en":"Mechanic"},"photo":"marcin-zarebski.jpg","seasons":[2026,2027]},
   {"name":"Szymon Gałczyński","role":{"pl":"Lekarz","en":"Doctor"},"photo":"szymon-galczynski.jpg","seasons":[2026,2027]}
 ]

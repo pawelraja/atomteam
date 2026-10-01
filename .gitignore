@@ -48,4 +48,8 @@ public/partners/*
 !public/partners/.gitkeep
 public/brand/*
 !public/brand/.gitkeep
+src/assets/media/*
+!src/assets/media/.gitkeep
+public/media/*
+!public/media/.gitkeep
 .vercel

@@ -1,0 +1,33 @@
+---
+// /partnerzy and /en/partners: partners by tier, the jersey placement diagram, and the
+// "Ride with us" band with the partnership contact.
+import BrandPlacement from '../components/BrandPlacement.astro';
+import PageIntro from '../components/PageIntro.astro';
+import PartnerCta from '../components/PartnerCta.astro';
+import Partners from '../components/Partners.astro';
+import Shell from '../components/Shell.astro';
+import { getData } from '../lib/data';
+import { copy, fill, type Lang } from '../lib/i18n';
+import { ROUTES } from '../lib/routes';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const { site } = getData();
+const t = copy(lang);
+const season = site.currentSeason;
+---
+
+<Shell
+  lang={lang}
+  page="partners"
+  paths={ROUTES.partners}
+  title={fill(t.meta.pages.partners.title, { season })}
+  description={fill(t.meta.pages.partners.description, { season }, lang)}
+>
+  <PageIntro lang={lang} eyebrow={fill(t.partnersPage.eyebrow, { season }, lang)} title={t.partnersPage.title} lead={t.partnersPage.lead} />
+  <Partners lang={lang} />
+  <BrandPlacement lang={lang} />
+  <PartnerCta lang={lang} />
+</Shell>

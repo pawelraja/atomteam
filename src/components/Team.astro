@@ -1,18 +1,19 @@
 ---
-// Team tabs: Continental / Junior / Staff. Shows current-season riders as soon as any are
-// listed (with an "announcement coming soon" note until rosterConfirmed); otherwise the latest roster.
+// Team tabs: Continental / Juniors / Staff. Shows current-season riders as soon as any are
+// listed (with an "announced at the presentation" note until rosterConfirmed); otherwise the
+// latest roster, labelled with its season.
 import { anchor } from '../lib/anchors';
 import { getData } from '../lib/data';
 import { copy, fill, pick, type Lang } from '../lib/i18n';
 import { riderPath, route } from '../lib/routes';
-import { riderCategory, riderSlug } from '../lib/showcase';
+import { riderSlug } from '../lib/showcase';
 import { teamView } from '../lib/view';
 import Icon from './Icon.astro';
 import PersonCard from './PersonCard.astro';
 
 interface Props {
   lang: Lang;
-  /** "home" adds a link to the team page. */
+  /** "home" adds a link to the team page; "page" uses an h2 below the page intro. */
   variant?: 'home' | 'page';
 }
 const { lang, variant = 'home' } = Astro.props;
@@ -21,38 +22,28 @@ const t = copy(lang);
 const ts = t.teamSection;
 const season = site.currentSeason;
 const { roster, crew } = teamView();
+const shownSeason = roster.season ?? season;
+const countries = t.calendar.countryNames as Record<string, string>;
 
-let title: string;
 let note: string | null = null;
-if (roster.isCurrent) {
-  title = fill(site.rosterConfirmed ? ts.titleConfirmed : ts.titleProvisional, { season }, lang);
-  if (!site.rosterConfirmed) note = ts.provisionalNote;
-} else {
-  title = fill(ts.titleFallback, { season: roster.season ?? season }, lang);
-  note = fill(ts.fallbackNote, { next: season }, lang);
-}
+if (!roster.isCurrent) note = fill(ts.fallbackNote, { next: season }, lang);
+else if (!site.rosterConfirmed) note = fill(ts.provisionalNote, { season }, lang);
 
 const squads = [
-  { id: 'continental', label: ts.tabs.continental, intro: ts.continentalIntro, people: roster.items.filter((r) => r.squad === 'continental') },
-  { id: 'junior', label: ts.tabs.junior, intro: ts.juniorIntro, people: roster.items.filter((r) => r.squad === 'junior') },
+  { id: 'continental', label: ts.tabs.continental, people: roster.items.filter((r) => r.squad === 'continental') },
+  { id: 'junior', label: ts.tabs.junior, people: roster.items.filter((r) => r.squad === 'junior') },
 ] as const;
-const roleOf = (r: (typeof roster.items)[number]) => {
-  if (r.role) return pick(lang, r.role);
-  const c = riderCategory(r);
-  return c ? t.rider.category[c] : null;
-};
 ---
 
-<section class="section team" id={anchor(lang, 'team')} data-section="team" aria-labelledby="team-title">
-  <div class="container">
-    <div class="chapter-head">
-      <p class="eyebrow">{ts.eyebrow}</p>
-      <h2 id="team-title" class="chapter">{title}</h2>
-      {note && <p>{note}</p>}
-    </div>
-
-    <div class="tabs" data-tabs>
-      <div class="tablist" role="tablist" aria-labelledby="team-title">
+<section class="team" id={anchor(lang, 'team')} data-section="team" aria-labelledby="team-title">
+  <div class="container team__inner">
+    <div class="team__head">
+      <div class="team__title">
+        <p class="eyebrow">{fill(ts.eyebrow, { season: shownSeason }, lang)}</p>
+        <h2 id="team-title" class="chapter">{ts.title}</h2>
+        {note && <p class="team__note">{note}</p>}
+      </div>
+      <div class="tablist" role="tablist" aria-label={ts.tabsLabel} data-tabs>
         {
           [...squads, { id: 'staff', label: ts.tabs.staff }].map((s, i) => (
             <button
@@ -69,51 +60,52 @@ const roleOf = (r: (typeof roster.items)[number]) => {
           ))
         }
       </div>
+    </div>
 
-      {
-        squads.map((s, i) => (
-          <div class="panel" role="tabpanel" id={`panel-${s.id}`} aria-labelledby={`tab-${s.id}`} tabindex="0" hidden={i !== 0}>
-            <p class="panel__intro body-lg">{s.intro}</p>
-            {s.people.length ? (
-              <ul class="grid" role="list">
-                {s.people.map((r) => (
-                  <li>
-                    <PersonCard
-                      lang={lang}
-                      name={r.name}
-                      nat={r.nat}
-                      role={roleOf(r)}
-                      photo={r.photo}
-                      href={riderPath(lang, riderSlug(r))}
-                      isNew={roster.isCurrent && r.new ? fill(ts.newPill, { season }, lang) : null}
-                    />
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p class="muted">{ts.emptySquad}</p>
-            )}
-          </div>
-        ))
-      }
+    {
+      squads.map((s, i) => (
+        <div class="panel" role="tabpanel" id={`panel-${s.id}`} aria-labelledby={`tab-${s.id}`} tabindex="0" hidden={i !== 0}>
+          {s.id === 'junior' && <p class="team__junior">{ts.juniorIntro}</p>}
+          {s.people.length ? (
+            <ul class="grid" role="list">
+              {s.people.map((r) => (
+                <li>
+                  <PersonCard
+                    lang={lang}
+                    name={r.name}
+                    chip={r.nat}
+                    chipLabel={countries[r.nat] ?? r.nat}
+                    role={r.role ? pick(lang, r.role) : ts.roles[r.squad]}
+                    photo={r.photo}
+                    href={riderPath(lang, riderSlug(r))}
+                    linkLabel={ts.profileLink}
+                    isNew={roster.isCurrent && r.new ? fill(ts.newPill, { season }, lang) : null}
+                  />
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p class="muted">{ts.emptySquad}</p>
+          )}
+        </div>
+      ))
+    }
 
-      <div class="panel" role="tabpanel" id="panel-staff" aria-labelledby="tab-staff" tabindex="0" hidden>
-        <p class="panel__intro body-lg">{ts.staffIntro}</p>
-        <ul class="grid" role="list">
-          {
-            crew.items.map((s) => (
-              <li>
-                <PersonCard lang={lang} name={s.name} role={pick(lang, s.role)} photo={s.photo} />
-              </li>
-            ))
-          }
-        </ul>
-      </div>
+    <div class="panel" role="tabpanel" id="panel-staff" aria-labelledby="tab-staff" tabindex="0" hidden>
+      <ul class="grid" role="list">
+        {
+          crew.items.map((s) => (
+            <li>
+              <PersonCard lang={lang} name={s.name} chip={ts.staffChip} role={pick(lang, s.role)} photo={s.photo} />
+            </li>
+          ))
+        }
+      </ul>
     </div>
 
     {
       variant === 'home' && (
-        <p class="team__more">
+        <p>
           <a class="text-link" href={route(lang, 'team')}>
             {ts.allRiders} <Icon name="arrow" size={18} />
           </a>
@@ -126,24 +118,50 @@ const roleOf = (r: (typeof roster.items)[number]) => {
 
 <script>
   import { initTabs } from './Tabs';
-  document.querySelectorAll<HTMLElement>('.team [data-tabs]').forEach((el) => initTabs(el));
+  document.querySelectorAll<HTMLElement>('.team').forEach((section) => {
+    const list = section.querySelector<HTMLElement>('[data-tabs]');
+    if (list) initTabs(list);
+  });
 </script>
 
 <style>
+  .team {
+    padding-block: 120px;
+    background: var(--surface-alt);
+  }
+  .team__inner {
+    display: grid;
+    gap: 48px;
+  }
+  .team__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .team__title {
+    display: grid;
+    gap: 16px;
+  }
+  .team__note {
+    font-size: 17px;
+    line-height: 1.47;
+    color: var(--ink-muted);
+  }
   .tablist {
     display: flex;
+    gap: 8px;
     flex-wrap: wrap;
-    gap: var(--s-2);
-    margin-bottom: var(--s-5);
   }
   .tab {
-    min-height: 48px;
-    padding: 10px 24px;
+    min-height: 44px;
+    padding: 9px 18px;
     border: 1px solid var(--accent);
     border-radius: var(--r-pill);
     background: transparent;
     color: var(--accent-strong);
-    font: 700 var(--fs-body) / 1.2 var(--font);
+    font: 400 14px / 1.4 var(--font);
     cursor: pointer;
   }
   .tab:hover {
@@ -153,10 +171,12 @@ const roleOf = (r: (typeof roster.items)[number]) => {
     background: var(--accent);
     color: var(--ink-on-accent);
   }
-  .panel__intro {
-    margin-bottom: var(--s-5);
-    color: var(--ink-muted);
-    max-width: 60ch;
+  .team__junior {
+    margin-bottom: 32px;
+    font-size: 22px;
+    line-height: 1.4;
+    font-weight: 700;
+    color: var(--accent-strong);
   }
   .panel:focus-visible {
     outline-offset: 8px;
@@ -164,10 +184,10 @@ const roleOf = (r: (typeof roster.items)[number]) => {
   .grid {
     display: grid;
     grid-template-columns: repeat(6, minmax(0, 1fr));
-    gap: var(--s-5) var(--s-4);
+    gap: 24px;
   }
-  .team__more {
-    margin-top: var(--s-5);
+  .grid > li {
+    display: grid;
   }
   @media (max-width: 1279px) {
     .grid {
@@ -175,6 +195,12 @@ const roleOf = (r: (typeof roster.items)[number]) => {
     }
   }
   @media (max-width: 899px) {
+    .team {
+      padding-block: 64px;
+    }
+    .team__inner {
+      gap: 32px;
+    }
     .grid {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
@@ -182,7 +208,10 @@ const roleOf = (r: (typeof roster.items)[number]) => {
   @media (max-width: 599px) {
     .grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: var(--s-4) var(--s-3);
+      gap: 16px 12px;
+    }
+    .team__junior {
+      font-size: 18px;
     }
   }
 </style>

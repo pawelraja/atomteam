@@ -16,7 +16,8 @@
     "verify": "npm run test && npm run check && npm run build && npm run check:site && npm run check:contrast && npm run e2e",
     "screenshots": "node scripts/screenshots.mjs",
     "scenarios": "node scripts/make-fixtures.mjs && node scripts/scenarios.mjs",
-    "draft-season": "node scripts/draft-season.mjs"
+    "draft-season": "node scripts/draft-season.mjs",
+    "lighthouse": "node scripts/lighthouse.mjs"
   },
   "dependencies": {
     "@fontsource/inter": "^5.3.0",

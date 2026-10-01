@@ -8,10 +8,13 @@
   "teamPresentation": null,
   "statusLine": {
     "pl": "Sezon 2027 · Kalendarz wstępny online · Skład ogłosimy wkrótce",
-    "en": "Season 2027 · Provisional calendar online · Roster announcement coming soon"
+    "en": "Season 2027 · Provisional calendar online · Roster announced soon"
   },
   "statusLink": {
-    "label": { "pl": "Partnerstwo 2027", "en": "Partnership 2027" },
+    "label": {
+      "pl": "Partnerstwa na sezon 2027",
+      "en": "2027 partnerships"
+    },
     "href": "partners"
   },
   "partnerDeckUrl": null,

@@ -1,0 +1,109 @@
+---
+// Top of a sub-page (lilac, the floating header sits on it): eyebrow, large title, lead and an
+// optional page-local nav of pill links (e.g. Fakty · Pliki · Zdjęcia · Skład · Kontakt).
+import { anchor } from '../lib/anchors';
+import type { Lang } from '../lib/i18n';
+
+interface Props {
+  lang: Lang;
+  eyebrow: string;
+  title: string;
+  lead?: string;
+  nav?: { href: string; label: string }[];
+  navLabel?: string;
+}
+const { lang, eyebrow, title, lead, nav, navLabel } = Astro.props;
+---
+
+<section class="intro" id={anchor(lang, 'top')} data-section="top" aria-labelledby="page-title">
+  <div class="container intro__grid">
+    <div class="intro__title">
+      <p class="eyebrow">{eyebrow}</p>
+      <h1 id="page-title">{title}</h1>
+      <slot />
+    </div>
+    {
+      (lead || nav) && (
+        <div class="intro__side">
+          {lead && <p class="intro__lead">{lead}</p>}
+          {nav && (
+            <nav aria-label={navLabel}>
+              <ul role="list" class="intro__nav">
+                {nav.map((n) => (
+                  <li>
+                    <a href={n.href}>{n.label}</a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          )}
+        </div>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .intro {
+    padding: calc(var(--header-h) + 16px + 88px) 0 96px;
+    background: var(--surface-alt);
+  }
+  .intro__grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--grid-gap);
+    align-items: end;
+  }
+  .intro__title {
+    grid-column: span 7;
+    display: grid;
+    gap: 20px;
+  }
+  h1 {
+    font-size: clamp(44px, 6.6vw, 96px);
+    line-height: 0.98;
+    letter-spacing: var(--ls-hero);
+    text-wrap: balance;
+  }
+  .intro__side {
+    grid-column: 9 / span 4;
+    display: grid;
+    gap: 16px;
+  }
+  .intro__lead {
+    font-size: 17px;
+    line-height: 1.47;
+    color: var(--ink-muted);
+  }
+  .intro__nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .intro__nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+    padding: 0 14px;
+    border: 1px solid var(--accent);
+    border-radius: var(--r-pill);
+    color: var(--accent-strong);
+    font-size: 14px;
+    text-decoration: none;
+  }
+  .intro__nav a:hover {
+    background: var(--accent);
+    color: var(--ink-on-accent);
+  }
+  @media (max-width: 1023px) {
+    .intro__title,
+    .intro__side {
+      grid-column: 1 / -1;
+    }
+  }
+  @media (max-width: 599px) {
+    .intro {
+      padding: calc(var(--header-h) + 12px + 48px) 0 56px;
+    }
+  }
+</style>

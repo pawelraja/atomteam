@@ -84,6 +84,14 @@
   --gutter: clamp(16px, 4vw, 64px);
   --content: 1280px;
   --header-h: 64px;
+  /* Gap of the 12-column layout grids; narrower on phones so 11 gaps always fit. */
+  --grid-gap: 32px;
+}
+
+@media (max-width: 699px) {
+  :root {
+    --grid-gap: 16px;
+  }
 }
 
 /* Plum bands */

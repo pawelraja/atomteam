@@ -9,7 +9,9 @@
 // Without them the script prints a note and exits, so local builds still work.
 //
 // Expected folders inside "MADW Website" (names are case-insensitive):
-//   hero/  photo-story/  highlights/  riders/  partners/  brand/
+//   hero/  photo-story/  highlights/  riders/  partners/  brand/  media/  media-files/
+// media/ holds the press-library originals (at least 3000 px on the long side); media-files/
+// holds the downloads listed in media.json (logo ZIP, team information PDF, …).
 // File names follow src/assets/README.md. Case, spaces and Polish letters don't matter:
 // "Eliza Rabażyńska.JPG" is saved as riders/eliza-rabazynska.jpg.
 import { createHash, createSign } from 'node:crypto';
@@ -23,11 +25,14 @@ export const FOLDERS = {
   riders: { dir: 'src/assets/riders', kinds: ['image'] },
   partners: { dir: 'public/partners', kinds: ['logo', 'pdf'] },
   brand: { dir: 'public/brand', kinds: ['logo'] },
+  media: { dir: 'src/assets/media', kinds: ['image'] },
+  'media-files': { dir: 'public/media', kinds: ['download'] },
 };
 const EXT = {
   image: ['.jpg', '.jpeg', '.png', '.webp', '.avif'],
   logo: ['.svg', '.png', '.webp'],
   pdf: ['.pdf'],
+  download: ['.pdf', '.zip'],
 };
 const MAX_BYTES = 40 * 1024 * 1024;
 
@@ -55,6 +60,8 @@ export function expectedSlots(read = (p) => JSON.parse(readFileSync(p, 'utf8')))
     riders: [...read('src/data/riders.json'), ...read('src/data/staff.json')].map((p) => p.photo),
     partners: read('src/data/partners.json').map((p) => p.logo),
     brand: ['logo.svg'],
+    media: read('src/data/media.json').photos.map((p) => p.file),
+    'media-files': read('src/data/media.json').files.flatMap((f) => (typeof f.file === 'string' ? [f.file] : [f.file.pl, f.file.en])),
   };
 }
 
@@ -78,10 +85,10 @@ export function planFile(folder, driveName, slots) {
   if (folder === 'partners' && ext === '.pdf') return { target: `${stem}.pdf`, warning: null };
   const slot = slots.find((s) => slugStem(s) === stem);
   if (!slot) return { target: `${stem}${ext}`, warning: `${folder}/${driveName}: no slot on the site uses this name (see src/assets/README.md) — copied, but not shown` };
-  if (folder === 'partners' || folder === 'brand') {
+  if (folder === 'partners' || folder === 'brand' || folder === 'media-files') {
     // Logos are referenced by their exact file name, extension included.
     if (extname(slot).toLowerCase() !== ext) {
-      return { target: null, warning: `${folder}/${driveName}: the site expects "${slot}" — upload that format or change "logo" in partners.json` };
+      return { target: null, warning: `${folder}/${driveName}: the site expects "${slot}" — upload that format or change the file name in the data file` };
     }
     return { target: slot, warning: null };
   }

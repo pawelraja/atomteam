@@ -1,7 +1,6 @@
 ---
 import Icon from './Icon.astro';
 import LangSwitch from './LangSwitch.astro';
-import Social from './Social.astro';
 import { anchor } from '../lib/anchors';
 import { copy, type Lang } from '../lib/i18n';
 import { brandLogoExists } from '../lib/images';
@@ -17,10 +16,10 @@ const { lang, page, paths } = Astro.props;
 const t = copy(lang);
 const nav = [
   { key: 'team', href: route(lang, 'team'), label: t.nav.team },
+  { key: 'approach', href: `${route(lang, 'home')}#${anchor(lang, 'approach')}`, label: t.nav.approach },
   { key: 'calendar', href: route(lang, 'calendar'), label: t.nav.calendar },
   { key: 'partners', href: route(lang, 'partners'), label: t.nav.partners },
   { key: 'media', href: route(lang, 'media'), label: t.nav.media },
-  { key: 'contact', href: `#${anchor(lang, 'contact')}`, label: t.nav.contact },
 ];
 const current = (key: string) => (key === page ? 'page' : undefined);
 const ctaHref = `${route(lang, 'partners')}#${anchor(lang, 'cta')}`;
@@ -30,16 +29,18 @@ const hasLogo = brandLogoExists();
 
 <header class="site-header">
   <div class="bar">
-    <a class="wordmark" href={route(lang, 'home')} aria-label={t.a11y.home} aria-current={current('home')}>
+    <a class="wordmark" href={route(lang, 'home')} aria-current={current('home')}>
       {
         hasLogo ? (
-          <img src="/brand/logo.svg" alt="" width="180" height="40" />
+          <img src="/brand/logo.svg" alt="" width="40" height="40" class="logo" />
         ) : (
-          <span aria-hidden="true">
-            {t.team.wordmarkA} <strong>{t.team.wordmarkB}</strong>
-          </span>
+          <span class="logo logo--ph" aria-hidden="true">{t.team.logoPlaceholder}</span>
         )
       }
+      <span class="wordmark__text">
+        <strong>{t.team.wordmarkLead}</strong> {t.team.wordmarkA} <strong>{t.team.wordmarkB}</strong>
+      </span>
+      <span class="visually-hidden">, {t.nav.home}</span>
     </a>
 
     <nav class="nav" aria-label={t.a11y.mainNav}>
@@ -50,7 +51,9 @@ const hasLogo = brandLogoExists();
 
     <div class="end">
       <LangSwitch lang={lang} paths={paths} class="desk-only" />
-      <Social lang={lang} class="header-social desk-only" />
+      <a class="icon-link desk-only" href={t.team.social.instagram} target="_blank" rel="noopener me" aria-label={`${t.a11y.socialInstagram} ${t.a11y.newTab}`}>
+        <Icon name="instagram" size={20} />
+      </a>
       <a class="btn btn--primary cta desk-only" href={ctaHref}>{t.nav.cta}</a>
       <LangSwitch lang={lang} paths={paths} variant="single" class="mobile-only" />
       <button class="burger mobile-only" type="button" aria-haspopup="dialog" aria-controls="mobile-menu" aria-expanded="false" data-menu-open>
@@ -63,7 +66,7 @@ const hasLogo = brandLogoExists();
 
 <dialog id="mobile-menu" class="menu" data-theme="dark" aria-label={t.a11y.mainNav}>
   <div class="menu__top">
-    <span class="wordmark" aria-hidden="true">{t.team.wordmarkA} <strong>{t.team.wordmarkB}</strong></span>
+    <span class="wordmark" aria-hidden="true"><strong>{t.team.wordmarkLead}</strong> {t.team.wordmarkA} <strong>{t.team.wordmarkB}</strong></span>
     <button class="burger burger--close" type="button" data-menu-close>
       <Icon name="close" />
       <span class="visually-hidden">{t.a11y.closeMenu}</span>
@@ -77,7 +80,11 @@ const hasLogo = brandLogoExists();
   </nav>
   <div class="menu__foot">
     <a class="btn btn--primary" href={ctaHref} data-menu-link>{t.nav.cta}</a>
-    <Social lang={lang} size={26} />
+    <ul class="menu__social" role="list">
+      <li><a href={t.team.social.instagram} target="_blank" rel="noopener me">{t.a11y.socialInstagram}<span class="visually-hidden"> {t.a11y.newTab}</span></a></li>
+      <li><a href={t.team.social.facebook} target="_blank" rel="noopener me">{t.a11y.socialFacebook}<span class="visually-hidden"> {t.a11y.newTab}</span></a></li>
+      <li><a href={t.team.social.linkedin} target="_blank" rel="noopener me">{t.a11y.socialLinkedin}<span class="visually-hidden"> {t.a11y.newTab}</span></a></li>
+    </ul>
   </div>
 </dialog>
 
@@ -94,7 +101,7 @@ const hasLogo = brandLogoExists();
   menu.addEventListener('close', () => opener.setAttribute('aria-expanded', 'false'));
   menu.querySelector('[data-menu-close]')!.addEventListener('click', () => menu.close());
   menu.querySelectorAll('[data-menu-link]').forEach((a) => a.addEventListener('click', () => menu.close()));
-  matchMedia('(min-width: 1180px)').addEventListener('change', (e) => e.matches && menu.open && menu.close());
+  matchMedia('(min-width: 1024px)').addEventListener('change', (e) => e.matches && menu.open && menu.close());
 
   // Keep the language links pointing at the section currently on screen, on the same page.
   const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-lang-link]')];
@@ -133,15 +140,22 @@ const hasLogo = brandLogoExists();
     align-items: center;
     gap: var(--s-4);
     height: var(--header-h);
-    padding: 0 8px 0 28px;
+    padding: 0 12px 0 16px;
     border-radius: var(--r-feature);
     background: var(--header-glass);
     -webkit-backdrop-filter: blur(16px) saturate(1.4);
     backdrop-filter: blur(16px) saturate(1.4);
     color: #000;
   }
+  /* Inside the glass header the focus ring is plum: violet on lilac glass is too faint. */
+  .bar :focus-visible {
+    outline-color: #2b0020;
+  }
   .wordmark {
     flex: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
     color: inherit;
     text-decoration: none;
     font-size: 15px;
@@ -152,6 +166,32 @@ const hasLogo = brandLogoExists();
   .wordmark strong {
     font-weight: 700;
   }
+  .logo {
+    flex: none;
+    width: 40px;
+    height: 40px;
+  }
+  .logo--ph {
+    display: grid;
+    place-items: center;
+    border: 1px dashed #4f4f4f;
+    border-radius: var(--r-pill);
+    font-size: 9px;
+    letter-spacing: 0.04em;
+    color: #2b0020;
+  }
+  .icon-link {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--r-pill);
+    color: #000;
+  }
+  .icon-link:hover {
+    background: rgba(255, 102, 237, 0.25);
+    color: #000;
+  }
   .nav {
     margin-inline: auto;
   }
@@ -161,7 +201,8 @@ const hasLogo = brandLogoExists();
   }
   .nav a {
     display: block;
-    padding: 10px 14px;
+    padding: 10px 12px;
+    font-size: 15px;
     border-radius: var(--r-pill);
     text-decoration: none;
   }
@@ -170,8 +211,9 @@ const hasLogo = brandLogoExists();
     background: rgba(255, 102, 237, 0.25);
   }
   .nav a[aria-current='page'] {
+    font-weight: 700;
     text-decoration: underline;
-    text-decoration-color: var(--accent-strong);
+    text-decoration-color: var(--accent);
     text-decoration-thickness: 2px;
     text-underline-offset: 6px;
   }
@@ -182,30 +224,46 @@ const hasLogo = brandLogoExists();
     margin-left: auto;
   }
   .cta {
-    min-height: 48px;
-    padding-inline: 22px;
+    min-height: 44px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 400;
     white-space: nowrap;
   }
+  /* Pink three-line hamburger (the site's only other icon besides Instagram). */
   .burger {
     place-items: center;
-    width: 48px;
-    height: 48px;
+    width: 44px;
+    height: 44px;
     border: 0;
     border-radius: var(--r-pill);
-    background: var(--accent);
-    color: var(--ink-on-accent);
+    background: transparent;
+    color: #000;
     cursor: pointer;
+  }
+  .burger :global(svg) {
+    color: var(--accent);
+    stroke-width: 2.4;
+  }
+  .menu .burger :global(svg) {
+    color: var(--ink);
   }
   .end :global(.mobile-only) {
     display: none;
   }
 
-  @media (max-width: 1439px) {
-    .end :global(.header-social) {
-      display: none;
+  /* Mid widths: the logo alone; the name stays in the link for screen readers. */
+  @media (min-width: 1024px) and (max-width: 1279px) {
+    .wordmark__text {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
     }
   }
-  @media (max-width: 1179px) {
+  @media (max-width: 1023px) {
     .nav,
     .end :global(.desk-only) {
       display: none;
@@ -214,14 +272,20 @@ const hasLogo = brandLogoExists();
       display: grid;
     }
     .bar {
-      padding-left: 20px;
+      padding: 0 6px 0 12px;
     }
   }
-  @media (max-width: 400px) {
+  @media (max-width: 479px) {
     .wordmark {
-      font-size: 13px;
+      flex: 0 1 auto;
+      min-width: 0;
+      gap: 8px;
+      font-size: 11px;
       white-space: normal;
-      max-width: 170px;
+    }
+    .logo {
+      width: 32px;
+      height: 32px;
     }
   }
 
@@ -269,6 +333,15 @@ const hasLogo = brandLogoExists();
   .menu__list a:hover,
   .menu__list a[aria-current='page'] {
     color: var(--accent);
+  }
+  .menu__social {
+    display: flex;
+    gap: var(--s-4);
+  }
+  .menu__social a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
   }
   .menu__foot {
     margin-top: auto;

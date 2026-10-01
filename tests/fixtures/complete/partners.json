@@ -1,10 +1,10 @@
 [
   {"name":"Mat Atom Deweloper","url":"https://www.atomdeweloper.pl/","tier":"title","logo":"mat-atom-deweloper.svg","seasons":[2026,2027]},
-  {"name":"Miasto Wrocław","url":"http://bip.um.wroc.pl/","tier":"institutional","logo":"miasto-wroclaw.svg","seasons":[2026,2027],"description":{"pl":"Wspiera kobiecy sport w naszym mieście.","en":"Supporting women's sport in our home city."}},
+  {"name":"Miasto Wrocław","url":"http://bip.um.wroc.pl/","tier":"institutional","logo":"miasto-wroclaw.svg","label":{"pl":"Miasto Wrocław","en":"City of Wrocław"},"description":{"pl":"Wspiera kobiecy sport w naszym mieście.","en":"Supporting women's sport in our home city."},"seasons":[2026,2027]},
   {"name":"Budus","url":"https://budus.pl/","tier":"main","logo":"budus.svg","seasons":[2026,2027]},
   {"name":"Accent","url":"https://velo.pl/marki/accent","tier":"main","logo":"accent.svg","seasons":[2026,2027]},
   {"name":"No Limited","url":"https://no-limited.pl/","tier":"main","logo":"no-limited.svg","seasons":[2026,2027]},
-  {"name":"Klub Pro — Ministerstwo Sportu i Turystyki / Fundacja Lotto","url":"https://www.fundacjalotto.pl/klub-pro/","tier":"institutional","logo":"klub-pro.svg","seasons":[2026,2027],"description":{"pl":"Wsparcie Ministerstwa Sportu i Turystyki oraz Fundacji Lotto dla klubów szkolących młodzież.","en":"Ministry of Sport and Tourism / Fundacja Lotto support for clubs that develop young athletes."}},
+  {"name":"Klub Pro — Ministerstwo Sportu i Turystyki / Fundacja Lotto","url":"https://www.fundacjalotto.pl/klub-pro/","tier":"institutional","logo":"klub-pro.svg","label":{"pl":"Klub Pro · MSiT","en":"Club Pro · Ministry of Sport"},"description":{"pl":"Wsparcie Ministerstwa Sportu i Turystyki oraz Fundacji Lotto dla klubów szkolących młodzież.","en":"Ministry of Sport and Tourism / Fundacja Lotto support for clubs that develop young athletes."},"seasons":[2026,2027]},
   {"name":"Finish Line","url":"https://velo.pl/marki/finish-line","tier":"technical","logo":"finish-line.svg","seasons":[2026,2027]},
   {"name":"Sidi","url":"https://velo.pl/marki/sidi","tier":"technical","logo":"sidi.svg","seasons":[2026,2027]},
   {"name":"MET Helmets","url":"https://velo.pl/marki/met","tier":"technical","logo":"met-helmets.svg","seasons":[2026,2027]},

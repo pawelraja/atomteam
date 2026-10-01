@@ -1,9 +1,10 @@
 ---
 // The partnership call to action (plum): "Ride with us in 2027." with a mailto button, the
-// partner deck ("coming soon" until partnerDeckUrl is set) and the named partnership contact.
+// partner deck ("coming soon" until partnerDeckUrl is set) and the partnership contact card.
 import { anchor } from '../lib/anchors';
 import { getData } from '../lib/data';
 import { copy, fill, type Lang } from '../lib/i18n';
+import { isContactComplete } from '../lib/showcase';
 import ContactCard from './ContactCard.astro';
 import Icon from './Icon.astro';
 
@@ -16,92 +17,97 @@ const t = copy(lang);
 const tc = t.cta;
 const season = site.currentSeason;
 const contact = site.partnerContact;
-const email = contact?.email ?? t.team.email;
+const email = (isContactComplete(contact) && contact?.email) || t.team.email;
 const mailto = `mailto:${email}?subject=${encodeURIComponent(fill(tc.mailSubject, { season }))}`;
 ---
 
-<section class="section cta" data-theme="dark" id={anchor(lang, 'cta')} data-section="cta" aria-labelledby="cta-title">
+<section class="cta" data-theme="dark" id={anchor(lang, 'cta')} data-section="cta" aria-labelledby="cta-title">
   <div class="container cta__grid">
     <div class="cta__main">
-      <p class="eyebrow">{fill(tc.eyebrow, { season }, lang)}</p>
       <h2 id="cta-title" class="cta__title">{fill(tc.title, { season }, lang)}</h2>
       <p class="cta__lead">{tc.lead}</p>
-      <div class="btn-row">
-        <a class="btn btn--primary" href={mailto}>
-          <Icon name="mail" size={20} />
-          {tc.book}
-        </a>
+      <div class="cta__buttons">
+        <a class="btn btn--primary" href={mailto}>{tc.book}</a>
         {
           site.partnerDeckUrl ? (
             <a class="btn btn--secondary cta__deck" href={site.partnerDeckUrl} download>
-              <Icon name="download" size={20} />
+              <Icon name="download" size={18} />
               {tc.deck}
             </a>
           ) : (
-            <span class="btn cta__deck cta__deck--soon" aria-disabled="true">
-              {tc.deck}
-              <span class="cta__soon">· {tc.deckSoon}</span>
+            <span class="btn cta__deck cta__deck--soon">
+              {tc.deck} · {tc.deckSoon}
             </span>
           )
         }
       </div>
     </div>
-    <ContactCard lang={lang} contact={contact} label={tc.contactLabel} />
+    <ContactCard lang={lang} contact={contact} label={tc.contactLabel} class="cta__card" />
   </div>
 </section>
 
 <style>
+  .cta {
+    padding-block: 104px;
+    background: var(--surface);
+    color: var(--ink);
+  }
   .cta__grid {
     display: grid;
-    grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
-    gap: var(--s-6);
-    align-items: end;
-  }
-  .cta__grid:not(:has(.contact-card)) {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--grid-gap);
+    align-items: center;
   }
   .cta__main {
-    display: grid;
-    justify-items: start;
-    gap: var(--s-4);
+    grid-column: span 7;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
   }
-  /* Display size (72px): pink is fine on plum at 7.5:1. */
+  .cta__grid :global(.cta__card) {
+    grid-column: 9 / span 4;
+  }
+  /* Display size (72px): pink on plum is 7.5:1. */
   .cta__title {
     font-size: var(--fs-display);
-    line-height: 1.02;
-    letter-spacing: var(--ls-chapter);
+    line-height: 1;
+    letter-spacing: var(--ls-hero);
     font-weight: 400;
     color: var(--accent);
-    max-width: 16ch;
     text-wrap: balance;
   }
   .cta__lead {
-    font-size: var(--fs-body-lg);
-    color: var(--ink-muted);
-    max-width: 56ch;
+    max-width: 560px;
+    font-size: 18px;
+    line-height: 1.45;
+  }
+  .cta__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 8px;
   }
   .cta__deck {
     color: var(--ink);
   }
   .cta__deck--soon {
-    border-style: dashed;
-    border-color: var(--ink-muted);
+    border: 1px dashed #908a8e;
     color: var(--ink-muted);
+    font-weight: 400;
     cursor: default;
   }
-  .cta__soon {
-    font-weight: 400;
-  }
-  @media (max-width: 899px) {
-    .cta__grid {
-      grid-template-columns: 1fr;
+  @media (max-width: 1023px) {
+    .cta__main,
+    .cta__grid :global(.cta__card) {
+      grid-column: 1 / -1;
     }
   }
-  @media (max-width: 479px) {
-    .btn-row {
+  @media (max-width: 599px) {
+    .cta {
+      padding-block: 64px;
+    }
+    .cta__buttons {
       flex-direction: column;
-      align-self: stretch;
-      width: 100%;
     }
   }
 </style>

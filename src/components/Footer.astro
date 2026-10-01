@@ -1,5 +1,5 @@
 ---
-// Plum footer on every page: contact + newsletter, team boilerplate, sitemap, language, legal.
+// Plum footer on every page: newsletter, team boilerplate, sitemap columns, language, legal.
 import { anchor } from '../lib/anchors';
 import { getData } from '../lib/data';
 import { copy, fill, otherLang, type Lang } from '../lib/i18n';
@@ -15,30 +15,33 @@ interface Props {
 const { lang, paths } = Astro.props;
 const { site, today } = getData();
 const t = copy(lang);
+const tf = t.footer;
 const other = otherLang(lang);
 const year = today.slice(0, 4);
 const home = route(lang, 'home');
+const onHome = (key: Parameters<typeof anchor>[1]) => `${home}#${anchor(lang, key)}`;
 
 const columns = [
   {
-    title: t.footer.columns.team,
+    title: tf.columns.team,
     links: [
-      { href: route(lang, 'team'), label: t.nav.team },
-      { href: route(lang, 'calendar'), label: t.nav.calendar },
+      { href: route(lang, 'team'), label: tf.links.riders },
+      { href: onHome('approach'), label: tf.links.approach },
       // Only when the results chapter is on the home page.
-      ...(resultsView() ? [{ href: `${home}#${anchor(lang, 'results')}`, label: t.footer.results }] : []),
+      ...(resultsView() ? [{ href: onHome('results'), label: tf.links.results }] : []),
+      { href: route(lang, 'calendar'), label: tf.links.calendar },
     ],
   },
   {
-    title: t.footer.columns.collab,
+    title: tf.columns.collab,
     links: [
-      { href: route(lang, 'partners'), label: t.nav.partners },
-      { href: `${route(lang, 'partners')}#${anchor(lang, 'cta')}`, label: t.footer.partnerWithUs },
-      { href: route(lang, 'media'), label: t.nav.media },
+      { href: route(lang, 'partners'), label: tf.links.partners },
+      { href: route(lang, 'media'), label: tf.links.media },
+      { href: onHome('approach'), label: tf.links.clubPro },
     ],
   },
   {
-    title: t.footer.columns.follow,
+    title: tf.columns.follow,
     external: true,
     links: [
       { href: t.team.social.instagram, label: t.a11y.socialInstagram },
@@ -49,24 +52,26 @@ const columns = [
 ];
 ---
 
-<footer class="footer" data-theme="dark" id={anchor(lang, 'contact')} data-section="contact" aria-labelledby="footer-title">
-  <div class="container">
-    <div class="footer__top">
-      <div class="footer__about">
-        <h2 id="footer-title" class="chapter">{t.contact.title}</h2>
-        <a class="footer__email" href={`mailto:${t.team.email}`}>{t.team.email}</a>
-        <p class="footer__boilerplate">
-          <strong>{t.team.name}.</strong> {fill(t.footer.boilerplate, { founded: site.foundedYear }, lang)}
-        </p>
+<footer class="footer" data-theme="dark">
+  <div class="container footer__inner">
+    <div class="footer__newsletter">
+      <div class="footer__intro">
+        <h2 id="newsletter-title" class="footer__title">{fill(t.newsletter.title, { season: site.currentSeason }, lang)}</h2>
+        <p>{t.newsletter.lead}</p>
       </div>
-      <NewsletterForm lang={lang} />
+      <NewsletterForm lang={lang} labelledby="newsletter-title" />
     </div>
 
-    <nav class="footer__map" aria-labelledby="footer-title">
+    <div class="footer__map">
+      <div class="footer__about">
+        <p class="footer__wordmark"><strong>{t.team.wordmarkLead}</strong> {t.team.wordmarkA} <strong>{t.team.wordmarkB}</strong></p>
+        <p>{fill(tf.boilerplate, { founded: site.foundedYear }, lang)}</p>
+        <a class="footer__email" href={`mailto:${t.team.email}`}>{t.team.email}</a>
+      </div>
       {
-        columns.map((c) => (
-          <div>
-            <h3 class="eyebrow">{c.title}</h3>
+        columns.map((c, i) => (
+          <nav class="footer__col" aria-labelledby={`footer-col-${i}`}>
+            <h3 class="footer__col-title" id={`footer-col-${i}`}>{c.title}</h3>
             <ul role="list">
               {c.links.map((l) => (
                 <li>
@@ -81,20 +86,20 @@ const columns = [
                 </li>
               ))}
             </ul>
-          </div>
+          </nav>
         ))
       }
-    </nav>
+    </div>
 
     <div class="footer__bottom">
-      <p>{fill(t.footer.copyright, { year, team: t.team.name })}</p>
-      <ul class="footer__links" role="list">
-        <li><a href={route(lang, 'privacy')}>{t.footer.privacy}</a></li>
+      <p>{fill(tf.copyright, { year, team: t.team.name })}</p>
+      <ul role="list" class="footer__legal">
         <li>
           <a href={paths[other]} hreflang={other} lang={other} data-lang-link={other} data-lang-base={paths[other]}>
             {t.language.otherVersion}
           </a>
         </li>
+        <li><a href={route(lang, 'privacy')}>{tf.privacy}</a></li>
       </ul>
     </div>
   </div>
@@ -102,86 +107,131 @@ const columns = [
 
 <style>
   .footer {
+    border-top: 1px solid var(--surface-alt);
+    padding: 96px 0 40px;
     background: var(--surface);
-    color: var(--ink);
-    padding-block: var(--section-y) var(--s-5);
-  }
-  .footer__top {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: var(--s-6);
-    align-items: start;
-  }
-  .footer__about {
-    display: grid;
-    gap: var(--s-4);
-    justify-items: start;
-  }
-  .footer__email {
-    font-size: clamp(22px, 2.6vw, 32px);
-    line-height: 1.2;
-    word-break: break-word;
-  }
-  .footer__boilerplate {
-    max-width: 44ch;
     color: var(--ink-muted);
   }
-  .footer__boilerplate strong {
+  .footer__inner {
+    display: grid;
+    gap: 72px;
+  }
+  .footer__newsletter {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--grid-gap);
+    align-items: end;
+  }
+  .footer__intro {
+    grid-column: span 6;
+    display: grid;
+    gap: 12px;
+    font-size: 15px;
+  }
+  .footer__newsletter :global(.newsletter) {
+    grid-column: 8 / span 5;
+  }
+  .footer__title {
+    font-size: var(--fs-h2);
+    line-height: var(--lh-h2);
     color: var(--ink);
   }
   .footer__map {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--s-5);
-    margin-top: var(--s-6);
-    padding-top: var(--s-5);
-    border-top: 1px solid var(--line);
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--grid-gap);
+    padding-top: 40px;
+    border-top: 1px solid var(--surface-alt);
   }
-  .footer__map ul {
+  .footer__about {
+    grid-column: span 4;
     display: grid;
-    gap: 2px;
-    margin-top: var(--s-3);
+    align-content: start;
+    gap: 14px;
+    font-size: 14px;
   }
-  .footer__map a {
+  .footer__wordmark {
+    font-size: 15px;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+  }
+  .footer__email {
+    font-size: 16px;
+    color: var(--ink);
+  }
+  .footer__col {
+    grid-column: span 2;
+  }
+  .footer__col:first-of-type {
+    grid-column: 6 / span 2;
+  }
+  .footer__col-title {
+    margin-bottom: 6px;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: var(--ls-eyebrow);
+    text-transform: uppercase;
+    color: #908a8e;
+  }
+  .footer__col ul {
+    display: grid;
+  }
+  .footer__col a {
     display: inline-flex;
     align-items: center;
-    min-height: 40px;
+    min-height: 36px;
+    font-size: 14px;
+    color: var(--ink);
     text-decoration: none;
   }
-  .footer__map a:hover {
+  .footer__col a:hover {
     color: var(--accent);
     text-decoration: underline;
   }
   .footer__bottom {
     display: flex;
-    flex-wrap: wrap;
     justify-content: space-between;
-    gap: var(--s-3);
-    margin-top: var(--s-5);
-    padding-top: var(--s-4);
-    border-top: 1px solid var(--line);
-    color: var(--ink-muted);
-    font-size: var(--fs-body-sm);
-  }
-  .footer__links {
-    display: flex;
+    align-items: center;
     flex-wrap: wrap;
-    gap: var(--s-4);
+    gap: 8px 24px;
+    font-size: 13px;
   }
-  .footer__links a {
+  .footer__legal {
+    display: flex;
+    gap: 24px;
+  }
+  .footer__legal a {
     display: inline-flex;
     align-items: center;
-    min-height: 44px;
+    min-height: 36px;
     color: var(--ink);
   }
-  @media (max-width: 899px) {
-    .footer__top {
-      grid-template-columns: 1fr;
+  @media (max-width: 1023px) {
+    .footer__intro,
+    .footer__newsletter :global(.newsletter) {
+      grid-column: 1 / -1;
+    }
+    .footer__about {
+      grid-column: 1 / -1;
+    }
+    .footer__col,
+    .footer__col:first-of-type {
+      grid-column: span 4;
     }
   }
-  @media (max-width: 559px) {
-    .footer__map {
-      grid-template-columns: 1fr 1fr;
+  @media (max-width: 599px) {
+    .footer {
+      padding: 56px 0 32px;
+    }
+    .footer__inner {
+      gap: 48px;
+    }
+    .footer__col,
+    .footer__col:first-of-type {
+      grid-column: span 6;
+    }
+    .footer__title {
+      font-size: 30px;
     }
   }
 </style>

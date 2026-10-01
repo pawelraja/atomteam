@@ -23,10 +23,9 @@ export type AnchorKey =
   | 'files'
   | 'photos'
   | 'roster'
-  | 'press'
   // rider page
   | 'profile'
-  // footer (every page)
+  // media page contact section
   | 'contact'
   | 'newsletter';
 
@@ -49,7 +48,6 @@ export const ANCHORS: Record<Lang, Record<AnchorKey, string>> = {
     files: 'pliki',
     photos: 'zdjecia',
     roster: 'sklad',
-    press: 'kontakt-prasowy',
     profile: 'profil',
     contact: 'kontakt',
     newsletter: 'newsletter',
@@ -72,7 +70,6 @@ export const ANCHORS: Record<Lang, Record<AnchorKey, string>> = {
     files: 'files',
     photos: 'photos',
     roster: 'roster',
-    press: 'press-contact',
     profile: 'profile',
     contact: 'contact',
     newsletter: 'newsletter',

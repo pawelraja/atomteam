@@ -1,6 +1,6 @@
 ---
-// Four full-bleed race photos at mixed widths (the first four entries of gallery.json), with
-// race, place and photographer credit, followed by the #allezatomówki ticker.
+// Four race photos at mixed widths (the first four entries of gallery.json), with race, place
+// and photographer credit, followed by the #allezatomówki ticker.
 import { anchor } from '../lib/anchors';
 import { getData } from '../lib/data';
 import { copy, fill, pick, type Lang } from '../lib/i18n';
@@ -14,8 +14,7 @@ const { lang } = Astro.props;
 const { gallery } = getData();
 const t = copy(lang);
 const photos = gallery.slice(0, 4);
-// Mixed widths: wide · narrow · narrow · wide (as grid fractions), so the strip never looks like a grid of equals.
-const spans = ['wide', 'narrow', 'narrow', 'wide'];
+const sizes = ['(min-width: 900px) 38vw, 100vw', '(min-width: 900px) 19vw, 50vw', '(min-width: 900px) 26vw, 50vw', '(min-width: 900px) 19vw, 100vw'];
 ---
 
 <section class="strip" id={anchor(lang, 'gallery')} data-section="gallery" aria-labelledby="strip-title">
@@ -23,18 +22,9 @@ const spans = ['wide', 'narrow', 'narrow', 'wide'];
   <ul class="strip__row" role="list">
     {
       photos.map((p, i) => (
-        <li class:list={['shot', `shot--${spans[i]}`]}>
+        <li class:list={['shot', `shot--${i + 1}`]}>
           <figure>
-            <Photo
-              lang={lang}
-              dir="photos"
-              file={p.photo}
-              alt={pick(lang, p.alt)}
-              aspect={spans[i] === 'wide' ? '4:3' : '3:4'}
-              sizes={spans[i] === 'wide' ? '(min-width: 900px) 32vw, 50vw' : '(min-width: 900px) 18vw, 50vw'}
-              widths={[360, 540, 720, 1080]}
-              class="shot__img"
-            />
+            <Photo lang={lang} dir="photos" file={p.photo} alt={pick(lang, p.alt)} aspect={i === 0 ? '4:3' : '3:4'} sizes={sizes[i]} widths={[360, 540, 720, 1080]} class="shot__img" />
             <figcaption class="shot__caption">
               {pick(lang, p.race)} · {pick(lang, p.place)} · {fill(t.gallery.credit, { credit: p.credit })}
             </figcaption>
@@ -48,16 +38,26 @@ const spans = ['wide', 'narrow', 'narrow', 'wide'];
 
 <style>
   .strip {
-    background: #2b0020;
+    padding-bottom: 120px;
+    overflow: hidden;
   }
   .strip__row {
     display: grid;
-    grid-template-columns: 16fr 9fr 9fr 16fr;
-    gap: 4px;
+    grid-template-columns: 2fr 1fr 1.4fr 1fr;
+    gap: 16px;
+    padding: 0 16px;
+    height: 420px;
+    margin-bottom: 56px;
   }
   .shot figure {
     position: relative;
-    height: clamp(280px, 30vw, 520px);
+    height: 100%;
+    overflow: hidden;
+    border-radius: var(--r-card);
+    background: var(--surface-muted);
+  }
+  .shot--1 figure {
+    border-radius: var(--r-feature);
   }
   .shot :global(.shot__img) {
     height: 100%;
@@ -71,17 +71,26 @@ const spans = ['wide', 'narrow', 'narrow', 'wide'];
     left: 0;
     right: 0;
     bottom: 0;
-    padding: 24px 16px 10px;
-    background: linear-gradient(to top, rgba(43, 0, 32, 0.9), rgba(43, 0, 32, 0));
+    padding: 28px 20px 16px;
+    background: linear-gradient(to top, rgba(43, 0, 32, 0.85), rgba(43, 0, 32, 0));
     color: #f1eef3;
-    font-size: var(--fs-caption);
+    font-size: 12px;
   }
   @media (max-width: 899px) {
+    .strip {
+      padding-bottom: 64px;
+    }
     .strip__row {
       grid-template-columns: 1fr 1fr;
+      height: auto;
+      margin-bottom: 32px;
     }
     .shot figure {
       height: clamp(200px, 56vw, 360px);
+    }
+    .shot--1,
+    .shot--4 {
+      grid-column: 1 / -1;
     }
   }
 </style>

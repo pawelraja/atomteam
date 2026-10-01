@@ -1,6 +1,7 @@
 ---
-// #allezatomówki repeating in h2 size on a plum strip (pink is 7.5:1 there). A pause button
-// stops it; prefers-reduced-motion stops it entirely and hides the button.
+// #allezatomówki repeating in h2 size. Decorative (aria-hidden; the hashtag is also in the page
+// text for screen readers), so pink on white is allowed here. A pause button stops it;
+// prefers-reduced-motion stops it entirely and hides the button.
 import { copy, type Lang } from '../lib/i18n';
 import Icon from './Icon.astro';
 
@@ -12,11 +13,11 @@ const t = copy(lang);
 const repeats = Array.from({ length: 8 });
 ---
 
-<div class="ticker" data-ticker data-theme="dark">
+<div class="ticker" data-ticker>
   <p class="visually-hidden">{t.team.hashtag}</p>
   <div class="ticker__track" aria-hidden="true">
-    {repeats.map(() => <span class="ticker__item">{t.team.hashtag}</span>)}
-    {repeats.map(() => <span class="ticker__item">{t.team.hashtag}</span>)}
+    {repeats.map(() => <span class="ticker__item" data-text={t.team.hashtag} />)}
+    {repeats.map(() => <span class="ticker__item" data-text={t.team.hashtag} />)}
   </div>
   <button class="ticker__toggle" type="button" aria-pressed="false" data-ticker-toggle>
     <span class="ticker__icon-pause"><Icon name="pause" size={18} /></span>
@@ -40,8 +41,7 @@ const repeats = Array.from({ length: 8 });
   .ticker {
     position: relative;
     overflow: hidden;
-    padding-block: var(--s-4);
-    background: var(--surface);
+    padding-block: var(--s-3);
   }
   .ticker__track {
     display: flex;
@@ -50,6 +50,10 @@ const repeats = Array.from({ length: 8 });
   }
   .ticker.is-paused .ticker__track {
     animation-play-state: paused;
+  }
+  /* Decorative repeat drawn with CSS content: the hashtag itself is in the text above. */
+  .ticker__item::before {
+    content: attr(data-text);
   }
   .ticker__item {
     padding-right: 0.8em;
@@ -80,10 +84,10 @@ const repeats = Array.from({ length: 8 });
     place-items: center;
     width: 44px;
     height: 44px;
-    border: 1px solid var(--accent);
+    border: 1px solid var(--accent-strong);
     border-radius: var(--r-pill);
     background: var(--surface);
-    color: var(--ink);
+    color: var(--accent-strong);
     cursor: pointer;
   }
   .ticker__icon-play,

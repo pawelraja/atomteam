@@ -2,29 +2,45 @@
 
 The team website for the 2027 season. It's bilingual: **Polish at `/`** and **English at `/en/`**.
 
-All content lives in data files. Updating the roster, race dates, partners or photos never needs a code change: edit a file, rebuild, publish.
+All content lives in data files. Updating the roster, race dates, results, partners or photos never needs a code change: edit a file, rebuild, publish.
 
-- [Everyday editing](#everyday-editing): what to change, where
-- [Photos from Google Drive](#photos-from-google-drive) · [Publishing (Vercel)](#publishing-vercel)
+- [Pages](#pages) · [Everyday editing](#everyday-editing): what to change, where
 - [The season switches in `site.json`](#the-season-switches-in-sitejson)
-- [Race calendar](#race-calendar) · [Partners](#partners) · [Riders and staff](#riders-and-staff) · [Season highlights](#season-highlights) · [Photos](#photos) · [Texts](#texts-both-languages)
+- [Race calendar](#race-calendar) · [Results](#results) · [Partners](#partners) · [Riders and staff](#riders-and-staff) · [Media centre](#media-centre) · [Photos](#photos) · [Texts](#texts-both-languages)
+- [Photos from Google Drive](#photos-from-google-drive) · [Publishing (Vercel)](#publishing-vercel)
 - [`CONTENT-CHECKLIST.md`](CONTENT-CHECKLIST.md): everything the team still has to supply or confirm
 - [For developers](#for-developers)
 
+The approved brief and designs are in the repository too: `docs/BUILD_PROMPT.md` (the full spec), `docs/design/` (the mockups), `design-system/` (brand tokens) and `data/` (the original seed package, including the results workbook `MADW_Results_2026.xlsx`). `CLAUDE.md` is the short project memory for Claude Code.
+
 ---
+
+## Pages
+
+| Polish | English | What's on it |
+|---|---|---|
+| `/` | `/en/` | Home: hero, numbers, approach, results, team, calendar teaser, "your brand in the peloton", partners, partnership band, media teaser, photos |
+| `/zespol/` | `/en/team/` | All riders and staff, and the U19 → U23 → Elite pathway |
+| `/zespol/<name>/` | `/en/team/<name>/` | One profile per rider: facts, bio, portrait download, results |
+| `/kalendarz/` | `/en/calendar/` | Next race, full calendar with filters, archive of past seasons, `.ics` subscription |
+| `/partnerzy/` | `/en/partners/` | Partners by tier, jersey placement diagram, partnership contact |
+| `/media/` | `/en/media/` | Media centre: facts, boilerplate, downloads, photo library, roster, press contact |
+
+The **status bar** above the header is the only place on the site with seasonal news. Everything else is either evergreen or counted from data.
 
 ## Everyday editing
 
 | I want to… | Edit this file |
 |---|---|
-| Switch the site between pre-season, racing and off-season | `src/data/site.json` → `phase` |
+| Change the line in the status bar | `src/data/site.json` → `statusLine`, `statusLink` |
 | Add or confirm a race | `src/data/calendar/2027.json` |
-| Add a result to last season | `src/data/calendar/2026.json` → `result` |
-| Announce the roster, add a new signing | `src/data/riders.json` |
+| Add results | `src/data/results/2027.json` (exported from the results workbook) |
+| Announce the roster, add a new signing | `src/data/riders.json`, then `rosterConfirmed` in `site.json` |
 | Change staff | `src/data/staff.json` |
 | Announce 2027 partners | `src/data/partners.json`, then `partnersConfirmed` in `site.json` |
-| Add or approve a highlight | `src/data/highlights-2026.json` |
-| Change photo-story captions | `src/data/gallery.json` |
+| Add the partner deck | Put the PDF in Drive `partners/`, then `partnerDeckUrl` in `site.json` |
+| Name the partnership or press contact | `src/data/site.json` → `partnerContact`, `pressContact` |
+| Publish a download for journalists | Drive `media-files/`, then `"status": "ready"` in `src/data/media.json` |
 | Add a photo or logo | Upload it to the shared Drive folder "MADW Website", named as listed in `src/assets/README.md` |
 | Change any wording on the page | `src/content/copy.pl.json` **and** `src/content/copy.en.json` |
 
@@ -34,7 +50,7 @@ All content lives in data files. Updating the roster, race dates, partners or ph
 - Dates are written `"YYYY-MM-DD"`, for example `"2027-03-14"`.
 - Countries use three-letter codes in capitals: `POL`, `BEL`, `NED`, `CZE`, `SLO`, `SVK`, `CRO`, `GER`, `ITA`, `AUT`, `TUR`.
 - If something is wrong, the build **stops and says exactly where**, for example:
-  `Problem in src/data/calendar/2027.json: entry #12 ("Gracia"), field "start": must be a date written as YYYY-MM-DD`. Nothing broken ever reaches the live site.
+  `Problem in src/data/calendar/2027.json: entry #12 ("Gracia Orlová"), field "start": must be a date written as YYYY-MM-DD`. Nothing broken ever reaches the live site.
 
 ## The season switches in `site.json`
 
@@ -46,7 +62,12 @@ All content lives in data files. Updating the roster, race dates, partners or ph
   "rosterConfirmed": false,
   "calendarConfirmed": false,
   "partnersConfirmed": false,
-  "teamPresentation": null
+  "teamPresentation": null,
+  "statusLine": { "pl": "Sezon 2027 · Kalendarz wstępny online · Skład ogłosimy wkrótce", "en": "Season 2027 · Provisional calendar online · Roster announced soon" },
+  "statusLink": { "label": { "pl": "Partnerstwa na sezon 2027", "en": "2027 partnerships" }, "href": "partners" },
+  "partnerDeckUrl": null,
+  "partnerContact": { "name": null, "role": null, "phone": null, "email": null, "photo": null },
+  "pressContact": { "name": null, "role": null, "phone": null, "email": null, "photo": null, "responseTime": null }
 }
 ```
 
@@ -54,19 +75,23 @@ All content lives in data files. Updating the roster, race dates, partners or ph
 |---|---|
 | `currentSeason` | The season the site is about. "Season 12" is worked out from this and `foundedYear`, so never type it anywhere. |
 | `foundedYear` | 2016. Leave it alone. |
-| `phase` | **`"preseason"`** (autumn/winter): the hero points to the 2027 calendar, and the 2026 recap and partners come first. **`"racing"`**: the next race and the calendar lead. **`"offseason"`** (after the last race): the season recap leads. |
-| `rosterConfirmed` | `false`: the team section says "Roster announcement coming soon" and the strip at the top shows "U19 · U23 · Elite" instead of a rider count. `true`: the section reads "Team 2027." and the rider count appears. |
-| `calendarConfirmed` | `false`: a note above the 2027 calendar says it's provisional. `true`: the note disappears. Set this once most dates are fixed. |
-| `partnersConfirmed` | `false`: the partners section thanks the **2026** partners ("Thank you to our 2026 partners."). No one is presented as a 2027 partner. `true`: it shows partners with `2027` in their `seasons`, under "Our 2027 partners." |
-| `teamPresentation` | `null` means no banner. To show a countdown under the hero, set `{ "date": "2027-01-20", "place": "Wrocław, Hala Stulecia", "url": null }`. The banner disappears by itself the day after. `url` can link to tickets or a stream. |
+| `phase` | Which season the home page **looks back on**. `"preseason"` and `"racing"`: the numbers and results show the **previous** season (2026). `"offseason"` (after the last race): they show the season just finished, as soon as it has results. The page order itself never changes. |
+| `rosterConfirmed` | `false`: the team shows "We will announce the 2027 roster at the team presentation", and the pathway, the media fact sheet and the press roster keep using the complete 2026 roster. `true`: everything switches to riders with `2027` in `seasons`. |
+| `calendarConfirmed` | `false`: the calendar is labelled "provisional". `true`: the label disappears. Set it once most dates are fixed. |
+| `partnersConfirmed` | `false`: the partners are thanked as **2026** partners ("Thank you to our 2026 partners."). No one is presented as a 2027 partner. `true`: partners with `2027` in their `seasons` are shown under "Our 2027 partners." |
+| `teamPresentation` | `null` means no countdown. Set `{ "date": "2027-01-20", "place": "Wrocław, Hala Stulecia", "url": null }` and the status bar shows the presentation with "in 12 days" until the day itself, then goes back to the status line on its own. `url` can link to tickets or a stream. |
+| `statusLine` | The one line in the plum bar above the header, in both languages. The part before the first `·` is set in bold. Phones show the first two parts. `null` hides the bar. |
+| `statusLink` | The link at the right of the status bar. `href` is a page (`home`, `team`, `calendar`, `partners`, `media`) or a full address. `null` for no link. |
+| `partnerDeckUrl` | `null`: the "Partner deck PDF" button says "coming soon". Set it to the PDF's address (e.g. `"/partners/oferta-2027.pdf"`) and it becomes a download. |
+| `partnerContact`, `pressContact` | The named contact on the partnership band and in the media centre. Nothing is ever shown as a placeholder: until a **name** and an **e-mail or phone** are filled in, the card offers only `kontakt@atomteam.pl`. `role` is `{ "pl": "…", "en": "…" }`; `photo` is a file in `src/assets/riders/`; `responseTime` (press only) is e.g. `{ "pl": "w ciągu 1 dnia roboczego", "en": "within 1 working day" }`. |
 
-**Moving to a new season** (for example 2028): run `npm run draft-season -- 2027 2028` to create a draft calendar, add `2028` to returning riders, staff and partners, set `currentSeason` to 2028, `phase` to `"preseason"`, and the three `*Confirmed` flags back to `false`.
+**Moving to a new season** (for example 2028): run `npm run draft-season -- 2027 2028` to create a draft calendar, add `2028` to returning riders, staff and partners, set `currentSeason` to 2028, `phase` to `"preseason"`, the three `*Confirmed` flags back to `false`, and update `statusLine`.
 
 ## Race calendar
 
 One file per season: `src/data/calendar/2026.json` (archive) and `src/data/calendar/2027.json`. Each line is one race.
 
-**A race whose dates are not published yet ("TBC"):** the month only, no dates. The site shows it under that month with a "Dates TBC" chip. It never appears as the next race or in the calendar download.
+**A race whose dates are not published yet ("TBC"):** the month only, no dates. The site shows it under that month with a "date TBC" chip. It never appears as the next race or in the calendar download.
 
 ```json
 {"month":4,"name":"Ronde de Mouscron","location":"Mouscron","country":"BEL","discipline":"ROAD","class":"1.1","status":"tbc"}
@@ -84,17 +109,35 @@ One file per season: `src/data/calendar/2026.json` (archive) and `src/data/calen
 
 | Field | Meaning |
 |---|---|
+| `id` | The event id from the results workbook (`"E14"`). Results refer to it. In 2027, give a race its id when you add its first result. Each race's calendar ID also comes from it, so **don't change an id once results or subscribers use it**. Without `id`, the ID is made from the name and place. |
 | `name` | The official or Polish name, shown on the Polish page. |
-| `name_en` | *(optional)* English name for generic Polish names, e.g. `"Puchar Polski"` → `"Polish Cup"`. Official international names don't need one. |
+| `name_en` | *(optional)* English name for generic Polish names, e.g. `"Puchar Polski (szosa)"` → `"Polish Cup (road)"`. |
+| `short` | *(optional)* Short name for running text, e.g. `"Scheldeprijs"`. |
 | `location` / `location_en` | Town (or `null`). `location_en` only when the English spelling differs (`"Lublana"` / `"Ljubljana"`). |
 | `discipline` | `ROAD`, `TRACK`, `CX`, `TTT` or `MTB` (labels are translated automatically). |
 | `class` | UCI class (`"1.1"`, `"2.Pro"`, `"Nat."`, `"NCh."`, `"ECh."`) or `null`. |
+| `nationalChampionship` | *(optional)* `true` for national championships. Their podiums count as titles and medals. |
+| `onTeamCalendar` | *(optional)* `false` for races riders did outside the published calendar (with the national team, for example). They are not listed in the calendar, but their results count. They may have no date. |
 | `type` | *(optional)* `"training"` for camps and training days. They appear under the "Training" filter only. |
 | `result` | *(optional, archive)* e.g. `"Stage 2 · 3rd — M. Szczęsna"`. Shown under the race. |
-| `verify` | *(optional)* `true` means the class needs checking; the class badge stays hidden and the build lists the race. Remove the line once checked. |
-| `id` | *(optional)* Only needed when two races share the same name **and** place. Each race's calendar ID comes from its name and place, so **renaming a race after publishing** creates a new event in subscribers' calendars. If you must rename, first add `"id"` with the old ID (shown in the `.ics` file). |
+| `note` | *(optional)* An internal note, never shown. |
+| `verify` | *(optional)* `true` means the class needs checking; the class badge stays hidden and the build lists the race. |
 
 **Calendar downloads.** `/calendar-2027.ics` (the "Subscribe" button) contains **confirmed races only**. Each race keeps the same ID when its dates change, so subscribed phones and Google Calendars update the event instead of adding a duplicate.
+
+## Results
+
+`src/data/results/2026.json` holds the 481 sourced results of 2026, one row per rider per classification. It is exported from the team's master workbook `data/MADW_Results_2026.xlsx` (the "Results" sheet). Use `data/MADW_Results_2027_template.xlsx` for 2027, and save its export as `src/data/results/2027.json`.
+
+```json
+{"eventId":"E33","date":"2026-06-25","stage":"ITT","category":"U23","rider":"Maja Tracka","position":1,"status":"Classified","note":"Polish U23 time trial champion","source":"https://…","featured":true,"verify":true}
+```
+
+- `rider` must be written exactly as in `riders.json`, and `eventId` must exist in the same year's calendar. Otherwise the build stops and names the problem.
+- **The headline figures are counted, never typed.** National titles and national-championship medals follow the workbook's own rules: only Polish national championships count (`nationalChampionship: true`, held in Poland); a pairs, team time trial or team pursuit title counts **once**, however many riders share it; and the race days of the criterium final are not titles (the series classification is). For 2026 that gives **30 titles and 58 medals**.
+- `featured: true` puts a row in the "Selected results" table on the home page (the 8 rows chosen in the workbook). The table orders them by itself: UCI races, then European championships, then Polish races.
+- `verify: true` means the team hasn't signed the row off yet (the "Checked by team" column in the workbook). Every row carries its source link, so the rows are shown; the build lists how many are still unchecked. Sign them off in the workbook and export again.
+- Rider profile pages list each rider's top-10 places with the source of each.
 
 ## Partners
 
@@ -106,8 +149,9 @@ One file per season: `src/data/calendar/2026.json` (archive) and `src/data/calen
 
 - `tier`: `title`, `main`, `technical` or `institutional`. This sets the size and the group the partner appears in.
 - `seasons`: add `2027` when a partner renews; add a new line for a new partner. Nobody is shown as a 2027 partner until `partnersConfirmed` is `true` in `site.json`.
-- `logo`: the file name in `public/partners/`. Until the file exists, the name is shown in a neat placeholder box.
-- `description` *(optional, `{ "pl": "…", "en": "…" }`)*: the one-line explanation shown next to institutional partners.
+- `logo`: the file name in `public/partners/`. Until the file exists, the name is shown in plain type. On the home page, technical partners appear as one line of names until **all** their logos exist, then as a logo row.
+- `label` *(optional)*: a shorter display name in both languages, e.g. `{ "pl": "Klub Pro · MSiT", "en": "Club Pro · Ministry of Sport" }`.
+- `description` *(optional)*: the one-line explanation shown next to institutional partners on the partners page.
 
 > The 2026 tiers were inferred from the old site's layout: **please confirm them with the team manager.**
 
@@ -116,50 +160,60 @@ One file per season: `src/data/calendar/2026.json` (archive) and `src/data/calen
 `src/data/riders.json`:
 
 ```json
-{"name":"Eliza Rabażyńska","nat":"POL","squad":"continental","instagram":"elizaa_rabaa","photo":"eliza-rabazynska.jpg","seasons":[2026,2027]}
+{"name":"Eliza Rabażyńska","nat":"POL","squad":"continental","category":"U23","instagram":"elizaa_rabaa","photo":"eliza-rabazynska.jpg","resultsProfile":"https://cyclingflash.com/profile/eliza-rabazynska","seasons":[2026,2027]}
 ```
 
-- **Returning rider:** add `2027` to `seasons`.
-- **New signing:** add a line with `"seasons":[2027]` and `"new": true`. She gets a "New for 2027" pill.
-- **Junior moving up to U23/Elite:** change `"squad":"junior"` to `"continental"`.
-- The team section shows everyone with `2027` in `seasons`. If nobody has 2027 yet, it shows the 2026 roster as "Our 2026 riders."
-- `instagram` is the handle only (no `@`, no link), or `null`. `role` *(optional)* is `{ "pl": "Kapitanka", "en": "Captain" }`.
+- **Returning rider:** add `2027` to `seasons`. **New signing:** add a line with `"seasons":[2027]` and `"new": true` (she gets a "New for 2027" pill).
+- `category`: `"U19"`, `"U23"` or `"Elite"`. It drives the pathway counts and the numbers. **Check it every season**: juniors move up to U23, U23 riders to Elite.
+- `squad`: `"continental"` or `"junior"`.
+- `instagram` is the handle only (no `@`, no link), or `null`.
+- *(optional)* `bio`: `{ "pl": "…", "en": "…" }`, two or three sentences for her profile page. `role`: `{ "pl": "Kapitanka", "en": "Captain" }`. `resultsProfile`: link to her full results elsewhere. `slug`: the address of her profile, made from her name when left out.
+- Each rider gets a profile page at `/zespol/<name>/`.
 
-> The Instagram handles were copied from the old website: **please check each one.**
+`src/data/staff.json` works the same way. `role` is in both languages and uses feminine forms where they apply: `{"pl":"Dyrektorka sportowa","en":"Sport director"}`. Staff whose role includes "dyrektor"/"menedżer" are listed under "Management" in the media centre.
 
-`src/data/staff.json` works the same way. `role` is in both languages and uses feminine forms where they apply: `{"pl":"Dyrektorka sportowa","en":"Sport Director"}`.
+## Media centre
 
-## Season highlights
+`src/data/media.json` lists the downloads and the press photo library.
 
-`src/data/highlights-2026.json`: 3 to 6 cards in the "2026 in review" section. The title, text and photo description are in both languages. An entry with `"verify": true` is **hidden** until someone checks the wording and removes that line. The build lists every hidden entry. All three seeded entries currently need checking.
+```json
+{"id":"logos","name":{"pl":"Logotypy drużyny","en":"Team logos"},"description":{"pl":"…","en":"…"},"file":"madw-logotypy.zip","format":"ZIP · SVG, PNG","status":"soon"}
+```
 
-Above the cards, the numbers (races, race days, countries, UCI races) are **counted automatically** from the calendar, so they're always accurate.
+- `status: "soon"` shows a dashed "Coming soon" label, never a broken link. Set `"ready"` once the file is in `public/media/` (via Drive `media-files/`). The **build fails** if a `ready` file is missing, so a broken download can't go live. Sizes are measured automatically.
+- `file` can be one file, or `{ "pl": "…", "en": "…" }` for language versions (the team information PDF).
+- `photos`: each entry has `file` (in `src/assets/media/`), `category` (`race`, `track`, `portrait`, `team`), `caption` in both languages and `credit` (the photographer). Originals must be **at least 3000 px on the long side**; the build stops on a smaller file. Journalists download the original from `/media/foto/<file>`.
+- Rider portraits are downloadable from each profile and from the media roster (`/media/portrety/<file>`).
+- The boilerplate ("About the team") is in the copy files (`mediaPage.boilerplateText`). Its year and rider count are filled in from data.
 
 ## Photos
 
-Upload photos to the shared Google Drive folder (see [Photos from Google Drive](#photos-from-google-drive)). **`src/assets/README.md`** lists every image slot, with its file name, crop and minimum size. The site creates optimised versions automatically. Every photo needs a description (`alt`) in both languages in the data file, for people using screen readers.
+Upload photos to the shared Google Drive folder (see [Photos from Google Drive](#photos-from-google-drive)). **`src/assets/README.md`** lists every image slot, with its file name, crop and minimum size. The site creates optimised versions automatically. Every photo needs a description (`alt`) or caption in both languages in the data file, for people using screen readers.
 
 ## Texts (both languages)
 
-All wording is in `src/content/copy.pl.json` (Polish, the **source**) and `src/content/copy.en.json`.
+All wording is in `src/content/copy.pl.json` (Polish, the **source**) and `src/content/copy.en.json`. The starting wording comes from the approved mockups in `docs/design/`.
 
 - Both files must have exactly the same keys. If one is missing, the build stops and names the key and the language.
 - `{season}`, `{n}` and similar are filled in automatically; keep them.
-- Counting phrases have forms for Polish grammar (`"one"`, `"few"`, `"many"`): `1 zawodniczka`, `3 zawodniczki`, `20 zawodniczek`.
+- Counting phrases have forms for Polish grammar (`"one"`, `"few"`, `"many"`): `1 zawodniczka`, `3 zawodniczki`, `20 zawodniczek`. Some have exact forms too: `"5": "Pięcioosobowy sztab, jeden plan."`
 - Polish typography (non-breaking spaces after single-letter words: "w 2027", "i U23") is applied automatically.
+- `results.stages` translates the stage names used in the workbook ("Stage 2" → "2. etap"). A new stage name shows in English until you add it there.
 
 ## Photos from Google Drive
 
-Photos and logos are managed in the shared Google Drive folder **"MADW Website"**. Every build (on Vercel, and nightly) copies them into the site first, so uploading to Drive is all the team does. They go live with the next build: the nightly one, or straight away with a manual redeploy.
+Photos, logos and downloads are managed in the shared Google Drive folder **"MADW Website"**. Every build (on Vercel, and nightly) copies them into the site first, so uploading to Drive is all the team does. They go live with the next build: the nightly one, or straight away with a manual redeploy.
 
 ```
 MADW Website/
   hero/          hero.jpg (16:9), hero-mobile.jpg (4:5)
-  photo-story/   photo-01.jpg … photo-07.jpg
-  highlights/    highlight-track.jpg, highlight-mtb.jpg, highlight-worlds.jpg
+  photo-story/   photo-01.jpg … (the first four are the photo strip on the home page)
+  highlights/    highlight-*.jpg
   riders/        one portrait per rider and staff member
   partners/      partner logos (.svg) and the partner deck (.pdf)
   brand/         logo.svg
+  media/         press-library originals (≥ 3000 px), named as in media.json
+  media-files/   downloads for journalists (.zip, .pdf), named as in media.json
 ```
 
 - **File names** follow `src/assets/README.md`. Capitals, spaces and Polish letters don't matter: `Eliza Rabażyńska.JPG` is found as `eliza-rabazynska.jpg`.
@@ -189,29 +243,34 @@ The site is hosted on Vercel, connected to the GitHub repository `pawelraja/atom
 
 ## Newsletter
 
-The form isn't connected to a mailing provider yet. When you have one, set the environment variable `NEWSLETTER_ENDPOINT` (a URL that accepts a POST with JSON `{ "email", "consent", "lang" }`) at build time. See `.env.example`. Until then, submitting shows a friendly message pointing to kontakt@atomteam.pl.
+The form (in the footer of every page) isn't connected to a mailing provider yet. When you have one, set the environment variable `NEWSLETTER_ENDPOINT` (a URL that accepts a POST with JSON `{ "email", "consent", "lang" }`) at build time. See `.env.example`. Until then, submitting shows a friendly message pointing to kontakt@atomteam.pl.
 
 ---
 
 ## For developers
 
-**Stack:** Astro 7 + TypeScript, plain CSS custom properties (`src/styles/tokens.css`), static output, no UI framework. Zod validates all data at build time (`src/lib/schemas.ts`, `src/lib/data.ts`). The season logic is pure and unit-tested (`src/lib/season.ts`, `src/lib/ics.ts`).
+**Stack:** Astro 7 + TypeScript, plain CSS custom properties (`src/styles/tokens.css`, values from `design-system/tokens.json`), static output, no UI framework. Zod validates all data at build time (`src/lib/schemas.ts`, `src/lib/data.ts`). The logic is pure and unit-tested: `src/lib/season.ts` (calendar, season model), `src/lib/results.ts` (title and medal rules, result labels), `src/lib/showcase.ts` (numbers, pathway, teaser, status bar), `src/lib/ics.ts`.
+
+**Layout:** route files in `src/pages/` are one line each and render a view from `src/views/` in the right language; `src/components/Shell.astro` is the page frame (status bar, header, footer). `src/lib/routes.ts` maps pages between languages; `src/lib/anchors.ts` maps section anchors (`/#kalendarz` ↔ `/en/#calendar`).
 
 ```bash
 npm install
 npm run dev            # http://localhost:4321  (PL) and /en/
 npm run build          # static site in dist/
-npm run verify         # unit tests + type check + build + bilingual link check + contrast check
-npm run scenarios      # renders every phase with incomplete and complete data, PL + EN, and screenshots it
-npm run screenshots -- --widths 360,768,1280,1600 --full
+npm run verify         # unit tests + type check + build + link check (every page) + contrast + behaviour checks
+npm run scenarios      # every phase with incomplete and complete data, PL + EN: link check, "no unconfirmed claims" check, screenshots
+npm run lighthouse     # Lighthouse mobile on the main pages; fails below 90 / 100 / 95 / 95
+npm run screenshots -- --widths 360,768,1280,1600 --full --path /media/
 ```
 
-**How it stays correct between builds.** The date-dependent parts (next race, days to go, past/upcoming rows, the presentation countdown) are rendered at build time and **re-checked in the visitor's browser** against today's date in Europe/Warsaw. Search engines only see the SportsEvent data from the last build. **Rebuild at least daily** during the racing season (e.g. a scheduled deploy), and after every data edit.
+On Windows Git Bash, prefix commands that pass a path like `/media/` with `MSYS_NO_PATHCONV=1`.
 
-**Preview overrides** (for testing only): `MADW_TODAY=2027-04-10` pretends it's that day; `MADW_SITE='{"phase":"racing"}'` overrides `site.json`; `MADW_DATA_DIR=tests/fixtures/complete` swaps in the fake "everything confirmed" data set used by `npm run scenarios`.
+**How it stays correct between builds.** The date-dependent parts (next race, days to go, past/upcoming rows, the presentation countdown) are rendered at build time and **re-checked in the visitor's browser** against today's date in Europe/Warsaw. Search engines only see the SportsEvent data from the last build. The nightly rebuild keeps everything else (the calendar teaser's months, for example) current.
 
-**Languages.** Astro i18n routing (`defaultLocale: "pl"`, `prefixDefaultLocale: false`). There's no automatic redirect by browser language. Section anchors per language live in `src/lib/anchors.ts` (`/#kalendarz` ↔ `/en/#calendar`); the header's PL | EN switch follows the section in view. `hreflang` pairs (with `x-default` → PL), `og:locale` and one OG image per language (`/og-pl.png`, `/og-en.png`) are generated.
+**Preview overrides** (for testing only): `MADW_TODAY=2027-04-10` pretends it's that day; `MADW_SITE='{"phase":"racing"}'` overrides `site.json`; `MADW_DATA_DIR=tests/fixtures/complete` swaps in the fake "everything confirmed" data set used by `npm run scenarios` (regenerate it with `node scripts/make-fixtures.mjs`).
 
-**Fonts.** Inter 400/700 is self-hosted from the `@fontsource/inter` package (`font-display: swap`, latin + latin-ext). Loading it from `fonts.googleapis.com` cost about 1.9s of first paint on mobile Lighthouse (Performance 87–89); self-hosting brings it to 97–98.
+**Languages.** Astro i18n routing (`defaultLocale: "pl"`, `prefixDefaultLocale: false`), no automatic redirect by browser language. Every page has a counterpart; the header's PL | EN switch links to it and follows the section in view. `hreflang` pairs (with `x-default` → PL), `og:locale` and one OG image per language are generated, and `npm run check:site` verifies them on every page.
 
-**Quality checks (last run).** Lighthouse mobile, PL / EN: Performance 98 / 97, Accessibility 100, Best Practices 100, SEO 100, LCP 2.1s, CLS ≤ 0.044. All text/background pairs pass WCAG AA (`npm run check:contrast`). No horizontal scroll at 360 / 768 / 1280 / 1600.
+**Fonts.** Inter 400/700 is self-hosted from `@fontsource/inter` (`font-display: swap`, latin + latin-ext). Loading it from `fonts.googleapis.com` cost about 1.9s of first paint on mobile Lighthouse.
+
+**Quality checks (last run, 1 Oct 2026).** Lighthouse mobile: Performance 94–100, Accessibility 100, Best Practices 100, SEO 100 on `/`, `/en/`, `/zespol/`, `/kalendarz/`, `/partnerzy/`, `/media/` and a rider profile; home LCP 2.3–2.4s. All text/background pairs pass WCAG AA (`npm run check:contrast`). No horizontal scroll at 360 / 768 / 1280 / 1600 on any page.

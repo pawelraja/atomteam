@@ -1,0 +1,233 @@
+---
+// /zespol/<slug> and /en/team/<slug>: a rider profile for fans and journalists. Portrait, facts,
+// optional bio, a direct portrait download and top-10 results with their sources.
+import { statSync } from 'node:fs';
+import Icon from '../components/Icon.astro';
+import Photo from '../components/Photo.astro';
+import ResultsTable from '../components/ResultsTable.astro';
+import Shell from '../components/Shell.astro';
+import { anchor } from '../lib/anchors';
+import { copy, fill, pick, type Lang } from '../lib/i18n';
+import { findOriginal } from '../lib/images';
+import { DOWNLOADS, riderPaths, route } from '../lib/routes';
+import type { Rider } from '../lib/schemas';
+import { formatBytes } from '../lib/showcase';
+import { riderResults } from '../lib/view';
+
+interface Props {
+  lang: Lang;
+  rider: Rider;
+  slug: string;
+}
+const { lang, rider, slug } = Astro.props;
+const t = copy(lang);
+const tr = t.rider;
+const countries = t.calendar.countryNames as Record<string, string>;
+const original = findOriginal('riders', rider.photo);
+const portrait = original ? { href: DOWNLOADS.portrait(original.name), size: formatBytes(statSync(original.path).size, t.meta.locale) } : null;
+const seasons = riderResults(rider).map((s) => ({ ...s, rows: s.rows.filter((r) => (r.position ?? 99) <= 10) })).filter((s) => s.rows.length);
+const squad = tr.squad[rider.squad];
+---
+
+<Shell
+  lang={lang}
+  page="team"
+  paths={riderPaths(slug)}
+  title={fill(t.meta.pages.rider.title, { name: rider.name })}
+  description={fill(t.meta.pages.rider.description, { name: rider.name, squad }, lang)}
+>
+  <section class="profile" id={anchor(lang, 'profile')} data-section="profile" aria-labelledby="page-title">
+    <div class="container profile__grid">
+      <p class="profile__back">
+        <a href={route(lang, 'team')}>
+          <span class="back-arrow" aria-hidden="true"><Icon name="arrow" size={16} /></span>
+          {tr.back}
+        </a>
+      </p>
+      <div class="profile__photo card">
+        <Photo lang={lang} dir="riders" file={rider.photo} alt={rider.name} aspect="3:4" sizes="(min-width: 900px) 400px, 100vw" widths={[360, 540, 720, 960]} eager />
+      </div>
+      <div class="profile__body">
+        <p class="eyebrow">{tr.squadShort[rider.squad]} · {tr.category[rider.category]}</p>
+        <h1 id="page-title">{rider.name}</h1>
+        <dl class="facts">
+          <div><dt>{tr.nationality}</dt><dd>{countries[rider.nat] ?? rider.nat} /{rider.nat}</dd></div>
+          <div><dt>{tr.team}</dt><dd>{tr.squadShort[rider.squad]}</dd></div>
+          <div><dt>{tr.categoryLabel}</dt><dd>{tr.category[rider.category]}</dd></div>
+          <div><dt>{tr.seasons}</dt><dd>{rider.seasons.join(', ')}</dd></div>
+          {
+            rider.instagram && (
+              <div>
+                <dt>{tr.instagram}</dt>
+                <dd>
+                  <a href={`https://www.instagram.com/${rider.instagram}/`} target="_blank" rel="noopener">
+                    @{rider.instagram}
+                    <span class="visually-hidden"> {t.a11y.newTab}</span>
+                  </a>
+                </dd>
+              </div>
+            )
+          }
+        </dl>
+        {rider.bio && <p class="profile__bio">{pick(lang, rider.bio)}</p>}
+        <div class="profile__download">
+          {
+            portrait ? (
+              <a class="btn btn--primary" href={portrait.href} download>
+                <Icon name="download" size={18} />
+                {fill(tr.download, { size: portrait.size }, lang)}
+              </a>
+            ) : (
+              <span class="btn soon-btn">{tr.downloadSoon}</span>
+            )
+          }
+          <p class="caption-line">{tr.photoCredit}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="rider-results" aria-labelledby="rider-results-title">
+    <div class="container rider-results__inner">
+      <div class="rider-results__head">
+        <h2 id="rider-results-title" class="chapter">{tr.results}</h2>
+        <p>{seasons.length ? tr.resultsLead : tr.noResults}</p>
+      </div>
+      {
+        seasons.map((s) => (
+          <ResultsTable
+            lang={lang}
+            rows={s.rows}
+            events={s.events}
+            variant="rider"
+            caption={fill(t.results.riderTableCaption, { name: rider.name, season: s.season }, lang)}
+          />
+        ))
+      }
+      {
+        rider.resultsProfile && (
+          <p>
+            <a class="text-link" href={rider.resultsProfile} target="_blank" rel="noopener">
+              {t.results.fullProfile} <Icon name="arrow" size={16} />
+              <span class="visually-hidden"> {t.a11y.newTab}</span>
+            </a>
+          </p>
+        )
+      }
+    </div>
+  </section>
+</Shell>
+
+<style>
+  .profile {
+    padding: calc(var(--header-h) + 16px + 64px) 0 96px;
+    background: var(--surface-alt);
+  }
+  .profile__grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 24px var(--grid-gap);
+    align-items: start;
+  }
+  .profile__back {
+    grid-column: 1 / -1;
+  }
+  .profile__back a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 40px;
+  }
+  .back-arrow {
+    display: inline-flex;
+    transform: scaleX(-1);
+  }
+  .profile__photo {
+    grid-column: span 4;
+    overflow: hidden;
+    background: var(--surface-muted);
+  }
+  .profile__body {
+    grid-column: 6 / span 7;
+    display: grid;
+    gap: 24px;
+  }
+  h1 {
+    font-size: var(--fs-chapter);
+    line-height: var(--lh-chapter);
+    letter-spacing: var(--ls-chapter);
+  }
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 32px;
+  }
+  .facts div {
+    display: grid;
+    gap: 2px;
+    padding: 14px 0;
+    border-top: 1px solid #d9d2dc;
+  }
+  .facts dt {
+    font-size: 13px;
+    color: var(--ink-muted);
+  }
+  .facts dd {
+    font-size: 17px;
+  }
+  .profile__bio {
+    font-size: 18px;
+    line-height: 1.5;
+    max-width: 60ch;
+  }
+  .profile__download {
+    display: grid;
+    justify-items: start;
+    gap: 8px;
+  }
+  .soon-btn {
+    border: 1px dashed var(--ink-subtle);
+    color: var(--ink-muted);
+    font-weight: 400;
+    cursor: default;
+  }
+  .caption-line {
+    font-size: 14px;
+    color: var(--ink-muted);
+  }
+  .rider-results {
+    padding-block: 96px;
+  }
+  .rider-results__inner {
+    display: grid;
+    gap: 40px;
+  }
+  .rider-results__head {
+    display: grid;
+    gap: 12px;
+  }
+  .rider-results__head p {
+    font-size: 17px;
+    color: var(--ink-muted);
+  }
+  @media (max-width: 899px) {
+    .profile__photo {
+      grid-column: 1 / -1;
+      max-width: 360px;
+    }
+    .profile__body {
+      grid-column: 1 / -1;
+    }
+  }
+  @media (max-width: 479px) {
+    .facts {
+      grid-template-columns: 1fr;
+    }
+    .profile {
+      padding-bottom: 56px;
+    }
+    .rider-results {
+      padding-block: 56px;
+    }
+  }
+</style>

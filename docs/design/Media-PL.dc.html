@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>MADW — strefa mediów (PL)</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;color:#000000;background:#ffffff;-webkit-font-smoothing:antialiased}
+a{color:#8c00ff}a:hover{color:#5d00aa}
+button{font-family:inherit}
+a:focus-visible,button:focus-visible{outline:2px solid #8c00ff;outline-offset:2px}
+.dark a:focus-visible,.dark button:focus-visible{outline-color:#ff66ed}
+</style>
+</helmet>
+<div style="width: 100%; min-width: 1280px; background: #ffffff; color: #000000; font-family: Inter, system-ui, sans-serif; font-variant-numeric: tabular-nums;">
+
+<!-- NAGŁÓWEK -->
+<div style="background: #f1eef3; padding: 16px 16px 0;">
+  <header style="height: 64px; border-radius: 40px; background: #ffffff; display: flex; align-items: center; justify-content: space-between; padding: 0 12px 0 16px; box-sizing: border-box;">
+    <a href="Home-PL.dc.html" style="display: flex; align-items: center; gap: 12px; color: #000000; text-decoration: none;">
+      <span style="width: 40px; height: 40px; border-radius: 100px; border: 1px dashed #4f4f4f; display: flex; align-items: center; justify-content: center; font-size: 9px; color: #4f4f4f; letter-spacing: 0.04em;">LOGO</span>
+      <span style="font-size: 15px; letter-spacing: 0.02em;"><b>MAT</b> ATOM DEWELOPER <b>WROCŁAW</b></span>
+    </a>
+    <nav aria-label="Menu główne" style="display: flex; gap: 28px; font-size: 15px;">
+      <a href="Home-PL.dc.html" style="color: #000000; text-decoration: none;">Zespół</a>
+      <a href="Home-PL.dc.html" style="color: #000000; text-decoration: none;">Podejście</a>
+      <a href="Home-PL.dc.html" style="color: #000000; text-decoration: none;">Kalendarz</a>
+      <a href="Home-PL.dc.html" style="color: #000000; text-decoration: none;">Partnerzy</a>
+      <a href="#top" aria-current="page" style="color: #000000; text-decoration: none; font-weight: 700; border-bottom: 2px solid #ff66ed; padding-bottom: 2px;">Media</a>
+    </nav>
+    <div style="display: flex; align-items: center; gap: 14px;">
+      <div role="group" aria-label="Język / Language" style="display: flex; padding: 3px; border-radius: 100px; border: 1px solid #4f4f4f; gap: 2px;">
+        <span aria-current="true" style="padding: 4px 10px; border-radius: 100px; background: #000000; color: #ffffff; font-size: 12px; line-height: 16.8px; font-weight: 700;">PL</span>
+        <a href="Media-EN.dc.html" hreflang="en" lang="en" aria-label="English version" style="padding: 4px 10px; border-radius: 100px; color: #000000; font-size: 12px; line-height: 16.8px; text-decoration: none;">EN</a>
+      </div>
+      <a href="Home-PL.dc.html" style="padding: 11px 20px; border-radius: 100px; background: #ff66ed; color: #2b0020; font-size: 14px; line-height: 19.6px; text-decoration: none;">Zostań partnerem</a>
+    </div>
+  </header>
+</div>
+
+<!-- NAGŁÓWEK STRONY -->
+<section id="top" style="background: #f1eef3; padding: 88px 0 96px;">
+  <div style="max-width: 1280px; margin: 0 auto; padding: 0 80px; box-sizing: border-box; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 32px; align-items: end;">
+    <div style="grid-column: span 7; display: flex; flex-direction: column; gap: 20px;">
+      <span style="font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: #8c00ff;">Strefa mediów</span>
+      <h1 style="margin: 0; font-size: 96px; line-height: 0.98; letter-spacing: -0.035em; font-weight: 400;">Wszystko do relacji o drużynie.</h1>
+    </div>
+    <div style="grid-column: 9 / span 4; display: flex; flex-direction: column; gap: 16px;">
+      <p style="margin: 0; font-size: 17px; line-height: 25px; color: #4f4f4f;">Logotypy, zdjęcia, portrety i fakty w jednym miejscu. Bez logowania. Materiały do użytku redakcyjnego.</p>
+      <nav aria-label="Na tej stronie" style="display: flex; flex-wrap: wrap; gap: 8px;">
+        <a href="#fakty" style="padding: 7px 14px; border-radius: 100px; border: 1px solid #ff66ed; color: #8c00ff; font-size: 13px; text-decoration: none;">Fakty</a>
+        <a href="#pliki" style="padding: 7px 14px; border-radius: 100px; border: 1px solid #ff66ed; color: #8c00ff; font-size: 13px; text-decoration: none;">Pliki</a>
+        <a href="#zdjecia" style="padding: 7px 14px; border-radius: 100px; border: 1px solid #ff66ed; color: #8c00ff; font-size: 13px; text-decoration: none;">Zdjęcia</a>
+        <a href="#sklad" style="padding: 7px 14px; border-radius: 100px; border: 1px solid #ff66ed; color: #8c00ff; font-size: 13px; text-decoration: none;">Skład</a>
+        <a href="#kontakt" style="padding: 7px 14px; border-radius: 100px; border: 1px solid #ff66ed; color: #8c00ff; font-size: 13px; text-decoration: none;">Kontakt</a>
+      </nav>
+    </div>
+  </div>
+</section>
+
+<!-- FAKTY + NOTKA -->
+<section id="fakty" aria-labelledby="fakty-h" style="padding: 104px 0;">
+  <div style="max-width: 1280px; margin: 0 auto; padding: 0 80px; box-sizing: border-box; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 32px;">
+    <div style="grid-column: span 5; display: flex; flex-direction: column; gap: 24px;">
+      <h2 id="fakty-h" style="margin: 0; font-size: 42px; line-height: 50.4px; font-weight: 400;">Fakty w skrócie.</h2>
+      <dl style="margin: 0; display: grid; grid-template-columns: 160px minmax(0, 1fr); font-size: 15px; line-height: 21px;">
+        <dt style="padding: 14px 0; border-top: 1px solid #e4e0e6; color: #4f4f4f;">Pełna nazwa</dt><dd style="margin: 0; padding: 14px 0; border-top: 1px solid #e4e0e6;">Mat Atom Deweloper Wrocław</dd>
+        <dt style="padding: 14px 0; border-top: 1px solid #e4e0e6; color: #4f4f4f;">Licencja</dt><dd style="margin: 0; padding: 14px 0; border-top: 1px solid #e4e0e6;">UCI Continental + drużyna juniorska</dd>
+        <dt style="padding: 14px 0; border-top: 1px solid #e4e0e6; color: #4f4f4f;">Założona</dt><dd style="margin: 0; padding: 14px 0; border-top: 1px solid #e4e0e6;">2016, Wrocław</dd>
+        <dt style="padding: 14px 0; border-top: 1px solid #e4e0e6; color: #4f4f4f;">Skład 2026</dt><dd style="margin: 0; padding: 14px 0; border-top: 1px solid #e4e0e6;">20 zawodniczek: 8 × U19, 10 × U23, 2 × Elita</dd>
+        <dt style="padding: 14px 0; border-top: 1px solid #e4e0e6; color: #4f4f4f;">Sztab</dt><dd style="margin: 0; padding: 14px 0; border-top: 1px solid #e4e0e6;">Paweł Bentkowski (menedżer), Paulina Brzeźna-Bentkowska, Katarzyna Wilkos (dyrektorki sportowe)</dd>
+        <dt style="padding: 14px 0; border-top: 1px solid #e4e0e6; color: #4f4f4f;">Dyscypliny</dt><dd style="margin: 0; padding: 14px 0; border-top: 1px solid #e4e0e6;">Szosa, tor, przełaj, MTB</dd>
+        <dt style="padding: 14px 0; border-top: 1px solid #e4e0e6; border-bottom: 1px solid #e4e0e6; color: #4f4f4f;">Program</dt><dd style="margin: 0; padding: 14px 0; border-top: 1px solid #e4e0e6; border-bottom: 1px solid #e4e0e6;">Klub Pro, Ministerstwo Sportu i Turystyki</dd>
+      </dl>
+    </div>
+    <div style="grid-column: 7 / span 6; display: flex; flex-direction: column; gap: 20px;">
+      <div style="display: flex; justify-content: space-between; align-items: baseline;">
+        <h2 style="margin: 0; font-size: 42px; line-height: 50.4px; font-weight: 400;">Notka o drużynie.</h2>
+        <div role="tablist" aria-label="Język notki" style="display: flex; gap: 6px;">
+          <sc-for list="{{ bLangs }}" as="l" hint-placeholder-count="2">
+            <button type="button" role="tab" aria-selected="{{ l.selected }}" onClick="{{ l.pick }}" style="{{ l.style }}">{{ l.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+      <div style="border-radius: 30px; background: #f1eef3; box-shadow: 0 5px 0 0 rgba(255,102,237,0.35); padding: 32px; display: flex; flex-direction: column; gap: 20px;">
+        <p style="margin: 0; font-size: 18px; line-height: 28px;">{{ boilerplate }}</p>
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px;">
+          <span style="font-size: 13px; color: #4f4f4f;">{{ wordCount }} · do swobodnego użycia w publikacjach</span>
+          <button type="button" onClick="{{ copy }}" aria-live="polite" style="padding: 10px 20px; border-radius: 100px; border: 1px solid #ff66ed; background: #ff66ed; color: #2b0020; font-size: 14px; cursor: pointer;">{{ copyLabel }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PLIKI -->
+<section id="pliki" aria-labelledby="pliki-h" style="padding: 0 0 104px;">
+  <div style="max-width: 1280px; margin: 0 auto; padding: 0 80px; box-sizing: border-box; display: flex; flex-direction: column; gap: 32px;">
+    <h2 id="pliki-h" style="margin: 0; font-size: 42px; line-height: 50.4px; font-weight: 400;">Pliki do pobrania.</h2>
+    <ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column;">
+      <sc-for list="{{ files }}" as="f" hint-placeholder-count="6">
+        <li style="display: grid; grid-template-columns: minmax(0, 1fr) 220px 140px 160px; gap: 24px; align-items: center; padding: 22px 0; border-top: 1px solid #e4e0e6;">
+          <div style="display: flex; flex-direction: column; gap: 4px;"><span style="font-size: 20px; line-height: 28px;">{{ f.name }}</span><span style="font-size: 14px; line-height: 19.6px; color: #4f4f4f;">{{ f.desc }}</span></div>
+          <span style="font-size: 13px; font-weight: 700; color: #8c00ff; letter-spacing: 0.04em;">{{ f.format }}</span>
+          <span style="font-size: 14px; color: #4f4f4f;">{{ f.size }}</span>
+          <span style="{{ f.btnStyle }}">{{ f.btn }}</span>
+        </li>
+      </sc-for>
+    </ul>
+  </div>
+</section>
+
+<!-- ZDJĘCIA -->
+<section id="zdjecia" aria-labelledby="zdj-h" style="background: #f1eef3; padding: 104px 0;">
+  <div style="max-width: 1280px; margin: 0 auto; padding: 0 80px; box-sizing: border-box; display: flex; flex-direction: column; gap: 32px;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 32px;">
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <h2 id="zdj-h" style="margin: 0; font-size: 42px; line-height: 50.4px; font-weight: 400;">Zdjęcia.</h2>
+        <p style="margin: 0; font-size: 15px; line-height: 22px; color: #4f4f4f;">Pełna rozdzielczość, min. 3000 px dłuższego boku. Podpis: Fot. [autor] / MADW.</p>
+      </div>
+      <div role="group" aria-label="Filtr zdjęć" style="display: flex; gap: 8px;">
+        <sc-for list="{{ pFilters }}" as="p" hint-placeholder-count="5">
+          <button type="button" aria-pressed="{{ p.selected }}" onClick="{{ p.pick }}" style="{{ p.style }}">{{ p.label }}</button>
+        </sc-for>
+      </div>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px;">
+      <sc-for list="{{ photos }}" as="ph" hint-placeholder-count="8">
+        <figure style="margin: 0; border-radius: 30px; overflow: hidden; background: #ffffff; display: flex; flex-direction: column;">
+          <div style="{{ ph.style }}"><span style="position: absolute; left: 14px; top: 12px; padding: 3px 9px; border-radius: 100px; background: rgba(255,255,255,0.85); font-size: 11px; font-weight: 700; color: #2b0020;">{{ ph.cat }}</span></div>
+          <figcaption style="padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 10px;">
+            <span style="font-size: 15px; line-height: 21px;">{{ ph.caption }}</span>
+            <div style="display: flex; justify-content: space-between; align-items: center;"><span style="font-size: 12px; color: #4f4f4f;">Fot. [autor]</span><span style="font-size: 13px; color: #8c00ff; font-weight: 700;">Pobierz JPG</span></div>
+          </figcaption>
+        </figure>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<!-- SKŁAD DLA DZIENNIKARZY -->
+<section id="sklad" aria-labelledby="sklad-h" style="padding: 104px 0;">
+  <div style="max-width: 1280px; margin: 0 auto; padding: 0 80px; box-sizing: border-box; display: flex; flex-direction: column; gap: 24px;">
+    <div style="display: flex; justify-content: space-between; align-items: baseline;">
+      <h2 id="sklad-h" style="margin: 0; font-size: 42px; line-height: 50.4px; font-weight: 400;">Skład 2026.</h2>
+      <span style="font-size: 14px; color: #4f4f4f;">Skład 2027 pojawi się tu w dniu prezentacji drużyny.</span>
+    </div>
+    <table style="width: 100%; border-collapse: collapse; font-size: 15px; line-height: 21px;">
+      <thead>
+        <tr style="text-align: left; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: #4f4f4f;">
+          <th scope="col" style="padding: 12px 0; border-bottom: 1px solid #000000; font-weight: 400;">Zawodniczka</th>
+          <th scope="col" style="padding: 12px 0; border-bottom: 1px solid #000000; font-weight: 400;">Kraj</th>
+          <th scope="col" style="padding: 12px 0; border-bottom: 1px solid #000000; font-weight: 400;">Skład</th>
+          <th scope="col" style="padding: 12px 0; border-bottom: 1px solid #000000; font-weight: 400;">Instagram</th>
+          <th scope="col" style="padding: 12px 0; border-bottom: 1px solid #000000; font-weight: 400;">Materiały</th>
+        </tr>
+      </thead>
+      <tbody>
+        <sc-for list="{{ riders }}" as="r" hint-placeholder-count="20">
+          <tr>
+            <td style="padding: 12px 0; border-bottom: 1px solid #e4e0e6; font-size: 16px;">{{ r.name }}</td>
+            <td style="padding: 12px 0; border-bottom: 1px solid #e4e0e6;">{{ r.nat }}</td>
+            <td style="padding: 12px 0; border-bottom: 1px solid #e4e0e6; color: #4f4f4f;">{{ r.squad }}</td>
+            <td style="padding: 12px 0; border-bottom: 1px solid #e4e0e6;"><a href="{{ r.igUrl }}">@{{ r.ig }}</a></td>
+            <td style="padding: 12px 0; border-bottom: 1px solid #e4e0e6; color: #4f4f4f; font-size: 13px;">Portret JPG · bio PDF (2027)</td>
+          </tr>
+        </sc-for>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- KONTAKT PRASOWY -->
+<section id="kontakt" class="dark" aria-labelledby="kontakt-h" style="background: #2b0020; color: #f1eef3; padding: 104px 0;">
+  <div style="max-width: 1280px; margin: 0 auto; padding: 0 80px; box-sizing: border-box; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 32px;">
+    <div style="grid-column: span 5; display: flex; flex-direction: column; gap: 20px;">
+      <h2 id="kontakt-h" style="margin: 0; font-size: 64px; line-height: 1.02; letter-spacing: -0.03em; font-weight: 400; color: #ff66ed;">Wywiady i akredytacje.</h2>
+      <p style="margin: 0; font-size: 17px; line-height: 25px;">Rozmowy z zawodniczkami i sztabem, dostęp do boksu zespołu na wyścigach, materiały na zamówienie. Odpowiadamy w ciągu [1 dnia roboczego].</p>
+    </div>
+    <div style="grid-column: 7 / span 3; border-radius: 30px; background: #3f273c; padding: 28px; display: flex; flex-direction: column; gap: 14px;">
+      <span style="font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #c0b8be;">Kontakt prasowy</span>
+      <span style="font-size: 20px;">[Imię Nazwisko]</span>
+      <span style="font-size: 15px; color: #c0b8be;">[Rola] · PL, EN</span>
+      <span style="font-size: 15px;">[+48 000 000 000]</span>
+      <span style="font-size: 15px;">kontakt@atomteam.pl</span>
+    </div>
+    <div style="grid-column: span 3; display: flex; flex-direction: column; gap: 14px; font-size: 14px; line-height: 21px; color: #c0b8be;">
+      <span style="font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;">Zasady użycia</span>
+      <span>Materiały wyłącznie do użytku redakcyjnego.</span>
+      <span>Podpis zdjęcia: Fot. [autor] / MADW.</span>
+      <span>Logotypów nie zmieniamy ani nie przycinamy.</span>
+      <span>Użycie komercyjne: po uzgodnieniu z zespołem.</span>
+    </div>
+  </div>
+</section>
+
+<footer class="dark" style="background: #2b0020; border-top: 1px solid #3f273c; color: #c0b8be; padding: 32px 0;">
+  <div style="max-width: 1280px; margin: 0 auto; padding: 0 80px; box-sizing: border-box; display: flex; justify-content: space-between; font-size: 12px;">
+    <span>© 2026 Mat Atom Deweloper Wrocław</span>
+    <div style="display: flex; gap: 24px;"><a href="Home-PL.dc.html" style="color: #f1eef3;">Strona główna</a><a href="Media-EN.dc.html" hreflang="en" lang="en" style="color: #f1eef3;">English version</a></div>
+  </div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+var BOIL = {
+  pl: 'Mat Atom Deweloper Wrocław to kobieca drużyna kolarska z licencją UCI Continental i drużyną juniorską. Powstała we Wrocławiu w 2016 roku; w sezonie 2026 zrzeszała 20 zawodniczek w kategoriach U19, U23 i Elita. Drużyna startuje na szosie, torze i w przełaju w Polsce i za granicą, a klub uczestniczy w programie Klub Pro Ministerstwa Sportu i Turystyki.',
+  en: 'Mat Atom Deweloper Wrocław is a UCI Continental women’s cycling team with a junior squad. Founded in Wrocław in 2016, it had 20 riders across the U19, U23 and Elite categories in 2026. The team races on the road, on the track and in cyclocross in Poland and abroad, and the club takes part in the Club Pro programme of Poland’s Ministry of Sport and Tourism.'
+};
+var FILES = [
+  ['Logotypy drużyny', 'Kolor, czerń, biel; wersja pozioma i znak', 'SVG · PNG · ZIP', 'ready'],
+  ['Informacja o drużynie', 'Fakty, skład, sztab, kontakt prasowy', 'PDF · PL / EN', 'ready'],
+  ['Zdjęcia sezonu 2026', 'Wybór zdjęć z wyścigów, z podpisami fotografów', 'JPG · ZIP', 'ready'],
+  ['Portrety zawodniczek 2027', 'Każda zawodniczka w 3:4 i 1:1', 'JPG · ZIP', 'soon'],
+  ['Stroje 2027', 'Zdjęcia produktowe koszulki i spodenek', 'JPG · PNG', 'soon'],
+  ['Księga znaku', 'Kolory, typografia, pole ochronne logo', 'PDF', 'ready']
+];
+var PHOTOS = [
+  ['Wyścigi', 'Peleton na klasyku w Belgii', '#3f273c', '16 / 10'],
+  ['Portrety', 'Portret zawodniczki, sezon 2026', '#fecdf8', '3 / 4'],
+  ['Tor', 'Mistrzostwa Polski na torze, Pruszków', '#d9aaff', '16 / 10'],
+  ['Zespół', 'Odprawa przed startem', '#c0b8be', '3 / 4'],
+  ['Wyścigi', 'Finisz Pucharu Polski', '#ffd0f4', '3 / 4'],
+  ['Zespół', 'Mechanik przy samochodzie zespołu', '#f0e6ed', '16 / 10'],
+  ['Portrety', 'Juniorki w strojach 2026', '#fd9cf2', '16 / 10'],
+  ['Wyścigi', 'Podium, Mistrzostwa Polski MTB', '#c580ff', '3 / 4']
+];
+var RIDERS = [['Eliza Rabażyńska','POL','Continental','elizaa_rabaa'],['Sofia Ungerová','SVK','Continental','s.ungerova'],['Olga Wankiewicz','POL','Continental','olga_wankiewicz'],['Tamara Szalińska','POL','Continental','tamara_szalinska'],['Maja Tracka','POL','Continental','trackaaaa'],['Urszula Sipko','POL','Continental','ula_sipko'],['Alicja Matuła','POL','Continental','alqa.matula'],['Gabriela Kaczmarczyk','POL','Continental','g__kaczmarczyk'],['Daria Dębicka','POL','Continental','__debicka__'],['Martyna Szczęsna','POL','Continental','szczesna.martynka'],['Anna Gaborska','POL','Continental','a.gaborska'],['Nadia Hartman','POL','Continental','nadiaahartman'],['Linda Sitková','CZE','Juniorki U19','linda.sitkova'],['Kinga Słomka','POL','Juniorki U19','kinga_sl0mka'],['Julia Pośpiech','POL','Juniorki U19','_julia.pospiech'],['Julia Kołakowska','POL','Juniorki U19','jula_kolakowska_'],['Aniela Augustyniak','POL','Juniorki U19','aniela_augustyniak'],['Agata Sekta','POL','Juniorki U19','agata.sekta'],['Zofia Glinka','POL','Juniorki U19','zosiaglinkaa'],['Natalia Gacek','POL','Juniorki U19','_na4alia_']];
+
+function chip(on) {
+  return 'padding: 8px 16px; border-radius: 100px; font-size: 13px; line-height: 18px; cursor: pointer; border: 1px solid #ff66ed; ' + (on ? 'background: #ff66ed; color: #2b0020;' : 'background: transparent; color: #8c00ff;');
+}
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { bLang: 'pl', copied: false, pf: 'Wszystkie' };
+  }
+  renderVals() {
+    var self = this, st = this.state;
+    var text = BOIL[st.bLang];
+    return {
+      bLangs: [['pl', 'PL'], ['en', 'EN']].map(function (l) {
+        return { label: l[1], selected: st.bLang === l[0] ? 'true' : 'false', style: chip(st.bLang === l[0]), pick: function () { self.setState({ bLang: l[0], copied: false }); } };
+      }),
+      boilerplate: text,
+      wordCount: text.split(/\s+/).length + (st.bLang === 'pl' ? ' słów' : ' words'),
+      copyLabel: st.copied ? 'Skopiowano' : 'Kopiuj tekst',
+      copy: function () {
+        try {
+          var p = navigator.clipboard && navigator.clipboard.writeText(text);
+          if (p && p.then) p.then(function () { self.setState({ copied: true }); }, function () {});
+        } catch (e) {}
+      },
+      files: FILES.map(function (f) {
+        var ready = f[3] === 'ready';
+        return {
+          name: f[0], desc: f[1], format: f[2], size: ready ? '[— MB]' : 'Po prezentacji',
+          btn: ready ? 'Pobierz' : 'Wkrótce',
+          btnStyle: ready
+            ? 'justify-self: end; padding: 10px 22px; border-radius: 100px; background: #ff66ed; color: #2b0020; font-size: 14px; font-weight: 700;'
+            : 'justify-self: end; padding: 9px 21px; border-radius: 100px; border: 1px dashed #949494; color: #4f4f4f; font-size: 14px;'
+        };
+      }),
+      pFilters: ['Wszystkie', 'Wyścigi', 'Tor', 'Portrety', 'Zespół'].map(function (c) {
+        return { label: c, selected: st.pf === c ? 'true' : 'false', style: chip(st.pf === c), pick: function () { self.setState({ pf: c }); } };
+      }),
+      photos: PHOTOS.filter(function (p) { return st.pf === 'Wszystkie' || p[0] === st.pf; }).map(function (p) {
+        return { cat: p[0], caption: p[1], style: 'aspect-ratio: 4 / 3; position: relative; background: ' + p[2] + ';' };
+      }),
+      riders: RIDERS.map(function (r) { return { name: r[0], nat: r[1], squad: r[2], ig: r[3], igUrl: 'https://www.instagram.com/' + r[3] + '/' }; })
+    };
+  }
+}
+</script>
+</body>
+</html>

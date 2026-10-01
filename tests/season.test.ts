@@ -17,7 +17,6 @@ import {
   rowStatus,
   seasonNumber,
   seasonStats,
-  sectionOrder,
   todayISO,
 } from '../src/lib/season';
 
@@ -168,18 +167,7 @@ describe('season model', () => {
     expect(seasonNumber({ currentSeason: 2016, foundedYear: 2016 })).toBe(1);
   });
 
-  it('orders sections by phase', () => {
-    const pre = sectionOrder('preseason');
-    expect(pre.indexOf('partners')).toBe(pre.indexOf('recap') + 1);
-    const racing = sectionOrder('racing');
-    expect(racing.slice(2, 4)).toEqual(['next-race', 'calendar']);
-    expect(sectionOrder('offseason')[1]).toBe('recap');
-    for (const p of ['preseason', 'racing', 'offseason'] as const) {
-      expect(new Set(sectionOrder(p)).size).toBe(10);
-    }
-  });
-
-  it('recaps the previous season, or the current one in the off-season', () => {
+  it('looks back on the previous season, or the current one in the off-season', () => {
     expect(recapSeason({ currentSeason: 2027, phase: 'preseason' })).toBe(2026);
     expect(recapSeason({ currentSeason: 2027, phase: 'racing' })).toBe(2026);
     expect(recapSeason({ currentSeason: 2027, phase: 'offseason' })).toBe(2027);

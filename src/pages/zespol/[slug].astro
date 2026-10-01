@@ -1,0 +1,12 @@
+---
+// One static profile per rider in riders.json.
+import RiderPage from '../../views/RiderPage.astro';
+import { profileRiders } from '../../lib/view';
+
+export function getStaticPaths() {
+  return profileRiders().map(({ rider, slug }) => ({ params: { slug }, props: { rider, slug } }));
+}
+const { rider, slug } = Astro.props;
+---
+
+<RiderPage lang="pl" rider={rider} slug={slug} />

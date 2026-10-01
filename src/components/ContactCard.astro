@@ -1,7 +1,8 @@
 ---
-// A named contact from site.json (partnerContact / pressContact). Renders nothing until the
-// team fills in at least a name and an e-mail or phone — never a placeholder card.
-import { copy, fill, pick, type Lang } from '../lib/i18n';
+// A contact card from site.json (partnerContact / pressContact) on a plum band. Unset fields are
+// simply left out — never shown as placeholders. Without a named person, the card still offers
+// the team's address, so the band never looks empty.
+import { copy, pick, type Lang } from '../lib/i18n';
 import type { Contact } from '../lib/schemas';
 import { isContactComplete } from '../lib/showcase';
 import Icon from './Icon.astro';
@@ -11,88 +12,105 @@ interface Props {
   lang: Lang;
   contact: Contact | null;
   label: string;
+  /** Extra line under the role, e.g. languages spoken. */
+  class?: string;
 }
 const { lang, contact, label } = Astro.props;
 const t = copy(lang);
-const c = isContactComplete(contact) ? contact! : null;
-const tel = c?.phone ? `tel:${c.phone.replace(/[^+0-9]/g, '')}` : null;
+const named = isContactComplete(contact) ? contact! : null;
+const email = named?.email ?? t.team.email;
+const phone = named?.phone ?? null;
+const tel = phone ? `tel:${phone.replace(/[^+0-9]/g, '')}` : null;
 ---
 
-{
-  c && (
-    <div class="contact-card">
-      {c.photo && (
-        <div class="contact-card__photo">
-          <Photo lang={lang} dir="riders" file={c.photo} alt="" decorative aspect="1:1" sizes="96px" widths={[96, 192]} />
+<div class:list={['contact-card', Astro.props.class]}>
+  <p class="contact-card__label">{label}</p>
+  {
+    named && (
+      <div class="contact-card__person">
+        {named.photo && (
+          <div class="contact-card__photo">
+            <Photo lang={lang} dir="riders" file={named.photo} alt="" decorative aspect="1:1" sizes="64px" widths={[64, 128]} />
+          </div>
+        )}
+        <div>
+          <p class="contact-card__name">{named.name}</p>
+          {named.role && <p class="contact-card__role">{pick(lang, named.role)}</p>}
         </div>
-      )}
-      <div class="contact-card__body">
-        <p class="eyebrow">{label}</p>
-        <p class="contact-card__name">{c.name}</p>
-        {c.role && <p class="contact-card__role">{pick(lang, c.role)}</p>}
-        <ul role="list" class="contact-card__links">
-          {tel && (
-            <li>
-              <a href={tel}>
-                <Icon name="phone" size={18} />
-                {fill(t.contactCard.call, { phone: c.phone! })}
-              </a>
-            </li>
-          )}
-          {c.email && (
-            <li>
-              <a href={`mailto:${c.email}`}>
-                <Icon name="mail" size={18} />
-                {fill(t.contactCard.write, { email: c.email })}
-              </a>
-            </li>
-          )}
-        </ul>
       </div>
-    </div>
-  )
-}
+    )
+  }
+  <ul role="list" class="contact-card__links">
+    {
+      tel && (
+        <li>
+          <a href={tel}>
+            <Icon name="phone" size={18} />
+            <span class="visually-hidden">{t.a11y.phone}: </span>
+            {phone}
+          </a>
+        </li>
+      )
+    }
+    <li>
+      <a href={`mailto:${email}`}>
+        <Icon name="mail" size={18} />
+        <span class="visually-hidden">{t.a11y.email}: </span>
+        {email}
+      </a>
+    </li>
+  </ul>
+</div>
 
 <style>
   .contact-card {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    gap: var(--s-4);
-    align-items: start;
-    padding: var(--s-4);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 32px;
     border-radius: var(--r-card);
     background: var(--surface-alt);
-    box-shadow: var(--shadow-card);
+    box-shadow: var(--shadow-feature);
+    color: var(--ink);
   }
-  .contact-card:not(:has(.contact-card__photo)) {
-    grid-template-columns: 1fr;
+  .contact-card__label {
+    font-size: 12px;
+    letter-spacing: var(--ls-eyebrow);
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+  .contact-card__person {
+    display: flex;
+    gap: 16px;
+    align-items: center;
   }
   .contact-card__photo {
-    width: 96px;
-    border-radius: 50%;
+    flex: none;
+    width: 64px;
+    border-radius: var(--r-pill);
     overflow: hidden;
   }
-  .contact-card__body {
-    display: grid;
-    gap: 4px;
-  }
   .contact-card__name {
-    font-size: var(--fs-h3);
-    line-height: 1.2;
+    font-size: 20px;
   }
   .contact-card__role {
+    font-size: 14px;
     color: var(--ink-muted);
   }
   .contact-card__links {
     display: grid;
     gap: 2px;
-    margin-top: var(--s-2);
   }
   .contact-card__links a {
     display: inline-flex;
     align-items: center;
-    gap: var(--s-2);
-    min-height: 44px;
+    gap: 8px;
+    min-height: 40px;
+    font-size: 16px;
+    color: var(--ink);
     word-break: break-word;
+  }
+  .contact-card__links a:hover {
+    color: var(--accent);
   }
 </style>

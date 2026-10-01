@@ -1,0 +1,37 @@
+---
+// /kalendarz and /en/calendar: the next race and the full calendar with the season archive.
+import Calendar from '../components/Calendar.astro';
+import NextRace from '../components/NextRace.astro';
+import PageIntro from '../components/PageIntro.astro';
+import Shell from '../components/Shell.astro';
+import { getData } from '../lib/data';
+import { copy, fill, type Lang } from '../lib/i18n';
+import { ROUTES } from '../lib/routes';
+import { seasonNumber } from '../lib/season';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const { site } = getData();
+const t = copy(lang);
+const season = site.currentSeason;
+---
+
+<Shell
+  lang={lang}
+  page="calendar"
+  paths={ROUTES.calendar}
+  title={fill(t.meta.pages.calendar.title, { season })}
+  description={fill(t.meta.pages.calendar.description, { season }, lang)}
+  events
+>
+  <PageIntro
+    lang={lang}
+    eyebrow={fill(t.calendarPage.eyebrow, { season, number: seasonNumber(site) }, lang)}
+    title={t.calendarPage.title}
+    lead={t.calendarPage.lead}
+  />
+  <NextRace lang={lang} />
+  <Calendar lang={lang} />
+</Shell>
