@@ -11,6 +11,8 @@ export type AnchorKey =
   | 'team'
   | 'calendar'
   | 'partners'
+  // partners page
+  | 'brand'
   | 'for-media'
   | 'gallery'
   // calendar page
@@ -36,6 +38,7 @@ export const ANCHORS: Record<Lang, Record<AnchorKey, string>> = {
     team: 'zespol',
     calendar: 'kalendarz',
     partners: 'partnerzy',
+    brand: 'twoja-marka',
     'for-media': 'dla-mediow',
     gallery: 'galeria',
     'next-race': 'najblizszy-wyscig',
@@ -56,6 +59,7 @@ export const ANCHORS: Record<Lang, Record<AnchorKey, string>> = {
     team: 'team',
     calendar: 'calendar',
     partners: 'partners',
+    brand: 'your-brand',
     'for-media': 'for-media',
     gallery: 'gallery',
     'next-race': 'next-race',

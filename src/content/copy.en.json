@@ -75,7 +75,8 @@
     "approach": "Approach",
     "calendar": "Calendar",
     "partners": "Partners",
-    "media": "Media"
+    "media": "Media",
+    "subscribe": "Subscribe"
   },
   "status": {
     "presentation": "{season} team presentation: {date} · {place}",
@@ -646,5 +647,18 @@
     "prev": "Previous photo",
     "next": "Next photo",
     "counter": "{i} of {n}"
+  },
+  "brand": {
+    "eyebrow": "For partners",
+    "title": "Your brand in the peloton.",
+    "lead": "A team partner is seen wherever the riders are: at the start, on the podium, in race coverage and on social media.",
+    "diagramLabel": "Jersey diagram with partner positions: 1 front, 2 sleeves, 3 side panel",
+    "fields": [
+      { "n": "1", "title": "Jersey front", "text": "Title sponsor. In every finish and podium photo." },
+      { "n": "2", "title": "Sleeves and shoulders", "text": "Main sponsors. Visible in side-on shots of the peloton." },
+      { "n": "3", "title": "Side panel and shorts", "text": "Main and technical sponsors." },
+      { "n": "+", "title": "Beyond the kit", "text": "Team vehicles, social media, press materials, the website and partner events." }
+    ],
+    "caption": "Example placement. The team sets the final positions."
   }
 }

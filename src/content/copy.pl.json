@@ -75,7 +75,8 @@
     "approach": "Podejście",
     "calendar": "Kalendarz",
     "partners": "Partnerzy",
-    "media": "Media"
+    "media": "Media",
+    "subscribe": "Subskrybuj"
   },
   "status": {
     "presentation": "Prezentacja drużyny {season}: {date} · {place}",
@@ -646,5 +647,18 @@
     "prev": "Poprzednie zdjęcie",
     "next": "Następne zdjęcie",
     "counter": "{i} z {n}"
+  },
+  "brand": {
+    "eyebrow": "Dla partnerów",
+    "title": "Twoja marka w peletonie.",
+    "lead": "Partner drużyny jest widoczny wszędzie tam, gdzie są zawodniczki: na starcie, na podium, w relacjach i w mediach społecznościowych.",
+    "diagramLabel": "Schemat koszulki z polami dla partnerów: 1 przód, 2 rękawy, 3 pas boczny",
+    "fields": [
+      { "n": "1", "title": "Przód koszulki", "text": "Partner tytularny. Na każdym zdjęciu z mety i podium." },
+      { "n": "2", "title": "Rękawy i ramiona", "text": "Sponsorzy główni. Widoczne w ujęciach z boku peletonu." },
+      { "n": "3", "title": "Pas boczny i spodenki", "text": "Sponsorzy główni i techniczni." },
+      { "n": "+", "title": "Poza strojem", "text": "Samochody zespołu, social media, materiały prasowe, strona i wydarzenia dla partnerów." }
+    ],
+    "caption": "Przykładowe rozmieszczenie. Ostateczne pola ustala zespół."
   }
 }

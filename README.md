@@ -23,12 +23,12 @@ The approved brief and designs are in the repository too: `docs/BUILD_PROMPT.md`
 | `/zespol/` | `/en/team/` | All riders and staff, and the U19 → U23 → Elite pathway |
 | `/zespol/<name>/` | `/en/team/<name>/` | One profile per rider: facts, bio, portrait download, results |
 | `/kalendarz/` | `/en/calendar/` | Next race, full calendar with filters, archive of past seasons, `.ics` subscription |
-| `/partnerzy/` | `/en/partners/` | Thanks to the partners, by tier |
+| `/partnerzy/` | `/en/partners/` | Thanks to the partners, by tier, and "Twoja marka w peletonie" (jersey placement) |
 | `/media/` | `/en/media/` | Media centre: facts, boilerplate, downloads, photo library, roster, press contact |
 
 The **status bar** above the header is the only place on the site with seasonal news. Everything else is either evergreen or counted from data.
 
-The site has **no content for prospective partners** (no offer, deck or "partner with us" buttons): partnerships are handled offline. Partners are thanked on the home page and the partners page.
+Partnerships are handled offline, so the main pages have **no content for prospective partners**: no offer, deck, contact card or "partner with us" buttons. The header pill is **"Subskrybuj"** and jumps to the newsletter form. The only partner-facing section, "Twoja marka w peletonie" (where a partner's logo goes on the kit), is on the partners page. Partners are thanked on the home page and the partners page.
 
 ## Everyday editing
 

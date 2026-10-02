@@ -1,6 +1,8 @@
 ---
-// /partnerzy and /en/partners: thanks to the partners, by tier. No offer for prospective
-// partners: partnerships are handled offline.
+// /partnerzy and /en/partners: thanks to the partners, by tier, and "Your brand in the peloton"
+// (the jersey placement diagram). This is the only page with that section; no offer, deck or
+// partnership contact — partnerships are handled offline.
+import BrandPlacement from '../components/BrandPlacement.astro';
 import PageIntro from '../components/PageIntro.astro';
 import Partners from '../components/Partners.astro';
 import Shell from '../components/Shell.astro';
@@ -26,4 +28,5 @@ const season = site.currentSeason;
 >
   <PageIntro lang={lang} eyebrow={fill(t.partnersPage.eyebrow, { season }, lang)} title={t.partnersPage.title} lead={t.partnersPage.lead} />
   <Partners lang={lang} />
+  <BrandPlacement lang={lang} />
 </Shell>

@@ -9,7 +9,7 @@ New website for **Mat Atom Deweloper Wrocław (MADW)**, a UCI Continental women'
 4. `data/*.json` is the seed content. `data/MADW_Results_2026.xlsx` is the team's editable master of 2026 results, and `results-2026.json` is exported from it.
 
 ## Non-negotiables
-- **No content for prospective partners** (decided by the team, 2 Oct 2026; overrides the spec and mockups): no "Zostań partnerem" buttons, partnership offer, deck, jersey-placement diagram, partnership contact or "Jedź z nami" band. Partnerships are handled offline. Thanking current partners is fine.
+- **No partner-sales content on the main pages** (decided by the team, 2 Oct 2026; overrides the spec and mockups): no "Zostań partnerem" buttons (the header pill is "Subskrybuj" → newsletter), no partnership offer, deck, partnership contact or "Jedź z nami" band. "Twoja marka w peletonie" (jersey placement) appears **only on /partnerzy**. Partnerships are handled offline; thanking current partners is fine.
 - **Pictures first:** full-screen hero, the race-day gallery near the top, full-width photo breaks; keep text short.
 - **Polish first.** PL lives at `/`, EN at `/en/`, with a PL | EN switch in the header. There is no automatic redirect by browser language. Every string lives in `copy.pl.json` / `copy.en.json` with identical keys.
 - **Static and evergreen.** Seasonal facts live only in `site.json` (status line, flags, season number). Nothing on the page claims unconfirmed facts; the fallbacks are defined in the spec.

@@ -22,6 +22,8 @@ const nav = [
   { key: 'media', href: route(lang, 'media'), label: t.nav.media },
 ];
 const current = (key: string) => (key === page ? 'page' : undefined);
+// The newsletter form is in the footer of every page.
+const subscribeHref = `#${anchor(lang, 'newsletter')}`;
 // Drop the official logo at public/brand/logo.svg and it replaces the text wordmark.
 const hasLogo = brandLogoExists();
 ---
@@ -53,6 +55,7 @@ const hasLogo = brandLogoExists();
       <a class="icon-link desk-only" href={t.team.social.instagram} target="_blank" rel="noopener me" aria-label={`${t.a11y.socialInstagram} ${t.a11y.newTab}`}>
         <Icon name="instagram" size={20} />
       </a>
+      <a class="btn btn--primary cta desk-only" href={subscribeHref}>{t.nav.subscribe}</a>
       <LangSwitch lang={lang} paths={paths} variant="single" class="mobile-only" />
       <button class="burger mobile-only" type="button" aria-haspopup="dialog" aria-controls="mobile-menu" aria-expanded="false" data-menu-open>
         <Icon name="menu" />
@@ -77,6 +80,7 @@ const hasLogo = brandLogoExists();
     </ul>
   </nav>
   <div class="menu__foot">
+    <a class="btn btn--primary" href={subscribeHref} data-menu-link>{t.nav.subscribe}</a>
     <ul class="menu__social" role="list">
       <li><a href={t.team.social.instagram} target="_blank" rel="noopener me">{t.a11y.socialInstagram}<span class="visually-hidden"> {t.a11y.newTab}</span></a></li>
       <li><a href={t.team.social.facebook} target="_blank" rel="noopener me">{t.a11y.socialFacebook}<span class="visually-hidden"> {t.a11y.newTab}</span></a></li>

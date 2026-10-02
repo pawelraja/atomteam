@@ -66,7 +66,9 @@ const check = (ok, msg) => {
   await page.keyboard.press('Escape');
   check(!(await page.locator('dialog.lightbox[open]').count()), 'Gallery: Esc closes the lightbox');
   check(await page.evaluate(() => document.activeElement?.hasAttribute('data-open')), 'Gallery: focus returns to the photo that opened it');
-  check((await page.locator('.cta, a[href*="#wspolpraca"]').count()) === 0, 'No partnership call-to-action on the page');
+  check(!(await page.content()).includes('Zostań partnerem'), 'Home: no "Zostań partnerem" call to action');
+  check((await page.locator('#twoja-marka').count()) === 0, 'Home: no jersey placement section (it lives on /partnerzy only)');
+  check((await page.locator('.site-header .cta').getAttribute('href')) === '#newsletter', 'Header: "Subskrybuj" goes to the newsletter form');
 
   // Language switch follows the section in view.
   await page.evaluate(() => document.getElementById('kalendarz').scrollIntoView({ behavior: 'instant' }));
@@ -91,6 +93,9 @@ const check = (ok, msg) => {
   const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
   await page.goto(`${base}/kalendarz/`, { waitUntil: 'networkidle' });
   check((await page.locator('.site-header .nav a[aria-current="page"]').textContent())?.trim() === 'Kalendarz', 'Calendar page is marked current in the nav');
+  await page.goto(`${base}/partnerzy/`, { waitUntil: 'networkidle' });
+  check((await page.locator('#twoja-marka').count()) === 1, 'Partners page: shows "Twoja marka w peletonie"');
+  await page.goto(`${base}/kalendarz/`, { waitUntil: 'networkidle' });
   await page.locator('#kalendarz-2026-tab').click();
   check(await page.locator('#kalendarz-2026').isVisible(), 'Season switch shows the 2026 archive');
   const archive = page.locator('#kalendarz-2026');
