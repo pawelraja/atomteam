@@ -157,7 +157,7 @@
     "pathwayLabel": "Ścieżka rozwoju w drużynie",
     "stages": {
       "U19": { "badge": "U19", "name": "Juniorki", "text": "Szosa, tor i przełaj, mistrzostwa Polski i Europy juniorek." },
-      "U23": { "badge": "U23", "name": "Młodzieżowczynie", "text": "Kalendarz UCI w Europie i tytuły mistrzyń Polski." },
+      "U23": { "badge": "U23", "name": "Orliczki", "text": "Kalendarz UCI w Europie i tytuły mistrzyń Polski." },
       "Elite": { "badge": "Elita", "name": "Elita", "text": "Liderki drużyny w wyścigach klasy 1.Pro i 2.Pro." }
     },
     "stageCount": {
