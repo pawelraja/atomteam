@@ -13,16 +13,32 @@ Every picture on the site has a fixed slot. Until a file is supplied, the page s
 | `hero.jpg` | 16:9 | 2560 × 1440 | Desktop. Keep the lower third calm: the headline sits there on a plum wash. |
 | `hero-mobile.jpg` | 4:5 | 1080 × 1350 | Phones. Optional — without it, `hero.jpg` is centre-cropped. |
 
-## Photo strip on the home page (`src/assets/photos/`)
+## Race photos on the home page (`src/assets/photos/`)
 
-Four photos at mixed widths above the #allezatomówki ticker. Edit captions, credits ("Fot. …") and alt text in `src/data/gallery.json`. Each photo is cropped to fill its frame, so keep the subject near the centre.
+Pictures carry the home page. Edit captions, credits ("Fot. …") and alt text in `src/data/gallery.json`; `"use"` says where each photo appears.
+
+**Race-day gallery** (`"use": "story"`, click to enlarge):
+
+| File | Crop | Minimum width | Caption |
+|---|---|---|---|
+| `photo-01.jpg` | 16:9 | 2560 px | Ronde de Mouscron · Mouscron, BEL (the large first photo) |
+| `photo-02.jpg` | 3:4 | 1600 px | Umag Classic Ladies · Umag, CRO |
+| `photo-03.jpg` | 4:3 | 1600 px | Tour de Pologne Women · POL |
+| `photo-04.jpg` | 3:4 | 1600 px | Sowiogórski Tour · POL |
+| `photo-05.jpg` | 4:3 | 1600 px | Torowe Mistrzostwa Polski · POL |
+| `photo-06.jpg` | 16:9 | 2400 px | Mistrzostwa Polski Drużyn na czas · POL |
+| `photo-07.jpg` | 3:4 | 1600 px | Puchar Polski · Lubań, POL |
+
+**Full-width photo** between the chapters (`"use": "band"`): `photo-band-01.jpg`, landscape, at least 2560 px wide, subject near the centre (it is cropped to the screen).
+
+**Photo strip** above the ticker (`"use": "strip"`), cropped to fill their frames:
 
 | File | Shape | Minimum width | Caption |
 |---|---|---|---|
-| `photo-01.jpg` | landscape (the wide one) | 2000 px | Ronde de Mouscron · Mouscron, BEL |
-| `photo-02.jpg` | portrait | 1200 px | Umag Classic Ladies · Umag, CRO |
-| `photo-03.jpg` | portrait or square | 1400 px | Tour de Pologne Women · POL |
-| `photo-04.jpg` | portrait | 1200 px | Sowiogórski Tour · POL |
+| `photo-08.jpg` | landscape (the wide one) | 2000 px | Atak na podjeździe |
+| `photo-09.jpg` | portrait | 1200 px | Portret zawodniczki |
+| `photo-10.jpg` | portrait or square | 1400 px | Tor, Pruszków |
+| `photo-11.jpg` | portrait | 1200 px | Mechanik przy pracy |
 
 ## Season highlights (`src/assets/photos/`)
 

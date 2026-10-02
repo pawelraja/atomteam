@@ -1,7 +1,9 @@
 [
   {
+    "use": "story",
     "photo": "photo-01.jpg",
     "aspect": "16:9",
+    "feature": true,
     "alt": {
       "pl": "Zawodniczki drużyny w peletonie na belgijskim klasyku",
       "en": "The team riding together in the peloton on a Belgian classic"
@@ -17,6 +19,7 @@
     "credit": "[autor / credit]"
   },
   {
+    "use": "story",
     "photo": "photo-02.jpg",
     "aspect": "3:4",
     "alt": {
@@ -34,6 +37,7 @@
     "credit": "[autor / credit]"
   },
   {
+    "use": "story",
     "photo": "photo-03.jpg",
     "aspect": "4:3",
     "alt": {
@@ -51,6 +55,7 @@
     "credit": "[autor / credit]"
   },
   {
+    "use": "story",
     "photo": "photo-04.jpg",
     "aspect": "3:4",
     "alt": {
@@ -64,6 +69,150 @@
     "place": {
       "pl": "POL",
       "en": "POL"
+    },
+    "credit": "[autor / credit]"
+  },
+  {
+    "use": "story",
+    "photo": "photo-05.jpg",
+    "aspect": "4:3",
+    "alt": {
+      "pl": "Zawodniczki na torze kolarskim w szyku drużynowym",
+      "en": "Riders on the velodrome in team pursuit formation"
+    },
+    "race": {
+      "pl": "Torowe Mistrzostwa Polski",
+      "en": "Polish Track Championships"
+    },
+    "place": {
+      "pl": "POL",
+      "en": "POL"
+    },
+    "credit": "[autor / credit]"
+  },
+  {
+    "use": "story",
+    "photo": "photo-06.jpg",
+    "aspect": "16:9",
+    "alt": {
+      "pl": "Drużyna na rampie startowej jazdy drużynowej na czas",
+      "en": "The squad on the start ramp of a team time trial"
+    },
+    "race": {
+      "pl": "Mistrzostwa Polski Drużyn na czas",
+      "en": "Polish Team Time Trial Championships"
+    },
+    "place": {
+      "pl": "POL",
+      "en": "POL"
+    },
+    "credit": "[autor / credit]"
+  },
+  {
+    "use": "story",
+    "photo": "photo-07.jpg",
+    "aspect": "3:4",
+    "alt": {
+      "pl": "Zawodniczka świętuje z koleżankami z drużyny po mecie",
+      "en": "A rider celebrating with teammates after the finish"
+    },
+    "race": {
+      "pl": "Puchar Polski",
+      "en": "Polish Cup"
+    },
+    "place": {
+      "pl": "Lubań, POL",
+      "en": "Lubań, POL"
+    },
+    "credit": "[autor / credit]"
+  },
+  {
+    "use": "band",
+    "photo": "photo-band-01.jpg",
+    "aspect": "16:9",
+    "alt": {
+      "pl": "Peleton w ruchu, zawodniczki drużyny na czele",
+      "en": "The peloton in motion, team riders at the front"
+    },
+    "race": {
+      "pl": "Peleton",
+      "en": "The peloton"
+    },
+    "place": {
+      "pl": "Sezon 2026",
+      "en": "2026 season"
+    },
+    "credit": "[autor / credit]"
+  },
+  {
+    "use": "strip",
+    "photo": "photo-08.jpg",
+    "aspect": "4:3",
+    "alt": {
+      "pl": "Zawodniczka atakuje na podjeździe",
+      "en": "A rider attacking on a climb"
+    },
+    "race": {
+      "pl": "Atak na podjeździe",
+      "en": "Attack on a climb"
+    },
+    "place": {
+      "pl": "Sezon 2026",
+      "en": "2026 season"
+    },
+    "credit": "[autor / credit]"
+  },
+  {
+    "use": "strip",
+    "photo": "photo-09.jpg",
+    "aspect": "3:4",
+    "alt": {
+      "pl": "Portret zawodniczki w stroju drużyny",
+      "en": "Portrait of a rider in team kit"
+    },
+    "race": {
+      "pl": "Portret zawodniczki",
+      "en": "Rider portrait"
+    },
+    "place": {
+      "pl": "Sezon 2026",
+      "en": "2026 season"
+    },
+    "credit": "[autor / credit]"
+  },
+  {
+    "use": "strip",
+    "photo": "photo-10.jpg",
+    "aspect": "3:4",
+    "alt": {
+      "pl": "Zawodniczki na torze w Pruszkowie",
+      "en": "Riders on the track in Pruszków"
+    },
+    "race": {
+      "pl": "Tor, Pruszków",
+      "en": "Track, Pruszków"
+    },
+    "place": {
+      "pl": "Sezon 2026",
+      "en": "2026 season"
+    },
+    "credit": "[autor / credit]"
+  },
+  {
+    "use": "strip",
+    "photo": "photo-11.jpg",
+    "aspect": "3:4",
+    "alt": {
+      "pl": "Mechanik drużyny przygotowuje rower",
+      "en": "The team mechanic preparing a bike"
+    },
+    "race": {
+      "pl": "Mechanik przy pracy",
+      "en": "Mechanic at work"
+    },
+    "place": {
+      "pl": "Sezon 2026",
+      "en": "2026 season"
     },
     "credit": "[autor / credit]"
   }

@@ -4,7 +4,7 @@
     "locale": "en-GB",
     "ogLocale": "en_GB",
     "title": "Mat Atom Deweloper Wrocław — UCI women's cycling team · Season {season}",
-    "description": "UCI Continental women's cycling team and junior team from Wrocław, Poland. Since {founded}. Team, {season} calendar, results and partnerships.",
+    "description": "UCI Continental women's cycling team and junior team from Wrocław, Poland. Since {founded}. Team, photos, {season} calendar and results.",
     "ogHeadline": "Season {season}.",
     "ogAlt": "Mat Atom Deweloper Wrocław — Season {season}",
     "pages": {
@@ -18,7 +18,7 @@
       },
       "partners": {
         "title": "Partners — Mat Atom Deweloper Wrocław",
-        "description": "Our partners, and partnering with a UCI Continental women's team: kit placement, team vehicles, media and events."
+        "description": "The companies and institutions behind the Mat Atom Deweloper Wrocław women's cycling team."
       },
       "media": {
         "title": "Media centre — Mat Atom Deweloper Wrocław",
@@ -75,8 +75,7 @@
     "approach": "Approach",
     "calendar": "Calendar",
     "partners": "Partners",
-    "media": "Media",
-    "cta": "Partner with us"
+    "media": "Media"
   },
   "status": {
     "presentation": "{season} team presentation: {date} · {place}",
@@ -94,31 +93,16 @@
     "eyebrow": "Women's cycling team from Wrocław",
     "title": "We are for women's cycling.",
     "mission": "Since {founded} we have taken riders from their first junior races to UCI races across Europe.",
-    "primary": "Partner with us in {season}",
-    "secondary": "Meet the team",
+    "primary": "Meet the team",
+    "secondary": "{season} calendar",
     "alt": "The peloton in motion: Mat Atom Deweloper Wrocław riders in team kit",
     "credentialsLabel": "The team in facts",
     "credentials": {
-      "licence": {
-        "term": "Licence",
-        "value": "UCI Continental"
-      },
-      "juniors": {
-        "term": "Juniors",
-        "value": "U19 team"
-      },
-      "base": {
-        "term": "Base",
-        "value": "Wrocław /POL"
-      },
-      "founded": {
-        "term": "Founded",
-        "value": "{founded}"
-      },
-      "programme": {
-        "term": "Programme",
-        "value": "Club Pro · Ministry of Sport"
-      }
+      "licence": { "term": "Licence", "value": "UCI Continental" },
+      "juniors": { "term": "Juniors", "value": "U19 team" },
+      "base": { "term": "Base", "value": "Wrocław /POL" },
+      "founded": { "term": "Founded", "value": "{founded}" },
+      "programme": { "term": "Programme", "value": "Club Pro · Ministry of Sport" }
     }
   },
   "numbers": {
@@ -171,21 +155,9 @@
     "lead": "Riders develop in one structure: the same staff, the same standards for training and equipment, and a steadily higher level of racing.",
     "pathwayLabel": "Rider pathway within the team",
     "stages": {
-      "U19": {
-        "badge": "U19",
-        "name": "Juniors",
-        "text": "Road, track and cyclocross; Polish and European junior championships."
-      },
-      "U23": {
-        "badge": "U23",
-        "name": "Under-23s",
-        "text": "The UCI calendar in Europe and Polish national titles."
-      },
-      "Elite": {
-        "badge": "Elite",
-        "name": "Elite",
-        "text": "Team leaders in 1.Pro and 2.Pro races."
-      }
+      "U19": { "badge": "U19", "name": "Juniors", "text": "Road, track and cyclocross; Polish and European junior championships." },
+      "U23": { "badge": "U23", "name": "Under-23s", "text": "The UCI calendar in Europe and Polish national titles." },
+      "Elite": { "badge": "Elite", "name": "Elite", "text": "Team leaders in 1.Pro and 2.Pro races." }
     },
     "stageCount": {
       "0": "No riders in {season}.",
@@ -346,19 +318,6 @@
     "more": "+ {n} more",
     "complete": "Season {season} complete. Every race is in the archive."
   },
-  "brand": {
-    "eyebrow": "For partners",
-    "title": "Your brand in the peloton.",
-    "lead": "A team partner is seen wherever the riders are: at the start, on the podium, in race coverage and on social media.",
-    "diagramLabel": "Jersey diagram with partner positions: 1 front, 2 sleeves, 3 side panel",
-    "fields": [
-      { "n": "1", "title": "Jersey front", "text": "Title sponsor. In every finish and podium photo." },
-      { "n": "2", "title": "Sleeves and shoulders", "text": "Main sponsors. Visible in side-on shots of the peloton." },
-      { "n": "3", "title": "Side panel and shorts", "text": "Main and technical sponsors." },
-      { "n": "+", "title": "Beyond the kit", "text": "Team vehicles, social media, press materials, the website and partner events." }
-    ],
-    "caption": "Example placement. The team sets the final positions."
-  },
   "wall": {
     "titleCurrent": "Our {season} partners.",
     "titleThanks": "Thank you to our {season} partners.",
@@ -368,41 +327,16 @@
     "technical": "Technical partners:",
     "allPartners": "All partners"
   },
-  "cta": {
-    "title": "Ride with us in {season}.",
-    "lead": "Three partnership levels: title, main and technical. We will prepare an offer that fits your brand.",
-    "book": "Book a call",
-    "mailSubject": "Partnership {season}",
-    "deck": "Partner deck PDF",
-    "deckSoon": "coming soon",
-    "contactLabel": "Partnership contact"
-  },
   "mediaTeaser": {
     "eyebrow": "For media",
     "title": "Ready-to-publish materials.",
     "link": "Media centre",
     "soon": "coming soon",
     "tiles": {
-      "logos": {
-        "format": "SVG · PNG",
-        "title": "Logos",
-        "text": "Colour, black, white"
-      },
-      "photos": {
-        "format": "JPG · high resolution",
-        "title": "Race photos",
-        "text": "With photographer credit"
-      },
-      "portraits": {
-        "format": "JPG · 3:4 and 1:1",
-        "title": "Rider portraits",
-        "text": "{season} season"
-      },
-      "info": {
-        "format": "PDF · PL / EN",
-        "title": "Team information",
-        "text": "Facts, roster, staff, contact"
-      }
+      "logos": { "format": "SVG · PNG", "title": "Logos", "text": "Colour, black, white" },
+      "photos": { "format": "JPG · high resolution", "title": "Race photos", "text": "With photographer credit" },
+      "portraits": { "format": "JPG · 3:4 and 1:1", "title": "Rider portraits", "text": "{season} season" },
+      "info": { "format": "PDF · PL / EN", "title": "Team information", "text": "Facts, roster, staff, contact" }
     }
   },
   "gallery": {
@@ -521,7 +455,7 @@
     }
   },
   "partnersPage": {
-    "eyebrow": "Partnership {season}",
+    "eyebrow": "Partners",
     "title": "Partners.",
     "lead": "Every race we ride is made possible by the companies and institutions behind the team."
   },
@@ -688,7 +622,7 @@
     "boilerplate": "UCI Continental women's cycling team and junior team. Wrocław, since {founded}.",
     "columns": {
       "team": "Team",
-      "collab": "Work with us",
+      "collab": "Partners and media",
       "follow": "Follow"
     },
     "links": {
@@ -702,5 +636,15 @@
     },
     "copyright": "© {year} {team}",
     "privacy": "Privacy policy"
+  },
+  "story": {
+    "eyebrow": "Gallery",
+    "title": "Race days.",
+    "open": "Enlarge photo: {alt}",
+    "credit": "Photo: {credit}",
+    "close": "Close",
+    "prev": "Previous photo",
+    "next": "Next photo",
+    "counter": "{i} of {n}"
   }
 }

@@ -52,9 +52,6 @@ export const siteSchema = z.object({
   statusLine: localized.nullable(),
   /** Link at the end of the status bar. "href" is a page name (home, team, calendar, partners, media) or a full URL. */
   statusLink: z.object({ label: localized, href: z.string().min(1) }).strict().nullable(),
-  /** The 2027 partner deck, e.g. "/partners/oferta-2027.pdf". Until set, the button says "soon". */
-  partnerDeckUrl: z.string().min(1).nullable(),
-  partnerContact: contactSchema.nullable(),
   pressContact: contactSchema.nullable(),
 });
 
@@ -181,6 +178,8 @@ export const highlightSchema = z
 
 export const gallerySchema = z
   .object({
+    /** Where the photo appears: "story" (the big gallery), "band" (a full-width photo break), "strip" (the strip above the ticker). */
+    use: z.enum(['story', 'band', 'strip']).default('story'),
     photo: z.string().min(1),
     aspect: z.enum(['3:4', '4:3', '16:9']),
     feature: z.boolean().optional(),

@@ -1,6 +1,6 @@
 ---
-// Home hero. Evergreen by design: nothing here changes with the season except the year in the
-// partner button. Seasonal news lives in the status bar.
+// Home hero: a full-screen photo. Evergreen by design: nothing here changes with the season
+// except the year on the calendar button. Seasonal news lives in the status bar.
 import { anchor } from '../lib/anchors';
 import { getData } from '../lib/data';
 import { HERO_DESKTOP_MEDIA, HERO_MOBILE_MEDIA, heroSources } from '../lib/hero';
@@ -55,8 +55,8 @@ const credentials = [
     <div class="hero__row">
       <p class="hero__mission">{fill(t.hero.mission, { founded: site.foundedYear }, lang)}</p>
       <div class="hero__buttons">
-        <a class="btn btn--secondary hero__secondary" href={route(lang, 'team')}>{t.hero.secondary}</a>
-        <a class="btn btn--primary" href={`${route(lang, 'partners')}#${anchor(lang, 'cta')}`}>{fill(t.hero.primary, { season: site.currentSeason }, lang)}</a>
+        <a class="btn btn--secondary hero__secondary" href={route(lang, 'calendar')}>{fill(t.hero.secondary, { season: site.currentSeason }, lang)}</a>
+        <a class="btn btn--primary" href={route(lang, 'team')}>{t.hero.primary}</a>
       </div>
     </div>
     <dl class="credentials" aria-label={t.hero.credentialsLabel}>
@@ -77,7 +77,7 @@ const credentials = [
     position: relative;
     display: grid;
     align-items: end;
-    min-height: min(calc(100svh - var(--status-h)), 820px);
+    min-height: calc(100svh - var(--status-h));
     background: #3f273c;
     color: var(--ink);
     isolation: isolate;

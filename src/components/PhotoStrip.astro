@@ -1,7 +1,6 @@
 ---
-// Four race photos at mixed widths (the first four entries of gallery.json), with race, place
-// and photographer credit, followed by the #allezatomówki ticker.
-import { anchor } from '../lib/anchors';
+// Four photos at mixed widths ("use": "strip" in gallery.json), with caption and photographer
+// credit, followed by the #allezatomówki ticker.
 import { getData } from '../lib/data';
 import { copy, fill, pick, type Lang } from '../lib/i18n';
 import Photo from './Photo.astro';
@@ -13,11 +12,11 @@ interface Props {
 const { lang } = Astro.props;
 const { gallery } = getData();
 const t = copy(lang);
-const photos = gallery.slice(0, 4);
+const photos = gallery.filter((g) => g.use === 'strip').slice(0, 4);
 const sizes = ['(min-width: 900px) 38vw, 100vw', '(min-width: 900px) 19vw, 50vw', '(min-width: 900px) 26vw, 50vw', '(min-width: 900px) 19vw, 100vw'];
 ---
 
-<section class="strip" id={anchor(lang, 'gallery')} data-section="gallery" aria-labelledby="strip-title">
+<section class="strip" aria-labelledby="strip-title">
   <h2 id="strip-title" class="visually-hidden">{t.gallery.title}</h2>
   <ul class="strip__row" role="list">
     {
@@ -46,7 +45,7 @@ const sizes = ['(min-width: 900px) 38vw, 100vw', '(min-width: 900px) 19vw, 50vw'
     grid-template-columns: 2fr 1fr 1.4fr 1fr;
     gap: 16px;
     padding: 0 16px;
-    height: 420px;
+    height: clamp(420px, 40vw, 640px);
     margin-bottom: 56px;
   }
   .shot figure {
@@ -74,7 +73,7 @@ const sizes = ['(min-width: 900px) 38vw, 100vw', '(min-width: 900px) 19vw, 50vw'
     padding: 28px 20px 16px;
     background: linear-gradient(to top, rgba(43, 0, 32, 0.85), rgba(43, 0, 32, 0));
     color: #f1eef3;
-    font-size: 12px;
+    font-size: 14px;
   }
   @media (max-width: 899px) {
     .strip {

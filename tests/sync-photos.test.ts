@@ -8,7 +8,7 @@ describe('Drive photo sync', () => {
     expect(slots.hero).toEqual(['hero.jpg', 'hero-mobile.jpg']);
     expect(slots.riders).toContain('eliza-rabazynska.jpg');
     expect(slots.partners).toContain('budus.svg');
-    expect(slots['photo-story']).toHaveLength(4);
+    expect(slots['photo-story']).toHaveLength(12);
   });
 
   it('matches names regardless of case, spaces and Polish letters', () => {

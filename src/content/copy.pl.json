@@ -4,7 +4,7 @@
     "locale": "pl-PL",
     "ogLocale": "pl_PL",
     "title": "Mat Atom Deweloper Wrocław — kobieca drużyna kolarska UCI · Sezon {season}",
-    "description": "Kobieca drużyna kolarska UCI Continental i drużyna juniorska z Wrocławia. Od {founded} roku. Zespół, kalendarz {season}, wyniki i partnerstwo.",
+    "description": "Kobieca drużyna kolarska UCI Continental i drużyna juniorska z Wrocławia. Od {founded} roku. Zespół, zdjęcia, kalendarz {season} i wyniki.",
     "ogHeadline": "Sezon {season}.",
     "ogAlt": "Mat Atom Deweloper Wrocław — Sezon {season}",
     "pages": {
@@ -18,7 +18,7 @@
       },
       "partners": {
         "title": "Partnerzy — Mat Atom Deweloper Wrocław",
-        "description": "Nasi partnerzy i partnerstwo z kobiecą drużyną UCI Continental: miejsce na stroju, samochody zespołu, media, wydarzenia."
+        "description": "Firmy i instytucje, które wspierają kobiecą drużynę kolarską Mat Atom Deweloper Wrocław."
       },
       "media": {
         "title": "Strefa mediów — Mat Atom Deweloper Wrocław",
@@ -75,8 +75,7 @@
     "approach": "Podejście",
     "calendar": "Kalendarz",
     "partners": "Partnerzy",
-    "media": "Media",
-    "cta": "Zostań partnerem"
+    "media": "Media"
   },
   "status": {
     "presentation": "Prezentacja drużyny {season}: {date} · {place}",
@@ -94,8 +93,8 @@
     "eyebrow": "Kobieca drużyna kolarska z Wrocławia",
     "title": "Jesteśmy dla kobiecego kolarstwa.",
     "mission": "Od {founded} roku prowadzimy zawodniczki od pierwszych startów juniorskich do wyścigów UCI w całej Europie.",
-    "primary": "Zostań partnerem {season}",
-    "secondary": "Poznaj zespół",
+    "primary": "Poznaj zespół",
+    "secondary": "Kalendarz {season}",
     "alt": "Peleton w ruchu: zawodniczki Mat Atom Deweloper Wrocław w strojach drużyny",
     "credentialsLabel": "Drużyna w faktach",
     "credentials": {
@@ -319,19 +318,6 @@
     "more": "+ {n} więcej",
     "complete": "Sezon {season} zakończony. Wszystkie starty są w archiwum."
   },
-  "brand": {
-    "eyebrow": "Dla partnerów",
-    "title": "Twoja marka w peletonie.",
-    "lead": "Partner drużyny jest widoczny wszędzie tam, gdzie są zawodniczki: na starcie, na podium, w relacjach i w mediach społecznościowych.",
-    "diagramLabel": "Schemat koszulki z polami dla partnerów: 1 przód, 2 rękawy, 3 pas boczny",
-    "fields": [
-      { "n": "1", "title": "Przód koszulki", "text": "Partner tytularny. Na każdym zdjęciu z mety i podium." },
-      { "n": "2", "title": "Rękawy i ramiona", "text": "Sponsorzy główni. Widoczne w ujęciach z boku peletonu." },
-      { "n": "3", "title": "Pas boczny i spodenki", "text": "Sponsorzy główni i techniczni." },
-      { "n": "+", "title": "Poza strojem", "text": "Samochody zespołu, social media, materiały prasowe, strona i wydarzenia dla partnerów." }
-    ],
-    "caption": "Przykładowe rozmieszczenie. Ostateczne pola ustala zespół."
-  },
   "wall": {
     "titleCurrent": "Nasi partnerzy sezonu {season}.",
     "titleThanks": "Dziękujemy partnerom sezonu {season}.",
@@ -340,15 +326,6 @@
     "institutional": "wsparcie instytucjonalne",
     "technical": "Partnerzy techniczni:",
     "allPartners": "Wszyscy partnerzy"
-  },
-  "cta": {
-    "title": "Jedź z nami w sezonie {season}.",
-    "lead": "Trzy poziomy partnerstwa: tytularny, główny i techniczny. Przygotujemy ofertę dopasowaną do Twojej marki.",
-    "book": "Umów rozmowę",
-    "mailSubject": "Partnerstwo {season}",
-    "deck": "Oferta partnerska PDF",
-    "deckSoon": "wkrótce",
-    "contactLabel": "Kontakt dla partnerów"
   },
   "mediaTeaser": {
     "eyebrow": "Dla mediów",
@@ -478,7 +455,7 @@
     }
   },
   "partnersPage": {
-    "eyebrow": "Partnerstwo {season}",
+    "eyebrow": "Partnerzy",
     "title": "Partnerzy.",
     "lead": "Każdy nasz start jest możliwy dzięki firmom i instytucjom, które stoją za drużyną."
   },
@@ -645,7 +622,7 @@
     "boilerplate": "Kobieca drużyna kolarska UCI Continental i drużyna juniorska. Wrocław, od {founded}.",
     "columns": {
       "team": "Drużyna",
-      "collab": "Współpraca",
+      "collab": "Partnerzy i media",
       "follow": "Obserwuj"
     },
     "links": {
@@ -659,5 +636,15 @@
     },
     "copyright": "© {year} {team}",
     "privacy": "Polityka prywatności"
+  },
+  "story": {
+    "eyebrow": "Galeria",
+    "title": "Dni wyścigów.",
+    "open": "Powiększ zdjęcie: {alt}",
+    "credit": "Fot. {credit}",
+    "close": "Zamknij",
+    "prev": "Poprzednie zdjęcie",
+    "next": "Następne zdjęcie",
+    "counter": "{i} z {n}"
   }
 }

@@ -12,18 +12,10 @@
   },
   "statusLink": {
     "label": {
-      "pl": "Partnerstwa na sezon 2027",
-      "en": "2027 partnerships"
+      "pl": "Kalendarz 2027",
+      "en": "2027 calendar"
     },
-    "href": "partners"
-  },
-  "partnerDeckUrl": null,
-  "partnerContact": {
-    "name": null,
-    "role": null,
-    "phone": null,
-    "email": null,
-    "photo": null
+    "href": "calendar"
   },
   "pressContact": {
     "name": null,

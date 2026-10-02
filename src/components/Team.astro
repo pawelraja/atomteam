@@ -183,16 +183,11 @@ const squads = [
   }
   .grid {
     display: grid;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-    gap: 24px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 32px 24px;
   }
   .grid > li {
     display: grid;
-  }
-  @media (max-width: 1279px) {
-    .grid {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
   }
   @media (max-width: 899px) {
     .team {

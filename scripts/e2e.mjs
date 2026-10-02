@@ -55,6 +55,19 @@ const check = (ok, msg) => {
   check((await page.locator('.results-table tbody tr').count()) === 8, 'Results: 8 featured rows');
   check((await page.locator('.results-table th[scope="col"]').count()) === 3, 'Results: column headers use <th scope="col">');
 
+  // Gallery lightbox: opens as a modal, arrow keys move, Esc closes and returns focus.
+  const opener = page.locator('[data-open]').first();
+  await opener.scrollIntoViewIfNeeded();
+  await opener.click();
+  check(await page.locator('dialog.lightbox[open]').isVisible(), 'Gallery: the lightbox opens as a modal dialog');
+  check((await page.evaluate(() => document.activeElement?.closest('dialog')?.className ?? '')).includes('lightbox'), 'Gallery: focus moves into the lightbox');
+  await page.keyboard.press('ArrowRight');
+  check(((await page.locator('#lightbox-caption').textContent()) ?? '').includes('2 z'), 'Gallery: ArrowRight shows the next photo');
+  await page.keyboard.press('Escape');
+  check(!(await page.locator('dialog.lightbox[open]').count()), 'Gallery: Esc closes the lightbox');
+  check(await page.evaluate(() => document.activeElement?.hasAttribute('data-open')), 'Gallery: focus returns to the photo that opened it');
+  check((await page.locator('.cta, a[href*="#wspolpraca"]').count()) === 0, 'No partnership call-to-action on the page');
+
   // Language switch follows the section in view.
   await page.evaluate(() => document.getElementById('kalendarz').scrollIntoView({ behavior: 'instant' }));
   await page.waitForTimeout(600);

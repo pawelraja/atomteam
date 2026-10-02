@@ -1,0 +1,63 @@
+---
+// A full-width photo break between chapters ("use": "band" in gallery.json): one big picture,
+// edge to edge, with its caption and credit.
+import { getData } from '../lib/data';
+import { copy, fill, pick, type Lang } from '../lib/i18n';
+import Photo from './Photo.astro';
+
+interface Props {
+  lang: Lang;
+  /** Which band photo to show, when there are several. */
+  index?: number;
+}
+const { lang, index = 0 } = Astro.props;
+const t = copy(lang);
+const photo = getData().gallery.filter((g) => g.use === 'band')[index];
+---
+
+{
+  photo && (
+    <figure class="band">
+      <Photo
+        lang={lang}
+        dir="photos"
+        file={photo.photo}
+        alt={pick(lang, photo.alt)}
+        aspect="16:9"
+        sizes="100vw"
+        widths={[640, 960, 1440, 1920, 2560]}
+        class="band__img"
+      />
+      <figcaption class="band__caption">
+        {pick(lang, photo.race)} · {pick(lang, photo.place)} · {fill(t.story.credit, { credit: photo.credit })}
+      </figcaption>
+    </figure>
+  )
+}
+
+<style>
+  .band {
+    position: relative;
+    height: min(80svh, 56.25vw);
+    min-height: 320px;
+    overflow: hidden;
+    background: var(--surface-muted);
+  }
+  .band :global(.band__img) {
+    height: 100%;
+    aspect-ratio: auto !important;
+  }
+  .band :global(.band__img img) {
+    height: 100%;
+  }
+  .band__caption {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 48px var(--gutter) 20px;
+    background: linear-gradient(to top, rgba(43, 0, 32, 0.85), rgba(43, 0, 32, 0));
+    color: #f1eef3;
+    font-size: 14px;
+  }
+</style>

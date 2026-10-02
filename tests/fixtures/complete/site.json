@@ -16,21 +16,10 @@
   },
   "statusLink": {
     "label": {
-      "pl": "Partnerstwa na sezon 2027",
-      "en": "2027 partnerships"
+      "pl": "Kalendarz 2027",
+      "en": "2027 calendar"
     },
-    "href": "partners"
-  },
-  "partnerDeckUrl": "https://example.com/madw-oferta-2027.pdf",
-  "partnerContact": {
-    "name": "[Fixture] Anna Przykładowa",
-    "role": {
-      "pl": "Partnerstwa",
-      "en": "Partnerships"
-    },
-    "phone": "+48 600 000 000",
-    "email": "kontakt@atomteam.pl",
-    "photo": null
+    "href": "calendar"
   },
   "pressContact": {
     "name": "[Fixture] Jan Przykładowy",

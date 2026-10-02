@@ -19,14 +19,16 @@ The approved brief and designs are in the repository too: `docs/BUILD_PROMPT.md`
 
 | Polish | English | What's on it |
 |---|---|---|
-| `/` | `/en/` | Home: hero, numbers, approach, results, team, calendar teaser, "your brand in the peloton", partners, partnership band, media teaser, photos |
+| `/` | `/en/` | Home: full-screen photo, numbers, race-day gallery, approach, a full-width photo, results, team, calendar teaser, thanks to partners, media teaser, photo strip |
 | `/zespol/` | `/en/team/` | All riders and staff, and the U19 → U23 → Elite pathway |
 | `/zespol/<name>/` | `/en/team/<name>/` | One profile per rider: facts, bio, portrait download, results |
 | `/kalendarz/` | `/en/calendar/` | Next race, full calendar with filters, archive of past seasons, `.ics` subscription |
-| `/partnerzy/` | `/en/partners/` | Partners by tier, jersey placement diagram, partnership contact |
+| `/partnerzy/` | `/en/partners/` | Thanks to the partners, by tier |
 | `/media/` | `/en/media/` | Media centre: facts, boilerplate, downloads, photo library, roster, press contact |
 
 The **status bar** above the header is the only place on the site with seasonal news. Everything else is either evergreen or counted from data.
+
+The site has **no content for prospective partners** (no offer, deck or "partner with us" buttons): partnerships are handled offline. Partners are thanked on the home page and the partners page.
 
 ## Everyday editing
 
@@ -38,8 +40,8 @@ The **status bar** above the header is the only place on the site with seasonal 
 | Announce the roster, add a new signing | `src/data/riders.json`, then `rosterConfirmed` in `site.json` |
 | Change staff | `src/data/staff.json` |
 | Announce 2027 partners | `src/data/partners.json`, then `partnersConfirmed` in `site.json` |
-| Add the partner deck | Put the PDF in Drive `partners/`, then `partnerDeckUrl` in `site.json` |
-| Name the partnership or press contact | `src/data/site.json` → `partnerContact`, `pressContact` |
+| Name the press contact | `src/data/site.json` → `pressContact` |
+| Change gallery captions and credits | `src/data/gallery.json` |
 | Publish a download for journalists | Drive `media-files/`, then `"status": "ready"` in `src/data/media.json` |
 | Add a photo or logo | Upload it to the shared Drive folder "MADW Website", named as listed in `src/assets/README.md` |
 | Change any wording on the page | `src/content/copy.pl.json` **and** `src/content/copy.en.json` |
@@ -64,9 +66,7 @@ The **status bar** above the header is the only place on the site with seasonal 
   "partnersConfirmed": false,
   "teamPresentation": null,
   "statusLine": { "pl": "Sezon 2027 · Kalendarz wstępny online · Skład ogłosimy wkrótce", "en": "Season 2027 · Provisional calendar online · Roster announced soon" },
-  "statusLink": { "label": { "pl": "Partnerstwa na sezon 2027", "en": "2027 partnerships" }, "href": "partners" },
-  "partnerDeckUrl": null,
-  "partnerContact": { "name": null, "role": null, "phone": null, "email": null, "photo": null },
+  "statusLink": { "label": { "pl": "Kalendarz 2027", "en": "2027 calendar" }, "href": "calendar" },
   "pressContact": { "name": null, "role": null, "phone": null, "email": null, "photo": null, "responseTime": null }
 }
 ```
@@ -82,8 +82,7 @@ The **status bar** above the header is the only place on the site with seasonal 
 | `teamPresentation` | `null` means no countdown. Set `{ "date": "2027-01-20", "place": "Wrocław, Hala Stulecia", "url": null }` and the status bar shows the presentation with "in 12 days" until the day itself, then goes back to the status line on its own. `url` can link to tickets or a stream. |
 | `statusLine` | The one line in the plum bar above the header, in both languages. The part before the first `·` is set in bold. Phones show the first two parts. `null` hides the bar. |
 | `statusLink` | The link at the right of the status bar. `href` is a page (`home`, `team`, `calendar`, `partners`, `media`) or a full address. `null` for no link. |
-| `partnerDeckUrl` | `null`: the "Partner deck PDF" button says "coming soon". Set it to the PDF's address (e.g. `"/partners/oferta-2027.pdf"`) and it becomes a download. |
-| `partnerContact`, `pressContact` | The named contact on the partnership band and in the media centre. Nothing is ever shown as a placeholder: until a **name** and an **e-mail or phone** are filled in, the card offers only `kontakt@atomteam.pl`. `role` is `{ "pl": "…", "en": "…" }`; `photo` is a file in `src/assets/riders/`; `responseTime` (press only) is e.g. `{ "pl": "w ciągu 1 dnia roboczego", "en": "within 1 working day" }`. |
+| `pressContact` | The named press contact in the media centre. Nothing is ever shown as a placeholder: until a **name** and an **e-mail or phone** are filled in, the card offers only `kontakt@atomteam.pl`. `role` is `{ "pl": "…", "en": "…" }`; `photo` is a file in `src/assets/riders/`; `responseTime` is e.g. `{ "pl": "w ciągu 1 dnia roboczego", "en": "within 1 working day" }`. |
 
 **Moving to a new season** (for example 2028): run `npm run draft-season -- 2027 2028` to create a draft calendar, add `2028` to returning riders, staff and partners, set `currentSeason` to 2028, `phase` to `"preseason"`, the three `*Confirmed` flags back to `false`, and update `statusLine`.
 
@@ -188,6 +187,8 @@ One file per season: `src/data/calendar/2026.json` (archive) and `src/data/calen
 
 ## Photos
 
+**Pictures carry the site.** `src/data/gallery.json` lists the race photos and where each one appears (`"use"`): `"story"` for the big race-day gallery near the top of the home page (up to 9, the first one large; click to enlarge), `"band"` for the full-width photo between chapters, and `"strip"` for the four photos above the #allezatomówki ticker. Each has a caption (`race`, `place`), an `alt` text in both languages and the photographer's `credit`.
+
 Upload photos to the shared Google Drive folder (see [Photos from Google Drive](#photos-from-google-drive)). **`src/assets/README.md`** lists every image slot, with its file name, crop and minimum size. The site creates optimised versions automatically. Every photo needs a description (`alt`) or caption in both languages in the data file, for people using screen readers.
 
 ## Texts (both languages)
@@ -207,7 +208,7 @@ Photos, logos and downloads are managed in the shared Google Drive folder **"MAD
 ```
 MADW Website/
   hero/          hero.jpg (16:9), hero-mobile.jpg (4:5)
-  photo-story/   photo-01.jpg … (the first four are the photo strip on the home page)
+  photo-story/   photo-01.jpg … photo-11.jpg, photo-band-01.jpg (gallery, photo break, strip)
   highlights/    highlight-*.jpg
   riders/        one portrait per rider and staff member
   partners/      partner logos (.svg) and the partner deck (.pdf)

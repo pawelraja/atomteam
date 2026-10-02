@@ -1,9 +1,7 @@
 ---
-// /partnerzy and /en/partners: partners by tier, the jersey placement diagram, and the
-// "Ride with us" band with the partnership contact.
-import BrandPlacement from '../components/BrandPlacement.astro';
+// /partnerzy and /en/partners: thanks to the partners, by tier. No offer for prospective
+// partners: partnerships are handled offline.
 import PageIntro from '../components/PageIntro.astro';
-import PartnerCta from '../components/PartnerCta.astro';
 import Partners from '../components/Partners.astro';
 import Shell from '../components/Shell.astro';
 import { getData } from '../lib/data';
@@ -28,6 +26,4 @@ const season = site.currentSeason;
 >
   <PageIntro lang={lang} eyebrow={fill(t.partnersPage.eyebrow, { season }, lang)} title={t.partnersPage.title} lead={t.partnersPage.lead} />
   <Partners lang={lang} />
-  <BrandPlacement lang={lang} />
-  <PartnerCta lang={lang} />
 </Shell>
