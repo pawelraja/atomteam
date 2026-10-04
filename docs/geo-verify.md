@@ -30,4 +30,11 @@ Every item below is in the data with `"verify": true` (or `null`). It is **never
 ## Team
 - `memberOf` → UCI: the team is presented as registered with the UCI. Add the Polish federation (PZKol) too if the team wants it.
 
+## FAQ and summaries (`src/content/copy.*.json` → `faq`)
+- **UCI tier wording** ("level"): the answer says Continental is the third tier of women's road cycling, after Women's WorldTeams and Women's ProTeams (the ProTeam tier started in 2025). Confirm the team is happy with this wording.
+- **Bikes**: the question "What bikes and wheels does the team use?" answers only the wheels (NO LIMITED) and lists the technical partners. Add the bike brand and model once confirmed (Accent is a main sponsor, but it isn't confirmed as the race bike).
+- **Junior recruitment**: the answer asks applicants to write to kontakt@atomteam.pl with their details. Confirm the process (trials, age limits, a contact person). Phase 6 adds an application form.
+- **Sponsorship**: the answer gives only the e-mail, in line with the decision of 2 Oct 2026 (partnerships offline, no sales content).
+- `site.json` → `factsAsOf` is `2026-10-04`. Update it when the roster or calendar changes.
+
 _Outbound network access was blocked in the build environment, so no external URL could be looked up or checked._

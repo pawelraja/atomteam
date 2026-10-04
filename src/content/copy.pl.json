@@ -8,6 +8,7 @@
     "ogHeadline": "Sezon {season}.",
     "ogAlt": "{TEAM} — Sezon {season}",
     "pages": {
+      "faq": { "title": "Pytania i odpowiedzi — {TEAM}", "description": "Odpowiedzi na najczęstsze pytania o {TEAM}: poziom UCI, skład, wyniki, kalendarz, sprzęt, juniorki i kontakt." },
       "team": {
         "title": "Zespół — {TEAM}",
         "description": "Zawodniczki drużyny Continental i juniorki oraz sztab {TEAM}."
@@ -82,7 +83,7 @@
   "hero": {
     "eyebrow": "Kobieca drużyna kolarska z Wrocławia",
     "title": "Jesteśmy dla kobiecego kolarstwa.",
-    "mission": "Od {founded} roku prowadzimy zawodniczki od pierwszych startów juniorskich do wyścigów UCI w całej Europie.",
+    "summary": "{TEAM} to kobieca drużyna kolarska {UCI_STATUS} z Wrocławia, założona w {founded} roku, z własną drużyną juniorek. W sezonie {statsSeason}: {statsRiders}, {titles} i {races} w {countries}.",
     "primary": "Poznaj zespół",
     "secondary": "Kalendarz {season}",
     "alt": "Peleton w ruchu: zawodniczki {TEAM} w strojach drużyny",
@@ -222,6 +223,7 @@
       "3": "3. miejsce",
       "other": "{n}. miejsce"
     },
+    "fullNames": {"nationalChampionship": "Mistrzostwa Polski", "europeanChampionship": "Mistrzostwa Europy", "worldChampionship": "Mistrzostwa Świata"},
     "nationalChampionship": "MP",
     "europeanChampionship": "ME",
     "worldChampionship": "MŚ",
@@ -371,7 +373,7 @@
   "calendarPage": {
     "eyebrow": "Sezon {season} · {number}. sezon drużyny",
     "title": "Kalendarz wyścigów.",
-    "lead": "Szosa, tor i przełaj. Wyścigi UCI w całej Europie i starty w Polsce. Poprzednie sezony są w archiwum."
+    "lead": "{TEAM} startuje na szosie, na torze i w przełaju. {calSentence} W sezonie {statsSeason} drużyna przejechała {races} w {countries}; starsze sezony są w archiwum."
   },
   "calendar": {
     "title": "Wszystkie starty.",
@@ -448,7 +450,7 @@
   "partnersPage": {
     "eyebrow": "Partnerzy",
     "title": "Partnerzy.",
-    "lead": "Każdy nasz start jest możliwy dzięki firmom i instytucjom, które stoją za drużyną."
+    "lead": "Sezon {partnerSeason}: {partnerCount} {TEAM}. Sponsor tytularny: {titleSponsor}. Sponsorzy główni: {mainSponsors}. Każdy wyścig jest możliwy dzięki firmom i instytucjom, które stoją za drużyną."
   },
   "partners": {
     "titleCurrent": "Nasi partnerzy {season}.",
@@ -469,7 +471,7 @@
   "teamPage": {
     "eyebrow": "Zespół",
     "title": "Zawodniczki i sztab.",
-    "lead": "Drużyna Continental, juniorki i sztab. Każda zawodniczka ma swój profil z wynikami i portretem do pobrania."
+    "lead": "Stan na {asOf}: skład {TEAM} na sezon {rosterSeason} to {riders} – {u19} w kategorii U19, {u23} w U23 i {elite} w elicie – oraz {staff}. Każda zawodniczka ma profil z wynikami i portretem do pobrania."
   },
   "rider": {
     "back": "Cały zespół",
@@ -498,6 +500,8 @@
     "download": "Pobierz portret (JPG, {size})",
     "downloadSoon": "Portret do pobrania wkrótce",
     "summary": "{name} – {squad}, {TEAM}. Kategoria: {category}. Kraj: {country}.",
+    "best": "Najlepszy wynik w sezonie {season}: {best}.",
+    "bestPlace": "{place}. miejsce – {event}",
     "jobTitle": "Kolarka",
     "profiles": "Profile w serwisach wynikowych",
     "photoCredit": "Podpis zdjęcia: Fot. [autor] / MADW."
@@ -524,6 +528,134 @@
     "tableCaption": "Wyniki drużyny: {race} {season}",
     "metaTitle": "{race} {season} — {TEAM}",
     "metaDescription": "{race} {season}: termin, miejsce i wyniki zawodniczek drużyny {TEAM}."
+  },
+  "faq": {
+    "eyebrow": "Pytania i odpowiedzi",
+    "title": "Pytania i odpowiedzi.",
+    "lead": "Najczęstsze pytania o drużynę {TEAM}. Odpowiedzi pochodzą z danych na tej stronie. Stan na {asOf}.",
+    "calendarProvisional": "Kalendarz {calSeason} jest wstępny ({calRaces}): terminy i kategorie UCI dodajemy, gdy potwierdzą je organizatorzy.",
+    "calendarConfirmed": "Kalendarz {calSeason} obejmuje {calRaces} z terminami, miejscami i kategoriami UCI.",
+    "counts": {
+      "titles": {
+        "one": "{n} tytuł mistrzyni Polski",
+        "few": "{n} tytuły mistrzyń Polski",
+        "many": "{n} tytułów mistrzyń Polski",
+        "other": "{n} tytułu mistrzyni Polski"
+      },
+      "medals": {
+        "one": "{n} medal mistrzostw Polski",
+        "few": "{n} medale mistrzostw Polski",
+        "many": "{n} medali mistrzostw Polski",
+        "other": "{n} medalu mistrzostw Polski"
+      },
+      "races": {
+        "one": "{n} wyścig",
+        "few": "{n} wyścigi",
+        "many": "{n} wyścigów",
+        "other": "{n} wyścigu"
+      },
+      "countries": {
+        "one": "{n} kraju",
+        "few": "{n} krajach",
+        "many": "{n} krajach",
+        "other": "{n} kraju"
+      },
+      "partners": {
+        "one": "{n} partner drużyny",
+        "few": "{n} partnerzy drużyny",
+        "many": "{n} partnerów drużyny",
+        "other": "{n} partnera drużyny"
+      },
+      "staff": {
+        "one": "{n} osoba w sztabie",
+        "few": "{n} osoby w sztabie",
+        "many": "{n} osób w sztabie",
+        "other": "{n} osoby w sztabie"
+      },
+      "juniors": {
+        "one": "{n} juniorka",
+        "few": "{n} juniorki",
+        "many": "{n} juniorek",
+        "other": "{n} juniorki"
+      }
+    },
+    "items": [
+      {
+        "id": "who",
+        "q": "Czym jest drużyna {TEAM}?",
+        "a": "{TEAM} (w skrócie MADW) to kobieca drużyna kolarska z Wrocławia, założona w {founded} roku. Ma licencję {UCI_STATUS} i własną drużynę juniorek (U19). Startuje na szosie, na torze i w przełaju, w Polsce i za granicą.",
+        "link": {
+          "label": "Zawodniczki i sztab",
+          "href": "team"
+        }
+      },
+      {
+        "id": "level",
+        "q": "Czy to zawodowa drużyna? Na jakim poziomie UCI startuje?",
+        "a": "Drużyna jest zarejestrowana w UCI (Międzynarodowej Unii Kolarskiej) jako kobieca drużyna {UCI_STATUS}. To trzeci poziom kobiecego kolarstwa szosowego, po drużynach UCI Women's WorldTeam i UCI Women's ProTeam. Zawodniczki startują w wyścigach z kalendarza UCI w całej Europie oraz w wyścigach krajowych w Polsce.",
+        "link": null
+      },
+      {
+        "id": "riders",
+        "q": "Kto jeździ w drużynie {TEAM} w sezonie {rosterSeason}?",
+        "a": "Stan na {asOf}: skład na sezon {rosterSeason} to {riders} – {u19} w kategorii U19, {u23} w U23 i {elite} w elicie. Elita: {eliteNames}. U23: {u23Names}. U19 (juniorki): {u19Names}.",
+        "link": {
+          "label": "Zawodniczki i sztab",
+          "href": "team"
+        }
+      },
+      {
+        "id": "results",
+        "q": "Co drużyna wygrała w sezonie {resultsSeason}?",
+        "a": "W sezonie {resultsSeason} zawodniczki {TEAM} zdobyły {titles} i łącznie {medals} (każda konkurencja, kategoria i miejsce liczone raz; wyniki drużynowe liczone raz). Drużyna przejechała {races} w {countries}.",
+        "link": {
+          "label": "Kalendarz i wyniki",
+          "href": "calendar"
+        }
+      },
+      {
+        "id": "watch",
+        "q": "Gdzie można zobaczyć wyścigi drużyny w tym sezonie?",
+        "a": "Wszystkie wyścigi drużyny są w kalendarzu na tej stronie. {calSentence} Kalendarz można zasubskrybować (plik .ics) w Google Calendar, Apple Calendar lub Outlooku. Wyniki i zdjęcia z wyścigów publikujemy na Instagramie {instagram}.",
+        "link": {
+          "label": "Kalendarz",
+          "href": "calendar"
+        }
+      },
+      {
+        "id": "equipment",
+        "q": "Na jakim sprzęcie i kołach jeździ drużyna?",
+        "a": "Drużyna ściga się na karbonowych kołach {wheels}. {wheels} to polski producent karbonowych kół z Podkarpacia i jeden ze sponsorów głównych drużyny. Partnerzy techniczni drużyny to {technicalPartners}.",
+        "link": {
+          "label": "Partnerzy",
+          "href": "partners"
+        }
+      },
+      {
+        "id": "junior",
+        "q": "Jak młoda zawodniczka może dołączyć do drużyny juniorek?",
+        "a": "Drużyna juniorek startuje w kategorii juniorek UCI (U19), czyli dla zawodniczek, które w danym roku kończą 17 lub 18 lat. Aby się zgłosić, napisz na {EMAIL}: imię i nazwisko, rok urodzenia, obecny klub, dyscypliny i najważniejsze wyniki. Juniorek w składzie na sezon {rosterSeason}: {u19}.",
+        "link": null
+      },
+      {
+        "id": "sponsor",
+        "q": "Jak firma może zostać partnerem drużyny?",
+        "a": "Współpracę z partnerami drużyna ustala bezpośrednio. Napisz na {EMAIL}. Obecnych partnerów przedstawiamy na stronie Partnerzy.",
+        "link": {
+          "label": "Partnerzy",
+          "href": "partners"
+        }
+      },
+      {
+        "id": "press",
+        "q": "Jak dziennikarze mogą się skontaktować z drużyną i pobrać zdjęcia?",
+        "a": "Strefa mediów ma fakty o drużynie, notkę, logotypy, zdjęcia i portrety zawodniczek do użytku redakcyjnego, bez logowania. Pytania prasowe: {EMAIL}.",
+        "link": {
+          "label": "Strefa mediów",
+          "href": "media"
+        }
+      }
+    ]
   },
   "mediaPage": {
     "eyebrow": "Strefa mediów",
@@ -651,6 +783,7 @@
       "calendar": "Kalendarz",
       "partners": "Partnerzy",
       "media": "Strefa mediów",
+      "faq": "Pytania i odpowiedzi",
       "clubPro": "Program Klub Pro"
     },
     "copyright": "© {year} {team}",

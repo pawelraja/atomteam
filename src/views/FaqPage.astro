@@ -1,0 +1,81 @@
+---
+// /pytania and /en/faq: answers to the questions people (and AI assistants) ask about the team.
+// Every answer stands on its own, carries dates and numbers computed from data, and is in the
+// HTML in full (no accordion), with FAQPage structured data.
+import Icon from '../components/Icon.astro';
+import PageIntro from '../components/PageIntro.astro';
+import Shell from '../components/Shell.astro';
+import { factVars } from '../lib/facts';
+import { faqItems } from '../lib/faq';
+import { copy, fill, homePath, type Lang } from '../lib/i18n';
+import { breadcrumbs, faqPage } from '../lib/jsonld';
+import { ctxFor } from '../lib/pageld';
+import { ROUTES } from '../lib/routes';
+import { TEAM } from '../lib/team';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = copy(lang);
+const items = faqItems(lang);
+const url = new URL(ROUTES.faq[lang], TEAM.website).href;
+const jsonLd = [
+  faqPage(ctxFor(lang), url, t.faq.title, items),
+  breadcrumbs([
+    { name: t.nav.home, url: new URL(homePath(lang), TEAM.website).href },
+    { name: t.faq.eyebrow, url },
+  ]),
+];
+---
+
+<Shell lang={lang} page="faq" paths={ROUTES.faq} title={t.meta.pages.faq.title} description={t.meta.pages.faq.description} jsonLd={jsonLd}>
+  <PageIntro lang={lang} eyebrow={t.faq.eyebrow} title={t.faq.title} lead={fill(t.faq.lead, factVars(lang), lang)} />
+  <section class="faq" aria-label={t.faq.title}>
+    <div class="container"><div class="faq__list">
+      {
+        items.map((it) => (
+          <article class="faq__item" id={it.id} aria-labelledby={`q-${it.id}`}>
+            <h2 class="h3" id={`q-${it.id}`}>{it.q}</h2>
+            <p class="body-lg">{it.a}</p>
+            {it.link && (
+              <p>
+                <a class="text-link" href={it.link.href}>
+                  {it.link.label} <Icon name="arrow" size={16} />
+                </a>
+              </p>
+            )}
+          </article>
+        ))
+      }
+    </div></div>
+  </section>
+</Shell>
+
+<style>
+  .faq {
+    padding-block: 64px 120px;
+  }
+  .faq__list {
+    display: grid;
+    gap: 0;
+    max-width: 880px;
+  }
+  .faq__item {
+    display: grid;
+    gap: 12px;
+    padding-block: 32px;
+    border-top: 1px solid var(--line);
+  }
+  .faq__item p.body-lg {
+    max-width: 68ch;
+  }
+  @media (max-width: 599px) {
+    .faq {
+      padding-block: 40px 72px;
+    }
+    .faq__item {
+      padding-block: 24px;
+    }
+  }
+</style>

@@ -262,6 +262,21 @@ export function breadcrumbs(items: { name: string; url: string }[]): Node {
   };
 }
 
+/* ---------- FAQ ---------- */
+
+export function faqPage(ctx: Ctx, url: string, name: string, items: { q: string; a: string }[]): Node {
+  return {
+    '@type': 'FAQPage',
+    '@id': `${url}#faq`,
+    name,
+    url,
+    inLanguage: LOCALE[ctx.lang],
+    isPartOf: ref(ids.website(ctx)),
+    about: ref(ids.team(ctx)),
+    mainEntity: items.map((it) => ({ '@type': 'Question', name: it.q, acceptedAnswer: { '@type': 'Answer', text: it.a } })),
+  };
+}
+
 export function graph(nodes: Node[]): Node {
   return { '@context': 'https://schema.org', '@graph': nodes };
 }

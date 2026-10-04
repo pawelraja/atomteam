@@ -3,7 +3,7 @@ import { getData } from './data';
 import { copy, fill, homePath, plural, type Lang } from './i18n';
 import { brandLogoExists, findOriginal, partnerLogoExists } from './images';
 import { breadcrumbs, person, ridersIn, sportsEvent, teamFull, teamStub, website, type Ctx, type Node } from './jsonld';
-import { categoryLabel, stageLabel } from './results';
+import { bestResult, categoryLabel, stageLabel } from './results';
 import { DOWNLOADS, racePath, riderPath, route } from './routes';
 import type { Partner, Rider } from './schemas';
 import { pickPartners, raceLocation, raceName, type RaceEvent } from './season';
@@ -110,7 +110,7 @@ export function raceSummary(page: RacePageView, lang: Lang, today: string): stri
   if (e.start > today) return fill(tr.summaryUpcoming, vars, lang);
   const classified = page.rows.filter((r) => r.position !== null);
   if (!classified.length) return fill(tr.summaryPastNone, vars, lang);
-  const top = classified[0];
+  const top = bestResult(classified, page.events)!;
   const place = lang === 'pl' ? String(top.position) : top.position! <= 3 ? t.results.placeName[String(top.position) as '1' | '2' | '3'] : fill(t.results.placeName.other, { n: top.position! });
   const detail = [stageLabel(top.stage, t.results.stages), categoryLabel(top.category, t.results.categories)].filter(Boolean).join(', ');
   const best = fill(tr.best, { place, rider: top.rider, detail: detail ? ` (${detail})` : '' });

@@ -9,6 +9,7 @@ import { copy, fill, type Lang } from '../lib/i18n';
 import { ROUTES } from '../lib/routes';
 import { seasonNumber } from '../lib/season';
 import { upcomingEventNodes } from '../lib/pageld';
+import { factVars } from '../lib/facts';
 
 interface Props {
   lang: Lang;
@@ -31,7 +32,7 @@ const season = site.currentSeason;
     lang={lang}
     eyebrow={fill(t.calendarPage.eyebrow, { season, number: seasonNumber(site) }, lang)}
     title={t.calendarPage.title}
-    lead={t.calendarPage.lead}
+    lead={fill(t.calendarPage.lead, factVars(lang), lang)}
   />
   <NextRace lang={lang} />
   <Calendar lang={lang} />

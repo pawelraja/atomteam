@@ -12,7 +12,8 @@ import { findOriginal } from '../lib/images';
 import { DOWNLOADS, riderPaths, route } from '../lib/routes';
 import type { Rider } from '../lib/schemas';
 import { formatBytes } from '../lib/showcase';
-import { riderNodes } from '../lib/pageld';
+import { riderNodes, riderSummary } from '../lib/pageld';
+import { bestResult, resultLabel } from '../lib/results';
 import { riderResults } from '../lib/view';
 
 interface Props {
@@ -28,6 +29,18 @@ const original = findOriginal('riders', rider.photo);
 const portrait = original ? { href: DOWNLOADS.portrait(original.name), size: formatBytes(statSync(original.path).size, t.meta.locale) } : null;
 const seasons = riderResults(rider).map((s) => ({ ...s, rows: s.rows.filter((r) => (r.position ?? 99) <= 10) })).filter((s) => s.rows.length);
 const squad = tr.squad[rider.squad];
+// Answer-first: who she is, then her best result of the latest season with results.
+const latest = seasons[0];
+const top = latest ? bestResult(latest.rows, latest.events) : null;
+const bestLine = top
+  ? fill(tr.best, {
+      season: latest.season,
+      best: fill(tr.bestPlace, {
+        place: lang === 'pl' ? String(top.position) : top.position! <= 3 ? t.results.placeName[String(top.position) as '1' | '2' | '3'] : fill(t.results.placeName.other, { n: top.position! }),
+        event: resultLabel(top, latest.events, lang, { ...t.results, ...t.results.fullNames }),
+      }),
+    }, lang)
+  : null;
 // External profiles appear only once the team has checked them ("verify": false).
 const PROFILE_LABELS = { procyclingstats: 'ProCyclingStats', firstcycling: 'FirstCycling', uci: 'UCI' } as const;
 const profiles =
@@ -58,6 +71,7 @@ const profiles =
       <div class="profile__body">
         <p class="eyebrow">{tr.squadShort[rider.squad]} · {tr.category[rider.category]}</p>
         <h1 id="page-title">{rider.name}</h1>
+        <p class="profile__summary">{riderSummary(rider, lang)}{bestLine && ` ${bestLine}`}</p>
         <dl class="facts">
           <div><dt>{tr.nationality}</dt><dd>{countries[rider.nat] ?? rider.nat} /{rider.nat}</dd></div>
           <div><dt>{tr.team}</dt><dd>{tr.squadShort[rider.squad]}</dd></div>
@@ -200,6 +214,11 @@ const profiles =
   }
   .facts dd {
     font-size: 17px;
+  }
+  .profile__summary {
+    font-size: 18px;
+    line-height: 1.5;
+    max-width: 60ch;
   }
   .profile__bio {
     font-size: 18px;

@@ -68,6 +68,7 @@ writeFileSync(
       rosterConfirmed: true,
       calendarConfirmed: true,
       partnersConfirmed: true,
+      factsAsOf: '2027-01-20',
       teamPresentation: { date: '2027-01-20', place: 'Wrocław, Hala Stulecia', url: null },
       statusLine: { pl: 'Sezon 2027 · Kalendarz potwierdzony · Skład ogłoszony', en: 'Season 2027 · Calendar confirmed · Roster announced' },
       statusLink: { label: { pl: 'Kalendarz 2027', en: '2027 calendar' }, href: 'calendar' },

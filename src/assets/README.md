@@ -118,7 +118,7 @@ SVG preferred (PNG/WebP accepted if the file name in `partners.json` says so). F
 | `miasto-wroclaw.svg` | Miasto Wrocław |
 | `budus.svg` | Budus |
 | `accent.svg` | Accent |
-| `no-limited.svg` | No Limited |
+| `no-limited.svg` | NO LIMITED |
 | `klub-pro.svg` | Klub Pro — Ministerstwo Sportu i Turystyki / Fundacja Lotto |
 | `finish-line.svg` | Finish Line |
 | `sidi.svg` | Sidi |

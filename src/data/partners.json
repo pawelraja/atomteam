@@ -3,7 +3,7 @@
   {"name":"Miasto Wrocław","url":"http://bip.um.wroc.pl/","tier":"institutional","logo":"miasto-wroclaw.svg","label":{"pl":"Miasto Wrocław","en":"City of Wrocław"},"description":{"pl":"Wspiera kobiecy sport w naszym mieście.","en":"Supporting women's sport in our home city."},"seasons":[2026]},
   {"name":"Budus","url":"https://budus.pl/","tier":"main","logo":"budus.svg","seasons":[2026]},
   {"name":"Accent","kind":"brand","url":"https://velo.pl/marki/accent","tier":"main","logo":"accent.svg","seasons":[2026]},
-  {"name":"No Limited","url":"https://no-limited.pl/","tier":"main","logo":"no-limited.svg","seasons":[2026]},
+  {"name":"NO LIMITED","url":"https://no-limited.pl/","tier":"main","logo":"no-limited.svg","seasons":[2026]},
   {"name":"Klub Pro — Ministerstwo Sportu i Turystyki / Fundacja Lotto","url":"https://www.fundacjalotto.pl/klub-pro/","tier":"institutional","logo":"klub-pro.svg","label":{"pl":"Klub Pro · MSiT","en":"Club Pro · Ministry of Sport"},"description":{"pl":"Wsparcie Ministerstwa Sportu i Turystyki oraz Fundacji Lotto dla klubów szkolących młodzież.","en":"Ministry of Sport and Tourism / Fundacja Lotto support for clubs that develop young athletes."},"seasons":[2026]},
   {"name":"Finish Line","kind":"brand","url":"https://velo.pl/marki/finish-line","tier":"technical","logo":"finish-line.svg","seasons":[2026]},
   {"name":"Sidi","kind":"brand","url":"https://velo.pl/marki/sidi","tier":"technical","logo":"sidi.svg","seasons":[2026]},

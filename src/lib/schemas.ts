@@ -36,6 +36,8 @@ export const PHASES = ['preseason', 'racing', 'offseason'] as const;
 
 export const siteSchema = z.object({
   currentSeason: seasonYear,
+  /** The date the roster and other headline facts were last checked: answers say "as of <date>". */
+  factsAsOf: isoDate,
   phase: z.enum(PHASES),
   rosterConfirmed: z.boolean(),
   calendarConfirmed: z.boolean(),
@@ -315,6 +317,13 @@ export const teamSchema = z
         uci: checkedUrl,
       })
       .strict(),
+  })
+  .strict();
+
+/** src/data/equipment.json: the race setup. "partner" names must match partners.json. */
+export const equipmentSchema = z
+  .object({
+    wheels: z.object({ partner: z.string().min(1) }).strict(),
   })
   .strict();
 

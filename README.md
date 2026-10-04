@@ -80,6 +80,7 @@ Partnerships are handled offline, so the main pages have **no content for prospe
 
 | Setting | What it means in plain language |
 |---|---|
+| `factsAsOf` | The date the roster and headline facts were last checked, e.g. `"2026-10-04"`. Summaries and the FAQ say "As of 4 October 2026, …". **Update it whenever you change the roster or confirm the calendar.** |
 | `currentSeason` | The season the site is about. "Season 12" is worked out from this and `founded` in `team.json`, so never type it anywhere. |
 | `phase` | Which season the home page **looks back on**. `"preseason"` and `"racing"`: the numbers and results show the **previous** season (2026). `"offseason"` (after the last race): they show the season just finished, as soon as it has results. The page order itself never changes. |
 | `rosterConfirmed` | `false`: the team shows "We will announce the 2027 roster at the team presentation", and the pathway, the media fact sheet and the press roster keep using the complete 2026 roster. `true`: everything switches to riders with `2027` in `seasons`. |
@@ -137,6 +138,12 @@ Every race with dates gets its own page: `/wyscigi/2026/nxt-classic/` (EN `/en/r
 - The address is made from the Polish name. Races with the same name (the Polish Cup rounds) get the place added. To choose the address yourself, add `"slug": "puchar-polski-lubartow"`.
 - *(optional)* `"organizer": { "name": "…", "url": "https://…" }` names who runs the race. It goes into the structured data.
 
+## Answer-first summaries and the FAQ
+
+Search and AI engines quote the first factual sentences on a page. So the home hero, the team, calendar and partners intros, rider profiles and race pages each open with a short summary that stands on its own. The summaries are templates in the copy files (`hero.summary`, `teamPage.lead`, `calendarPage.lead`, `partnersPage.lead`, `rider.summary`, `race.summary*`), filled with numbers computed from the data (`src/lib/facts.ts`). They update themselves when the data changes.
+
+The FAQ (`/pytania/`, `/en/faq/`) lives in `faq.items` in both copy files: `id`, `q` (question), `a` (answer) and an optional `link` (`href` is a page name such as `team` or `calendar`). Answers can use `{asOf}`, `{riders}`, `{u19}`, `{titles}`, `{races}`, `{countries}`, `{wheels}`, `{EMAIL}` and the other values in `factVars()` in `src/lib/facts.ts`. Keep both languages in the same order. The page carries `FAQPage` structured data automatically.
+
 ## Structured data (for search and AI engines)
 
 Every page carries schema.org JSON-LD, generated from the data files. Nothing is typed by hand.
@@ -147,6 +154,7 @@ Every page carries schema.org JSON-LD, generated from the data files. Nothing is
 | Rider profile | `Person` (nationality, team membership, Instagram and results profiles) + breadcrumbs |
 | Race page | `SportsEvent` (dates, place with ISO country, status, sport, the team and its riders as competitors, organiser if known, results summary) + breadcrumbs |
 | Calendar | `SportsEvent` for confirmed upcoming races |
+| FAQ | `FAQPage` with every question and answer + breadcrumbs |
 
 **The build fails if any structured data is invalid** (`scripts/check-jsonld.mjs`, which also runs as `npm run check:jsonld`). It checks types, properties, required fields, dates, absolute URLs, ISO country codes and references, and makes sure no unconfirmed value leaks out. After each deploy, spot-check a few pages at https://validator.schema.org/ and https://search.google.com/test/rich-results.
 

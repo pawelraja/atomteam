@@ -2,7 +2,7 @@
 // counterpart, so the language switch always lands on the same page in the other language.
 import type { Lang } from './text';
 
-export const PAGES = ['home', 'team', 'calendar', 'partners', 'media', 'privacy'] as const;
+export const PAGES = ['home', 'team', 'calendar', 'partners', 'media', 'faq', 'privacy'] as const;
 export type PageKey = (typeof PAGES)[number];
 
 export const ROUTES: Record<PageKey, Record<Lang, string>> = {
@@ -11,6 +11,7 @@ export const ROUTES: Record<PageKey, Record<Lang, string>> = {
   calendar: { pl: '/kalendarz/', en: '/en/calendar/' },
   partners: { pl: '/partnerzy/', en: '/en/partners/' },
   media: { pl: '/media/', en: '/en/media/' },
+  faq: { pl: '/pytania/', en: '/en/faq/' },
   privacy: { pl: '/polityka-prywatnosci/', en: '/en/privacy/' },
 };
 

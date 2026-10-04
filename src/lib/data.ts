@@ -11,6 +11,7 @@ import { z } from 'zod';
 import { eventInfo, type EventIndex } from './results';
 import {
   calendarEntrySchema,
+  equipmentSchema,
   gallerySchema,
   highlightSchema,
   mediaSchema,
@@ -184,12 +185,21 @@ function loadAll() {
   const today = process.env.MADW_TODAY ?? todayISO();
   if (!/^\d{4}-\d{2}-\d{2}$/.test(today)) throw new DataError('MADW_TODAY must be YYYY-MM-DD');
 
+  const partners = load(z.array(partnerSchema), 'partners.json');
+  const equipment = load(equipmentSchema, 'equipment.json');
+  if (!partners.some((p) => p.name === equipment.wheels.partner)) {
+    throw new DataError(
+      `Problem in src/data/equipment.json: wheel partner "${equipment.wheels.partner}" is not in partners.json.\n  Write the name exactly as in partners.json.`,
+    );
+  }
+
   return {
     site,
     calendars,
     raceEntries,
     events,
-    partners: load(z.array(partnerSchema), 'partners.json'),
+    partners,
+    equipment,
     riders,
     results,
     media: loadMedia(),
