@@ -3,6 +3,7 @@ import type { APIRoute, GetStaticPaths } from 'astro';
 import { getData } from '../../../lib/data';
 import { toICS } from '../../../lib/ics';
 import { isConfirmedRace } from '../../../lib/season';
+import { TEAM, teamDomain } from '../../../lib/team';
 
 export const getStaticPaths: GetStaticPaths = () =>
   [...getData().calendars].flatMap(([season, events]) =>
@@ -11,6 +12,6 @@ export const getStaticPaths: GetStaticPaths = () =>
 
 export const GET: APIRoute = ({ params }) => {
   const events = (getData().calendars.get(Number(params.season)) ?? []).filter((e) => e.id === params.id);
-  const body = toICS(events, { calendarName: 'Mat Atom Deweloper Wrocław', domain: 'atomteam.pl' });
+  const body = toICS(events, { calendarName: TEAM.name, domain: teamDomain });
   return new Response(body, { headers: { 'Content-Type': 'text/calendar; charset=utf-8' } });
 };

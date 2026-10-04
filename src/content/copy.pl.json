@@ -3,45 +3,34 @@
     "lang": "pl",
     "locale": "pl-PL",
     "ogLocale": "pl_PL",
-    "title": "Mat Atom Deweloper Wrocław — kobieca drużyna kolarska UCI · Sezon {season}",
-    "description": "Kobieca drużyna kolarska UCI Continental i drużyna juniorska z Wrocławia. Od {founded} roku. Zespół, zdjęcia, kalendarz {season} i wyniki.",
+    "title": "{TEAM} — kobieca drużyna kolarska UCI · Sezon {season}",
+    "description": "Kobieca drużyna kolarska {UCI_STATUS} i drużyna juniorska z Wrocławia. Od {founded} roku. Zespół, zdjęcia, kalendarz {season} i wyniki.",
     "ogHeadline": "Sezon {season}.",
-    "ogAlt": "Mat Atom Deweloper Wrocław — Sezon {season}",
+    "ogAlt": "{TEAM} — Sezon {season}",
     "pages": {
       "team": {
-        "title": "Zespół — Mat Atom Deweloper Wrocław",
-        "description": "Zawodniczki drużyny Continental i juniorki oraz sztab Mat Atom Deweloper Wrocław."
+        "title": "Zespół — {TEAM}",
+        "description": "Zawodniczki drużyny Continental i juniorki oraz sztab {TEAM}."
       },
       "calendar": {
-        "title": "Kalendarz {season} — Mat Atom Deweloper Wrocław",
+        "title": "Kalendarz {season} — {TEAM}",
         "description": "Wyścigi sezonu {season}: szosa, tor, przełaj. Daty, kategorie UCI i archiwum sezonów."
       },
       "partners": {
-        "title": "Partnerzy — Mat Atom Deweloper Wrocław",
-        "description": "Firmy i instytucje, które wspierają kobiecą drużynę kolarską Mat Atom Deweloper Wrocław."
+        "title": "Partnerzy — {TEAM}",
+        "description": "Firmy i instytucje, które wspierają kobiecą drużynę kolarską {TEAM}."
       },
       "media": {
-        "title": "Strefa mediów — Mat Atom Deweloper Wrocław",
+        "title": "Strefa mediów — {TEAM}",
         "description": "Fakty o drużynie, notka, logotypy, zdjęcia, skład i kontakt prasowy. Bez logowania."
       },
       "rider": {
-        "title": "{name} — Mat Atom Deweloper Wrocław",
-        "description": "{name}, {squad}, Mat Atom Deweloper Wrocław. Profil, wyniki i portret do pobrania."
+        "title": "{name} — {TEAM}",
+        "description": "{name}, {squad}, {TEAM}. Profil, wyniki i portret do pobrania."
       }
     }
   },
   "team": {
-    "name": "Mat Atom Deweloper Wrocław",
-    "wordmarkLead": "MAT",
-    "wordmarkA": "ATOM DEWELOPER",
-    "wordmarkB": "WROCŁAW",
-    "email": "kontakt@atomteam.pl",
-    "hashtag": "#allezatomówki",
-    "social": {
-      "instagram": "https://www.instagram.com/atomdeweloper_team/",
-      "facebook": "https://www.facebook.com/atom.deweloper.team",
-      "linkedin": "https://www.linkedin.com/company/atomteampl/"
-    },
     "logoPlaceholder": "LOGO"
   },
   "language": {
@@ -96,10 +85,10 @@
     "mission": "Od {founded} roku prowadzimy zawodniczki od pierwszych startów juniorskich do wyścigów UCI w całej Europie.",
     "primary": "Poznaj zespół",
     "secondary": "Kalendarz {season}",
-    "alt": "Peleton w ruchu: zawodniczki Mat Atom Deweloper Wrocław w strojach drużyny",
+    "alt": "Peleton w ruchu: zawodniczki {TEAM} w strojach drużyny",
     "credentialsLabel": "Drużyna w faktach",
     "credentials": {
-      "licence": { "term": "Licencja", "value": "UCI Continental" },
+      "licence": { "term": "Licencja", "value": "{UCI_STATUS}" },
       "juniors": { "term": "Juniorki", "value": "Drużyna U19" },
       "base": { "term": "Siedziba", "value": "Wrocław /POL" },
       "founded": { "term": "Założona", "value": "{founded}" },
@@ -522,7 +511,7 @@
     "facts": {
       "name": "Pełna nazwa",
       "licence": "Licencja",
-      "licenceValue": "UCI Continental + drużyna juniorska",
+      "licenceValue": "{UCI_STATUS} + drużyna juniorska",
       "founded": "Założona",
       "foundedValue": "{founded}, Wrocław",
       "roster": "Skład {season}",
@@ -542,7 +531,7 @@
     },
     "boilerplateTitle": "Notka o drużynie.",
     "boilerplateLangs": "Język notki",
-    "boilerplateText": "Mat Atom Deweloper Wrocław to kobieca drużyna kolarska z licencją UCI Continental i drużyną juniorską. Powstała we Wrocławiu w {founded} roku; w sezonie {season} zrzeszała {riders} w kategoriach U19, U23 i Elita. Drużyna startuje na szosie, torze i w przełaju w Polsce i za granicą, a klub uczestniczy w programie Klub Pro Ministerstwa Sportu i Turystyki.",
+    "boilerplateText": "{TEAM} to kobieca drużyna kolarska z licencją {UCI_STATUS} i drużyną juniorską. Powstała we Wrocławiu w {founded} roku; w sezonie {season} zrzeszała {riders} w kategoriach U19, U23 i Elita. Drużyna startuje na szosie, torze i w przełaju w Polsce i za granicą, a klub uczestniczy w programie Klub Pro Ministerstwa Sportu i Turystyki.",
     "words": {
       "0": "{n} słów",
       "1": "1 słowo",
@@ -620,7 +609,7 @@
     "back": "Wróć na stronę główną"
   },
   "footer": {
-    "boilerplate": "Kobieca drużyna kolarska UCI Continental i drużyna juniorska. Wrocław, od {founded}.",
+    "boilerplate": "Kobieca drużyna kolarska {UCI_STATUS} i drużyna juniorska. Wrocław, od {founded}.",
     "columns": {
       "team": "Drużyna",
       "collab": "Partnerzy i media",

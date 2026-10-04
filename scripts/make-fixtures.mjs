@@ -64,7 +64,6 @@ writeFileSync(
   JSON.stringify(
     {
       currentSeason: 2027,
-      foundedYear: 2016,
       phase: 'preseason',
       rosterConfirmed: true,
       calendarConfirmed: true,

@@ -11,6 +11,7 @@ import { getData } from '../lib/data';
 import { HERO_DESKTOP_MEDIA, HERO_MOBILE_MEDIA, heroSources } from '../lib/hero';
 import { copy, DEFAULT_LANG, fill, homePath, LANGS, type Lang } from '../lib/i18n';
 import { eventState, isConfirmedRace, raceLocation, raceName } from '../lib/season';
+import { TEAM, teamSameAs } from '../lib/team';
 
 interface Props {
   lang: Lang;
@@ -46,8 +47,8 @@ const team = {
   foundingDate: String(site.foundedYear),
   url: homeUrl,
   email: t.team.email,
-  location: { '@type': 'Place', name: 'Wrocław, Poland', address: { '@type': 'PostalAddress', addressLocality: 'Wrocław', addressCountry: 'PL' } },
-  sameAs: Object.values(t.team.social),
+  location: { '@type': 'Place', name: TEAM.city, address: { '@type': 'PostalAddress', addressLocality: TEAM.city, addressRegion: TEAM.region, addressCountry: TEAM.country } },
+  sameAs: teamSameAs(),
 };
 // Only confirmed, upcoming races are announced to search engines.
 const events = (withEvents ? (calendars.get(season) ?? []) : [])

@@ -10,7 +10,7 @@ import { join, relative, sep } from 'node:path';
 
 const dirArg = process.argv.indexOf('--dir');
 const dir = dirArg > -1 ? process.argv[dirArg + 1] : 'dist';
-const SITE = 'https://www.atomteam.pl';
+const SITE = JSON.parse(readFileSync('src/data/team.json', 'utf8')).website;
 
 /** All built HTML pages, keyed by URL path ("/", "/en/team/", …). */
 const pages = new Map();

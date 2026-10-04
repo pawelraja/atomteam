@@ -1,12 +1,40 @@
 import pl from '../content/copy.pl.json';
 import en from '../content/copy.en.json';
 
+import { COPY_TOKENS, TEAM } from './team';
 import { deepMap, typographyPl, type Lang } from './text';
 
 export * from './text';
 
+/** The team block every component reads; built from src/data/team.json, not typed into the copy files. */
+function teamCopy(dict: typeof pl) {
+  return {
+    ...dict.team,
+    name: TEAM.name,
+    wordmarkLead: TEAM.wordmark.lead,
+    wordmarkA: TEAM.wordmark.a,
+    wordmarkB: TEAM.wordmark.b,
+    email: TEAM.contact.email,
+    hashtag: TEAM.hashtag,
+    social: TEAM.social,
+  };
+}
+
 /** copy.pl.json is the source; copy.en.json must have exactly the same keys. */
-export type Copy = typeof pl;
+export type Copy = Omit<typeof pl, 'team'> & { team: ReturnType<typeof teamCopy> };
+
+/** Replaces the global {TEAM}, {UCI_STATUS} and {EMAIL} tokens with the values from team.json. */
+export function applyTokens(s: string): string {
+  return s.replace(/\{([A-Z_]+)\}/g, (m, k: string) => COPY_TOKENS[k] ?? m);
+}
+
+function build(dict: typeof pl, lang: Lang): Copy {
+  const mapped = deepMap(dict, (s) => {
+    const t = applyTokens(s);
+    return lang === 'pl' && !/^(https?:|\/|mailto:)/.test(t) ? typographyPl(t) : t;
+  });
+  return { ...mapped, team: teamCopy(dict) };
+}
 
 /* ---------- key parity ---------- */
 
@@ -50,8 +78,8 @@ if (parity.length) {
 }
 
 const dictionaries: Record<Lang, Copy> = {
-  pl: deepMap(pl, (s) => (/^(https?:|\/|mailto:)/.test(s) ? s : typographyPl(s))),
-  en: en as Copy,
+  pl: build(pl, 'pl'),
+  en: build(en as typeof pl, 'en'),
 };
 
 export function copy(lang: Lang): Copy {

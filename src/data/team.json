@@ -1,0 +1,37 @@
+{
+  "name": "Mat Atom Deweloper Wrocław",
+  "officialName": { "value": "MAT ATOM DEWELOPER WROCŁAW", "verify": true, "note": "Exact casing as registered with the UCI. The site shows \"name\"; this is used in structured data as legalName once confirmed." },
+  "shortName": "MADW",
+  "alternateNames": ["MADW", "Atom Deweloper", "Atom Deweloper Wrocław", "Atomówki"],
+  "wordmark": { "lead": "MAT", "a": "ATOM DEWELOPER", "b": "WROCŁAW" },
+  "uciCode": { "value": null, "candidates": ["ATO", "MAV"], "verify": true, "note": "Old atomteam.pl says MAV, Wikipedia says ATO. Confirm with the UCI team registration before setting a value; until then it is never shown." },
+  "uciStatus": { "label": "UCI Continental", "category": "UCI Women's Continental Team", "verify": true, "note": "Confirm the 2027 registration category once the UCI publishes the list." },
+  "founded": 2016,
+  "city": "Wrocław",
+  "region": "Dolnośląskie",
+  "country": "PL",
+  "sport": "Cycling",
+  "gender": "Female",
+  "squads": ["continental", "junior"],
+  "categories": ["U19", "U23", "Elite"],
+  "disciplines": ["ROAD", "TRACK", "CX"],
+  "website": "https://www.atomteam.pl",
+  "contact": {
+    "email": "kontakt@atomteam.pl",
+    "phone": null
+  },
+  "hashtag": "#allezatomówki",
+  "social": {
+    "instagram": "https://www.instagram.com/atomdeweloper_team/",
+    "facebook": "https://www.facebook.com/atom.deweloper.team",
+    "linkedin": "https://www.linkedin.com/company/atomteampl/"
+  },
+  "profiles": {
+    "wikipediaPl": { "url": null, "verify": true },
+    "wikipediaEn": { "url": null, "verify": true },
+    "wikidata": { "url": null, "verify": true },
+    "procyclingstats": { "url": null, "verify": true },
+    "firstcycling": { "url": null, "verify": true },
+    "uci": { "url": null, "verify": true }
+  }
+}

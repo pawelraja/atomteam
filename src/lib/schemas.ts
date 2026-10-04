@@ -36,7 +36,6 @@ export const PHASES = ['preseason', 'racing', 'offseason'] as const;
 
 export const siteSchema = z.object({
   currentSeason: seasonYear,
-  foundedYear: seasonYear,
   phase: z.enum(PHASES),
   rosterConfirmed: z.boolean(),
   calendarConfirmed: z.boolean(),
@@ -121,11 +120,28 @@ export const partnerSchema = z
     /** Shorter display name, e.g. { "pl": "Klub Pro · MSiT", "en": "Club Pro · Ministry of Sport" }. */
     label: localized.optional(),
     description: localized.optional(),
+    /** Other confirmed addresses of the same company (Wikipedia, LinkedIn, Instagram…), for structured data. */
+    sameAs: z.array(z.url()).optional(),
     seasons,
   })
   .strict();
 
 export const CATEGORIES = ['U19', 'U23', 'Elite'] as const;
+
+/** A fact the team has not yet confirmed stays in data with "verify": true and is never shown or emitted. */
+const checkedUrl = z.object({ url: z.url().nullable(), verify: z.boolean(), note: z.string().optional() }).strict();
+
+export const PROFILE_SITES = ['procyclingstats', 'firstcycling', 'uci'] as const;
+/** External profiles of a rider; null until known. */
+export const riderProfilesSchema = z
+  .object({
+    procyclingstats: z.url().nullable(),
+    firstcycling: z.url().nullable(),
+    uci: z.url().nullable(),
+    /** true until the team has checked every link above. */
+    verify: z.boolean(),
+  })
+  .strict();
 
 export const riderSchema = z
   .object({
@@ -149,6 +165,8 @@ export const riderSchema = z
     bio: localized.optional(),
     /** Full results list on an external site (CyclingFlash etc.). */
     resultsProfile: z.url().optional(),
+    /** ProCyclingStats, FirstCycling and UCI profile pages. */
+    profiles: riderProfilesSchema.optional(),
     seasons,
     new: z.boolean().optional(),
     /** Internal note for the team; never shown. */
@@ -162,6 +180,8 @@ export const staffSchema = z
     role: localized,
     photo: z.string().min(1),
     instagram: z.string().regex(/^[A-Za-z0-9._]+$/).nullable().optional(),
+    /** What the person does, for structured data: coaches and directors are listed as the team's coaches. */
+    function: z.enum(['director', 'coach', 'manager', 'mechanic', 'medical', 'other']).optional(),
     seasons,
   })
   .strict();
@@ -246,8 +266,53 @@ export const mediaSchema = z
   })
   .strict();
 
+/** src/data/team.json: the one place for the team's identity facts. */
+export const teamSchema = z
+  .object({
+    name: z.string().min(1),
+    officialName: z.object({ value: z.string().min(1), verify: z.boolean(), note: z.string().optional() }).strict(),
+    shortName: z.string().min(1),
+    alternateNames: z.array(z.string().min(1)),
+    wordmark: z.object({ lead: z.string(), a: z.string(), b: z.string() }).strict(),
+    uciCode: z
+      .object({
+        value: z.string().regex(/^[A-Z]{3}$/, 'is a three-letter UCI code, e.g. "ABC"').nullable(),
+        candidates: z.array(z.string()).optional(),
+        verify: z.boolean(),
+        note: z.string().optional(),
+      })
+      .strict(),
+    uciStatus: z.object({ label: z.string().min(1), category: z.string().min(1), verify: z.boolean(), note: z.string().optional() }).strict(),
+    founded: seasonYear,
+    city: z.string().min(1),
+    region: z.string().min(1),
+    country: z.string().regex(/^[A-Z]{2}$/, 'is a two-letter country code, e.g. "PL"'),
+    sport: z.string().min(1),
+    gender: z.enum(['Female', 'Male', 'Mixed']),
+    squads: z.array(z.enum(['continental', 'junior'])),
+    categories: z.array(z.enum(CATEGORIES)),
+    disciplines: z.array(z.enum(DISCIPLINES)),
+    website: z.url(),
+    contact: z.object({ email: z.email(), phone: phone.nullable() }).strict(),
+    hashtag: z.string().min(1),
+    social: z.object({ instagram: z.url(), facebook: z.url(), linkedin: z.url() }).strict(),
+    profiles: z
+      .object({
+        wikipediaPl: checkedUrl,
+        wikipediaEn: checkedUrl,
+        wikidata: checkedUrl,
+        procyclingstats: checkedUrl,
+        firstcycling: checkedUrl,
+        uci: checkedUrl,
+      })
+      .strict(),
+  })
+  .strict();
+
 export type Localized = z.infer<typeof localized>;
-export type Site = z.infer<typeof siteSchema>;
+export type Team = z.infer<typeof teamSchema>;
+/** site.json plus the founding year, which lives in team.json. */
+export type Site = z.infer<typeof siteSchema> & { foundedYear: number };
 export type Phase = Site['phase'];
 export type CalendarEntry = z.infer<typeof calendarEntrySchema>;
 export type Discipline = (typeof DISCIPLINES)[number];

@@ -54,12 +54,19 @@ Partnerships are handled offline, so the main pages have **no content for prospe
 - If something is wrong, the build **stops and says exactly where**, for example:
   `Problem in src/data/calendar/2027.json: entry #12 ("Gracia Orlová"), field "start": must be a date written as YYYY-MM-DD`. Nothing broken ever reaches the live site.
 
+## Team facts in `team.json`
+
+`src/data/team.json` is the **only** place for the team's identity: name, alternate names, UCI code and status, founding year, city, country, squads, categories, disciplines, website, e-mail, hashtag, social accounts and external profiles (Wikipedia, Wikidata, ProCyclingStats, FirstCycling, UCI). Pages, structured data, calendar files and the copy texts all read it. Change the e-mail here and it changes everywhere.
+
+- Anything not yet confirmed has `"verify": true`. It stays in the file but is **never shown or sent to search engines**. When the team confirms it, fill in the value and set `"verify": false`.
+- `uciCode` is `null` until confirmed. The old site said `MAV`, Wikipedia says `ATO`; check the UCI registration.
+- Profile links: put the full address in `"url"` and set `"verify": false`.
+
 ## The season switches in `site.json`
 
 ```json
 {
   "currentSeason": 2027,
-  "foundedYear": 2016,
   "phase": "preseason",
   "rosterConfirmed": false,
   "calendarConfirmed": false,
@@ -73,8 +80,7 @@ Partnerships are handled offline, so the main pages have **no content for prospe
 
 | Setting | What it means in plain language |
 |---|---|
-| `currentSeason` | The season the site is about. "Season 12" is worked out from this and `foundedYear`, so never type it anywhere. |
-| `foundedYear` | 2016. Leave it alone. |
+| `currentSeason` | The season the site is about. "Season 12" is worked out from this and `founded` in `team.json`, so never type it anywhere. |
 | `phase` | Which season the home page **looks back on**. `"preseason"` and `"racing"`: the numbers and results show the **previous** season (2026). `"offseason"` (after the last race): they show the season just finished, as soon as it has results. The page order itself never changes. |
 | `rosterConfirmed` | `false`: the team shows "We will announce the 2027 roster at the team presentation", and the pathway, the media fact sheet and the press roster keep using the complete 2026 roster. `true`: everything switches to riders with `2027` in `seasons`. |
 | `calendarConfirmed` | `false`: the calendar is labelled "provisional". `true`: the label disappears. Set it once most dates are fixed. |
@@ -166,10 +172,11 @@ One file per season: `src/data/calendar/2026.json` (archive) and `src/data/calen
 - `category`: `"U19"`, `"U23"` or `"Elite"`. It drives the pathway counts and the numbers. **Check it every season**: juniors move up to U23, U23 riders to Elite.
 - `squad`: `"continental"` or `"junior"`.
 - `instagram` is the handle only (no `@`, no link), or `null`.
+- `profiles`: her ProCyclingStats, FirstCycling and UCI pages, `null` until known. Links appear (on the page and in structured data) only once `"verify"` is set to `false`.
 - *(optional)* `bio`: `{ "pl": "…", "en": "…" }`, two or three sentences for her profile page. `role`: `{ "pl": "Kapitanka", "en": "Captain" }`. `resultsProfile`: link to her full results elsewhere. `slug`: the address of her profile, made from her name when left out.
 - Each rider gets a profile page at `/zespol/<name>/`.
 
-`src/data/staff.json` works the same way. `role` is in both languages and uses feminine forms where they apply: `{"pl":"Dyrektorka sportowa","en":"Sport director"}`. Staff whose role includes "dyrektor"/"menedżer" are listed under "Management" in the media centre.
+`src/data/staff.json` works the same way. `function` (`"coach"`, `"director"`, `"manager"`, `"mechanic"`, `"medical"`, `"other"`) tells search engines who coaches the team. `role` is in both languages and uses feminine forms where they apply: `{"pl":"Dyrektorka sportowa","en":"Sport director"}`. Staff whose role includes "dyrektor"/"menedżer" are listed under "Management" in the media centre.
 
 ## Media centre
 
@@ -197,6 +204,7 @@ All wording is in `src/content/copy.pl.json` (Polish, the **source**) and `src/c
 
 - Both files must have exactly the same keys. If one is missing, the build stops and names the key and the language.
 - `{season}`, `{n}` and similar are filled in automatically; keep them.
+- Never type the team name, "UCI Continental" or the e-mail address. Write `{TEAM}`, `{UCI_STATUS}` or `{EMAIL}` and they are filled in from `team.json`. A test fails if the name is typed out.
 - Counting phrases have forms for Polish grammar (`"one"`, `"few"`, `"many"`): `1 zawodniczka`, `3 zawodniczki`, `20 zawodniczek`. Some have exact forms too: `"5": "Pięcioosobowy sztab, jeden plan."`
 - Polish typography (non-breaking spaces after single-letter words: "w 2027", "i U23") is applied automatically.
 - `results.stages` translates the stage names used in the workbook ("Stage 2" → "2. etap"). A new stage name shows in English until you add it there.

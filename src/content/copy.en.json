@@ -3,45 +3,34 @@
     "lang": "en",
     "locale": "en-GB",
     "ogLocale": "en_GB",
-    "title": "Mat Atom Deweloper Wrocław — UCI women's cycling team · Season {season}",
-    "description": "UCI Continental women's cycling team and junior team from Wrocław, Poland. Since {founded}. Team, photos, {season} calendar and results.",
+    "title": "{TEAM} — UCI women's cycling team · Season {season}",
+    "description": "{UCI_STATUS} women's cycling team and junior team from Wrocław, Poland. Since {founded}. Team, photos, {season} calendar and results.",
     "ogHeadline": "Season {season}.",
-    "ogAlt": "Mat Atom Deweloper Wrocław — Season {season}",
+    "ogAlt": "{TEAM} — Season {season}",
     "pages": {
       "team": {
-        "title": "Team — Mat Atom Deweloper Wrocław",
-        "description": "Continental and junior riders and the staff of Mat Atom Deweloper Wrocław."
+        "title": "Team — {TEAM}",
+        "description": "Continental and junior riders and the staff of {TEAM}."
       },
       "calendar": {
-        "title": "{season} calendar — Mat Atom Deweloper Wrocław",
+        "title": "{season} calendar — {TEAM}",
         "description": "The {season} season: road, track, cyclocross. Dates, UCI classes and a season archive."
       },
       "partners": {
-        "title": "Partners — Mat Atom Deweloper Wrocław",
-        "description": "The companies and institutions behind the Mat Atom Deweloper Wrocław women's cycling team."
+        "title": "Partners — {TEAM}",
+        "description": "The companies and institutions behind the {TEAM} women's cycling team."
       },
       "media": {
-        "title": "Media centre — Mat Atom Deweloper Wrocław",
+        "title": "Media centre — {TEAM}",
         "description": "Team facts, boilerplate, logos, photos, roster and press contact. No login needed."
       },
       "rider": {
-        "title": "{name} — Mat Atom Deweloper Wrocław",
-        "description": "{name}, {squad}, Mat Atom Deweloper Wrocław. Profile, results and a downloadable portrait."
+        "title": "{name} — {TEAM}",
+        "description": "{name}, {squad}, {TEAM}. Profile, results and a downloadable portrait."
       }
     }
   },
   "team": {
-    "name": "Mat Atom Deweloper Wrocław",
-    "wordmarkLead": "MAT",
-    "wordmarkA": "ATOM DEWELOPER",
-    "wordmarkB": "WROCŁAW",
-    "email": "kontakt@atomteam.pl",
-    "hashtag": "#allezatomówki",
-    "social": {
-      "instagram": "https://www.instagram.com/atomdeweloper_team/",
-      "facebook": "https://www.facebook.com/atom.deweloper.team",
-      "linkedin": "https://www.linkedin.com/company/atomteampl/"
-    },
     "logoPlaceholder": "LOGO"
   },
   "language": {
@@ -96,10 +85,10 @@
     "mission": "Since {founded} we have taken riders from their first junior races to UCI races across Europe.",
     "primary": "Meet the team",
     "secondary": "{season} calendar",
-    "alt": "The peloton in motion: Mat Atom Deweloper Wrocław riders in team kit",
+    "alt": "The peloton in motion: {TEAM} riders in team kit",
     "credentialsLabel": "The team in facts",
     "credentials": {
-      "licence": { "term": "Licence", "value": "UCI Continental" },
+      "licence": { "term": "Licence", "value": "{UCI_STATUS}" },
       "juniors": { "term": "Juniors", "value": "U19 team" },
       "base": { "term": "Base", "value": "Wrocław /POL" },
       "founded": { "term": "Founded", "value": "{founded}" },
@@ -522,7 +511,7 @@
     "facts": {
       "name": "Full name",
       "licence": "Licence",
-      "licenceValue": "UCI Continental + junior team",
+      "licenceValue": "{UCI_STATUS} + junior team",
       "founded": "Founded",
       "foundedValue": "{founded}, Wrocław, Poland",
       "roster": "{season} roster",
@@ -542,7 +531,7 @@
     },
     "boilerplateTitle": "About the team.",
     "boilerplateLangs": "Boilerplate language",
-    "boilerplateText": "Mat Atom Deweloper Wrocław is a UCI Continental women’s cycling team with a junior squad. Founded in Wrocław in {founded}, it had {riders} across the U19, U23 and Elite categories in {season}. The team races on the road, on the track and in cyclocross in Poland and abroad, and the club takes part in the Club Pro programme of Poland’s Ministry of Sport and Tourism.",
+    "boilerplateText": "{TEAM} is a {UCI_STATUS} women’s cycling team with a junior squad. Founded in Wrocław in {founded}, it had {riders} across the U19, U23 and Elite categories in {season}. The team races on the road, on the track and in cyclocross in Poland and abroad, and the club takes part in the Club Pro programme of Poland’s Ministry of Sport and Tourism.",
     "words": {
       "0": "{n} words",
       "1": "1 word",
@@ -620,7 +609,7 @@
     "back": "Back to the home page"
   },
   "footer": {
-    "boilerplate": "UCI Continental women's cycling team and junior team. Wrocław, since {founded}.",
+    "boilerplate": "{UCI_STATUS} women's cycling team and junior team. Wrocław, since {founded}.",
     "columns": {
       "team": "Team",
       "collab": "Partners and media",

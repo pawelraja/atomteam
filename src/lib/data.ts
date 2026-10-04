@@ -27,6 +27,7 @@ import {
 } from './schemas';
 import { duplicateIds, normalizeCalendar, todayISO, type RaceEvent } from './season';
 import { riderSlug } from './showcase';
+import { TEAM } from './team';
 
 const BASE = resolve('src/data');
 const OVERLAY = process.env.MADW_DATA_DIR ? resolve(process.env.MADW_DATA_DIR) : null;
@@ -102,12 +103,13 @@ function listFiles(dir: string, pattern: RegExp): string[] {
 }
 
 function loadAll() {
-  let site: Site = load(siteSchema, 'site.json');
+  let siteData = load(siteSchema, 'site.json');
   if (process.env.MADW_SITE) {
-    site = validate(siteSchema, { ...site, ...JSON.parse(process.env.MADW_SITE) }, 'site.json (MADW_SITE override)');
+    siteData = validate(siteSchema, { ...siteData, ...JSON.parse(process.env.MADW_SITE) }, 'site.json (MADW_SITE override)');
   }
+  const site: Site = { ...siteData, foundedYear: TEAM.founded };
   if (site.foundedYear > site.currentSeason) {
-    throw new DataError('Problem in src/data/site.json: "foundedYear" is after "currentSeason"');
+    throw new DataError('Problem in src/data/team.json: "founded" is after "currentSeason" in site.json');
   }
 
   // calendars: the published team calendar per season. events: every event results may refer to,
