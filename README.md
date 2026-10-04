@@ -175,11 +175,11 @@ Every page carries schema.org JSON-LD, generated from the data files. Nothing is
 
 | Page | Structured data |
 |---|---|
-| Home, partners, media | `SportsTeam` (athletes, coaches, staff, sponsors with their tier, the UCI, profiles) + `WebSite` + one `Organization`/`Brand` per partner + `SportsEvent` for confirmed upcoming races |
+| Home, partners | `SportsTeam` (athletes, coaches, staff, sponsors with their tier, the UCI, profiles) + `WebSite` + one `Organization`/`Brand` per partner + `SportsEvent` for confirmed upcoming races |
 | Rider profile | `Person` (nationality, team membership, Instagram and results profiles) + breadcrumbs |
 | Race page | `SportsEvent` (dates, place with ISO country, status, sport, the team and its riders as competitors, organiser if known, results summary) + breadcrumbs |
 | Calendar | `SportsEvent` for confirmed upcoming races |
-| Equipment | full `SportsTeam` + the wheel partner as `Organization` + `Brand` + one `Product` per confirmed wheel model + breadcrumbs |
+| Equipment | the wheel partner as `Organization` + `Brand` + one `Product` per confirmed wheel model + breadcrumbs |
 | FAQ | `FAQPage` with every question and answer + breadcrumbs |
 
 **The build fails if any structured data is invalid** (`scripts/check-jsonld.mjs`, which also runs as `npm run check:jsonld`). It checks types, properties, required fields, dates, absolute URLs, ISO country codes and references, and makes sure no unconfirmed value leaks out. After each deploy, spot-check a few pages at https://validator.schema.org/ and https://search.google.com/test/rich-results.

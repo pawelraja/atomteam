@@ -10,7 +10,8 @@ import { getData } from '../lib/data';
 import { visible, wheelMentionsOn, wheelPodiums, wheelProducts } from '../lib/equipment';
 import { factVars } from '../lib/facts';
 import { copy, fill, homePath, pick, plural, type Lang } from '../lib/i18n';
-import { breadcrumbs } from '../lib/jsonld';
+import { breadcrumbs, partnerNode } from '../lib/jsonld';
+import { partnerLogoExists } from '../lib/images';
 import { ctxFor } from '../lib/pageld';
 import { route, ROUTES } from '../lib/routes';
 import { TEAM } from '../lib/team';
@@ -37,7 +38,9 @@ const quotes = visible(w.quotes);
 const setup = visible(equipment.setup).map((s) => ({ ...s, info: partners.find((p) => p.name === s.partner)! }));
 const disciplines = t.calendar.discipline;
 const abs = (p: string) => new URL(p, TEAM.website).href;
+// Only what this page is about: the wheel partner and its confirmed models (the full team lives on home).
 const jsonLd = [
+  partnerNode(ctxFor(lang), partner, fill(t.partners.about, { tier: t.partners.tierSingular[partner.tier] }, lang), partnerLogoExists(partner.logo) ? abs(`/partners/${partner.logo}`) : null),
   ...wheelProducts(ctxFor(lang)),
   breadcrumbs([
     { name: t.nav.home, url: abs(homePath(lang)) },
@@ -52,7 +55,6 @@ const jsonLd = [
   paths={ROUTES.equipment}
   title={fill(t.meta.pages.equipment.title, vars)}
   description={fill(t.meta.pages.equipment.description, vars, lang)}
-  fullTeam
   jsonLd={jsonLd}
 >
   <PageIntro lang={lang} eyebrow={te.eyebrow} title={fill(te.title, vars, lang)} lead={lead} />
