@@ -3,22 +3,30 @@
 // solid outline, 3rd a dashed outline, 4th and lower plain text — each with the number and a
 // spoken name ("1. miejsce").
 import { copy, fill, type Lang } from '../lib/i18n';
-import { resultLabel, teamLine, type EventIndex } from '../lib/results';
+import { categoryLabel, resultLabel, stageLabel, teamLine, type EventIndex } from '../lib/results';
 import { riderPath } from '../lib/routes';
 import type { Result } from '../lib/schemas';
 import { riderSlug } from '../lib/showcase';
 import { getData } from '../lib/data';
+import { raceHref } from '../lib/view';
 
 interface Props {
   lang: Lang;
   rows: Result[];
   events: EventIndex;
   caption: string;
-  /** "featured": place · rider · race (home). "rider": place · race · date · source (profile). */
-  variant?: 'featured' | 'rider';
+  /**
+   * "featured": place · rider · race (home). "rider": place · race · date · source (profile).
+   * "race": place · rider · classification · source (race page).
+   */
+  variant?: 'featured' | 'rider' | 'race';
   captionHidden?: boolean;
+  /** Season of the rows: race names then link to their race pages. */
+  season?: number;
 }
-const { lang, rows, events, caption, variant = 'featured', captionHidden = false } = Astro.props;
+const { lang, rows, events, caption, variant = 'featured', captionHidden = false, season } = Astro.props;
+const href = (eventId: string) => (season === undefined ? null : raceHref(lang, season, eventId));
+const classification = (r: Result) => [stageLabel(r.stage, tr.stages), categoryLabel(r.category, tr.categories)].filter(Boolean).join(' · ') || r.stage;
 const t = copy(lang);
 const tr = t.results;
 const riders = new Map(getData().riders.map((r) => [r.name, r]));
@@ -31,10 +39,10 @@ const dateFmt = new Intl.DateTimeFormat(t.meta.locale, { day: 'numeric', month: 
   <thead>
     <tr>
       <th scope="col" class="col-place">{tr.place}</th>
-      {variant === 'featured' && <th scope="col">{tr.rider}</th>}
-      <th scope="col">{tr.event}</th>
+      {variant !== 'rider' && <th scope="col">{tr.rider}</th>}
+      <th scope="col">{variant === 'race' ? tr.classification : tr.event}</th>
       {variant === 'rider' && <th scope="col" class="col-date">{tr.date}</th>}
-      {variant === 'rider' && <th scope="col" class="col-source">{tr.source}</th>}
+      {variant !== 'featured' && <th scope="col" class="col-source">{tr.source}</th>}
     </tr>
   </thead>
   <tbody>
@@ -42,7 +50,9 @@ const dateFmt = new Intl.DateTimeFormat(t.meta.locale, { day: 'numeric', month: 
       rows.map((r) => {
         const rider = riders.get(r.rider);
         const team = teamLine(r);
-        const label = resultLabel(r, events, lang, tr);
+        const text = resultLabel(r, events, lang, tr);
+        const link = variant === 'race' ? null : href(r.eventId);
+        const label = link ? <a class="event-link" href={link}>{text}</a> : text;
         return (
           <tr>
             <td class="place">
@@ -51,12 +61,14 @@ const dateFmt = new Intl.DateTimeFormat(t.meta.locale, { day: 'numeric', month: 
                 <span class="visually-hidden">{placeName(r.position ?? 0)}</span>
               </span>
             </td>
-            {variant === 'featured' && (
+            {variant !== 'rider' && (
               <th scope="row" class="rider">
                 {team ? team : rider ? <a href={riderPath(lang, riderSlug(rider))}>{r.rider}</a> : r.rider}
               </th>
             )}
-            {variant === 'featured' ? (
+            {variant === 'race' ? (
+              <td class="event">{classification(r)}</td>
+            ) : variant === 'featured' ? (
               <td class="event">{label}</td>
             ) : (
               <th scope="row" class="event event--rider">
@@ -65,7 +77,7 @@ const dateFmt = new Intl.DateTimeFormat(t.meta.locale, { day: 'numeric', month: 
               </th>
             )}
             {variant === 'rider' && <td class="date">{r.date ? dateFmt.format(new Date(r.date + 'T00:00:00Z')) : ''}</td>}
-            {variant === 'rider' && (
+            {variant !== 'featured' && (
               <td class="source">
                 <a href={r.source} target="_blank" rel="noopener">
                   {new URL(r.source).hostname.replace(/^www\./, '')}
@@ -155,6 +167,14 @@ const dateFmt = new Intl.DateTimeFormat(t.meta.locale, { day: 'numeric', month: 
   }
   .event {
     color: var(--ink-muted);
+  }
+  .event-link {
+    color: inherit;
+    text-decoration: none;
+  }
+  .event-link:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
   }
   .event--rider {
     color: var(--ink);

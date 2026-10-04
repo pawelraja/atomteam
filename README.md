@@ -54,12 +54,19 @@ Partnerships are handled offline, so the main pages have **no content for prospe
 - If something is wrong, the build **stops and says exactly where**, for example:
   `Problem in src/data/calendar/2027.json: entry #12 ("Gracia Orlová"), field "start": must be a date written as YYYY-MM-DD`. Nothing broken ever reaches the live site.
 
+## Team facts in `team.json`
+
+`src/data/team.json` is the **only** place for the team's identity: name, alternate names, UCI code and status, founding year, city, country, squads, categories, disciplines, website, e-mail, hashtag, social accounts and external profiles (Wikipedia, Wikidata, ProCyclingStats, FirstCycling, UCI). Pages, structured data, calendar files and the copy texts all read it. Change the e-mail here and it changes everywhere.
+
+- Anything not yet confirmed has `"verify": true`. It stays in the file but is **never shown or sent to search engines**. When the team confirms it, fill in the value and set `"verify": false`.
+- `uciCode` is `null` until confirmed. The old site said `MAV`, Wikipedia says `ATO`; check the UCI registration.
+- Profile links: put the full address in `"url"` and set `"verify": false`.
+
 ## The season switches in `site.json`
 
 ```json
 {
   "currentSeason": 2027,
-  "foundedYear": 2016,
   "phase": "preseason",
   "rosterConfirmed": false,
   "calendarConfirmed": false,
@@ -73,8 +80,8 @@ Partnerships are handled offline, so the main pages have **no content for prospe
 
 | Setting | What it means in plain language |
 |---|---|
-| `currentSeason` | The season the site is about. "Season 12" is worked out from this and `foundedYear`, so never type it anywhere. |
-| `foundedYear` | 2016. Leave it alone. |
+| `factsAsOf` | The date the roster and headline facts were last checked, e.g. `"2026-10-04"`. Summaries and the FAQ say "As of 4 October 2026, …". **Update it whenever you change the roster or confirm the calendar.** |
+| `currentSeason` | The season the site is about. "Season 12" is worked out from this and `founded` in `team.json`, so never type it anywhere. |
 | `phase` | Which season the home page **looks back on**. `"preseason"` and `"racing"`: the numbers and results show the **previous** season (2026). `"offseason"` (after the last race): they show the season just finished, as soon as it has results. The page order itself never changes. |
 | `rosterConfirmed` | `false`: the team shows "We will announce the 2027 roster at the team presentation", and the pathway, the media fact sheet and the press roster keep using the complete 2026 roster. `true`: everything switches to riders with `2027` in `seasons`. |
 | `calendarConfirmed` | `false`: the calendar is labelled "provisional". `true`: the label disappears. Set it once most dates are fixed. |
@@ -124,6 +131,61 @@ One file per season: `src/data/calendar/2026.json` (archive) and `src/data/calen
 
 **Calendar downloads.** `/calendar-2027.ics` (the "Subscribe" button) contains **confirmed races only**. Each race keeps the same ID when its dates change, so subscribed phones and Google Calendars update the event instead of adding a duplicate.
 
+### Race pages
+
+Every race with dates gets its own page: `/wyscigi/2026/nxt-classic/` (EN `/en/races/2026/nxt-classic/`). That covers every past race, including races ridden outside the team calendar, and upcoming races once they are `confirmed`. Training blocks and TBC races don't get a page. Each page opens with a one-sentence summary (date, place, the team's best result), then the facts and every classified place with its source. Calendar rows and results tables link to these pages.
+
+- The address is made from the Polish name. Races with the same name (the Polish Cup rounds) get the place added. To choose the address yourself, add `"slug": "puchar-polski-lubartow"`.
+- *(optional)* `"organizer": { "name": "…", "url": "https://…" }` names who runs the race. It goes into the structured data.
+
+## Equipment and the wheel partner (`equipment.json`)
+
+The equipment page (`/sprzet/`, `/en/equipment/`) is generated from `src/data/equipment.json`.
+
+- `wheels.partner` names the wheel partner exactly as in `partners.json` (`"NO LIMITED"`). Change the spelling there and it changes everywhere.
+- `wheels.seasons` and `wheels.disciplines` say when and where the team raced on these wheels. Race pages then mention the wheels once, next to the podium count ("Podium places: 3, all on NO LIMITED wheels."), and the equipment page totals the podiums. This stays off until `disciplinesVerify` is set to `false`. A race can override it: `"equipment": { "wheels": false }` in the calendar entry (e.g. a start with the national team).
+- `wheels.facts`, `wheels.models` (name, discipline, rim depth in mm, product URL) and `wheels.quotes` (rider and text in both languages) appear once `"verify": false`. Each confirmed model also becomes a `Product` in the structured data, made and branded by the partner.
+- `setup` lists the rest of the race setup by category (`bikes`, `tyres`, `shoes`…) and partner. Each item appears once confirmed.
+- **Preview for checking:** `MADW_SHOW_VERIFY=1 npm run build && npm run preview` shows every unconfirmed item in place, marked "[VERIFY] to be confirmed". The build refuses this setting on Vercel production.
+- `docs/no-limited-outreach.md` is the note to NO LIMITED asking for a link back, with a JSON-LD snippet for their site.
+
+## Files for search engines and AI assistants
+
+All generated at build time from the data. Nothing to edit by hand except the robots policy.
+
+| File | What it is |
+|---|---|
+| `/robots.txt` | Allows Google, Bing, OpenAI, Anthropic, Perplexity and Apple crawlers, each in its own group with a comment saying what it does. To change the policy for one crawler, edit `src/pages/robots.txt.ts`. |
+| `/sitemap.xml` | Every indexable page in both languages, with hreflang alternates and `lastmod` = the date of the last commit that changed that page's data (falls back to `factsAsOf`). |
+| `/llms.txt`, `/llms-full.txt` | A short summary with the key links (llmstxt.org format) and the full plain text: team, roster, calendar, results, equipment, partners, FAQ. |
+| `/team.md`, `/races.md`, `/equipment.md`, `/faq.md` (EN); `/zespol.md`, `/wyscigi.md`, `/sprzet.md`, `/pytania.md` (PL) | Markdown versions of the key pages. Each HTML page links to its version with `<link rel="alternate" type="text/markdown">`. |
+| `/rss.xml`, `/en/rss.xml` | Race-results feed, newest first. It stands in for a news feed until the site has news. |
+
+`npm run check:site` fails if titles or descriptions repeat within a language, the sitemap and the built pages differ, a crawler is missing from robots.txt, or a link in llms.txt doesn't resolve.
+
+## Answer-first summaries and the FAQ
+
+Search and AI engines quote the first factual sentences on a page. So the home hero, the team, calendar and partners intros, rider profiles and race pages each open with a short summary that stands on its own. The summaries are templates in the copy files (`hero.summary`, `teamPage.lead`, `calendarPage.lead`, `partnersPage.lead`, `rider.summary`, `race.summary*`), filled with numbers computed from the data (`src/lib/facts.ts`). They update themselves when the data changes.
+
+The FAQ (`/pytania/`, `/en/faq/`) lives in `faq.items` in both copy files: `id`, `q` (question), `a` (answer) and an optional `link` (`href` is a page name such as `team` or `calendar`). Answers can use `{asOf}`, `{riders}`, `{u19}`, `{titles}`, `{races}`, `{countries}`, `{wheels}`, `{EMAIL}` and the other values in `factVars()` in `src/lib/facts.ts`. Keep both languages in the same order. The page carries `FAQPage` structured data automatically.
+
+## Structured data (for search and AI engines)
+
+Every page carries schema.org JSON-LD, generated from the data files. Nothing is typed by hand.
+
+| Page | Structured data |
+|---|---|
+| Home, partners | `SportsTeam` (athletes, coaches, staff, sponsors with their tier, the UCI, profiles) + `WebSite` + one `Organization`/`Brand` per partner + `SportsEvent` for confirmed upcoming races |
+| Rider profile | `Person` (nationality, team membership, Instagram and results profiles) + breadcrumbs |
+| Race page | `SportsEvent` (dates, place with ISO country, status, sport, the team and its riders as competitors, organiser if known, results summary) + breadcrumbs |
+| Calendar | `SportsEvent` for confirmed upcoming races |
+| Equipment | the wheel partner as `Organization` + `Brand` + one `Product` per confirmed wheel model + breadcrumbs |
+| FAQ | `FAQPage` with every question and answer + breadcrumbs |
+
+**The build fails if any structured data is invalid** (`scripts/check-jsonld.mjs`, which also runs as `npm run check:jsonld`). It checks types, properties, required fields, dates, absolute URLs, ISO country codes and references, and makes sure no unconfirmed value leaks out. After each deploy, spot-check a few pages at https://validator.schema.org/ and https://search.google.com/test/rich-results.
+
+Partners: `"kind": "brand"` marks a product brand (Sidi, Vittoria…). `"sameAs": ["https://…"]` adds the company's other confirmed addresses (Wikipedia, LinkedIn).
+
 ## Results
 
 `src/data/results/2026.json` holds the 481 sourced results of 2026, one row per rider per classification. It is exported from the team's master workbook `data/MADW_Results_2026.xlsx` (the "Results" sheet). Use `data/MADW_Results_2027_template.xlsx` for 2027, and save its export as `src/data/results/2027.json`.
@@ -166,10 +228,11 @@ One file per season: `src/data/calendar/2026.json` (archive) and `src/data/calen
 - `category`: `"U19"`, `"U23"` or `"Elite"`. It drives the pathway counts and the numbers. **Check it every season**: juniors move up to U23, U23 riders to Elite.
 - `squad`: `"continental"` or `"junior"`.
 - `instagram` is the handle only (no `@`, no link), or `null`.
+- `profiles`: her ProCyclingStats, FirstCycling and UCI pages, `null` until known. Links appear (on the page and in structured data) only once `"verify"` is set to `false`.
 - *(optional)* `bio`: `{ "pl": "…", "en": "…" }`, two or three sentences for her profile page. `role`: `{ "pl": "Kapitanka", "en": "Captain" }`. `resultsProfile`: link to her full results elsewhere. `slug`: the address of her profile, made from her name when left out.
 - Each rider gets a profile page at `/zespol/<name>/`.
 
-`src/data/staff.json` works the same way. `role` is in both languages and uses feminine forms where they apply: `{"pl":"Dyrektorka sportowa","en":"Sport director"}`. Staff whose role includes "dyrektor"/"menedżer" are listed under "Management" in the media centre.
+`src/data/staff.json` works the same way. `function` (`"coach"`, `"director"`, `"manager"`, `"mechanic"`, `"medical"`, `"other"`) tells search engines who coaches the team. `role` is in both languages and uses feminine forms where they apply: `{"pl":"Dyrektorka sportowa","en":"Sport director"}`. Staff whose role includes "dyrektor"/"menedżer" are listed under "Management" in the media centre.
 
 ## Media centre
 
@@ -197,6 +260,7 @@ All wording is in `src/content/copy.pl.json` (Polish, the **source**) and `src/c
 
 - Both files must have exactly the same keys. If one is missing, the build stops and names the key and the language.
 - `{season}`, `{n}` and similar are filled in automatically; keep them.
+- Never type the team name, "UCI Continental" or the e-mail address. Write `{TEAM}`, `{UCI_STATUS}` or `{EMAIL}` and they are filled in from `team.json`. A test fails if the name is typed out.
 - Counting phrases have forms for Polish grammar (`"one"`, `"few"`, `"many"`): `1 zawodniczka`, `3 zawodniczki`, `20 zawodniczek`. Some have exact forms too: `"5": "Pięcioosobowy sztab, jeden plan."`
 - Polish typography (non-breaking spaces after single-letter words: "w 2027", "i U23") is applied automatically.
 - `results.stages` translates the stage names used in the workbook ("Stage 2" → "2. etap"). A new stage name shows in English until you add it there.
@@ -242,9 +306,33 @@ The site is hosted on Vercel, connected to the GitHub repository `pawelraja/atom
 4. **Nightly rebuild:** *Settings → Git → Deploy Hooks* → create a hook named "nightly" on branch `main`. Copy its URL into GitHub → repository *Settings → Secrets and variables → Actions* as `VERCEL_DEPLOY_HOOK`. The workflow `.github/workflows/nightly-rebuild.yml` then rebuilds every night. Run it by hand from the *Actions* tab any time.
 5. **Checks on every pull request:** `.github/workflows/checks.yml` runs `npm run verify`, so a broken data edit is caught before it can be merged.
 
-## Newsletter
+## Newsletter (MailerLite)
 
-The form (in the footer of every page) isn't connected to a mailing provider yet. When you have one, set the environment variable `NEWSLETTER_ENDPOINT` (a URL that accepts a POST with JSON `{ "email", "consent", "lang" }`) at build time. See `.env.example`. Until then, submitting shows a friendly message pointing to kontakt@atomteam.pl.
+The sign-up form in the footer of every page sends to **MailerLite**. In Vercel → Project → Settings → Environment Variables, set:
+
+- `MAILERLITE_ACCOUNT_ID` and `MAILERLITE_FORM_ID`: the two numbers in the MailerLite embedded form's code (`https://assets.mailerlite.com/jsonp/<account>/forms/<form>/subscribe`). They're public, not secrets.
+- *(optional)* `MAILERLITE_LANGUAGE_FIELD`: the key of a MailerLite custom field that should receive `pl` or `en`.
+
+Then redeploy. The form works without JavaScript (a normal POST to MailerLite). With JavaScript, the result appears in place as plain text. Spam protection is a hidden honeypot field plus a 30-second pause between attempts, with no CAPTCHA. In MailerLite, keep the form's reCAPTCHA off and turn double opt-in on. Without the variables, the form says sign-ups open soon and points to kontakt@atomteam.pl. `NEWSLETTER_ENDPOINT` (any URL accepting JSON `{ "email", "consent", "lang" }`) still works as an alternative.
+
+Contact, junior applications and partnership questions have no forms. The FAQ links straight to an e-mail with the subject filled in.
+
+## GEO documents (`docs/`)
+
+- `geo-audit.md`: the crawl audit (phase 0) and the re-check after phase 5.
+- `geo-verify.md`: **every fact still to confirm**, with a priority summary at the top.
+- `geo-offsite.md`: the off-site checklist (Wikidata, Wikipedia, cycling databases, media links) and the monthly AI-answer test; log results in `geo-tracking.csv`.
+- `no-limited-outreach.md`: the link request to NO LIMITED, with a JSON-LD snippet for their site.
+- `agent-endpoints-proposal.md`: the MCP server proposal (not built).
+
+## Public data for developers and AI agents
+
+`/dane/` and `/en/developers/` document everything below. All of it is generated from the data at build time. It needs no API key and allows cross-origin requests.
+
+- `/data/team.json`, `/data/riders.json`, `/data/races.json`, `/data/results.json`. Each has `version`, `updated` (the date the data last changed) and `documentation`. Results carry `checkedByTeam` and a `source`; unconfirmed values are `null`.
+- `/races.ics`: every confirmed race of every season. Subscribing keeps a calendar up to date.
+- The media centre links the fact sheet as `team.md` and `team.json`, and adds `ImageObject` structured data with credits for each supplied press photo.
+- `docs/agent-endpoints-proposal.md`: a proposal (not built) for an MCP server exposing races, riders and results as tools.
 
 ---
 

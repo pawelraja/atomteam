@@ -1,0 +1,12 @@
+---
+// One static page per dated race (see src/lib/races.ts).
+import RacePage from '../../../views/RacePage.astro';
+import { racePages } from '../../../lib/view';
+
+export function getStaticPaths() {
+  return racePages().map((page) => ({ params: { season: String(page.season), slug: page.slug }, props: { page } }));
+}
+const { page } = Astro.props;
+---
+
+<RacePage lang="pl" page={page} />

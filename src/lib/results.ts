@@ -171,3 +171,22 @@ export function sortFeatured<T extends Pick<Result, 'eventId' | 'position' | 'da
     (a, b) => group(a) - group(b) || (a.position ?? 999) - (b.position ?? 999) || (a.date ?? '').localeCompare(b.date ?? ''),
   );
 }
+
+/**
+ * A rider's best result: best place first; on equal places the bigger event wins (world or
+ * European championships, then national championships, then UCI-classed races), then the date.
+ */
+export function bestResult<T extends Pick<Result, 'eventId' | 'position' | 'date'>>(rows: T[], events: EventIndex): T | null {
+  const weight = (r: T) => {
+    const e = events.get(r.eventId);
+    if (!e) return 9;
+    if (e.cls === 'CM' || e.cls === 'ECh.') return 0;
+    if (e.nationalChampionship) return 1;
+    if (/^[12]\./.test(e.cls ?? '')) return 2;
+    return 3;
+  };
+  const placed = rows.filter((r) => r.position !== null);
+  return (
+    [...placed].sort((a, b) => a.position! - b.position! || weight(a) - weight(b) || (a.date ?? '').localeCompare(b.date ?? ''))[0] ?? null
+  );
+}

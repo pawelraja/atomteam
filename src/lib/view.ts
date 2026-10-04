@@ -2,9 +2,12 @@
 // media page always agree (e.g. which roster is "official", which season the results cover).
 import { getData } from './data';
 import { findImage } from './images';
-import { countHonours, sortFeatured, sortResults } from './results';
-import type { Rider } from './schemas';
-import { pickRoster, recapSeason } from './season';
+import { countHonours, sortFeatured, sortResults, type EventIndex } from './results';
+import type { Result, Rider } from './schemas';
+import { hasRacePage, raceSlugs } from './races';
+import { racePath } from './routes';
+import { pickRoster, recapSeason, type RaceEvent } from './season';
+import type { Lang } from './text';
 import { officialRoster, riderSlug, seasonNumbers } from './showcase';
 
 /**
@@ -64,4 +67,41 @@ export function riderResults(r: Pick<Rider, 'name'>) {
 
 export function hasPhoto(dir: 'riders' | 'photos' | 'media', file: string | null | undefined): boolean {
   return Boolean(file && findImage(dir, file));
+}
+
+export interface RacePageView {
+  season: number;
+  slug: string;
+  event: RaceEvent;
+  /** The team's results at this race, best places first (DNF etc. last). */
+  rows: Result[];
+  events: EventIndex;
+}
+
+let racePageCache: RacePageView[] | null = null;
+
+/** Every race with a page, oldest season first, in calendar order. */
+export function racePages(): RacePageView[] {
+  if (racePageCache) return racePageCache;
+  const { raceEntries, results, events } = getData();
+  racePageCache = [...raceEntries]
+    .sort(([a], [b]) => a - b)
+    .flatMap(([season, list]) => {
+      const slugs = raceSlugs(list);
+      const rows = results.get(season) ?? [];
+      return list.filter(hasRacePage).map((event) => ({
+        season,
+        slug: slugs.get(event.id)!,
+        event,
+        rows: sortResults(rows.filter((r) => r.eventId === event.id)),
+        events: events.get(season) ?? new Map(),
+      }));
+    });
+  return racePageCache;
+}
+
+/** Link to a race's page, or null when the race has none (training, TBC, unknown date). */
+export function raceHref(lang: Lang, season: number, eventId: string): string | null {
+  const page = racePages().find((p) => p.season === season && p.event.id === eventId);
+  return page ? racePath(lang, page.season, page.slug) : null;
 }

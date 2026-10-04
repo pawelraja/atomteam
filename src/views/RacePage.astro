@@ -1,0 +1,202 @@
+---
+// /wyscigi/<season>/<slug> and /en/races/<season>/<slug>: one race. Opens with a factual summary
+// that stands on its own (date, place, the team's best result), then the facts and every
+// classified place of our riders with its source. Static, generated from the calendar and results.
+import Icon from '../components/Icon.astro';
+import ResultsTable from '../components/ResultsTable.astro';
+import Shell from '../components/Shell.astro';
+import { anchor } from '../lib/anchors';
+import { getData } from '../lib/data';
+import { podiums, wheelMentionsOn, wheelsFor } from '../lib/equipment';
+import { copy, fill, type Lang } from '../lib/i18n';
+import { raceDates, raceNodes, raceSummary, raceWhere } from '../lib/pageld';
+import { racePaths, route } from '../lib/routes';
+import { eventState, isConfirmedRace, raceLocation, raceName, type RaceEvent } from '../lib/season';
+import { typo } from '../lib/text';
+import type { RacePageView } from '../lib/view';
+
+interface Props {
+  lang: Lang;
+  page: RacePageView;
+}
+const { lang, page } = Astro.props;
+const { today } = getData();
+const t = copy(lang);
+const tr = t.race;
+const e = page.event as RaceEvent & { start: string; end: string };
+const name = typo(lang, raceName(e, lang));
+// Titles name the place too: several Polish Cup rounds share one race name.
+const place = raceLocation(e, lang);
+const metaName = place ? `${name}, ${place}` : name;
+const state = e.status === 'cancelled' ? 'cancelled' : eventState(e, today);
+const classified = page.rows.filter((r) => r.position !== null);
+// Mention the wheels once, where it counts: podiums won on the partner's wheels.
+const wheels = wheelMentionsOn() ? wheelsFor(e) : null;
+const podiumCount = podiums(classified);
+const ics = isConfirmedRace(e) && e.onTeamCalendar !== false && state !== 'past' ? `/ics/${page.season}/${e.id}.ics` : null;
+const eyebrow = [e.onTeamCalendar === false ? tr.offCalendar : null, t.calendar.discipline[e.discipline], e.cls, String(page.season)].filter(Boolean).join(' · ');
+---
+
+<Shell
+  lang={lang}
+  page="calendar"
+  paths={racePaths(page.season, page.slug)}
+  title={fill(tr.metaTitle, { race: metaName, season: page.season })}
+  description={fill(tr.metaDescription, { race: metaName, season: page.season }, lang)}
+  jsonLd={raceNodes(lang, page, today)}
+>
+  <section class="race" id={anchor(lang, 'profile')} data-section="race" aria-labelledby="page-title">
+    <div class="container race__grid">
+      <p class="race__back">
+        <a href={route(lang, 'calendar')}>
+          <span class="back-arrow" aria-hidden="true"><Icon name="arrow" size={16} /></span>
+          {tr.back}
+        </a>
+      </p>
+      <div class="race__body">
+        <p class="eyebrow">{eyebrow}</p>
+        <h1 id="page-title" class:list={{ strike: state === 'cancelled' }}>{name}</h1>
+        <p class="race__summary">{raceSummary(page, lang, today)}</p>
+        <dl class="facts">
+          <div><dt>{tr.date}</dt><dd>{raceDates(e, lang)}</dd></div>
+          <div><dt>{tr.place}</dt><dd>{raceWhere(e, lang)}</dd></div>
+          <div><dt>{tr.discipline}</dt><dd>{t.calendar.discipline[e.discipline]}</dd></div>
+          {e.cls && <div><dt>{tr.class}</dt><dd>{e.cls}</dd></div>}
+          <div><dt>{tr.status}</dt><dd>{t.calendar.status[state]}</dd></div>
+          {e.organizer && <div><dt>{tr.organizer}</dt><dd>{e.organizer.name}</dd></div>}
+          {
+            e.url && (
+              <div>
+                <dt>{tr.website}</dt>
+                <dd>
+                  <a href={e.url} target="_blank" rel="noopener">
+                    {new URL(e.url).hostname.replace(/^www\./, '')}
+                    <span class="visually-hidden"> {t.a11y.newTab}</span>
+                  </a>
+                </dd>
+              </div>
+            )
+          }
+        </dl>
+        {
+          ics && (
+            <p>
+              <a class="btn btn--primary" href={ics} download>
+                <Icon name="calendar" size={20} />
+                {t.nextRace.addToCalendar}
+              </a>
+            </p>
+          )
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="race-results" aria-labelledby="race-results-title">
+    <div class="container race-results__inner">
+      <div class="race-results__head">
+        <h2 id="race-results-title" class="chapter">{tr.resultsTitle}</h2>
+        <p>{classified.length ? tr.resultsLead : tr.noResults}</p>
+        {wheels && podiumCount > 0 && <p>{fill(tr.wheelsLine, { n: podiumCount, wheels }, lang)}</p>}
+      </div>
+      {
+        classified.length > 0 && (
+          <ResultsTable lang={lang} rows={classified} events={page.events} variant="race" caption={fill(tr.tableCaption, { race: name, season: page.season }, lang)} />
+        )
+      }
+    </div>
+  </section>
+</Shell>
+
+<style>
+  .race {
+    padding: calc(var(--header-h) + 16px + 64px) 0 96px;
+    background: var(--surface-alt);
+  }
+  .race__grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 24px var(--grid-gap);
+    align-items: start;
+  }
+  .race__back {
+    grid-column: 1 / -1;
+  }
+  .race__back a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 40px;
+  }
+  .back-arrow {
+    display: inline-flex;
+    transform: scaleX(-1);
+  }
+  .race__body {
+    grid-column: 1 / span 8;
+    display: grid;
+    gap: 24px;
+  }
+  h1 {
+    font-size: var(--fs-chapter);
+    line-height: var(--lh-chapter);
+    letter-spacing: var(--ls-chapter);
+  }
+  .strike {
+    text-decoration: line-through;
+  }
+  .race__summary {
+    font-size: 18px;
+    line-height: 1.5;
+    max-width: 60ch;
+  }
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 32px;
+  }
+  .facts div {
+    display: grid;
+    gap: 2px;
+    padding: 14px 0;
+    border-top: 1px solid #d9d2dc;
+  }
+  .facts dt {
+    font-size: 13px;
+    color: var(--ink-muted);
+  }
+  .facts dd {
+    font-size: 17px;
+  }
+  .race-results {
+    padding-block: 96px;
+  }
+  .race-results__inner {
+    display: grid;
+    gap: 40px;
+  }
+  .race-results__head {
+    display: grid;
+    gap: 12px;
+  }
+  .race-results__head p {
+    font-size: 17px;
+    color: var(--ink-muted);
+  }
+  @media (max-width: 899px) {
+    .race__body {
+      grid-column: 1 / -1;
+    }
+  }
+  @media (max-width: 479px) {
+    .facts {
+      grid-template-columns: 1fr;
+    }
+    .race {
+      padding-bottom: 56px;
+    }
+    .race-results {
+      padding-block: 56px;
+    }
+  }
+</style>

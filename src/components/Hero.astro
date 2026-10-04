@@ -5,6 +5,7 @@ import { anchor } from '../lib/anchors';
 import { getData } from '../lib/data';
 import { HERO_DESKTOP_MEDIA, HERO_MOBILE_MEDIA, heroSources } from '../lib/hero';
 import { copy, fill, type Lang } from '../lib/i18n';
+import { factVars } from '../lib/facts';
 import { route } from '../lib/routes';
 
 interface Props {
@@ -53,7 +54,7 @@ const credentials = [
     <p class="hero__eyebrow">{t.hero.eyebrow}</p>
     <h1 id="hero-title">{t.hero.title}</h1>
     <div class="hero__row">
-      <p class="hero__mission">{fill(t.hero.mission, { founded: site.foundedYear }, lang)}</p>
+      <p class="hero__mission">{fill(t.hero.summary, factVars(lang), lang)}</p>
       <div class="hero__buttons">
         <a class="btn btn--secondary hero__secondary" href={route(lang, 'calendar')}>{fill(t.hero.secondary, { season: site.currentSeason }, lang)}</a>
         <a class="btn btn--primary" href={route(lang, 'team')}>{t.hero.primary}</a>

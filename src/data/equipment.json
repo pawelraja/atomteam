@@ -1,0 +1,39 @@
+{
+  "wheels": {
+    "partner": "NO LIMITED",
+    "seasons": [2026],
+    "disciplines": ["ROAD", "TTT"],
+    "disciplinesVerify": true,
+    "about": {
+      "pl": "Polski producent karbonowych kół rowerowych z Podkarpacia.",
+      "en": "A Polish manufacturer of carbon bicycle wheels from Podkarpacie."
+    },
+    "facts": [
+      { "label": { "pl": "Kraj", "en": "Country" }, "value": { "pl": "Polska (Podkarpacie)", "en": "Poland (Podkarpacie)" }, "verify": false },
+      { "label": { "pl": "Produkty", "en": "Products" }, "value": { "pl": "Karbonowe koła rowerowe", "en": "Carbon bicycle wheels" }, "verify": false },
+      { "label": { "pl": "Koła z homologacją UCI", "en": "UCI-approved wheels" }, "value": { "pl": "od 2016 roku", "en": "since 2016" }, "verify": true, "note": "Confirm with NO LIMITED" }
+    ],
+    "models": [
+      { "name": "[VERIFY: road model]", "discipline": "ROAD", "rimDepth": null, "use": { "pl": "Wyścigi szosowe", "en": "Road races" }, "url": null, "verify": true },
+      { "name": "[VERIFY: time-trial model]", "discipline": "TTT", "rimDepth": null, "use": { "pl": "Jazda na czas", "en": "Time trials" }, "url": null, "verify": true },
+      { "name": "[VERIFY: track model, if any]", "discipline": "TRACK", "rimDepth": null, "use": { "pl": "Tor", "en": "Track" }, "url": null, "verify": true }
+    ],
+    "quotes": [
+      { "rider": null, "text": { "pl": "[VERIFY: cytat zawodniczki o kołach]", "en": "[VERIFY: rider quote about the wheels]" }, "verify": true },
+      { "rider": null, "text": { "pl": "[VERIFY: cytat zawodniczki o kołach]", "en": "[VERIFY: rider quote about the wheels]" }, "verify": true }
+    ]
+  },
+  "setup": [
+    { "category": "wheels", "partner": "NO LIMITED", "verify": false },
+    { "category": "bikes", "partner": "Accent", "verify": true },
+    { "category": "tyres", "partner": "Vittoria", "verify": true },
+    { "category": "shoes", "partner": "Sidi", "verify": true },
+    { "category": "helmets", "partner": "MET Helmets", "verify": true },
+    { "category": "saddles", "partner": "San Marco", "verify": true },
+    { "category": "clothing", "partner": "Jako Sport", "verify": true },
+    { "category": "lubricants", "partner": "Finish Line", "verify": true },
+    { "category": "tools", "partner": "Park Tool", "verify": true },
+    { "category": "nutrition", "partner": "NamedSport", "verify": true },
+    { "category": "car", "partner": "Škoda Gall ICM", "verify": true }
+  ]
+}

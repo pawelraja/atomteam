@@ -6,6 +6,7 @@ import Shell from '../components/Shell.astro';
 import Team from '../components/Team.astro';
 import { getData } from '../lib/data';
 import { copy, fill, type Lang } from '../lib/i18n';
+import { factVars } from '../lib/facts';
 import { ROUTES } from '../lib/routes';
 
 interface Props {
@@ -24,7 +25,7 @@ const season = site.currentSeason;
   title={fill(t.meta.pages.team.title, { season })}
   description={fill(t.meta.pages.team.description, { season }, lang)}
 >
-  <PageIntro lang={lang} eyebrow={t.teamPage.eyebrow} title={t.teamPage.title} lead={t.teamPage.lead} />
+  <PageIntro lang={lang} eyebrow={t.teamPage.eyebrow} title={t.teamPage.title} lead={fill(t.teamPage.lead, factVars(lang), lang)} />
   <Team lang={lang} variant="page" />
   <Approach lang={lang} variant="pathway" />
 </Shell>

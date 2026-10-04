@@ -8,6 +8,7 @@ import Partners from '../components/Partners.astro';
 import Shell from '../components/Shell.astro';
 import { getData } from '../lib/data';
 import { copy, fill, type Lang } from '../lib/i18n';
+import { factVars } from '../lib/facts';
 import { ROUTES } from '../lib/routes';
 
 interface Props {
@@ -23,10 +24,11 @@ const season = site.currentSeason;
   lang={lang}
   page="partners"
   paths={ROUTES.partners}
+  fullTeam
   title={fill(t.meta.pages.partners.title, { season })}
   description={fill(t.meta.pages.partners.description, { season }, lang)}
 >
-  <PageIntro lang={lang} eyebrow={fill(t.partnersPage.eyebrow, { season }, lang)} title={t.partnersPage.title} lead={t.partnersPage.lead} />
+  <PageIntro lang={lang} eyebrow={fill(t.partnersPage.eyebrow, { season }, lang)} title={t.partnersPage.title} lead={fill(t.partnersPage.lead, factVars(lang), lang)} />
   <Partners lang={lang} />
   <BrandPlacement lang={lang} />
 </Shell>

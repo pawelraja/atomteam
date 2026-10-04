@@ -11,6 +11,7 @@ import { z } from 'zod';
 import { eventInfo, type EventIndex } from './results';
 import {
   calendarEntrySchema,
+  equipmentSchema,
   gallerySchema,
   highlightSchema,
   mediaSchema,
@@ -27,6 +28,7 @@ import {
 } from './schemas';
 import { duplicateIds, normalizeCalendar, todayISO, type RaceEvent } from './season';
 import { riderSlug } from './showcase';
+import { TEAM } from './team';
 
 const BASE = resolve('src/data');
 const OVERLAY = process.env.MADW_DATA_DIR ? resolve(process.env.MADW_DATA_DIR) : null;
@@ -102,17 +104,20 @@ function listFiles(dir: string, pattern: RegExp): string[] {
 }
 
 function loadAll() {
-  let site: Site = load(siteSchema, 'site.json');
+  let siteData = load(siteSchema, 'site.json');
   if (process.env.MADW_SITE) {
-    site = validate(siteSchema, { ...site, ...JSON.parse(process.env.MADW_SITE) }, 'site.json (MADW_SITE override)');
+    siteData = validate(siteSchema, { ...siteData, ...JSON.parse(process.env.MADW_SITE) }, 'site.json (MADW_SITE override)');
   }
+  const site: Site = { ...siteData, foundedYear: TEAM.founded };
   if (site.foundedYear > site.currentSeason) {
-    throw new DataError('Problem in src/data/site.json: "foundedYear" is after "currentSeason"');
+    throw new DataError('Problem in src/data/team.json: "founded" is after "currentSeason" in site.json');
   }
 
   // calendars: the published team calendar per season. events: every event results may refer to,
   // including races ridden outside the team calendar ("onTeamCalendar": false).
   const calendars = new Map<number, RaceEvent[]>();
+  // Every dated race of a season, including races ridden outside the team calendar: one page each.
+  const raceEntries = new Map<number, RaceEvent[]>();
   const events = new Map<number, EventIndex>();
   for (const file of listFiles('calendar', /^\d{4}\.json$/)) {
     const season = Number(file.slice(0, 4));
@@ -144,6 +149,8 @@ function loadAll() {
       );
     }
     calendars.set(season, normalized);
+    const offCalendar = entries.filter((e) => e.onTeamCalendar === false && e.start && e.country);
+    raceEntries.set(season, normalizeCalendar(season, [...onCalendar, ...offCalendar]));
     events.set(season, new Map(entries.filter((e): e is typeof e & { id: string } => Boolean(e.id)).map((e) => [e.id, eventInfo(e)])));
   }
   if (!calendars.has(site.currentSeason)) calendars.set(site.currentSeason, []);
@@ -178,11 +185,23 @@ function loadAll() {
   const today = process.env.MADW_TODAY ?? todayISO();
   if (!/^\d{4}-\d{2}-\d{2}$/.test(today)) throw new DataError('MADW_TODAY must be YYYY-MM-DD');
 
+  const partners = load(z.array(partnerSchema), 'partners.json');
+  const equipment = load(equipmentSchema, 'equipment.json');
+  const partnerNames = new Set(partners.map((p) => p.name));
+  const unknownPartners = [equipment.wheels.partner, ...equipment.setup.map((x) => x.partner)].filter((n) => !partnerNames.has(n));
+  if (unknownPartners.length) {
+    throw new DataError(
+      `Problem in src/data/equipment.json: ${[...new Set(unknownPartners)].map((n) => `"${n}"`).join(', ')} not found in partners.json.\n  Write the name exactly as in partners.json.`,
+    );
+  }
+
   return {
     site,
     calendars,
+    raceEntries,
     events,
-    partners: load(z.array(partnerSchema), 'partners.json'),
+    partners,
+    equipment,
     riders,
     results,
     media: loadMedia(),
@@ -229,6 +248,15 @@ function checkResults(rows: Result[], file: string, riders: Rider[], events: Eve
   if (unchecked) {
     console.warn(`[data] ${file}: ${unchecked} of ${rows.length} result rows are not yet signed off by the team ("verify": true).`);
   }
+}
+
+/**
+ * Preview builds for the team (MADW_SHOW_VERIFY=1) show unconfirmed items marked [VERIFY] so they
+ * can be checked in place. Never in production: the build stops if both are set.
+ */
+export const SHOW_UNVERIFIED = process.env.MADW_SHOW_VERIFY === '1';
+if (SHOW_UNVERIFIED && process.env.VERCEL_ENV === 'production') {
+  throw new DataError('MADW_SHOW_VERIFY must not be set for production builds.');
 }
 
 /** Where downloadable media files live. */

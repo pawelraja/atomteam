@@ -15,6 +15,7 @@ import Shell from '../components/Shell.astro';
 import Story from '../components/Story.astro';
 import Team from '../components/Team.astro';
 import type { Lang } from '../lib/i18n';
+import { upcomingEventNodes } from '../lib/pageld';
 import { ROUTES } from '../lib/routes';
 
 interface Props {
@@ -23,7 +24,7 @@ interface Props {
 const { lang } = Astro.props;
 ---
 
-<Shell lang={lang} page="home" paths={ROUTES.home} preloadHero events>
+<Shell lang={lang} page="home" paths={ROUTES.home} preloadHero fullTeam jsonLd={upcomingEventNodes(lang)}>
   <Hero lang={lang} />
   <Numbers lang={lang} />
   <Story lang={lang} />

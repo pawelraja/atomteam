@@ -12,7 +12,7 @@ const { lang } = Astro.props;
 const t = copy(lang);
 ---
 
-<Shell lang={lang} page="privacy" paths={ROUTES.privacy} title={`${t.privacyPage.title} — ${t.team.name}`} noindex>
+<Shell lang={lang} page="privacy" paths={ROUTES.privacy} title={`${t.privacyPage.title.replace(/\.$/, '')} — ${t.team.name}`} description={fill(t.privacyPage.body, { email: t.team.email }, lang)} noindex>
   <PageIntro lang={lang} eyebrow={t.team.name} title={t.privacyPage.title} />
   <section class="privacy">
     <div class="container privacy__inner">

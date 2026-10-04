@@ -3,45 +3,37 @@
     "lang": "en",
     "locale": "en-GB",
     "ogLocale": "en_GB",
-    "title": "Mat Atom Deweloper Wrocław — UCI women's cycling team · Season {season}",
-    "description": "UCI Continental women's cycling team and junior team from Wrocław, Poland. Since {founded}. Team, photos, {season} calendar and results.",
+    "title": "{TEAM} — UCI women's cycling team · Season {season}",
+    "description": "{UCI_STATUS} women's cycling team and junior team from Wrocław, Poland. Since {founded}. Team, photos, {season} calendar and results.",
     "ogHeadline": "Season {season}.",
-    "ogAlt": "Mat Atom Deweloper Wrocław — Season {season}",
+    "ogAlt": "{TEAM} — Season {season}",
     "pages": {
+      "developers": { "title": "Developer data — {TEAM}", "description": "Public {TEAM} data: races, riders and results as JSON, an .ics calendar, llms.txt and Markdown versions. No API key needed." },
+      "equipment": { "title": "Equipment and {wheels} wheels — {TEAM}", "description": "What {TEAM} races on: {wheels} carbon wheels and the team's technical partners." },
+      "faq": { "title": "Questions and answers — {TEAM}", "description": "Answers to the most common questions about {TEAM}: UCI level, roster, results, calendar, equipment, juniors and contact." },
       "team": {
-        "title": "Team — Mat Atom Deweloper Wrocław",
-        "description": "Continental and junior riders and the staff of Mat Atom Deweloper Wrocław."
+        "title": "Team — {TEAM}",
+        "description": "Continental and junior riders and the staff of {TEAM}."
       },
       "calendar": {
-        "title": "{season} calendar — Mat Atom Deweloper Wrocław",
+        "title": "{season} calendar — {TEAM}",
         "description": "The {season} season: road, track, cyclocross. Dates, UCI classes and a season archive."
       },
       "partners": {
-        "title": "Partners — Mat Atom Deweloper Wrocław",
-        "description": "The companies and institutions behind the Mat Atom Deweloper Wrocław women's cycling team."
+        "title": "Partners — {TEAM}",
+        "description": "The companies and institutions behind the {TEAM} women's cycling team."
       },
       "media": {
-        "title": "Media centre — Mat Atom Deweloper Wrocław",
+        "title": "Media centre — {TEAM}",
         "description": "Team facts, boilerplate, logos, photos, roster and press contact. No login needed."
       },
       "rider": {
-        "title": "{name} — Mat Atom Deweloper Wrocław",
-        "description": "{name}, {squad}, Mat Atom Deweloper Wrocław. Profile, results and a downloadable portrait."
+        "title": "{name} — {TEAM} rider",
+        "description": "{name}, {squad}, {TEAM}. Profile, results and a downloadable portrait."
       }
     }
   },
   "team": {
-    "name": "Mat Atom Deweloper Wrocław",
-    "wordmarkLead": "MAT",
-    "wordmarkA": "ATOM DEWELOPER",
-    "wordmarkB": "WROCŁAW",
-    "email": "kontakt@atomteam.pl",
-    "hashtag": "#allezatomówki",
-    "social": {
-      "instagram": "https://www.instagram.com/atomdeweloper_team/",
-      "facebook": "https://www.facebook.com/atom.deweloper.team",
-      "linkedin": "https://www.linkedin.com/company/atomteampl/"
-    },
     "logoPlaceholder": "LOGO"
   },
   "language": {
@@ -93,13 +85,13 @@
   "hero": {
     "eyebrow": "Women's cycling team from Wrocław",
     "title": "We are for women's cycling.",
-    "mission": "Since {founded} we have taken riders from their first junior races to UCI races across Europe.",
+    "summary": "{TEAM} is a {UCI_STATUS} women's cycling team from Wrocław, Poland, founded in {founded}, with its own junior squad. In {statsSeason}: {statsRiders}, {titles} and {races} in {countries}.",
     "primary": "Meet the team",
     "secondary": "{season} calendar",
-    "alt": "The peloton in motion: Mat Atom Deweloper Wrocław riders in team kit",
+    "alt": "The peloton in motion: {TEAM} riders in team kit",
     "credentialsLabel": "The team in facts",
     "credentials": {
-      "licence": { "term": "Licence", "value": "UCI Continental" },
+      "licence": { "term": "Licence", "value": "{UCI_STATUS}" },
       "juniors": { "term": "Juniors", "value": "U19 team" },
       "base": { "term": "Base", "value": "Wrocław /POL" },
       "founded": { "term": "Founded", "value": "{founded}" },
@@ -223,6 +215,7 @@
     "riderTableCaption": "Results: {name}, {season} season",
     "place": "Place",
     "rider": "Rider",
+    "classification": "Classification",
     "event": "Race",
     "date": "Date",
     "source": "Source",
@@ -232,6 +225,7 @@
       "3": "3rd place",
       "other": "place {n}"
     },
+    "fullNames": {"nationalChampionship": "Polish Championships", "europeanChampionship": "European Championships", "worldChampionship": "World Championships"},
     "nationalChampionship": "NC",
     "europeanChampionship": "EC",
     "worldChampionship": "Worlds",
@@ -381,7 +375,7 @@
   "calendarPage": {
     "eyebrow": "Season {season} · Season {number} for the team",
     "title": "Race calendar.",
-    "lead": "Road, track and cyclocross. UCI races across Europe and national races in Poland. Past seasons are in the archive."
+    "lead": "{TEAM} races on the road, on the track and in cyclocross. {calSentence} In {statsSeason} the team raced {races} in {countries}; past seasons are in the archive."
   },
   "calendar": {
     "title": "Every race.",
@@ -458,7 +452,7 @@
   "partnersPage": {
     "eyebrow": "Partners",
     "title": "Partners.",
-    "lead": "Every race we ride is made possible by the companies and institutions behind the team."
+    "lead": "Season {partnerSeason}: {partnerCount} of {TEAM}. Title sponsor: {titleSponsor}. Main sponsors: {mainSponsors}. Every race we ride is made possible by the companies and institutions behind the team."
   },
   "partners": {
     "titleCurrent": "Our {season} partners.",
@@ -472,12 +466,14 @@
     },
     "titleThankYou": "Thank you for making every race possible.",
     "visit": "{name} — partner website",
+    "tierSingular": { "title": "Title sponsor", "main": "Main sponsor", "technical": "Technical partner", "institutional": "Institutional partner" },
+    "about": "{tier} of {TEAM}.",
     "logoPlaceholder": "Logo: {file}"
   },
   "teamPage": {
     "eyebrow": "Team",
     "title": "Riders and staff.",
-    "lead": "The Continental team, the juniors and the staff. Every rider has a profile with results and a downloadable portrait."
+    "lead": "As of {asOf}, the {rosterSeason} roster of {TEAM} has {riders} – {u19} U19, {u23} U23 and {elite} Elite – and {staff}. Every rider has a profile with results and a downloadable portrait."
   },
   "rider": {
     "back": "Full team",
@@ -505,7 +501,286 @@
     "noResults": "Her results will appear here during the season.",
     "download": "Download portrait (JPG, {size})",
     "downloadSoon": "Portrait download coming soon",
+    "summary": "{name}: {squad}, {TEAM}. Category: {category}. Country: {country}.",
+    "best": "Best result in {season}: {best}.",
+    "bestPlace": "{place} – {event}",
+    "jobTitle": "Cyclist",
+    "profiles": "Profiles on results sites",
     "photoCredit": "Photo credit: Photo: [photographer] / MADW."
+  },
+  "race": {
+    "back": "Calendar",
+    "offCalendar": "Raced outside the team calendar",
+    "date": "Date",
+    "place": "Place",
+    "discipline": "Discipline",
+    "class": "Class",
+    "status": "Status",
+    "organizer": "Organiser",
+    "website": "Race website",
+    "summaryPast": "{race}: {dates}, {where}. {TEAM} riders took {count} here. Best result: {best}.",
+    "summaryPastNone": "{race}: {dates}, {where}. The {TEAM} results from this race are not on the site yet.",
+    "summaryUpcoming": "{race}: {dates}, {where}. On the {TEAM} calendar for the {season} season.",
+    "summaryCancelled": "{race}: {dates}, {where}. The race was cancelled.",
+    "placings": { "one": "{n} classified place", "few": "{n} classified places", "many": "{n} classified places", "other": "{n} classified places" },
+    "best": "{place} – {rider}{detail}",
+    "wheelsLine": "Podium places: {n}, all on {wheels} wheels.",
+    "resultsTitle": "Team results.",
+    "resultsLead": "Classified places of our riders. Every result links to its source.",
+    "noResults": "Results will appear here after the race.",
+    "tableCaption": "Team results: {race} {season}",
+    "metaTitle": "{race} {season}: dates and results — {TEAM}",
+    "metaDescription": "{race} {season}: date, place and the results of the {TEAM} riders."
+  },
+  "faq": {
+    "eyebrow": "FAQ",
+    "title": "Questions and answers.",
+    "lead": "The most common questions about {TEAM}. The answers come from the data on this site, as of {asOf}.",
+    "calendarProvisional": "The {calSeason} calendar is provisional ({calRaces}): dates and UCI classes are added as organisers confirm them.",
+    "calendarConfirmed": "The {calSeason} calendar lists {calRaces} with dates, places and UCI classes.",
+    "counts": {
+      "titles": {
+        "one": "{n} Polish national title",
+        "few": "{n} Polish national titles",
+        "many": "{n} Polish national titles",
+        "other": "{n} Polish national titles"
+      },
+      "medals": {
+        "one": "{n} national-championship medal",
+        "few": "{n} national-championship medals",
+        "many": "{n} national-championship medals",
+        "other": "{n} national-championship medals"
+      },
+      "races": {
+        "one": "{n} race",
+        "few": "{n} races",
+        "many": "{n} races",
+        "other": "{n} races"
+      },
+      "countries": {
+        "one": "{n} country",
+        "few": "{n} countries",
+        "many": "{n} countries",
+        "other": "{n} countries"
+      },
+      "partners": {
+        "one": "{n} partner",
+        "few": "{n} partners",
+        "many": "{n} partners",
+        "other": "{n} partners"
+      },
+      "staff": {
+        "one": "{n} staff member",
+        "few": "{n} staff",
+        "many": "{n} staff",
+        "other": "{n} staff"
+      },
+      "juniors": {
+        "one": "{n} junior rider",
+        "few": "{n} junior riders",
+        "many": "{n} junior riders",
+        "other": "{n} junior riders"
+      }
+    },
+    "items": [
+      {
+        "id": "who",
+        "q": "Who is {TEAM}?",
+        "a": "{TEAM} (MADW) is a women's cycling team from Wrocław, Poland, founded in {founded}. It holds a {UCI_STATUS} licence, runs its own junior (U19) squad and races on the road, on the track and in cyclocross in Poland and abroad.",
+        "link": {
+          "label": "Riders and staff",
+          "href": "team"
+        }
+      },
+      {
+        "id": "level",
+        "q": "Is it a professional team? What UCI level is it?",
+        "a": "The team is registered with the UCI (Union Cycliste Internationale) as a {UCI_STATUS} women's team. That is the third tier of women's road cycling, after UCI Women's WorldTeams and UCI Women's ProTeams. Its riders race UCI-classified events across Europe and national races in Poland.",
+        "link": null
+      },
+      {
+        "id": "riders",
+        "q": "Who rides for {TEAM} in {rosterSeason}?",
+        "a": "As of {asOf}, the {rosterSeason} roster has {riders}: {u19} U19, {u23} U23 and {elite} Elite. Elite: {eliteNames}. U23: {u23Names}. U19 juniors: {u19Names}.",
+        "link": {
+          "label": "Riders and staff",
+          "href": "team"
+        }
+      },
+      {
+        "id": "results",
+        "q": "What did the team win in {resultsSeason}?",
+        "a": "In {resultsSeason}, {TEAM} riders won {titles} and {medals} in total (each event, category and place counted once; team events count once). The team raced {races} in {countries}.",
+        "link": {
+          "label": "Calendar and results",
+          "href": "calendar"
+        }
+      },
+      {
+        "id": "watch",
+        "q": "Where can I watch the team race this season?",
+        "a": "Every race the team rides is on the calendar on this site. {calSentence} You can subscribe to the calendar (.ics) in Google Calendar, Apple Calendar or Outlook. Results and race photos are posted on Instagram at {instagram}.",
+        "link": {
+          "label": "Calendar",
+          "href": "calendar"
+        }
+      },
+      {
+        "id": "equipment",
+        "q": "What bikes and wheels does the team use?",
+        "a": "The team races on {wheels} carbon wheels. {wheels} is a Polish carbon wheel manufacturer from Podkarpacie and one of the team's main sponsors. The team's technical partners are {technicalPartners}.",
+        "link": {"label": "Team equipment", "href": "equipment"}
+      },
+      {
+        "id": "junior",
+        "q": "How can a young rider join the junior team?",
+        "a": "The junior squad races in the UCI women's junior category (U19): riders who turn 17 or 18 in the season. To apply, write to {EMAIL} with your name, year of birth, current club, disciplines and best results. Juniors on the {rosterSeason} roster: {u19}.",
+        "link": {"label": "Email your application", "href": "mailto:{EMAIL}?subject=Junior team application"}
+      },
+      {
+        "id": "sponsor",
+        "q": "How can a company sponsor the team?",
+        "a": "The team arranges partnerships directly. Write to {EMAIL}. The current partners are on the Partners page.",
+        "link": {"label": "Email about a partnership", "href": "mailto:{EMAIL}?subject=Partnership enquiry"}
+      },
+      {
+        "id": "press",
+        "q": "How can journalists contact the team or get photos?",
+        "a": "The media centre has team facts, the boilerplate, logos, photos and rider portraits, free for editorial use without a login. Press enquiries: {EMAIL}.",
+        "link": {
+          "label": "Media centre",
+          "href": "media"
+        }
+      }
+    ]
+  },
+  "equipment": {
+    "eyebrow": "Equipment",
+    "title": "What wheels does {TEAM} ride?",
+    "lead": "{TEAM} races on {wheels} carbon wheels, made by a Polish manufacturer from Podkarpacie.",
+    "leadStats": "{TEAM} races on {wheels} carbon wheels, made by a Polish manufacturer from Podkarpacie. In {wheelSeason} the riders won {wheelPodiums} on them in {wheelRaces}.",
+    "counts": {
+      "podiums": {
+        "one": "{n} podium place",
+        "few": "{n} podium places",
+        "many": "{n} podium places",
+        "other": "{n} podium places"
+      },
+      "racesIn": {
+        "one": "{n} race",
+        "few": "{n} races",
+        "many": "{n} races",
+        "other": "{n} races"
+      }
+    },
+    "partnerEyebrow": "Wheel partner",
+    "visit": "{wheels} website",
+    "modelsTitle": "The models we race",
+    "modelsCaption": "{wheels} wheels used by the team",
+    "model": "Model",
+    "discipline": "Discipline",
+    "rimDepth": "Rim depth",
+    "use": "Use",
+    "mm": "{n} mm",
+    "quotesTitle": "Why {wheels}?",
+    "quoteAnon": "{TEAM} rider",
+    "setupTitle": "The full race setup.",
+    "setupLead": "What the riders race on, by partner.",
+    "partnersLead": "The team's technical partners in {partnerSeason}: {technicalPartners}.",
+    "partnersLink": "All partners",
+    "verify": "to be confirmed",
+    "categories": {
+      "bikes": "Bikes",
+      "wheels": "Wheels",
+      "tyres": "Tyres",
+      "shoes": "Shoes",
+      "helmets": "Helmets",
+      "saddles": "Saddles",
+      "clothing": "Clothing",
+      "lubricants": "Lubricants and cleaning",
+      "tools": "Tools",
+      "nutrition": "Nutrition",
+      "car": "Team cars"
+    }
+  },
+  "markdown": {
+    "source": "Source",
+    "asOf": "As of {asOf}",
+    "otherLang": "Wersja polska",
+    "teamTitle": "{TEAM}: the team",
+    "racesTitle": "{TEAM}: races and results",
+    "facts": "Facts",
+    "name": "Name",
+    "alsoKnown": "Also known as",
+    "uciStatus": "UCI status",
+    "founded": "Founded",
+    "foundedValue": "{founded}, Wrocław, Poland",
+    "website": "Website",
+    "email": "Email",
+    "social": "Social media",
+    "roster": "{season} roster",
+    "staff": "Staff",
+    "calendar": "{season} calendar",
+    "tbc": "dates TBC",
+    "cancelled": "cancelled",
+    "season": "{season} races",
+    "partners": "{season} partners",
+    "setup": "Equipment by partner",
+    "llmsIntro": "The team's official website. Every figure is computed from the team's own data each time the site is published.",
+    "llmsPages": "Key pages",
+    "llmsMarkdown": "Markdown versions",
+    "llmsOptional": "Optional",
+    "llmsFull": "Full text: team, calendar, results, equipment, partners and FAQ",
+    "llmsSitemap": "Sitemap",
+    "llmsFeed": "RSS feed of race results",
+    "feedTitle": "{TEAM}: race results",
+    "feedDescription": "Results of the {TEAM} riders at every race, newest first.",
+    "feedItem": "{race} {season}: results"
+  },
+  "developers": {
+    "eyebrow": "Developers",
+    "title": "Data for developers and AI agents.",
+    "lead": "The {TEAM} calendar, riders and results are available as public JSON files, an .ics calendar and text versions, with no API key and no login. The files update every time the site is published.",
+    "filesTitle": "Data files",
+    "calendarTitle": "Calendar",
+    "textTitle": "For AI assistants",
+    "rulesTitle": "Rules",
+    "exampleTitle": "Example: the first rider in riders.json",
+    "path": "Address",
+    "contents": "Contents",
+    "updated": "Updated",
+    "tableCaption": "{group}: addresses and contents",
+    "names": {
+      "team": "{TEAM}: team facts",
+      "riders": "{TEAM}: riders",
+      "races": "{TEAM}: races",
+      "results": "{TEAM}: results"
+    },
+    "files": {
+      "team": "Team facts: name, UCI status, founding year, contact, roster figures and titles.",
+      "riders": "Riders: category, squad, nationality, seasons, Instagram and profile addresses.",
+      "races": "Every race by season: dates or month, status, place, country, discipline, UCI class, page and .ics addresses.",
+      "results": "Every result of the team's riders: race, stage, category, place, source and whether the team has checked it."
+    },
+    "calendar": {
+      "all": "Every confirmed race on the team calendar, all seasons, to subscribe to in a calendar app.",
+      "season": "One season's calendar (here: {season}).",
+      "race": "One race; each race's address is in the ics field of races.json."
+    },
+    "text": {
+      "llms": "A short summary and the key links (llms.txt format).",
+      "llmsFull": "Full text: team, calendar, results, equipment, partners and FAQ.",
+      "markdown": "Markdown versions of the team, races, equipment and FAQ pages (PL and EN).",
+      "sitemap": "Every page with its update date and language versions.",
+      "rss": "Race results, newest first (PL and EN)."
+    },
+    "rules": [
+      "Read-only, no API key. The files are static and can be fetched from any origin (CORS).",
+      "Every file has version, updated (the date the data last changed) and documentation fields.",
+      "Results with checkedByTeam: false are not yet signed off by the team; every result links to its source.",
+      "Values the team hasn't confirmed (such as the UCI code) are null.",
+      "When you use the data, name the team and link to {website}."
+    ]
   },
   "mediaPage": {
     "eyebrow": "Media centre",
@@ -518,11 +793,12 @@
       "roster": "Roster",
       "press": "Contact"
     },
+    "machine": "The same facts for AI tools and developers:",
     "factsTitle": "Facts at a glance.",
     "facts": {
       "name": "Full name",
       "licence": "Licence",
-      "licenceValue": "UCI Continental + junior team",
+      "licenceValue": "{UCI_STATUS} + junior team",
       "founded": "Founded",
       "foundedValue": "{founded}, Wrocław, Poland",
       "roster": "{season} roster",
@@ -542,7 +818,7 @@
     },
     "boilerplateTitle": "About the team.",
     "boilerplateLangs": "Boilerplate language",
-    "boilerplateText": "Mat Atom Deweloper Wrocław is a UCI Continental women’s cycling team with a junior squad. Founded in Wrocław in {founded}, it had {riders} across the U19, U23 and Elite categories in {season}. The team races on the road, on the track and in cyclocross in Poland and abroad, and the club takes part in the Club Pro programme of Poland’s Ministry of Sport and Tourism.",
+    "boilerplateText": "{TEAM} is a {UCI_STATUS} women’s cycling team with a junior squad. Founded in Wrocław in {founded}, it had {riders} across the U19, U23 and Elite categories in {season}. The team races on the road, on the track and in cyclocross in Poland and abroad, and the club takes part in the Club Pro programme of Poland’s Ministry of Sport and Tourism.",
     "words": {
       "0": "{n} words",
       "1": "1 word",
@@ -612,6 +888,8 @@
     "errorEmail": "Enter a valid email address.",
     "errorConsent": "Tick the box so we can email you.",
     "errorNetwork": "That didn't go through. Try again or email {email}.",
+    "honeypot": "Leave this field empty",
+    "errorTooFast": "Just a moment – please try again in a few seconds.",
     "errorNotLive": "Sign-ups open soon. Until then, email us: {email}."
   },
   "privacyPage": {
@@ -620,7 +898,7 @@
     "back": "Back to the home page"
   },
   "footer": {
-    "boilerplate": "UCI Continental women's cycling team and junior team. Wrocław, since {founded}.",
+    "boilerplate": "{UCI_STATUS} women's cycling team and junior team. Wrocław, since {founded}.",
     "columns": {
       "team": "Team",
       "collab": "Partners and media",
@@ -633,6 +911,9 @@
       "calendar": "Calendar",
       "partners": "Partners",
       "media": "Media centre",
+      "equipment": "Equipment",
+      "faq": "FAQ",
+      "developers": "Developers",
       "clubPro": "Club Pro programme"
     },
     "copyright": "© {year} {team}",

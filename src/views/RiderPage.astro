@@ -12,6 +12,8 @@ import { findOriginal } from '../lib/images';
 import { DOWNLOADS, riderPaths, route } from '../lib/routes';
 import type { Rider } from '../lib/schemas';
 import { formatBytes } from '../lib/showcase';
+import { riderNodes, riderSummary } from '../lib/pageld';
+import { bestResult, resultLabel } from '../lib/results';
 import { riderResults } from '../lib/view';
 
 interface Props {
@@ -27,6 +29,24 @@ const original = findOriginal('riders', rider.photo);
 const portrait = original ? { href: DOWNLOADS.portrait(original.name), size: formatBytes(statSync(original.path).size, t.meta.locale) } : null;
 const seasons = riderResults(rider).map((s) => ({ ...s, rows: s.rows.filter((r) => (r.position ?? 99) <= 10) })).filter((s) => s.rows.length);
 const squad = tr.squad[rider.squad];
+// Answer-first: who she is, then her best result of the latest season with results.
+const latest = seasons[0];
+const top = latest ? bestResult(latest.rows, latest.events) : null;
+const bestLine = top
+  ? fill(tr.best, {
+      season: latest.season,
+      best: fill(tr.bestPlace, {
+        place: lang === 'pl' ? String(top.position) : top.position! <= 3 ? t.results.placeName[String(top.position) as '1' | '2' | '3'] : fill(t.results.placeName.other, { n: top.position! }),
+        event: resultLabel(top, latest.events, lang, { ...t.results, ...t.results.fullNames }),
+      }),
+    }, lang)
+  : null;
+// External profiles appear only once the team has checked them ("verify": false).
+const PROFILE_LABELS = { procyclingstats: 'ProCyclingStats', firstcycling: 'FirstCycling', uci: 'UCI' } as const;
+const profiles =
+  rider.profiles && !rider.profiles.verify
+    ? (Object.keys(PROFILE_LABELS) as (keyof typeof PROFILE_LABELS)[]).flatMap((k) => (rider.profiles![k] ? [{ label: PROFILE_LABELS[k], url: rider.profiles![k]! }] : []))
+    : [];
 ---
 
 <Shell
@@ -35,6 +55,7 @@ const squad = tr.squad[rider.squad];
   paths={riderPaths(slug)}
   title={fill(t.meta.pages.rider.title, { name: rider.name })}
   description={fill(t.meta.pages.rider.description, { name: rider.name, squad }, lang)}
+  jsonLd={riderNodes(lang, rider, slug)}
 >
   <section class="profile" id={anchor(lang, 'profile')} data-section="profile" aria-labelledby="page-title">
     <div class="container profile__grid">
@@ -50,6 +71,7 @@ const squad = tr.squad[rider.squad];
       <div class="profile__body">
         <p class="eyebrow">{tr.squadShort[rider.squad]} · {tr.category[rider.category]}</p>
         <h1 id="page-title">{rider.name}</h1>
+        <p class="profile__summary">{riderSummary(rider, lang)}{bestLine && ` ${bestLine}`}</p>
         <dl class="facts">
           <div><dt>{tr.nationality}</dt><dd>{countries[rider.nat] ?? rider.nat} /{rider.nat}</dd></div>
           <div><dt>{tr.team}</dt><dd>{tr.squadShort[rider.squad]}</dd></div>
@@ -100,9 +122,27 @@ const squad = tr.squad[rider.squad];
             rows={s.rows}
             events={s.events}
             variant="rider"
+            season={s.season}
             caption={fill(t.results.riderTableCaption, { name: rider.name, season: s.season }, lang)}
           />
         ))
+      }
+      {
+        profiles.length > 0 && (
+          <div class="profiles">
+            <h3 class="profiles__title">{tr.profiles}</h3>
+            <ul class="profiles__list" role="list">
+              {profiles.map((p) => (
+                <li>
+                  <a class="text-link" href={p.url} target="_blank" rel="noopener me">
+                    {p.label} <Icon name="arrow" size={16} />
+                    <span class="visually-hidden"> {t.a11y.newTab}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
       }
       {
         rider.resultsProfile && (
@@ -175,6 +215,11 @@ const squad = tr.squad[rider.squad];
   .facts dd {
     font-size: 17px;
   }
+  .profile__summary {
+    font-size: 18px;
+    line-height: 1.5;
+    max-width: 60ch;
+  }
   .profile__bio {
     font-size: 18px;
     line-height: 1.5;
@@ -205,6 +250,20 @@ const squad = tr.squad[rider.squad];
   .rider-results__head {
     display: grid;
     gap: 12px;
+  }
+  .profiles {
+    display: grid;
+    gap: 12px;
+  }
+  .profiles__title {
+    font-size: 17px;
+  }
+  .profiles__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+    padding: 0;
+    list-style: none;
   }
   .rider-results__head p {
     font-size: 17px;

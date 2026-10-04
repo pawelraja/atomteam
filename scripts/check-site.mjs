@@ -4,13 +4,16 @@
 //  - English pages never link to Polish pages (and vice versa), except the language links
 //  - language links land on the counterpart page
 //  - every file link (/media/…, .ics, .pdf, .zip …) exists in the build
+//  - indexable pages have unique titles and meta descriptions
+//  - sitemap.xml lists exactly the indexable pages; robots.txt names the crawlers and the sitemap
+//  - every link in llms.txt / llms-full.txt and every Markdown / RSS alternate resolves
 //   node scripts/check-site.mjs [--dir dist]
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, relative, sep } from 'node:path';
 
 const dirArg = process.argv.indexOf('--dir');
 const dir = dirArg > -1 ? process.argv[dirArg + 1] : 'dist';
-const SITE = 'https://www.atomteam.pl';
+const SITE = JSON.parse(readFileSync('src/data/team.json', 'utf8')).website;
 
 /** All built HTML pages, keyed by URL path ("/", "/en/team/", …). */
 const pages = new Map();
@@ -72,9 +75,62 @@ for (const [url, h] of pages) {
   }
 }
 
+/* ---------- titles, descriptions, crawler files ---------- */
+
+const resolves = (href) => {
+  const path = href.replace(SITE, '').split('#')[0] || '/';
+  return pages.has(path) || existsSync(join(dir, decodeURIComponent(path)));
+};
+const indexable = [...pages].filter(([, h]) => !/<meta name="robots" content="noindex"/.test(h));
+// Per language: a PL page and its EN counterpart may share a proper name.
+const seen = { pl: { title: new Map(), description: new Map() }, en: { title: new Map(), description: new Map() } };
+for (const [url, h] of indexable) {
+  const title = h.match(/<title>([^<]*)<\/title>/)?.[1];
+  const description = h.match(/<meta name="description" content="([^"]*)"/)?.[1];
+  if (!title) add(url, 'no <title>');
+  if (!description) add(url, 'no meta description');
+  else if (description.length < 50 || description.length > 320) add(url, `meta description is ${description.length} characters (50–320)`);
+  for (const [key, value] of [['title', title], ['description', description]]) {
+    if (!value) continue;
+    const bucket = seen[isEn(url) ? 'en' : 'pl'][key];
+    if (bucket.has(value)) add(url, `same ${key} as ${bucket.get(value)}: "${value}"`);
+    else bucket.set(value, url);
+  }
+  for (const m of h.matchAll(/<link rel="alternate" type="(?:text\/markdown|application\/rss\+xml)"[^>]*href="([^"]+)"/g)) {
+    if (!resolves(m[1])) add(url, `alternate ${m[1]} does not exist`);
+  }
+}
+
+const read = (f) => (existsSync(join(dir, f)) ? readFileSync(join(dir, f), 'utf8') : null);
+const sitemap = read('sitemap.xml');
+if (!sitemap) add('/sitemap.xml', 'missing');
+else {
+  const locs = new Set([...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1].replace(SITE, '')));
+  for (const [url] of indexable) if (!locs.has(url)) add('/sitemap.xml', `missing ${url}`);
+  for (const loc of locs) if (!pages.has(loc)) add('/sitemap.xml', `lists ${loc}, which was not built`);
+  for (const m of sitemap.matchAll(/<lastmod>([^<]+)<\/lastmod>/g)) if (!/^\d{4}-\d{2}-\d{2}$/.test(m[1])) add('/sitemap.xml', `bad lastmod ${m[1]}`);
+}
+const robots = read('robots.txt');
+if (!robots) add('/robots.txt', 'missing');
+else {
+  for (const bot of ['Googlebot', 'Bingbot', 'OAI-SearchBot', 'GPTBot', 'ChatGPT-User', 'ClaudeBot', 'Claude-SearchBot', 'Claude-User', 'PerplexityBot', 'Google-Extended', 'Applebot-Extended']) {
+    if (!new RegExp(`^User-agent: ${bot}$`, 'm').test(robots)) add('/robots.txt', `no group for ${bot}`);
+  }
+  if (!robots.includes(`Sitemap: ${SITE}/sitemap.xml`)) add('/robots.txt', 'no Sitemap line');
+}
+for (const f of ['llms.txt', 'llms-full.txt']) {
+  const txt = read(f);
+  if (!txt) {
+    add(`/${f}`, 'missing');
+    continue;
+  }
+  for (const m of txt.matchAll(/\]\((https?:\/\/[^)\s]+)\)/g)) if (m[1].startsWith(SITE) && !resolves(m[1])) add(`/${f}`, `link does not resolve: ${m[1]}`);
+  if (/\[VERIFY/i.test(txt)) add(`/${f}`, 'contains an unconfirmed [VERIFY] value');
+}
+
 if (problems.length) {
   console.error(problems.map((p) => `  ✗ ${p}`).join('\n'));
   console.error(`\n${problems.length} problem(s) in ${pages.size} pages.`);
   process.exit(1);
 }
-console.log(`✓ ${pages.size} pages: hreflang reciprocal, links and anchors resolve, links stay in their language, files exist`);
+console.log(`✓ ${pages.size} pages: hreflang reciprocal, links and anchors resolve, links stay in their language, files exist; unique titles and descriptions; sitemap, robots.txt and llms.txt complete`);
