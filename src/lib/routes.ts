@@ -27,6 +27,17 @@ export function riderPaths(slug: string): Record<Lang, string> {
   return { pl: riderPath('pl', slug), en: riderPath('en', slug) };
 }
 
+/** Race pages live under these folders: /wyscigi/2026/nxt-classic/ and /en/races/2026/nxt-classic/. */
+export const RACES_BASE: Record<Lang, string> = { pl: '/wyscigi/', en: '/en/races/' };
+
+export function racePath(lang: Lang, season: number, slug: string): string {
+  return `${RACES_BASE[lang]}${season}/${slug}/`;
+}
+
+export function racePaths(season: number, slug: string): Record<Lang, string> {
+  return { pl: racePath('pl', season, slug), en: racePath('en', season, slug) };
+}
+
 /** "partners" → the partners page in this language; anything else (a URL or path) is used as-is. */
 export function resolveHref(lang: Lang, href: string): string {
   return (PAGES as readonly string[]).includes(href) ? ROUTES[href as PageKey][lang] : href;

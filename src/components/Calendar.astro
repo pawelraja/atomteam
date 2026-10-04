@@ -18,6 +18,7 @@ import {
   rowStatus,
 } from '../lib/season';
 import Country from './Country.astro';
+import { raceHref } from '../lib/view';
 import Icon from './Icon.astro';
 
 interface Props {
@@ -130,6 +131,7 @@ const disc = tc.discipline as Record<string, string>;
                 <ol class="rows" role="list">
                   {g.rows.map(({ e, status }) => {
                     const nameId = `${p.id}-${e.id}`;
+                    const page = raceHref(lang, e.season, e.id);
                     return (
                       <li
                         class:list={['row-item', { 'is-past-hidden': eventState(e, today) === 'past' && !p.showPast }]}
@@ -153,7 +155,7 @@ const disc = tc.discipline as Record<string, string>;
                           </p>
                           <div class="row__main">
                             <h4 class:list={['row__name', { strike: e.status === 'cancelled' }]} id={nameId}>
-                              {typo(lang, raceName(e, lang))}
+                              {page ? <a class="row__link" href={page}>{typo(lang, raceName(e, lang))}</a> : typo(lang, raceName(e, lang))}
                             </h4>
                             <p class="row__place">
                               <Country lang={lang} location={raceLocation(e, lang)} code={e.country} />
@@ -537,6 +539,14 @@ const disc = tc.discipline as Record<string, string>;
   .row__date {
     font-weight: 700;
     white-space: nowrap;
+  }
+  .row__link {
+    color: inherit;
+    text-decoration: none;
+  }
+  .row__link:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
   }
   .row__name {
     font-size: var(--fs-body-lg);

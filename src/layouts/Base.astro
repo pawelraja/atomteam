@@ -10,8 +10,8 @@ import '../styles/global.css';
 import { getData } from '../lib/data';
 import { HERO_DESKTOP_MEDIA, HERO_MOBILE_MEDIA, heroSources } from '../lib/hero';
 import { copy, DEFAULT_LANG, fill, homePath, LANGS, type Lang } from '../lib/i18n';
-import { eventState, isConfirmedRace, raceLocation, raceName } from '../lib/season';
-import { TEAM, teamSameAs } from '../lib/team';
+import { graph, type Node } from '../lib/jsonld';
+import { baseNodes, fullTeamNodes } from '../lib/pageld';
 
 interface Props {
   lang: Lang;
@@ -22,12 +22,14 @@ interface Props {
   noindex?: boolean;
   /** Preload the hero photo (home page only). */
   preloadHero?: boolean;
-  /** Add SportsEvent JSON-LD for confirmed upcoming races (home and calendar pages). */
-  events?: boolean;
+  /** Page-specific structured-data nodes (Person, SportsEvent, BreadcrumbList…). */
+  jsonLd?: Node[];
+  /** Emit the full SportsTeam (roster, coaches, sponsors) instead of the short team node. */
+  fullTeam?: boolean;
 }
-const { lang, noindex = false, preloadHero = false, events: withEvents = false } = Astro.props;
+const { lang, noindex = false, preloadHero = false, fullTeam = false } = Astro.props;
 const paths = Astro.props.paths ?? { pl: homePath('pl'), en: homePath('en') };
-const { site, calendars, today, todayOverridden } = getData();
+const { site, today, todayOverridden } = getData();
 const t = copy(lang);
 const season = site.currentSeason;
 const title = Astro.props.title ?? fill(t.meta.title, { season }, lang);
@@ -36,40 +38,11 @@ const abs = (p: string) => new URL(p, Astro.site).href;
 const canonical = abs(paths[lang]);
 const ogImage = abs(`/og-${lang}.png`);
 const { desktop, mobile } = preloadHero ? await heroSources() : { desktop: null, mobile: null };
-const homeUrl = abs(homePath(lang));
 
-const team = {
-  '@type': 'SportsTeam',
-  '@id': `${abs('/')}#team`,
-  name: t.team.name,
-  sport: 'Cycling',
-  gender: 'Female',
-  foundingDate: String(site.foundedYear),
-  url: homeUrl,
-  email: t.team.email,
-  location: { '@type': 'Place', name: TEAM.city, address: { '@type': 'PostalAddress', addressLocality: TEAM.city, addressRegion: TEAM.region, addressCountry: TEAM.country } },
-  sameAs: teamSameAs(),
-};
-// Only confirmed, upcoming races are announced to search engines.
-const events = (withEvents ? (calendars.get(season) ?? []) : [])
-  .filter(isConfirmedRace)
-  .filter((e) => eventState(e, today) !== 'past')
-  .map((e) => ({
-    '@type': 'SportsEvent',
-    name: raceName(e, lang),
-    startDate: e.start,
-    endDate: e.end,
-    sport: 'Cycling',
-    eventStatus: 'https://schema.org/EventScheduled',
-    eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-    location: {
-      '@type': 'Place',
-      name: [raceLocation(e, lang), e.country].filter(Boolean).join(', '),
-      address: { '@type': 'PostalAddress', addressCountry: e.country, ...(e.location ? { addressLocality: raceLocation(e, lang) } : {}) },
-    },
-    competitor: { '@id': `${abs('/')}#team` },
-  }));
-const jsonLd = { '@context': 'https://schema.org', '@graph': [team, ...events] };
+// Structured data: every page has the website and the team; pages add their own nodes
+// (rider → Person, race → SportsEvent, calendar → upcoming races). Home and partners carry the full team.
+const nodes = fullTeam ? [baseNodes(lang)[0], ...fullTeamNodes(lang)] : baseNodes(lang);
+const jsonLd = graph([...nodes, ...(Astro.props.jsonLd ?? [])]);
 ---
 
 <!doctype html>

@@ -49,7 +49,7 @@ const view = resultsView();
         </div>
         {view.featured.length > 0 && (
           <div class="results__table">
-            <ResultsTable lang={lang} rows={view.featured} events={view.events} caption={fill(tr.tableCaption, { season: view.season }, lang)} />
+            <ResultsTable lang={lang} rows={view.featured} events={view.events} season={view.season} caption={fill(tr.tableCaption, { season: view.season }, lang)} />
           </div>
         )}
       </div>

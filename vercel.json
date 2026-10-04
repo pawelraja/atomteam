@@ -4,6 +4,12 @@
   "buildCommand": "npm run sync-photos && npm run build",
   "outputDirectory": "dist",
   "trailingSlash": true,
+  "redirects": [
+    { "source": "/wyscigi", "destination": "/kalendarz/", "permanent": false },
+    { "source": "/wyscigi/:season", "destination": "/kalendarz/", "permanent": false },
+    { "source": "/en/races", "destination": "/en/calendar/", "permanent": false },
+    { "source": "/en/races/:season", "destination": "/en/calendar/", "permanent": false }
+  ],
   "headers": [
     {
       "source": "/_astro/(.*)",

@@ -115,6 +115,8 @@ function loadAll() {
   // calendars: the published team calendar per season. events: every event results may refer to,
   // including races ridden outside the team calendar ("onTeamCalendar": false).
   const calendars = new Map<number, RaceEvent[]>();
+  // Every dated race of a season, including races ridden outside the team calendar: one page each.
+  const raceEntries = new Map<number, RaceEvent[]>();
   const events = new Map<number, EventIndex>();
   for (const file of listFiles('calendar', /^\d{4}\.json$/)) {
     const season = Number(file.slice(0, 4));
@@ -146,6 +148,8 @@ function loadAll() {
       );
     }
     calendars.set(season, normalized);
+    const offCalendar = entries.filter((e) => e.onTeamCalendar === false && e.start && e.country);
+    raceEntries.set(season, normalizeCalendar(season, [...onCalendar, ...offCalendar]));
     events.set(season, new Map(entries.filter((e): e is typeof e & { id: string } => Boolean(e.id)).map((e) => [e.id, eventInfo(e)])));
   }
   if (!calendars.has(site.currentSeason)) calendars.set(site.currentSeason, []);
@@ -183,6 +187,7 @@ function loadAll() {
   return {
     site,
     calendars,
+    raceEntries,
     events,
     partners: load(z.array(partnerSchema), 'partners.json'),
     riders,

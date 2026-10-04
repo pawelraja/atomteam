@@ -130,6 +130,28 @@ One file per season: `src/data/calendar/2026.json` (archive) and `src/data/calen
 
 **Calendar downloads.** `/calendar-2027.ics` (the "Subscribe" button) contains **confirmed races only**. Each race keeps the same ID when its dates change, so subscribed phones and Google Calendars update the event instead of adding a duplicate.
 
+### Race pages
+
+Every race with dates gets its own page: `/wyscigi/2026/nxt-classic/` (EN `/en/races/2026/nxt-classic/`). That covers every past race, including races ridden outside the team calendar, and upcoming races once they are `confirmed`. Training blocks and TBC races don't get a page. Each page opens with a one-sentence summary (date, place, the team's best result), then the facts and every classified place with its source. Calendar rows and results tables link to these pages.
+
+- The address is made from the Polish name. Races with the same name (the Polish Cup rounds) get the place added. To choose the address yourself, add `"slug": "puchar-polski-lubartow"`.
+- *(optional)* `"organizer": { "name": "…", "url": "https://…" }` names who runs the race. It goes into the structured data.
+
+## Structured data (for search and AI engines)
+
+Every page carries schema.org JSON-LD, generated from the data files. Nothing is typed by hand.
+
+| Page | Structured data |
+|---|---|
+| Home, partners, media | `SportsTeam` (athletes, coaches, staff, sponsors with their tier, the UCI, profiles) + `WebSite` + one `Organization`/`Brand` per partner + `SportsEvent` for confirmed upcoming races |
+| Rider profile | `Person` (nationality, team membership, Instagram and results profiles) + breadcrumbs |
+| Race page | `SportsEvent` (dates, place with ISO country, status, sport, the team and its riders as competitors, organiser if known, results summary) + breadcrumbs |
+| Calendar | `SportsEvent` for confirmed upcoming races |
+
+**The build fails if any structured data is invalid** (`scripts/check-jsonld.mjs`, which also runs as `npm run check:jsonld`). It checks types, properties, required fields, dates, absolute URLs, ISO country codes and references, and makes sure no unconfirmed value leaks out. After each deploy, spot-check a few pages at https://validator.schema.org/ and https://search.google.com/test/rich-results.
+
+Partners: `"kind": "brand"` marks a product brand (Sidi, Vittoria…). `"sameAs": ["https://…"]` adds the company's other confirmed addresses (Wikipedia, LinkedIn).
+
 ## Results
 
 `src/data/results/2026.json` holds the 481 sourced results of 2026, one row per rider per classification. It is exported from the team's master workbook `data/MADW_Results_2026.xlsx` (the "Results" sheet). Use `data/MADW_Results_2027_template.xlsx` for 2027, and save its export as `src/data/results/2027.json`.

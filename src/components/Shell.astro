@@ -5,6 +5,7 @@ import Footer from './Footer.astro';
 import Header from './Header.astro';
 import StatusBar from './StatusBar.astro';
 import type { Lang } from '../lib/i18n';
+import type { Node } from '../lib/jsonld';
 import type { PageKey } from '../lib/routes';
 
 interface Props {
@@ -15,7 +16,8 @@ interface Props {
   title?: string;
   description?: string;
   preloadHero?: boolean;
-  events?: boolean;
+  jsonLd?: Node[];
+  fullTeam?: boolean;
   noindex?: boolean;
 }
 const { lang, page, paths, ...base } = Astro.props;

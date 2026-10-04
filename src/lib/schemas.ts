@@ -85,6 +85,13 @@ export const calendarEntrySchema = z
     note: z.string().min(1).optional(),
     result: z.string().min(1).optional(),
     url: z.url().optional(),
+    /** Address of the race page, e.g. "nxt-classic". Made from the name when left out. */
+    slug: z
+      .string()
+      .regex(/^[a-z0-9-]+$/, 'may only use lowercase letters, digits and dashes')
+      .optional(),
+    /** Who runs the race, for structured data. Leave out until known. */
+    organizer: z.object({ name: z.string().min(1), url: z.url().optional() }).strict().optional(),
     verify: z.boolean().optional(),
   })
   .strict()
@@ -120,6 +127,8 @@ export const partnerSchema = z
     /** Shorter display name, e.g. { "pl": "Klub Pro · MSiT", "en": "Club Pro · Ministry of Sport" }. */
     label: localized.optional(),
     description: localized.optional(),
+    /** "brand" for a product brand (e.g. Sidi, Vittoria, supplied through its distributor), otherwise a company. */
+    kind: z.enum(['organization', 'brand']).optional(),
     /** Other confirmed addresses of the same company (Wikipedia, LinkedIn, Instagram…), for structured data. */
     sameAs: z.array(z.url()).optional(),
     seasons,

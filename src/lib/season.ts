@@ -25,6 +25,11 @@ export interface RaceEvent {
   result: string | null;
   url: string | null;
   verify: boolean;
+  /** Race page address from the calendar's "slug" (optional; made from the name otherwise). */
+  slug?: string | null;
+  organizer?: { name: string; url?: string } | null;
+  /** false for races ridden outside the published team calendar (kept for race pages and results). */
+  onTeamCalendar?: boolean;
 }
 
 export type EventState = 'past' | 'live' | 'upcoming';
@@ -116,6 +121,9 @@ export function normalizeCalendar(season: number, entries: CalendarEntry[]): Rac
       result: e.result ?? null,
       url: e.url ?? null,
       verify: !!e.verify,
+      slug: e.slug ?? null,
+      organizer: e.organizer ?? null,
+      onTeamCalendar: e.onTeamCalendar !== false,
     };
   });
   return events.sort((a, b) => sortKey(a).localeCompare(sortKey(b)));
