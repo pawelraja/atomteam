@@ -8,6 +8,7 @@
     "ogHeadline": "Season {season}.",
     "ogAlt": "{TEAM} — Season {season}",
     "pages": {
+      "developers": { "title": "Developer data — {TEAM}", "description": "Public {TEAM} data: races, riders and results as JSON, an .ics calendar, llms.txt and Markdown versions. No API key needed." },
       "equipment": { "title": "Equipment and {wheels} wheels — {TEAM}", "description": "What {TEAM} races on: {wheels} carbon wheels and the team's technical partners." },
       "faq": { "title": "Questions and answers — {TEAM}", "description": "Answers to the most common questions about {TEAM}: UCI level, roster, results, calendar, equipment, juniors and contact." },
       "team": {
@@ -634,16 +635,13 @@
         "id": "junior",
         "q": "How can a young rider join the junior team?",
         "a": "The junior squad races in the UCI women's junior category (U19): riders who turn 17 or 18 in the season. To apply, write to {EMAIL} with your name, year of birth, current club, disciplines and best results. Juniors on the {rosterSeason} roster: {u19}.",
-        "link": null
+        "link": {"label": "Email your application", "href": "mailto:{EMAIL}?subject=Junior team application"}
       },
       {
         "id": "sponsor",
         "q": "How can a company sponsor the team?",
         "a": "The team arranges partnerships directly. Write to {EMAIL}. The current partners are on the Partners page.",
-        "link": {
-          "label": "Partners",
-          "href": "partners"
-        }
+        "link": {"label": "Email about a partnership", "href": "mailto:{EMAIL}?subject=Partnership enquiry"}
       },
       {
         "id": "press",
@@ -739,6 +737,51 @@
     "feedDescription": "Results of the {TEAM} riders at every race, newest first.",
     "feedItem": "{race} {season}: results"
   },
+  "developers": {
+    "eyebrow": "Developers",
+    "title": "Data for developers and AI agents.",
+    "lead": "The {TEAM} calendar, riders and results are available as public JSON files, an .ics calendar and text versions, with no API key and no login. The files update every time the site is published.",
+    "filesTitle": "Data files",
+    "calendarTitle": "Calendar",
+    "textTitle": "For AI assistants",
+    "rulesTitle": "Rules",
+    "exampleTitle": "Example: the first rider in riders.json",
+    "path": "Address",
+    "contents": "Contents",
+    "updated": "Updated",
+    "tableCaption": "{group}: addresses and contents",
+    "names": {
+      "team": "{TEAM}: team facts",
+      "riders": "{TEAM}: riders",
+      "races": "{TEAM}: races",
+      "results": "{TEAM}: results"
+    },
+    "files": {
+      "team": "Team facts: name, UCI status, founding year, contact, roster figures and titles.",
+      "riders": "Riders: category, squad, nationality, seasons, Instagram and profile addresses.",
+      "races": "Every race by season: dates or month, status, place, country, discipline, UCI class, page and .ics addresses.",
+      "results": "Every result of the team's riders: race, stage, category, place, source and whether the team has checked it."
+    },
+    "calendar": {
+      "all": "Every confirmed race on the team calendar, all seasons, to subscribe to in a calendar app.",
+      "season": "One season's calendar (here: {season}).",
+      "race": "One race; each race's address is in the ics field of races.json."
+    },
+    "text": {
+      "llms": "A short summary and the key links (llms.txt format).",
+      "llmsFull": "Full text: team, calendar, results, equipment, partners and FAQ.",
+      "markdown": "Markdown versions of the team, races, equipment and FAQ pages (PL and EN).",
+      "sitemap": "Every page with its update date and language versions.",
+      "rss": "Race results, newest first (PL and EN)."
+    },
+    "rules": [
+      "Read-only, no API key. The files are static and can be fetched from any origin (CORS).",
+      "Every file has version, updated (the date the data last changed) and documentation fields.",
+      "Results with checkedByTeam: false are not yet signed off by the team; every result links to its source.",
+      "Values the team hasn't confirmed (such as the UCI code) are null.",
+      "When you use the data, name the team and link to {website}."
+    ]
+  },
   "mediaPage": {
     "eyebrow": "Media centre",
     "title": "Everything you need to cover the team.",
@@ -750,6 +793,7 @@
       "roster": "Roster",
       "press": "Contact"
     },
+    "machine": "The same facts for AI tools and developers:",
     "factsTitle": "Facts at a glance.",
     "facts": {
       "name": "Full name",
@@ -844,6 +888,8 @@
     "errorEmail": "Enter a valid email address.",
     "errorConsent": "Tick the box so we can email you.",
     "errorNetwork": "That didn't go through. Try again or email {email}.",
+    "honeypot": "Leave this field empty",
+    "errorTooFast": "Just a moment – please try again in a few seconds.",
     "errorNotLive": "Sign-ups open soon. Until then, email us: {email}."
   },
   "privacyPage": {
@@ -867,6 +913,7 @@
       "media": "Media centre",
       "equipment": "Equipment",
       "faq": "FAQ",
+      "developers": "Developers",
       "clubPro": "Club Pro programme"
     },
     "copyright": "© {year} {team}",

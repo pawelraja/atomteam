@@ -14,6 +14,9 @@ import { DOWNLOADS, riderPath, ROUTES } from '../lib/routes';
 import { MEDIA_CATEGORIES } from '../lib/schemas';
 import { formatBytes, isContactComplete, riderSlug, rosterSplit, wordCount } from '../lib/showcase';
 import { numbersView, officialRosterView, teamView } from '../lib/view';
+import { MARKDOWN } from '../lib/markdown';
+import { DATA_FILES } from '../lib/opendata';
+import { TEAM } from '../lib/team';
 
 interface Props {
   lang: Lang;
@@ -85,6 +88,17 @@ const rosterRows = roster.items.map((r) => {
   const original = findOriginal('riders', r.photo);
   return { r, portrait: original ? DOWNLOADS.portrait(original.name) : null };
 });
+/* Press photos as ImageObject structured data, with the photographer's credit (supplied photos only). */
+const photoNodes = photos
+  .filter((p) => p.download && !/^\[/.test(p.credit))
+  .map((p) => ({
+    '@type': 'ImageObject',
+    contentUrl: new URL(p.download!.href, TEAM.website).href,
+    caption: p.caption,
+    creator: { '@type': 'Person', name: p.credit },
+    creditText: fill(t.story.credit, { credit: p.credit }),
+    copyrightNotice: p.credit,
+  }));
 const press = site.pressContact;
 const responseTime = isContactComplete(press) && press?.responseTime ? pick(lang, press.responseTime) : null;
 ---
@@ -94,6 +108,7 @@ const responseTime = isContactComplete(press) && press?.responseTime ? pick(lang
   page="media"
   paths={ROUTES.media}
   fullTeam
+  jsonLd={photoNodes}
   title={t.meta.pages.media.title}
   description={t.meta.pages.media.description}
 >
@@ -126,6 +141,9 @@ const responseTime = isContactComplete(press) && press?.responseTime ? pick(lang
             ))
           }
         </dl>
+        <p class="facts-machine">
+          {tm.machine} <a href={MARKDOWN.team![lang]}>{MARKDOWN.team![lang].slice(1)}</a> · <a href={DATA_FILES.team}>team.json</a> · <a href="/llms.txt">llms.txt</a>
+        </p>
       </div>
 
       <div class="boiler-col" id={a('boilerplate')} data-section="boilerplate">
@@ -393,6 +411,11 @@ const responseTime = isContactComplete(press) && press?.responseTime ? pick(lang
 </script>
 
 <style>
+  .facts-machine {
+    margin-top: 16px;
+    font-size: 14px;
+    color: var(--ink-muted);
+  }
   .mc-section {
     padding-block: 104px;
   }

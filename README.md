@@ -306,9 +306,25 @@ The site is hosted on Vercel, connected to the GitHub repository `pawelraja/atom
 4. **Nightly rebuild:** *Settings → Git → Deploy Hooks* → create a hook named "nightly" on branch `main`. Copy its URL into GitHub → repository *Settings → Secrets and variables → Actions* as `VERCEL_DEPLOY_HOOK`. The workflow `.github/workflows/nightly-rebuild.yml` then rebuilds every night. Run it by hand from the *Actions* tab any time.
 5. **Checks on every pull request:** `.github/workflows/checks.yml` runs `npm run verify`, so a broken data edit is caught before it can be merged.
 
-## Newsletter
+## Newsletter (MailerLite)
 
-The form (in the footer of every page) isn't connected to a mailing provider yet. When you have one, set the environment variable `NEWSLETTER_ENDPOINT` (a URL that accepts a POST with JSON `{ "email", "consent", "lang" }`) at build time. See `.env.example`. Until then, submitting shows a friendly message pointing to kontakt@atomteam.pl.
+The sign-up form in the footer of every page sends to **MailerLite**. In Vercel → Project → Settings → Environment Variables, set:
+
+- `MAILERLITE_ACCOUNT_ID` and `MAILERLITE_FORM_ID`: the two numbers in the MailerLite embedded form's code (`https://assets.mailerlite.com/jsonp/<account>/forms/<form>/subscribe`). They're public, not secrets.
+- *(optional)* `MAILERLITE_LANGUAGE_FIELD`: the key of a MailerLite custom field that should receive `pl` or `en`.
+
+Then redeploy. The form works without JavaScript (a normal POST to MailerLite). With JavaScript, the result appears in place as plain text. Spam protection is a hidden honeypot field plus a 30-second pause between attempts, with no CAPTCHA. In MailerLite, keep the form's reCAPTCHA off and turn double opt-in on. Without the variables, the form says sign-ups open soon and points to kontakt@atomteam.pl. `NEWSLETTER_ENDPOINT` (any URL accepting JSON `{ "email", "consent", "lang" }`) still works as an alternative.
+
+Contact, junior applications and partnership questions have no forms. The FAQ links straight to an e-mail with the subject filled in.
+
+## Public data for developers and AI agents
+
+`/dane/` and `/en/developers/` document everything below. All of it is generated from the data at build time. It needs no API key and allows cross-origin requests.
+
+- `/data/team.json`, `/data/riders.json`, `/data/races.json`, `/data/results.json`. Each has `version`, `updated` (the date the data last changed) and `documentation`. Results carry `checkedByTeam` and a `source`; unconfirmed values are `null`.
+- `/races.ics`: every confirmed race of every season. Subscribing keeps a calendar up to date.
+- The media centre links the fact sheet as `team.md` and `team.json`, and adds `ImageObject` structured data with credits for each supplied press photo.
+- `docs/agent-endpoints-proposal.md`: a proposal (not built) for an MCP server exposing races, riders and results as tools.
 
 ---
 

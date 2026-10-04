@@ -10,6 +10,12 @@ export interface FaqItem {
   link: { label: string; href: string } | null;
 }
 
+/** A page name, a path, or a mailto: link whose subject is written plainly in the copy file. */
+function href(lang: Lang, h: string): string {
+  const mail = h.match(/^mailto:([^?]+)\?subject=(.+)$/);
+  return mail ? `mailto:${mail[1]}?subject=${encodeURIComponent(mail[2])}` : resolveHref(lang, h);
+}
+
 export function faqItems(lang: Lang): FaqItem[] {
   const t = copy(lang);
   const vars = factVars(lang);
@@ -21,6 +27,6 @@ export function faqItems(lang: Lang): FaqItem[] {
       id: it.id,
       q: fill(it.q, vars, lang),
       a: fill(it.a, vars, lang),
-      link: it.link ? { label: fill(it.link.label, vars, lang), href: resolveHref(lang, it.link.href) } : null,
+      link: it.link ? { label: fill(it.link.label, vars, lang), href: href(lang, it.link.href) } : null,
     }));
 }

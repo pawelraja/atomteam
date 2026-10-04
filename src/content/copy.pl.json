@@ -8,6 +8,7 @@
     "ogHeadline": "Sezon {season}.",
     "ogAlt": "{TEAM} — Sezon {season}",
     "pages": {
+      "developers": { "title": "Dane dla programistów — {TEAM}", "description": "Publiczne dane drużyny {TEAM}: wyścigi, zawodniczki i wyniki w JSON, kalendarz .ics, llms.txt i wersje Markdown. Bez klucza API." },
       "equipment": { "title": "Sprzęt i koła {wheels} — {TEAM}", "description": "Na jakim sprzęcie ściga się {TEAM}: karbonowe koła {wheels} i partnerzy techniczni drużyny." },
       "faq": { "title": "Pytania i odpowiedzi — {TEAM}", "description": "Odpowiedzi na najczęstsze pytania o {TEAM}: poziom UCI, skład, wyniki, kalendarz, sprzęt, juniorki i kontakt." },
       "team": {
@@ -634,16 +635,13 @@
         "id": "junior",
         "q": "Jak młoda zawodniczka może dołączyć do drużyny juniorek?",
         "a": "Drużyna juniorek startuje w kategorii juniorek UCI (U19), czyli dla zawodniczek, które w danym roku kończą 17 lub 18 lat. Aby się zgłosić, napisz na {EMAIL}: imię i nazwisko, rok urodzenia, obecny klub, dyscypliny i najważniejsze wyniki. Juniorek w składzie na sezon {rosterSeason}: {u19}.",
-        "link": null
+        "link": {"label": "Wyślij zgłoszenie e-mailem", "href": "mailto:{EMAIL}?subject=Zgłoszenie do drużyny juniorek"}
       },
       {
         "id": "sponsor",
         "q": "Jak firma może zostać partnerem drużyny?",
         "a": "Współpracę z partnerami drużyna ustala bezpośrednio. Napisz na {EMAIL}. Obecnych partnerów przedstawiamy na stronie Partnerzy.",
-        "link": {
-          "label": "Partnerzy",
-          "href": "partners"
-        }
+        "link": {"label": "Napisz w sprawie współpracy", "href": "mailto:{EMAIL}?subject=Współpraca z drużyną"}
       },
       {
         "id": "press",
@@ -739,6 +737,51 @@
     "feedDescription": "Wyniki zawodniczek drużyny {TEAM} z każdego wyścigu, od najnowszych.",
     "feedItem": "{race} {season} – wyniki"
   },
+  "developers": {
+    "eyebrow": "Dane",
+    "title": "Dane dla programistów i agentów AI.",
+    "lead": "Kalendarz, zawodniczki i wyniki drużyny {TEAM} są dostępne jako publiczne pliki JSON, kalendarz .ics i wersje tekstowe – bez klucza API i bez logowania. Pliki aktualizują się przy każdej publikacji strony.",
+    "filesTitle": "Pliki danych",
+    "calendarTitle": "Kalendarz",
+    "textTitle": "Dla asystentów AI",
+    "rulesTitle": "Zasady",
+    "exampleTitle": "Przykład: pierwsza zawodniczka z riders.json",
+    "path": "Adres",
+    "contents": "Zawartość",
+    "updated": "Aktualizacja",
+    "tableCaption": "{group}: adresy i zawartość",
+    "names": {
+      "team": "{TEAM}: fakty o drużynie",
+      "riders": "{TEAM}: zawodniczki",
+      "races": "{TEAM}: wyścigi",
+      "results": "{TEAM}: wyniki"
+    },
+    "files": {
+      "team": "Fakty o drużynie: nazwa, status UCI, rok założenia, kontakt, skład w liczbach, tytuły.",
+      "riders": "Zawodniczki: kategoria, drużyna, narodowość, sezony, Instagram i adresy profili.",
+      "races": "Wszystkie wyścigi według sezonów: daty lub miesiąc, status, miejsce, kraj, dyscyplina, kategoria UCI, adresy stron i plików .ics.",
+      "results": "Każdy wynik zawodniczek: wyścig, etap, kategoria, miejsce, źródło i informacja, czy drużyna go potwierdziła."
+    },
+    "calendar": {
+      "all": "Wszystkie potwierdzone wyścigi drużyny ze wszystkich sezonów, do subskrypcji w kalendarzu.",
+      "season": "Kalendarz jednego sezonu (tu: {season}).",
+      "race": "Jeden wyścig; adres każdego jest w polu ics w races.json."
+    },
+    "text": {
+      "llms": "Krótkie podsumowanie i najważniejsze linki (format llms.txt).",
+      "llmsFull": "Pełny tekst: drużyna, kalendarz, wyniki, sprzęt, partnerzy i FAQ.",
+      "markdown": "Wersje Markdown stron zespołu, wyścigów, sprzętu i FAQ (PL i EN).",
+      "sitemap": "Wszystkie strony z datą aktualizacji i wersjami językowymi.",
+      "rss": "Wyniki wyścigów od najnowszych (PL i EN)."
+    },
+    "rules": [
+      "Tylko do odczytu, bez klucza API. Pliki są statyczne i można je pobierać z dowolnej domeny (CORS).",
+      "Każdy plik ma pola version, updated (data ostatniej zmiany danych) i documentation.",
+      "Wyniki z checkedByTeam: false nie zostały jeszcze potwierdzone przez drużynę; każdy wynik ma źródło.",
+      "Wartości, których drużyna nie potwierdziła (np. kod UCI), mają wartość null.",
+      "Korzystając z danych, podaj nazwę drużyny i link do {website}."
+    ]
+  },
   "mediaPage": {
     "eyebrow": "Strefa mediów",
     "title": "Wszystko do relacji o drużynie.",
@@ -750,6 +793,7 @@
       "roster": "Skład",
       "press": "Kontakt"
     },
+    "machine": "Te same fakty w formacie dla narzędzi AI i programistów:",
     "factsTitle": "Fakty w skrócie.",
     "facts": {
       "name": "Pełna nazwa",
@@ -844,6 +888,8 @@
     "errorEmail": "Wpisz poprawny adres e-mail.",
     "errorConsent": "Zaznacz zgodę, żebyśmy mogli do Ciebie pisać.",
     "errorNetwork": "Nie udało się wysłać. Spróbuj ponownie albo napisz na {email}.",
+    "honeypot": "Nie wypełniaj tego pola",
+    "errorTooFast": "Chwileczkę – spróbuj ponownie za kilka sekund.",
     "errorNotLive": "Zapisy ruszą wkrótce. Do tego czasu napisz do nas: {email}."
   },
   "privacyPage": {
@@ -867,6 +913,7 @@
       "media": "Strefa mediów",
       "equipment": "Sprzęt",
       "faq": "Pytania i odpowiedzi",
+      "developers": "Dane dla programistów",
       "clubPro": "Program Klub Pro"
     },
     "copyright": "© {year} {team}",

@@ -42,7 +42,7 @@ const VOCAB = {
   SportsEvent: { parent: 'Event', props: ['competitor', 'sport', 'homeTeam', 'awayTeam'] },
   CreativeWork: {
     parent: 'Thing',
-    props: ['inLanguage', 'publisher', 'author', 'about', 'mentions', 'datePublished', 'dateModified', 'headline', 'isPartOf', 'license', 'keywords', 'text', 'mainEntity', 'creator', 'copyrightHolder', 'encodingFormat', 'contentUrl', 'creditText', 'copyrightNotice', 'acquireLicensePage'],
+    props: ['inLanguage', 'publisher', 'author', 'about', 'mentions', 'datePublished', 'dateModified', 'headline', 'isPartOf', 'license', 'keywords', 'text', 'mainEntity', 'creator', 'copyrightHolder', 'encodingFormat', 'contentUrl', 'creditText', 'copyrightNotice', 'acquireLicensePage', 'isAccessibleForFree'],
   },
   WebSite: { parent: 'CreativeWork', props: ['potentialAction'] },
   WebPage: { parent: 'CreativeWork', props: ['breadcrumb', 'primaryImageOfPage', 'lastReviewed'] },

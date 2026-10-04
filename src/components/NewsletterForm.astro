@@ -1,10 +1,12 @@
 ---
-// Newsletter sign-up (in the plum footer). Not wired to a provider: set NEWSLETTER_ENDPOINT at
-// build time and it POSTs JSON { email, consent, lang } there. Without it, submitting shows a
-// friendly note with the team's address.
+// Newsletter sign-up (in the plum footer). The provider is chosen at build time (src/lib/newsletter.ts):
+// MailerLite's embedded-form endpoint, any JSON endpoint, or neither (a friendly "opens soon").
+// Works without JavaScript (a plain POST); with it, the result is shown in place as plain text.
+// Spam: a hidden honeypot field and a short cooldown between attempts; no CAPTCHA.
 import { anchor } from '../lib/anchors';
 import { getData } from '../lib/data';
 import { copy, fill, type Lang } from '../lib/i18n';
+import { NEWSLETTER_COOLDOWN_S, newsletterConfig } from '../lib/newsletter';
 import { route } from '../lib/routes';
 
 interface Props {
@@ -17,7 +19,7 @@ const { site } = getData();
 const t = copy(lang);
 const tn = t.newsletter;
 const season = site.currentSeason;
-const endpoint = import.meta.env.NEWSLETTER_ENDPOINT || process.env.NEWSLETTER_ENDPOINT || '';
+const provider = newsletterConfig();
 const messages = {
   sending: tn.sending,
   success: fill(tn.success, { season }, lang),
@@ -25,25 +27,30 @@ const messages = {
   errorConsent: tn.errorConsent,
   errorNetwork: fill(tn.errorNetwork, { email: t.team.email }, lang),
   errorNotLive: fill(tn.errorNotLive, { email: t.team.email }, lang),
+  errorTooFast: tn.errorTooFast,
 };
 ---
 
 <form
   class="newsletter"
   id={anchor(lang, 'newsletter')}
-  action={endpoint || undefined}
+  action={provider.action ?? undefined}
   method="post"
   novalidate
   data-newsletter
-  data-endpoint={endpoint}
+  data-mode={provider.mode}
+  data-endpoint={provider.action ?? ''}
+  data-cooldown={NEWSLETTER_COOLDOWN_S}
   aria-labelledby={labelledby}
 >
-  <input type="hidden" name="lang" value={lang} />
+  <input type="hidden" name={provider.langField} value={lang} />
+  {provider.mode === 'mailerlite' && <input type="hidden" name="ml-submit" value="1" />}
+  {provider.mode === 'mailerlite' && <input type="hidden" name="anticsrf" value="true" />}
   <label for="nl-email" class="newsletter__label">{tn.emailLabel}</label>
   <div class="newsletter__row">
     <input
       id="nl-email"
-      name="email"
+      name={provider.emailField}
       type="email"
       autocomplete="email"
       required
@@ -61,6 +68,10 @@ const messages = {
     </label>
   </div>
   <p class="field__error" id="nl-consent-error" hidden>{tn.errorConsent}</p>
+  <div class="hp" aria-hidden="true">
+    <label for="nl-website">{tn.honeypot}</label>
+    <input id="nl-website" name="website" type="text" tabindex="-1" autocomplete="off" />
+  </div>
   <p class="newsletter__status" role="status" aria-live="polite" data-status></p>
   <script type="application/json" id="newsletter-copy" set:html={JSON.stringify(messages)} />
 </form>
@@ -68,16 +79,18 @@ const messages = {
 <script>
   import { readJSON } from '../lib/client';
 
-  type Msg = Record<'sending' | 'success' | 'errorEmail' | 'errorConsent' | 'errorNetwork' | 'errorNotLive', string>;
+  type Msg = Record<'sending' | 'success' | 'errorEmail' | 'errorConsent' | 'errorNetwork' | 'errorNotLive' | 'errorTooFast', string>;
   const form = document.querySelector<HTMLFormElement>('[data-newsletter]');
   if (form) {
     const m = readJSON<Msg>('newsletter-copy');
     const email = form.querySelector<HTMLInputElement>('#nl-email')!;
     const consent = form.querySelector<HTMLInputElement>('#nl-consent')!;
+    const honeypot = form.querySelector<HTMLInputElement>('#nl-website')!;
     const emailErr = form.querySelector<HTMLElement>('#nl-email-error')!;
     const consentErr = form.querySelector<HTMLElement>('#nl-consent-error')!;
     const status = form.querySelector<HTMLElement>('[data-status]')!;
     const button = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+    const cooldownMs = Number(form.dataset.cooldown ?? 30) * 1000;
     const setState = (kind: 'idle' | 'sending' | 'success' | 'error', text = '') => {
       form.dataset.state = kind;
       status.textContent = text;
@@ -85,6 +98,21 @@ const messages = {
     const showError = (input: HTMLInputElement, err: HTMLElement, bad: boolean) => {
       err.hidden = !bad;
       input.setAttribute('aria-invalid', String(bad));
+    };
+    // Per-visitor cooldown; storage may be unavailable (private mode), then there is none.
+    const lastTry = () => {
+      try {
+        return Number(sessionStorage.getItem('nl-last') ?? 0);
+      } catch {
+        return 0;
+      }
+    };
+    const markTry = () => {
+      try {
+        sessionStorage.setItem('nl-last', String(Date.now()));
+      } catch {
+        /* ignore */
+      }
     };
 
     form.addEventListener('submit', async (ev) => {
@@ -96,17 +124,36 @@ const messages = {
       if (badEmail) return email.focus();
       if (badConsent) return consent.focus();
 
+      // A filled honeypot means a bot: look successful, send nothing.
+      if (honeypot.value) {
+        form.reset();
+        return setState('success', m.success);
+      }
+      const mode = form.dataset.mode;
       const endpoint = form.dataset.endpoint;
-      if (!endpoint) return setState('error', m.errorNotLive);
+      if (mode === 'off' || !endpoint) return setState('error', m.errorNotLive);
+      if (Date.now() - lastTry() < cooldownMs) return setState('error', m.errorTooFast);
+      markTry();
+
       setState('sending', m.sending);
       button.disabled = true;
       try {
-        const res = await fetch(endpoint, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: email.value.trim(), consent: true, lang: document.documentElement.lang }),
-        });
-        if (!res.ok) throw new Error(String(res.status));
+        let ok: boolean;
+        if (mode === 'mailerlite') {
+          const body = new URLSearchParams();
+          for (const [k, v] of new FormData(form)) if (k !== 'website' && k !== 'consent') body.append(k, String(v));
+          const res = await fetch(endpoint, { method: 'POST', body });
+          const json = (await res.json().catch(() => ({}))) as { success?: boolean };
+          ok = res.ok && json.success !== false;
+        } else {
+          const res = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: email.value.trim(), consent: true, lang: document.documentElement.lang }),
+          });
+          ok = res.ok;
+        }
+        if (!ok) throw new Error('rejected');
         form.reset();
         setState('success', m.success);
       } catch {
@@ -119,6 +166,14 @@ const messages = {
 </script>
 
 <style>
+  /* Honeypot: off-screen for people, still in the form for bots. */
+  .hp {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
   .newsletter {
     display: flex;
     flex-direction: column;

@@ -46,6 +46,11 @@ Every item below is in the data with `"verify": true` (or `null`). It is **never
 - **Sponsorship**: the answer gives only the e-mail, in line with the decision of 2 Oct 2026 (partnerships offline, no sales content).
 - `site.json` → `factsAsOf` is `2026-10-04`. Update it when the roster or calendar changes.
 
+## Newsletter and data (phase 6)
+- **MailerLite**: set `MAILERLITE_ACCOUNT_ID` and `MAILERLITE_FORM_ID` in Vercel. After deploying, sign up once with a test address to confirm MailerLite accepts the in-page request; I tested against a simulated MailerLite response because outbound access was blocked here. Keep reCAPTCHA off and double opt-in on in the MailerLite form settings.
+- **Attribution wording** in `/data/*.json` ("Please name … and link …"): the team decides whether to add a formal licence (e.g. CC BY 4.0).
+- **Privacy policy**: the policy page is still the placeholder "published before the newsletter launches". It needs the real text (MailerLite as processor) before the form goes live.
+
 ## Crawlers (`src/pages/robots.txt.ts`)
 - All search and AI crawlers are allowed, including the training crawlers (GPTBot, ClaudeBot, Google-Extended, Applebot-Extended). Confirm the team is fine with model training on the site's public content. Opting out of training alone means switching just those four groups to `Disallow: /`, and costs nothing in search.
 

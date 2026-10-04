@@ -19,6 +19,7 @@ const STATIC: { key: PageKey; kind: SourceKey }[] = [
   { key: 'faq', kind: 'faq' },
   { key: 'partners', kind: 'partners' },
   { key: 'media', kind: 'media' },
+  { key: 'developers', kind: 'home' },
 ];
 
 export function sitePages(): SitePage[] {
