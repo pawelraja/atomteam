@@ -2,6 +2,29 @@
 
 Every item below is in the data with `"verify": true` (or `null`). It is **never shown on the site and never emitted in structured data** until someone confirms it, fills in the value and sets `"verify": false`. This list grows with each GEO phase.
 
+
+## Priority summary (end of GEO phases 0–7)
+
+**Before launch**
+1. **UCI team code** (ATO or MAV) and the **registered name**: `team.json`.
+2. **Privacy policy** text naming MailerLite, before the newsletter goes live.
+3. **MailerLite**: set the two Vercel variables, then do one test sign-up after deploying.
+4. **Crawler policy**: confirm the team is fine with AI training crawlers (or switch those four to `Disallow`).
+
+**From NO LIMITED** (`docs/no-limited-outreach.md`)
+5. Brand spelling, wheel models, rim depths, disciplines, "UCI-approved since 2016", product URLs, SVG logo.
+6. Which disciplines are raced on their wheels. This unlocks the "96 podium places in 19 races" line.
+
+**From the team**
+7. Rider quotes about the wheels; what each technical partner supplies (bikes, tyres, shoes…).
+8. UCI tier wording in the FAQ; the junior recruitment process; the bike brand.
+9. External profile URLs (Wikipedia, Wikidata, ProCyclingStats, FirstCycling, UCI) for the team and riders, once they exist. See `docs/geo-offsite.md`.
+10. Race organisers; the date of X16 and the country of X10; partner `sameAs` links; whether the Velo brands are the partner or Velo is.
+11. Whether to add a formal licence to `/data/*.json`.
+12. Keep `site.json → factsAsOf` current whenever the roster or calendar changes.
+
+Everything below is the full list by area.
+
 ## Team identity (`src/data/team.json`)
 | Field | Current state | What to confirm |
 |---|---|---|

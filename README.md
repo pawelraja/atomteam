@@ -317,6 +317,14 @@ Then redeploy. The form works without JavaScript (a normal POST to MailerLite). 
 
 Contact, junior applications and partnership questions have no forms. The FAQ links straight to an e-mail with the subject filled in.
 
+## GEO documents (`docs/`)
+
+- `geo-audit.md`: the crawl audit (phase 0) and the re-check after phase 5.
+- `geo-verify.md`: **every fact still to confirm**, with a priority summary at the top.
+- `geo-offsite.md`: the off-site checklist (Wikidata, Wikipedia, cycling databases, media links) and the monthly AI-answer test; log results in `geo-tracking.csv`.
+- `no-limited-outreach.md`: the link request to NO LIMITED, with a JSON-LD snippet for their site.
+- `agent-endpoints-proposal.md`: the MCP server proposal (not built).
+
 ## Public data for developers and AI agents
 
 `/dane/` and `/en/developers/` document everything below. All of it is generated from the data at build time. It needs no API key and allows cross-origin requests.
