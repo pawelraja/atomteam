@@ -12,6 +12,9 @@ import { HERO_DESKTOP_MEDIA, HERO_MOBILE_MEDIA, heroSources } from '../lib/hero'
 import { copy, DEFAULT_LANG, fill, homePath, LANGS, type Lang } from '../lib/i18n';
 import { graph, type Node } from '../lib/jsonld';
 import { baseNodes, fullTeamNodes } from '../lib/pageld';
+import { FEEDS } from '../lib/feed';
+import { MARKDOWN } from '../lib/markdown';
+import { PAGES, ROUTES } from '../lib/routes';
 
 interface Props {
   lang: Lang;
@@ -42,6 +45,9 @@ const { desktop, mobile } = preloadHero ? await heroSources() : { desktop: null,
 // Structured data: every page has the website and the team; pages add their own nodes
 // (rider → Person, race → SportsEvent, calendar → upcoming races). Home and partners carry the full team.
 const nodes = fullTeam ? [baseNodes(lang)[0], ...fullTeamNodes(lang)] : baseNodes(lang);
+// Plain-text versions for agents: the Markdown page (where one exists) and the results feed.
+const pageKey = PAGES.find((k) => ROUTES[k][lang] === paths[lang]);
+const markdown = pageKey ? MARKDOWN[pageKey]?.[lang] : undefined;
 const jsonLd = graph([...nodes, ...(Astro.props.jsonLd ?? [])]);
 ---
 
@@ -58,6 +64,8 @@ const jsonLd = graph([...nodes, ...(Astro.props.jsonLd ?? [])]);
     <link rel="alternate" hreflang="x-default" href={abs(paths[DEFAULT_LANG])} />
     <meta name="theme-color" content="#2b0020" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    {markdown && <link rel="alternate" type="text/markdown" href={markdown} />}
+    <link rel="alternate" type="application/rss+xml" title={fill(t.markdown.feedTitle, {})} href={FEEDS[lang]} />
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={t.team.name} />

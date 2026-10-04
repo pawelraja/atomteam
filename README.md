@@ -149,6 +149,20 @@ The equipment page (`/sprzet/`, `/en/equipment/`) is generated from `src/data/eq
 - **Preview for checking:** `MADW_SHOW_VERIFY=1 npm run build && npm run preview` shows every unconfirmed item in place, marked "[VERIFY] to be confirmed". The build refuses this setting on Vercel production.
 - `docs/no-limited-outreach.md` is the note to NO LIMITED asking for a link back, with a JSON-LD snippet for their site.
 
+## Files for search engines and AI assistants
+
+All generated at build time from the data. Nothing to edit by hand except the robots policy.
+
+| File | What it is |
+|---|---|
+| `/robots.txt` | Allows Google, Bing, OpenAI, Anthropic, Perplexity and Apple crawlers, each in its own group with a comment saying what it does. To change the policy for one crawler, edit `src/pages/robots.txt.ts`. |
+| `/sitemap.xml` | Every indexable page in both languages, with hreflang alternates and `lastmod` = the date of the last commit that changed that page's data (falls back to `factsAsOf`). |
+| `/llms.txt`, `/llms-full.txt` | A short summary with the key links (llmstxt.org format) and the full plain text: team, roster, calendar, results, equipment, partners, FAQ. |
+| `/team.md`, `/races.md`, `/equipment.md`, `/faq.md` (EN); `/zespol.md`, `/wyscigi.md`, `/sprzet.md`, `/pytania.md` (PL) | Markdown versions of the key pages. Each HTML page links to its version with `<link rel="alternate" type="text/markdown">`. |
+| `/rss.xml`, `/en/rss.xml` | Race-results feed, newest first. It stands in for a news feed until the site has news. |
+
+`npm run check:site` fails if titles or descriptions repeat within a language, the sitemap and the built pages differ, a crawler is missing from robots.txt, or a link in llms.txt doesn't resolve.
+
 ## Answer-first summaries and the FAQ
 
 Search and AI engines quote the first factual sentences on a page. So the home hero, the team, calendar and partners intros, rider profiles and race pages each open with a short summary that stands on its own. The summaries are templates in the copy files (`hero.summary`, `teamPage.lead`, `calendarPage.lead`, `partnersPage.lead`, `rider.summary`, `race.summary*`), filled with numbers computed from the data (`src/lib/facts.ts`). They update themselves when the data changes.

@@ -11,7 +11,7 @@ import { podiums, wheelMentionsOn, wheelsFor } from '../lib/equipment';
 import { copy, fill, type Lang } from '../lib/i18n';
 import { raceDates, raceNodes, raceSummary, raceWhere } from '../lib/pageld';
 import { racePaths, route } from '../lib/routes';
-import { eventState, isConfirmedRace, raceName, type RaceEvent } from '../lib/season';
+import { eventState, isConfirmedRace, raceLocation, raceName, type RaceEvent } from '../lib/season';
 import { typo } from '../lib/text';
 import type { RacePageView } from '../lib/view';
 
@@ -25,6 +25,9 @@ const t = copy(lang);
 const tr = t.race;
 const e = page.event as RaceEvent & { start: string; end: string };
 const name = typo(lang, raceName(e, lang));
+// Titles name the place too: several Polish Cup rounds share one race name.
+const place = raceLocation(e, lang);
+const metaName = place ? `${name}, ${place}` : name;
 const state = e.status === 'cancelled' ? 'cancelled' : eventState(e, today);
 const classified = page.rows.filter((r) => r.position !== null);
 // Mention the wheels once, where it counts: podiums won on the partner's wheels.
@@ -38,8 +41,8 @@ const eyebrow = [e.onTeamCalendar === false ? tr.offCalendar : null, t.calendar.
   lang={lang}
   page="calendar"
   paths={racePaths(page.season, page.slug)}
-  title={fill(tr.metaTitle, { race: name, season: page.season })}
-  description={fill(tr.metaDescription, { race: name, season: page.season }, lang)}
+  title={fill(tr.metaTitle, { race: metaName, season: page.season })}
+  description={fill(tr.metaDescription, { race: metaName, season: page.season }, lang)}
   jsonLd={raceNodes(lang, page, today)}
 >
   <section class="race" id={anchor(lang, 'profile')} data-section="race" aria-labelledby="page-title">

@@ -62,3 +62,10 @@ I found no inconsistent values inside the repo. Every duplicate holds the same v
 | News / `NewsArticle` / RSS | No news section exists. |
 | Sponsorship enquiry form, FAQ "how can a company sponsor" | `CLAUDE.md` non-negotiable (team decision, 2 Oct 2026): no partner-sales content on the main pages, partnerships are handled offline, and jersey placement appears only on `/partnerzy`. |
 | `/sprzet` + `/equipment` | Fits the existing PL/EN route pattern as `/sprzet/` and `/en/equipment/`. |
+
+## 4. Re-check after phase 5 (no-JS crawl, same method)
+
+- 178 pages, all 200. Every indexable page carries JSON-LD: home, partners and media have the full team; 40 rider pages have `Person`; 122 race pages have `SportsEvent`; the FAQ has `FAQPage`; the equipment page has the full team and the wheel partner.
+- A1–A7 and A11 are fixed. robots.txt, sitemap.xml, llms.txt, llms-full.txt, 8 Markdown versions and 2 RSS feeds now exist.
+- A8 (forms) is phase 6. A9 (news) is deferred; the race-results RSS stands in for it. A13 (photos) waits for team files.
+- The only JS-filled fields left empty without JS belong to the hidden "next race" card. No 2027 race is confirmed yet, so its "coming soon" state is shown instead, with full text.

@@ -27,7 +27,7 @@
         "description": "Team facts, boilerplate, logos, photos, roster and press contact. No login needed."
       },
       "rider": {
-        "title": "{name} — {TEAM}",
+        "title": "{name} — {TEAM} rider",
         "description": "{name}, {squad}, {TEAM}. Profile, results and a downloadable portrait."
       }
     }
@@ -528,7 +528,7 @@
     "resultsLead": "Classified places of our riders. Every result links to its source.",
     "noResults": "Results will appear here after the race.",
     "tableCaption": "Team results: {race} {season}",
-    "metaTitle": "{race} {season} — {TEAM}",
+    "metaTitle": "{race} {season}: dates and results — {TEAM}",
     "metaDescription": "{race} {season}: date, place and the results of the {TEAM} riders."
   },
   "faq": {
@@ -704,6 +704,40 @@
       "nutrition": "Nutrition",
       "car": "Team cars"
     }
+  },
+  "markdown": {
+    "source": "Source",
+    "asOf": "As of {asOf}",
+    "otherLang": "Wersja polska",
+    "teamTitle": "{TEAM}: the team",
+    "racesTitle": "{TEAM}: races and results",
+    "facts": "Facts",
+    "name": "Name",
+    "alsoKnown": "Also known as",
+    "uciStatus": "UCI status",
+    "founded": "Founded",
+    "foundedValue": "{founded}, Wrocław, Poland",
+    "website": "Website",
+    "email": "Email",
+    "social": "Social media",
+    "roster": "{season} roster",
+    "staff": "Staff",
+    "calendar": "{season} calendar",
+    "tbc": "dates TBC",
+    "cancelled": "cancelled",
+    "season": "{season} races",
+    "partners": "{season} partners",
+    "setup": "Equipment by partner",
+    "llmsIntro": "The team's official website. Every figure is computed from the team's own data each time the site is published.",
+    "llmsPages": "Key pages",
+    "llmsMarkdown": "Markdown versions",
+    "llmsOptional": "Optional",
+    "llmsFull": "Full text: team, calendar, results, equipment, partners and FAQ",
+    "llmsSitemap": "Sitemap",
+    "llmsFeed": "RSS feed of race results",
+    "feedTitle": "{TEAM}: race results",
+    "feedDescription": "Results of the {TEAM} riders at every race, newest first.",
+    "feedItem": "{race} {season}: results"
   },
   "mediaPage": {
     "eyebrow": "Media centre",

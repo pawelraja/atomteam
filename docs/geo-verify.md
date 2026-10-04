@@ -46,4 +46,7 @@ Every item below is in the data with `"verify": true` (or `null`). It is **never
 - **Sponsorship**: the answer gives only the e-mail, in line with the decision of 2 Oct 2026 (partnerships offline, no sales content).
 - `site.json` → `factsAsOf` is `2026-10-04`. Update it when the roster or calendar changes.
 
+## Crawlers (`src/pages/robots.txt.ts`)
+- All search and AI crawlers are allowed, including the training crawlers (GPTBot, ClaudeBot, Google-Extended, Applebot-Extended). Confirm the team is fine with model training on the site's public content. Opting out of training alone means switching just those four groups to `Disallow: /`, and costs nothing in search.
+
 _Outbound network access was blocked in the build environment, so no external URL could be looked up or checked._

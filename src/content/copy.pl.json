@@ -27,7 +27,7 @@
         "description": "Fakty o drużynie, notka, logotypy, zdjęcia, skład i kontakt prasowy. Bez logowania."
       },
       "rider": {
-        "title": "{name} — {TEAM}",
+        "title": "{name} — zawodniczka {TEAM}",
         "description": "{name}, {squad}, {TEAM}. Profil, wyniki i portret do pobrania."
       }
     }
@@ -528,7 +528,7 @@
     "resultsLead": "Sklasyfikowane miejsca naszych zawodniczek. Każdy wynik ma źródło.",
     "noResults": "Wyniki pojawią się tutaj po wyścigu.",
     "tableCaption": "Wyniki drużyny: {race} {season}",
-    "metaTitle": "{race} {season} — {TEAM}",
+    "metaTitle": "{race} {season}: termin i wyniki — {TEAM}",
     "metaDescription": "{race} {season}: termin, miejsce i wyniki zawodniczek drużyny {TEAM}."
   },
   "faq": {
@@ -704,6 +704,40 @@
       "nutrition": "Odżywianie",
       "car": "Samochody zespołu"
     }
+  },
+  "markdown": {
+    "source": "Źródło",
+    "asOf": "Stan na {asOf}",
+    "otherLang": "English version",
+    "teamTitle": "{TEAM} – drużyna",
+    "racesTitle": "{TEAM} – wyścigi i wyniki",
+    "facts": "Fakty",
+    "name": "Nazwa",
+    "alsoKnown": "Inne nazwy",
+    "uciStatus": "Status UCI",
+    "founded": "Założona",
+    "foundedValue": "{founded}, Wrocław, Polska",
+    "website": "Strona",
+    "email": "E-mail",
+    "social": "Media społecznościowe",
+    "roster": "Skład na sezon {season}",
+    "staff": "Sztab",
+    "calendar": "Kalendarz {season}",
+    "tbc": "termin do potwierdzenia",
+    "cancelled": "odwołany",
+    "season": "Wyścigi sezonu {season}",
+    "partners": "Partnerzy sezonu {season}",
+    "setup": "Sprzęt według partnerów",
+    "llmsIntro": "Oficjalna strona drużyny. Wszystkie liczby są wyliczane z danych drużyny przy każdej publikacji strony.",
+    "llmsPages": "Najważniejsze strony",
+    "llmsMarkdown": "Wersje Markdown",
+    "llmsOptional": "Dodatkowe",
+    "llmsFull": "Pełny tekst: drużyna, kalendarz, wyniki, sprzęt, partnerzy i FAQ",
+    "llmsSitemap": "Mapa strony",
+    "llmsFeed": "Kanał RSS z wynikami wyścigów",
+    "feedTitle": "{TEAM} – wyniki wyścigów",
+    "feedDescription": "Wyniki zawodniczek drużyny {TEAM} z każdego wyścigu, od najnowszych.",
+    "feedItem": "{race} {season} – wyniki"
   },
   "mediaPage": {
     "eyebrow": "Strefa mediów",
