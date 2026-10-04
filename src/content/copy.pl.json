@@ -8,6 +8,7 @@
     "ogHeadline": "Sezon {season}.",
     "ogAlt": "{TEAM} — Sezon {season}",
     "pages": {
+      "equipment": { "title": "Sprzęt i koła {wheels} — {TEAM}", "description": "Na jakim sprzęcie ściga się {TEAM}: karbonowe koła {wheels} i partnerzy techniczni drużyny." },
       "faq": { "title": "Pytania i odpowiedzi — {TEAM}", "description": "Odpowiedzi na najczęstsze pytania o {TEAM}: poziom UCI, skład, wyniki, kalendarz, sprzęt, juniorki i kontakt." },
       "team": {
         "title": "Zespół — {TEAM}",
@@ -522,6 +523,7 @@
     "summaryCancelled": "{race}: {dates}, {where}. Wyścig odwołany.",
     "placings": { "one": "{n} sklasyfikowane miejsce", "few": "{n} sklasyfikowane miejsca", "many": "{n} sklasyfikowanych miejsc", "other": "{n} sklasyfikowanego miejsca" },
     "best": "{place}. miejsce – {rider}{detail}",
+    "wheelsLine": "Miejsca na podium: {n}, wywalczone na kołach {wheels}.",
     "resultsTitle": "Wyniki drużyny.",
     "resultsLead": "Sklasyfikowane miejsca naszych zawodniczek. Każdy wynik ma źródło.",
     "noResults": "Wyniki pojawią się tutaj po wyścigu.",
@@ -626,10 +628,7 @@
         "id": "equipment",
         "q": "Na jakim sprzęcie i kołach jeździ drużyna?",
         "a": "Drużyna ściga się na karbonowych kołach {wheels}. {wheels} to polski producent karbonowych kół z Podkarpacia i jeden ze sponsorów głównych drużyny. Partnerzy techniczni drużyny to {technicalPartners}.",
-        "link": {
-          "label": "Partnerzy",
-          "href": "partners"
-        }
+        "link": {"label": "Sprzęt drużyny", "href": "equipment"}
       },
       {
         "id": "junior",
@@ -656,6 +655,55 @@
         }
       }
     ]
+  },
+  "equipment": {
+    "eyebrow": "Sprzęt",
+    "title": "Na jakich kołach jeździ {TEAM}?",
+    "lead": "Drużyna {TEAM} ściga się na karbonowych kołach {wheels} – polskiego producenta z Podkarpacia.",
+    "leadStats": "Drużyna {TEAM} ściga się na karbonowych kołach {wheels} – polskiego producenta z Podkarpacia. W sezonie {wheelSeason} zawodniczki wywalczyły na nich {wheelPodiums} w {wheelRaces}.",
+    "counts": {
+      "podiums": {
+        "one": "{n} miejsce na podium",
+        "few": "{n} miejsca na podium",
+        "many": "{n} miejsc na podium",
+        "other": "{n} miejsca na podium"
+      },
+      "racesIn": {
+        "one": "{n} wyścigu",
+        "few": "{n} wyścigach",
+        "many": "{n} wyścigach",
+        "other": "{n} wyścigu"
+      }
+    },
+    "partnerEyebrow": "Partner kołowy",
+    "visit": "Strona {wheels}",
+    "modelsTitle": "Modele, na których się ścigamy",
+    "modelsCaption": "Koła {wheels} używane przez drużynę",
+    "model": "Model",
+    "discipline": "Dyscyplina",
+    "rimDepth": "Wysokość obręczy",
+    "use": "Zastosowanie",
+    "mm": "{n} mm",
+    "quotesTitle": "Dlaczego {wheels}?",
+    "quoteAnon": "Zawodniczka drużyny {TEAM}",
+    "setupTitle": "Cały sprzęt wyścigowy.",
+    "setupLead": "Sprzęt, na którym ścigają się zawodniczki, według partnerów.",
+    "partnersLead": "Partnerzy techniczni drużyny w sezonie {partnerSeason}: {technicalPartners}.",
+    "partnersLink": "Wszyscy partnerzy",
+    "verify": "do potwierdzenia",
+    "categories": {
+      "bikes": "Rowery",
+      "wheels": "Koła",
+      "tyres": "Opony",
+      "shoes": "Buty",
+      "helmets": "Kaski",
+      "saddles": "Siodełka",
+      "clothing": "Odzież",
+      "lubricants": "Smary i środki do czyszczenia",
+      "tools": "Narzędzia",
+      "nutrition": "Odżywianie",
+      "car": "Samochody zespołu"
+    }
   },
   "mediaPage": {
     "eyebrow": "Strefa mediów",
@@ -783,6 +831,7 @@
       "calendar": "Kalendarz",
       "partners": "Partnerzy",
       "media": "Strefa mediów",
+      "equipment": "Sprzęt",
       "faq": "Pytania i odpowiedzi",
       "clubPro": "Program Klub Pro"
     },

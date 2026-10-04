@@ -34,7 +34,7 @@ const VOCAB = {
   StructuredValue: { parent: 'Intangible', props: [] },
   ContactPoint: { parent: 'StructuredValue', props: ['contactType', 'email', 'telephone', 'availableLanguage', 'areaServed'] },
   PostalAddress: { parent: 'ContactPoint', props: ['addressLocality', 'addressRegion', 'addressCountry', 'postalCode', 'streetAddress'] },
-  PropertyValue: { parent: 'StructuredValue', props: ['propertyID', 'value'] },
+  PropertyValue: { parent: 'StructuredValue', props: ['propertyID', 'value', 'unitCode', 'unitText'] },
   Event: {
     parent: 'Thing',
     props: ['startDate', 'endDate', 'location', 'eventStatus', 'eventAttendanceMode', 'organizer', 'performer', 'sponsor', 'subEvent', 'superEvent', 'about', 'offers', 'attendee', 'inLanguage'],

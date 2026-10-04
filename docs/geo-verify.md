@@ -30,6 +30,15 @@ Every item below is in the data with `"verify": true` (or `null`). It is **never
 ## Team
 - `memberOf` → UCI: the team is presented as registered with the UCI. Add the Polish federation (PZKol) too if the team wants it.
 
+## Equipment (`src/data/equipment.json`); ask NO LIMITED, see `docs/no-limited-outreach.md`
+- **Brand spelling**: "NO LIMITED" is used everywhere. Confirm it's the brand's preferred form.
+- **UCI-approved wheels since 2016** (`wheels.facts`): hidden until NO LIMITED confirms.
+- **Wheel models** (`wheels.models`): name, discipline, rim depth and product URL for each model. Placeholders for road, time trial and track (the track entry only if they supply track wheels).
+- **Disciplines** (`wheels.disciplinesVerify`): road and time trial are assumed. Once confirmed, race pages and the equipment page show the podiums won on NO LIMITED wheels (96 podium places in 19 races in 2026 on road and TT, as computed).
+- **Rider quotes** (`wheels.quotes`): two placeholders. Add each rider's name and her words in both languages.
+- **Race setup** (`setup`): which product each partner supplies. Accent: bikes; Vittoria: tyres; Sidi: shoes; MET Helmets: helmets; San Marco: saddles; Jako Sport: clothing; Finish Line: lubricants; Park Tool: tools; NamedSport: nutrition; Škoda Gall ICM: team cars. All hidden until confirmed.
+- **Link attributes**: links to no-limited.pl and other partners keep `rel="sponsored"`, as Google requires for paid or sponsored links.
+
 ## FAQ and summaries (`src/content/copy.*.json` → `faq`)
 - **UCI tier wording** ("level"): the answer says Continental is the third tier of women's road cycling, after Women's WorldTeams and Women's ProTeams (the ProTeam tier started in 2025). Confirm the team is happy with this wording.
 - **Bikes**: the question "What bikes and wheels does the team use?" answers only the wheels (NO LIMITED) and lists the technical partners. Add the bike brand and model once confirmed (Accent is a main sponsor, but it isn't confirmed as the race bike).

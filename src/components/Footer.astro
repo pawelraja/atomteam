@@ -30,6 +30,7 @@ const columns = [
       // Only when the results chapter is on the home page.
       ...(resultsView() ? [{ href: onHome('results'), label: tf.links.results }] : []),
       { href: route(lang, 'calendar'), label: tf.links.calendar },
+      { href: route(lang, 'equipment'), label: tf.links.equipment },
       { href: route(lang, 'faq'), label: tf.links.faq },
     ],
   },

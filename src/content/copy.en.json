@@ -8,6 +8,7 @@
     "ogHeadline": "Season {season}.",
     "ogAlt": "{TEAM} — Season {season}",
     "pages": {
+      "equipment": { "title": "Equipment and {wheels} wheels — {TEAM}", "description": "What {TEAM} races on: {wheels} carbon wheels and the team's technical partners." },
       "faq": { "title": "Questions and answers — {TEAM}", "description": "Answers to the most common questions about {TEAM}: UCI level, roster, results, calendar, equipment, juniors and contact." },
       "team": {
         "title": "Team — {TEAM}",
@@ -522,6 +523,7 @@
     "summaryCancelled": "{race}: {dates}, {where}. The race was cancelled.",
     "placings": { "one": "{n} classified place", "few": "{n} classified places", "many": "{n} classified places", "other": "{n} classified places" },
     "best": "{place} – {rider}{detail}",
+    "wheelsLine": "Podium places: {n}, all on {wheels} wheels.",
     "resultsTitle": "Team results.",
     "resultsLead": "Classified places of our riders. Every result links to its source.",
     "noResults": "Results will appear here after the race.",
@@ -626,10 +628,7 @@
         "id": "equipment",
         "q": "What bikes and wheels does the team use?",
         "a": "The team races on {wheels} carbon wheels. {wheels} is a Polish carbon wheel manufacturer from Podkarpacie and one of the team's main sponsors. The team's technical partners are {technicalPartners}.",
-        "link": {
-          "label": "Partners",
-          "href": "partners"
-        }
+        "link": {"label": "Team equipment", "href": "equipment"}
       },
       {
         "id": "junior",
@@ -656,6 +655,55 @@
         }
       }
     ]
+  },
+  "equipment": {
+    "eyebrow": "Equipment",
+    "title": "What wheels does {TEAM} ride?",
+    "lead": "{TEAM} races on {wheels} carbon wheels, made by a Polish manufacturer from Podkarpacie.",
+    "leadStats": "{TEAM} races on {wheels} carbon wheels, made by a Polish manufacturer from Podkarpacie. In {wheelSeason} the riders won {wheelPodiums} on them in {wheelRaces}.",
+    "counts": {
+      "podiums": {
+        "one": "{n} podium place",
+        "few": "{n} podium places",
+        "many": "{n} podium places",
+        "other": "{n} podium places"
+      },
+      "racesIn": {
+        "one": "{n} race",
+        "few": "{n} races",
+        "many": "{n} races",
+        "other": "{n} races"
+      }
+    },
+    "partnerEyebrow": "Wheel partner",
+    "visit": "{wheels} website",
+    "modelsTitle": "The models we race",
+    "modelsCaption": "{wheels} wheels used by the team",
+    "model": "Model",
+    "discipline": "Discipline",
+    "rimDepth": "Rim depth",
+    "use": "Use",
+    "mm": "{n} mm",
+    "quotesTitle": "Why {wheels}?",
+    "quoteAnon": "{TEAM} rider",
+    "setupTitle": "The full race setup.",
+    "setupLead": "What the riders race on, by partner.",
+    "partnersLead": "The team's technical partners in {partnerSeason}: {technicalPartners}.",
+    "partnersLink": "All partners",
+    "verify": "to be confirmed",
+    "categories": {
+      "bikes": "Bikes",
+      "wheels": "Wheels",
+      "tyres": "Tyres",
+      "shoes": "Shoes",
+      "helmets": "Helmets",
+      "saddles": "Saddles",
+      "clothing": "Clothing",
+      "lubricants": "Lubricants and cleaning",
+      "tools": "Tools",
+      "nutrition": "Nutrition",
+      "car": "Team cars"
+    }
   },
   "mediaPage": {
     "eyebrow": "Media centre",
@@ -783,6 +831,7 @@
       "calendar": "Calendar",
       "partners": "Partners",
       "media": "Media centre",
+      "equipment": "Equipment",
       "faq": "FAQ",
       "clubPro": "Club Pro programme"
     },

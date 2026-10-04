@@ -138,6 +138,17 @@ Every race with dates gets its own page: `/wyscigi/2026/nxt-classic/` (EN `/en/r
 - The address is made from the Polish name. Races with the same name (the Polish Cup rounds) get the place added. To choose the address yourself, add `"slug": "puchar-polski-lubartow"`.
 - *(optional)* `"organizer": { "name": "…", "url": "https://…" }` names who runs the race. It goes into the structured data.
 
+## Equipment and the wheel partner (`equipment.json`)
+
+The equipment page (`/sprzet/`, `/en/equipment/`) is generated from `src/data/equipment.json`.
+
+- `wheels.partner` names the wheel partner exactly as in `partners.json` (`"NO LIMITED"`). Change the spelling there and it changes everywhere.
+- `wheels.seasons` and `wheels.disciplines` say when and where the team raced on these wheels. Race pages then mention the wheels once, next to the podium count ("Podium places: 3, all on NO LIMITED wheels."), and the equipment page totals the podiums. This stays off until `disciplinesVerify` is set to `false`. A race can override it: `"equipment": { "wheels": false }` in the calendar entry (e.g. a start with the national team).
+- `wheels.facts`, `wheels.models` (name, discipline, rim depth in mm, product URL) and `wheels.quotes` (rider and text in both languages) appear once `"verify": false`. Each confirmed model also becomes a `Product` in the structured data, made and branded by the partner.
+- `setup` lists the rest of the race setup by category (`bikes`, `tyres`, `shoes`…) and partner. Each item appears once confirmed.
+- **Preview for checking:** `MADW_SHOW_VERIFY=1 npm run build && npm run preview` shows every unconfirmed item in place, marked "[VERIFY] to be confirmed". The build refuses this setting on Vercel production.
+- `docs/no-limited-outreach.md` is the note to NO LIMITED asking for a link back, with a JSON-LD snippet for their site.
+
 ## Answer-first summaries and the FAQ
 
 Search and AI engines quote the first factual sentences on a page. So the home hero, the team, calendar and partners intros, rider profiles and race pages each open with a short summary that stands on its own. The summaries are templates in the copy files (`hero.summary`, `teamPage.lead`, `calendarPage.lead`, `partnersPage.lead`, `rider.summary`, `race.summary*`), filled with numbers computed from the data (`src/lib/facts.ts`). They update themselves when the data changes.
@@ -154,6 +165,7 @@ Every page carries schema.org JSON-LD, generated from the data files. Nothing is
 | Rider profile | `Person` (nationality, team membership, Instagram and results profiles) + breadcrumbs |
 | Race page | `SportsEvent` (dates, place with ISO country, status, sport, the team and its riders as competitors, organiser if known, results summary) + breadcrumbs |
 | Calendar | `SportsEvent` for confirmed upcoming races |
+| Equipment | full `SportsTeam` + the wheel partner as `Organization` + `Brand` + one `Product` per confirmed wheel model + breadcrumbs |
 | FAQ | `FAQPage` with every question and answer + breadcrumbs |
 
 **The build fails if any structured data is invalid** (`scripts/check-jsonld.mjs`, which also runs as `npm run check:jsonld`). It checks types, properties, required fields, dates, absolute URLs, ISO country codes and references, and makes sure no unconfirmed value leaks out. After each deploy, spot-check a few pages at https://validator.schema.org/ and https://search.google.com/test/rich-results.

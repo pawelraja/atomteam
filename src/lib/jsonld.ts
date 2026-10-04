@@ -136,9 +136,10 @@ export function website(ctx: Ctx, { team, homeUrl }: { team: Team; homeUrl: stri
 /* ---------- partners ---------- */
 
 export function partnerNode(ctx: Ctx, p: Partner, description: string, logo: string | null = null): Node {
-  const isBrand = p.kind === 'brand';
+  // A manufacturer is both the company and the brand on its products.
+  const type = p.kind === 'brand' ? 'Brand' : p.kind === 'manufacturer' ? ['Organization', 'Brand'] : 'Organization';
   return {
-    '@type': isBrand ? 'Brand' : 'Organization',
+    '@type': type,
     '@id': ids.partner(ctx, p),
     name: p.name,
     ...(p.label ? { alternateName: p.label[ctx.lang] } : {}),

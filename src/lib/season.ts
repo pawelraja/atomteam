@@ -28,6 +28,8 @@ export interface RaceEvent {
   /** Race page address from the calendar's "slug" (optional; made from the name otherwise). */
   slug?: string | null;
   organizer?: { name: string; url?: string } | null;
+  /** Per-race override of the wheels raced (see src/lib/equipment.ts). */
+  equipment?: { wheels: string | false };
   /** false for races ridden outside the published team calendar (kept for race pages and results). */
   onTeamCalendar?: boolean;
 }
@@ -123,6 +125,7 @@ export function normalizeCalendar(season: number, entries: CalendarEntry[]): Rac
       verify: !!e.verify,
       slug: e.slug ?? null,
       organizer: e.organizer ?? null,
+      ...(e.equipment ? { equipment: e.equipment } : {}),
       onTeamCalendar: e.onTeamCalendar !== false,
     };
   });

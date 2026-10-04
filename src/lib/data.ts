@@ -187,9 +187,11 @@ function loadAll() {
 
   const partners = load(z.array(partnerSchema), 'partners.json');
   const equipment = load(equipmentSchema, 'equipment.json');
-  if (!partners.some((p) => p.name === equipment.wheels.partner)) {
+  const partnerNames = new Set(partners.map((p) => p.name));
+  const unknownPartners = [equipment.wheels.partner, ...equipment.setup.map((x) => x.partner)].filter((n) => !partnerNames.has(n));
+  if (unknownPartners.length) {
     throw new DataError(
-      `Problem in src/data/equipment.json: wheel partner "${equipment.wheels.partner}" is not in partners.json.\n  Write the name exactly as in partners.json.`,
+      `Problem in src/data/equipment.json: ${[...new Set(unknownPartners)].map((n) => `"${n}"`).join(', ')} not found in partners.json.\n  Write the name exactly as in partners.json.`,
     );
   }
 
@@ -246,6 +248,15 @@ function checkResults(rows: Result[], file: string, riders: Rider[], events: Eve
   if (unchecked) {
     console.warn(`[data] ${file}: ${unchecked} of ${rows.length} result rows are not yet signed off by the team ("verify": true).`);
   }
+}
+
+/**
+ * Preview builds for the team (MADW_SHOW_VERIFY=1) show unconfirmed items marked [VERIFY] so they
+ * can be checked in place. Never in production: the build stops if both are set.
+ */
+export const SHOW_UNVERIFIED = process.env.MADW_SHOW_VERIFY === '1';
+if (SHOW_UNVERIFIED && process.env.VERCEL_ENV === 'production') {
+  throw new DataError('MADW_SHOW_VERIFY must not be set for production builds.');
 }
 
 /** Where downloadable media files live. */

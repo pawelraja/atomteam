@@ -7,6 +7,7 @@ import ResultsTable from '../components/ResultsTable.astro';
 import Shell from '../components/Shell.astro';
 import { anchor } from '../lib/anchors';
 import { getData } from '../lib/data';
+import { podiums, wheelMentionsOn, wheelsFor } from '../lib/equipment';
 import { copy, fill, type Lang } from '../lib/i18n';
 import { raceDates, raceNodes, raceSummary, raceWhere } from '../lib/pageld';
 import { racePaths, route } from '../lib/routes';
@@ -26,6 +27,9 @@ const e = page.event as RaceEvent & { start: string; end: string };
 const name = typo(lang, raceName(e, lang));
 const state = e.status === 'cancelled' ? 'cancelled' : eventState(e, today);
 const classified = page.rows.filter((r) => r.position !== null);
+// Mention the wheels once, where it counts: podiums won on the partner's wheels.
+const wheels = wheelMentionsOn() ? wheelsFor(e) : null;
+const podiumCount = podiums(classified);
 const ics = isConfirmedRace(e) && e.onTeamCalendar !== false && state !== 'past' ? `/ics/${page.season}/${e.id}.ics` : null;
 const eyebrow = [e.onTeamCalendar === false ? tr.offCalendar : null, t.calendar.discipline[e.discipline], e.cls, String(page.season)].filter(Boolean).join(' · ');
 ---
@@ -90,6 +94,7 @@ const eyebrow = [e.onTeamCalendar === false ? tr.offCalendar : null, t.calendar.
       <div class="race-results__head">
         <h2 id="race-results-title" class="chapter">{tr.resultsTitle}</h2>
         <p>{classified.length ? tr.resultsLead : tr.noResults}</p>
+        {wheels && podiumCount > 0 && <p>{fill(tr.wheelsLine, { n: podiumCount, wheels }, lang)}</p>}
       </div>
       {
         classified.length > 0 && (

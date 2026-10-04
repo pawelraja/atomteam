@@ -92,6 +92,8 @@ export const calendarEntrySchema = z
       .string()
       .regex(/^[a-z0-9-]+$/, 'may only use lowercase letters, digits and dashes')
       .optional(),
+    /** Wheels raced here, when it differs from the season default in equipment.json; false = not the team's wheels (e.g. national team). */
+    equipment: z.object({ wheels: z.union([z.string().min(1), z.literal(false)]) }).strict().optional(),
     /** Who runs the race, for structured data. Leave out until known. */
     organizer: z.object({ name: z.string().min(1), url: z.url().optional() }).strict().optional(),
     verify: z.boolean().optional(),
@@ -130,7 +132,7 @@ export const partnerSchema = z
     label: localized.optional(),
     description: localized.optional(),
     /** "brand" for a product brand (e.g. Sidi, Vittoria, supplied through its distributor), otherwise a company. */
-    kind: z.enum(['organization', 'brand']).optional(),
+    kind: z.enum(['organization', 'brand', 'manufacturer']).optional(),
     /** Other confirmed addresses of the same company (Wikipedia, LinkedIn, Instagram…), for structured data. */
     sameAs: z.array(z.url()).optional(),
     seasons,
@@ -320,10 +322,39 @@ export const teamSchema = z
   })
   .strict();
 
-/** src/data/equipment.json: the race setup. "partner" names must match partners.json. */
+export const EQUIPMENT_CATEGORIES = ['bikes', 'wheels', 'tyres', 'shoes', 'helmets', 'saddles', 'clothing', 'lubricants', 'tools', 'nutrition', 'car'] as const;
+
+/** src/data/equipment.json: the race setup. Every "partner" must match a name in partners.json. */
 export const equipmentSchema = z
   .object({
-    wheels: z.object({ partner: z.string().min(1) }).strict(),
+    wheels: z
+      .object({
+        partner: z.string().min(1),
+        /** Seasons the team raced on these wheels. */
+        seasons,
+        /** Disciplines raced on them; results in these disciplines can mention the wheels. */
+        disciplines: z.array(z.enum(DISCIPLINES)).min(1),
+        /** true until the team confirms which disciplines are raced on these wheels. */
+        disciplinesVerify: z.boolean(),
+        about: localized,
+        facts: z.array(z.object({ label: localized, value: localized, verify: z.boolean(), note: z.string().optional() }).strict()),
+        models: z.array(
+          z
+            .object({
+              name: z.string().min(1),
+              discipline: z.enum(DISCIPLINES),
+              /** Rim depth in millimetres. */
+              rimDepth: z.number().int().min(10).max(120).nullable(),
+              use: localized,
+              url: z.url().nullable(),
+              verify: z.boolean(),
+            })
+            .strict(),
+        ),
+        quotes: z.array(z.object({ rider: z.string().min(1).nullable(), text: localized, verify: z.boolean() }).strict()),
+      })
+      .strict(),
+    setup: z.array(z.object({ category: z.enum(EQUIPMENT_CATEGORIES), partner: z.string().min(1), verify: z.boolean() }).strict()),
   })
   .strict();
 
