@@ -7,6 +7,9 @@
 //  - indexable pages have unique titles and meta descriptions
 //  - sitemap.xml lists exactly the indexable pages; robots.txt names the crawlers and the sitemap
 //  - every link in llms.txt / llms-full.txt and every Markdown / RSS alternate resolves
+//  - indexable pages have exactly one <h1> and a canonical pointing to themselves
+//  - redirect pages (src/data/redirects.json) point to pages that exist
+//  - staging builds (temporary address) say noindex everywhere and disallow crawling
 //   node scripts/check-site.mjs [--dir dist]
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, relative, sep } from 'node:path';
@@ -32,6 +35,18 @@ const ids = new Map([...pages].map(([url, h]) => [url, new Set([...h.matchAll(/\
 const isEn = (url) => url === '/en/' || url.startsWith('/en/');
 const problems = [];
 const add = (url, msg) => problems.push(`${url}: ${msg}`);
+
+// Redirect pages for old addresses: check the target, then leave them out of the page checks.
+const redirects = [];
+for (const [url, h] of pages) {
+  const to = h.match(/<meta http-equiv="refresh" content="0;url=([^"]+)"/)?.[1];
+  if (!to) continue;
+  redirects.push(url);
+  pages.delete(url);
+  if (!pages.has(to.split('#')[0]) && !existsSync(join(dir, to))) problems.push(`${url}: redirects to ${to}, which was not built`);
+}
+const staging = [...pages.values()].some((h) => h.includes('data-site-staging'));
+
 
 for (const [url, h] of pages) {
   const lang = isEn(url) ? 'en' : 'pl';
@@ -81,13 +96,21 @@ const resolves = (href) => {
   const path = href.replace(SITE, '').split('#')[0] || '/';
   return pages.has(path) || existsSync(join(dir, decodeURIComponent(path)));
 };
+// Page-level noindex (privacy); a staging build's site-wide noindex doesn't count here.
 const indexable = [...pages].filter(([, h]) => !/<meta name="robots" content="noindex"/.test(h));
+if (staging) for (const [url, h] of pages) if (!/name="robots" content="noindex/.test(h)) add(url, 'staging build without noindex');
+const longTitles = [];
 // Per language: a PL page and its EN counterpart may share a proper name.
 const seen = { pl: { title: new Map(), description: new Map() }, en: { title: new Map(), description: new Map() } };
 for (const [url, h] of indexable) {
   const title = h.match(/<title>([^<]*)<\/title>/)?.[1];
   const description = h.match(/<meta name="description" content="([^"]*)"/)?.[1];
   if (!title) add(url, 'no <title>');
+  else if (title.replace(/&#39;|&amp;|&quot;/g, 'x').length > 65) longTitles.push(url);
+  const h1 = (h.match(/<h1\b/g) ?? []).length;
+  if (h1 !== 1) add(url, `${h1} <h1> elements (expected 1)`);
+  const canonical = h.match(/<link rel="canonical" href="([^"]+)"/)?.[1];
+  if (canonical !== SITE + url) add(url, `canonical is ${canonical}, expected ${SITE + url}`);
   if (!description) add(url, 'no meta description');
   else if (description.length < 50 || description.length > 320) add(url, `meta description is ${description.length} characters (50–320)`);
   for (const [key, value] of [['title', title], ['description', description]]) {
@@ -112,7 +135,9 @@ else {
 }
 const robots = read('robots.txt');
 if (!robots) add('/robots.txt', 'missing');
-else {
+else if (staging) {
+  if (!/^User-agent: \*\nDisallow: \/$/m.test(robots)) add('/robots.txt', 'staging build must disallow all crawling');
+} else {
   for (const bot of ['Googlebot', 'Bingbot', 'OAI-SearchBot', 'GPTBot', 'ChatGPT-User', 'ClaudeBot', 'Claude-SearchBot', 'Claude-User', 'PerplexityBot', 'Google-Extended', 'Applebot-Extended']) {
     if (!new RegExp(`^User-agent: ${bot}$`, 'm').test(robots)) add('/robots.txt', `no group for ${bot}`);
   }
@@ -133,4 +158,6 @@ if (problems.length) {
   console.error(`\n${problems.length} problem(s) in ${pages.size} pages.`);
   process.exit(1);
 }
-console.log(`✓ ${pages.size} pages: hreflang reciprocal, links and anchors resolve, links stay in their language, files exist; unique titles and descriptions; sitemap, robots.txt and llms.txt complete`);
+if (longTitles.length) console.log(`  note: ${longTitles.length} title(s) longer than 65 characters (long race names), e.g. ${longTitles[0]}`);
+if (staging) console.log('  note: staging build: every page is noindex and robots.txt disallows crawling.');
+console.log(`✓ ${pages.size} pages${redirects.length ? ` (+${redirects.length} redirects)` : ''}${staging ? ' [staging]' : ''}: hreflang reciprocal, links and anchors resolve, links stay in their language, files exist; unique titles and descriptions; sitemap, robots.txt and llms.txt complete`);

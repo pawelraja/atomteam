@@ -13,6 +13,8 @@ import { copy, DEFAULT_LANG, fill, homePath, LANGS, type Lang } from '../lib/i18
 import { graph, type Node } from '../lib/jsonld';
 import { baseNodes, fullTeamNodes } from '../lib/pageld';
 import { FEEDS } from '../lib/feed';
+import { siteIndexable } from '../lib/indexing.mjs';
+import { TEAM } from '../lib/team';
 import { MARKDOWN } from '../lib/markdown';
 import { PAGES, ROUTES } from '../lib/routes';
 
@@ -31,11 +33,19 @@ interface Props {
   fullTeam?: boolean;
 }
 const { lang, noindex = false, preloadHero = false, fullTeam = false } = Astro.props;
+// The whole site stays out of search engines until it runs on its own domain (src/lib/indexing.mjs).
+const staging = !siteIndexable();
+// Search Console / Bing Webmaster Tools ownership tags, set in Vercel when needed.
+const googleVerification = process.env.GOOGLE_SITE_VERIFICATION;
+const bingVerification = process.env.BING_SITE_VERIFICATION;
 const paths = Astro.props.paths ?? { pl: homePath('pl'), en: homePath('en') };
 const { site, today, todayOverridden } = getData();
 const t = copy(lang);
 const season = site.currentSeason;
-const title = Astro.props.title ?? fill(t.meta.title, { season }, lang);
+// Search results show about 60 characters: long titles end in "— MADW" instead of the full name.
+const fullTitle = Astro.props.title ?? fill(t.meta.title, { season }, lang);
+const suffix = ` — ${TEAM.name}`;
+const title = fullTitle.length > 60 && fullTitle.endsWith(suffix) ? fullTitle.slice(0, -suffix.length) + ` — ${TEAM.shortName}` : fullTitle;
 const description = Astro.props.description ?? fill(t.meta.description, { season, founded: site.foundedYear }, lang);
 const abs = (p: string) => new URL(p, Astro.site).href;
 const canonical = abs(paths[lang]);
@@ -58,7 +68,9 @@ const jsonLd = graph([...nodes, ...(Astro.props.jsonLd ?? [])]);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    {noindex && <meta name="robots" content="noindex" />}
+    {noindex ? <meta name="robots" content="noindex" /> : staging && <meta name="robots" content="noindex, nofollow" data-site-staging />}
+    {googleVerification && <meta name="google-site-verification" content={googleVerification} />}
+    {bingVerification && <meta name="msvalidate.01" content={bingVerification} />}
     <link rel="canonical" href={canonical} />
     {LANGS.map((l) => <link rel="alternate" hreflang={l} href={abs(paths[l])} />)}
     <link rel="alternate" hreflang="x-default" href={abs(paths[DEFAULT_LANG])} />

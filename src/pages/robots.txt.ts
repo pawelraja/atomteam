@@ -2,6 +2,7 @@
 // group with a comment saying what it does, so the team can change policy per crawler later
 // (replace "Allow: /" with "Disallow: /" in that group).
 import type { APIRoute } from 'astro';
+import { siteIndexable } from '../lib/indexing.mjs';
 import { TEAM } from '../lib/team';
 
 const CRAWLERS: { agent: string; what: string }[] = [
@@ -20,7 +21,17 @@ const CRAWLERS: { agent: string; what: string }[] = [
   { agent: 'Applebot-Extended', what: 'Apple: permission token for Apple Intelligence training. Does not affect Siri or Spotlight.' },
 ];
 
+/** Before launch (the site on a temporary *.vercel.app address) nothing may be crawled. */
+const STAGING = [
+  '# Staging build: this address is temporary. The site goes live on ' + TEAM.website + ',',
+  '# and this file then allows search engines and AI crawlers automatically (src/lib/indexing.mjs).',
+  'User-agent: *',
+  'Disallow: /',
+  '',
+].join('\n');
+
 export const GET: APIRoute = () => {
+  if (!siteIndexable()) return new Response(STAGING, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
   const groups = CRAWLERS.map((c) => `# ${c.what}\nUser-agent: ${c.agent}\nAllow: /`);
   const body = [
     `# robots.txt for ${TEAM.website}`,

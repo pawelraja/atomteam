@@ -3,7 +3,7 @@
     "lang": "pl",
     "locale": "pl-PL",
     "ogLocale": "pl_PL",
-    "title": "{TEAM} — kobieca drużyna kolarska UCI · Sezon {season}",
+    "title": "{TEAM} — kobieca drużyna kolarska UCI",
     "description": "Kobieca drużyna kolarska {UCI_STATUS} i drużyna juniorska z Wrocławia. Od {founded} roku. Zespół, zdjęcia, kalendarz {season} i wyniki.",
     "ogHeadline": "Sezon {season}.",
     "ogAlt": "{TEAM} — Sezon {season}",
@@ -529,7 +529,7 @@
     "resultsLead": "Sklasyfikowane miejsca naszych zawodniczek. Każdy wynik ma źródło.",
     "noResults": "Wyniki pojawią się tutaj po wyścigu.",
     "tableCaption": "Wyniki drużyny: {race} {season}",
-    "metaTitle": "{race} {season}: termin i wyniki — {TEAM}",
+    "metaTitle": "{race} {season}: wyniki — {TEAM}",
     "metaDescription": "{race} {season}: termin, miejsce i wyniki zawodniczek drużyny {TEAM}."
   },
   "faq": {
@@ -892,6 +892,7 @@
     "errorTooFast": "Chwileczkę – spróbuj ponownie za kilka sekund.",
     "errorNotLive": "Zapisy ruszą wkrótce. Do tego czasu napisz do nas: {email}."
   },
+  "notFound": {"eyebrow": "Błąd 404", "title": "Nie ma takiej strony.", "lead": "Adres mógł się zmienić po przeniesieniu strony. Te strony na pewno działają:"},
   "privacyPage": {
     "title": "Polityka prywatności.",
     "body": "Pełną treść polityki prywatności opublikujemy przed uruchomieniem newslettera. Pytania o dane osobowe prosimy kierować na adres {email}.",

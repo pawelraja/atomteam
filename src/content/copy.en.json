@@ -3,7 +3,7 @@
     "lang": "en",
     "locale": "en-GB",
     "ogLocale": "en_GB",
-    "title": "{TEAM} — UCI women's cycling team · Season {season}",
+    "title": "{TEAM} — UCI women's cycling team",
     "description": "{UCI_STATUS} women's cycling team and junior team from Wrocław, Poland. Since {founded}. Team, photos, {season} calendar and results.",
     "ogHeadline": "Season {season}.",
     "ogAlt": "{TEAM} — Season {season}",
@@ -529,7 +529,7 @@
     "resultsLead": "Classified places of our riders. Every result links to its source.",
     "noResults": "Results will appear here after the race.",
     "tableCaption": "Team results: {race} {season}",
-    "metaTitle": "{race} {season}: dates and results — {TEAM}",
+    "metaTitle": "{race} {season}: results — {TEAM}",
     "metaDescription": "{race} {season}: date, place and the results of the {TEAM} riders."
   },
   "faq": {
@@ -892,6 +892,7 @@
     "errorTooFast": "Just a moment – please try again in a few seconds.",
     "errorNotLive": "Sign-ups open soon. Until then, email us: {email}."
   },
+  "notFound": {"eyebrow": "Error 404", "title": "Page not found.", "lead": "The address may have changed when the site moved. These pages work:"},
   "privacyPage": {
     "title": "Privacy policy.",
     "body": "We will publish the full privacy policy before the newsletter launches. Questions about personal data: {email}.",

@@ -317,9 +317,14 @@ Then redeploy. The form works without JavaScript (a normal POST to MailerLite). 
 
 Contact, junior applications and partnership questions have no forms. The FAQ links straight to an e-mail with the subject filled in.
 
+## Going live
+
+Until launch, the site is on a temporary Vercel address and stays out of search engines automatically. Once `www.atomteam.pl` is attached in Vercel, the next deploy (or the nightly rebuild) makes it indexable. Old addresses go in `src/data/redirects.json`. Every deploy runs the SEO checks, and after launch IndexNow is notified of changed pages. The steps are in **`docs/launch.md`**.
+
 ## GEO documents (`docs/`)
 
-- `geo-audit.md`: the crawl audit (phase 0) and the re-check after phase 5.
+- `launch.md`: going live on www.atomteam.pl, what is automatic and the one-time steps.
+- `geo-audit.md`: the crawl audit (phase 0), the re-check after phase 5 and the full SEO/GEO audit before launch.
 - `geo-verify.md`: **every fact still to confirm**, with a priority summary at the top.
 - `geo-offsite.md`: the off-site checklist (Wikidata, Wikipedia, cycling databases, media links) and the monthly AI-answer test; log results in `geo-tracking.csv`.
 - `no-limited-outreach.md`: the link request to NO LIMITED, with a JSON-LD snippet for their site.

@@ -69,3 +69,23 @@ I found no inconsistent values inside the repo. Every duplicate holds the same v
 - A1–A7 and A11 are fixed. robots.txt, sitemap.xml, llms.txt, llms-full.txt, 8 Markdown versions and 2 RSS feeds now exist.
 - A8 (forms) is phase 6. A9 (news) is deferred; the race-results RSS stands in for it. A13 (photos) waits for team files.
 - The only JS-filled fields left empty without JS belong to the hidden "next race" card. No 2027 race is confirmed yet, so its "coming soon" state is shown instead, with full text.
+
+## 5. Full SEO and GEO audit before launch (5 October 2026)
+
+All 181 built pages checked (no JavaScript, raw HTML), plus the deployment configuration.
+
+| Area | Finding | Fix |
+|---|---|---|
+| Temporary address | The Vercel address was indexable, with canonicals pointing to www.atomteam.pl, which still serves the old Wix site. That would cause duplicate content and a messy migration. | **Automatic staging mode** (`src/lib/indexing.mjs`): noindex on every page and `Disallow: /` until the production domain is atomteam.pl, then indexable without a code change. `*.vercel.app` keeps `X-Robots-Tag: noindex` permanently. |
+| Migration | Old Wix addresses would 404 after the DNS switch and lose their links and rankings. | `src/data/redirects.json` → redirect pages (Google treats them as permanent). The build fails if a target is missing. Fill it from Search Console before the switch (`docs/launch.md`). |
+| 404 | None: Vercel's default page, a dead end. | Bilingual 404 with links to the main pages, noindex. |
+| Titles | 122 of 180 titles over 65 characters (median 80); search results cut at ~60. | Shorter templates (home without the season; race "…: wyniki / results"). Titles over 60 characters end in "— MADW" instead of the full name. 22 remain long because the official race names are long. |
+| Text versions | The Markdown, JSON, llms.txt, RSS and .ics files could rank in search instead of the pages they mirror. | `X-Robots-Tag: noindex` on those files. Crawlers and AI tools can still read them. |
+| Verification | No way to verify Search Console or Bing without a code change. | `GOOGLE_SITE_VERIFICATION` / `BING_SITE_VERIFICATION` environment variables. |
+| Freshness for AI search | Bing (which feeds Copilot and ChatGPT search) only learned about changes by crawling. | IndexNow after each production deploy, only for pages whose data changed. It skips until the domain is live. |
+| Deploy safety | SEO checks ran only in `npm run verify`, not on Vercel. | `check:site` is part of the Vercel build: canonical = own URL, exactly one `<h1>`, unique titles and descriptions per language, hreflang pairs, sitemap = indexable pages, robots.txt, llms.txt links, redirect targets, staging noindex. |
+| Headers | No basic security headers (a Best Practices signal). | `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`. |
+
+Checked and already fine: one `<h1>` per page; `og:url` equals canonical; every page has `lang`, a viewport, an OG image, a meta description of 70–160 characters and an RSS alternate; every `<img>` has `alt`; hreflang is reciprocal; JSON-LD is valid on every page; content doesn't depend on JavaScript; Lighthouse mobile is 95–99 / 100 / 100 / 100.
+
+Left for the team: the old URL list (redirects); the Vercel domain settings; Search Console and Bing; everything in `docs/geo-verify.md` and `docs/geo-offsite.md`.
