@@ -1,6 +1,8 @@
 # Rebuilds the site on Vercel every night, so new Drive photos go live and the date-based
 # parts (next race, past/upcoming, search-engine event data) are refreshed.
-# Needs the repository secret VERCEL_DEPLOY_HOOK (Vercel → Project → Settings → Git → Deploy Hooks).
+# Needs the repository secret VERCEL_DEPLOY_HOOK (Vercel → Project → Settings → Git → Deploy Hooks,
+# branch main; then GitHub → Settings → Secrets and variables → Actions). Without it the run only warns.
+# It also switches indexing on within a day after www.atomteam.pl is attached (docs/launch.md).
 name: Nightly rebuild
 
 on:
@@ -15,6 +17,10 @@ jobs:
       - name: Trigger Vercel deploy hook
         env:
           HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
+        # Without the secret, warn (visible on the run) instead of failing every night.
         run: |
-          if [ -z "$HOOK" ]; then echo "VERCEL_DEPLOY_HOOK secret is not set"; exit 1; fi
+          if [ -z "$HOOK" ]; then
+            echo "::warning title=Nightly rebuild skipped::Add the VERCEL_DEPLOY_HOOK repository secret (Vercel → Settings → Git → Deploy Hooks, branch main) to enable nightly rebuilds."
+            exit 0
+          fi
           curl -fsS -X POST "$HOOK"
