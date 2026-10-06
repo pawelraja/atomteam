@@ -10,6 +10,7 @@
 //  - indexable pages have exactly one <h1> and a canonical pointing to themselves
 //  - redirect pages (src/data/redirects.json) point to pages that exist
 //  - staging builds (temporary address) say noindex everywhere and disallow crawling
+//  - nothing that looks like a secret (API key, private key) is in the public output
 //   node scripts/check-site.mjs [--dir dist]
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, relative, sep } from 'node:path';
@@ -152,6 +153,18 @@ for (const f of ['llms.txt', 'llms-full.txt']) {
   for (const m of txt.matchAll(/\]\((https?:\/\/[^)\s]+)\)/g)) if (m[1].startsWith(SITE) && !resolves(m[1])) add(`/${f}`, `link does not resolve: ${m[1]}`);
   if (/\[VERIFY/i.test(txt)) add(`/${f}`, 'contains an unconfirmed [VERIFY] value');
 }
+
+/* ---------- secrets ---------- */
+
+// Google (incl. Gemini/AI Studio) keys, OpenAI/Anthropic-style keys, GitHub tokens, private keys.
+const SECRET = /AIza[0-9A-Za-z_-]{35}|\bsk-(?:ant-)?[A-Za-z0-9_-]{20,}|\bghp_[A-Za-z0-9]{30,}|-----BEGIN [A-Z ]*PRIVATE KEY-----/;
+(function scan(d) {
+  for (const f of readdirSync(d)) {
+    const p = join(d, f);
+    if (statSync(p).isDirectory()) scan(p);
+    else if (/\.(html|js|mjs|css|json|txt|md|xml|ics)$/.test(f) && SECRET.test(readFileSync(p, 'utf8'))) add('/' + relative(dir, p), 'contains something that looks like a secret key');
+  }
+})(dir);
 
 if (problems.length) {
   console.error(problems.map((p) => `  ✗ ${p}`).join('\n'));
