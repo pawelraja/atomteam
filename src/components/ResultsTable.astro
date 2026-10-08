@@ -76,7 +76,7 @@ const dateFmt = new Intl.DateTimeFormat(t.meta.locale, { day: 'numeric', month: 
                 {team && <span class="event__team">{team}</span>}
               </th>
             )}
-            {variant === 'rider' && <td class="date">{r.date ? dateFmt.format(new Date(r.date + 'T00:00:00Z')) : ''}</td>}
+            {variant === 'rider' && <td class="date">{r.date ? <time datetime={r.date}>{dateFmt.format(new Date(r.date + 'T00:00:00Z'))}</time> : ''}</td>}
             {variant !== 'featured' && (
               <td class="source">
                 <a href={r.source} target="_blank" rel="noopener">

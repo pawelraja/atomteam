@@ -10,8 +10,8 @@ import type { PageKey } from '../lib/routes';
 
 interface Props {
   lang: Lang;
-  /** Which nav item is current. Rider profiles belong to "team". */
-  page: PageKey;
+  /** Which nav item is current. Rider profiles belong to "team"; the 404 page has none. */
+  page: PageKey | null;
   paths: Record<Lang, string>;
   title?: string;
   description?: string;
@@ -19,6 +19,7 @@ interface Props {
   jsonLd?: Node[];
   fullTeam?: boolean;
   noindex?: boolean;
+  notFound?: boolean;
 }
 const { lang, page, paths, ...base } = Astro.props;
 ---

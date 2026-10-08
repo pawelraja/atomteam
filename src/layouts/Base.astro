@@ -29,8 +29,11 @@ interface Props {
   jsonLd?: Node[];
   /** Emit the full SportsTeam (roster, coaches, sponsors) instead of the short team node. */
   fullTeam?: boolean;
+  /** The 404 page: no canonical or hreflang (it has no address of its own), never indexed. */
+  notFound?: boolean;
 }
-const { lang, noindex = false, preloadHero = false, fullTeam = false } = Astro.props;
+const { lang, preloadHero = false, fullTeam = false, notFound = false } = Astro.props;
+const noindex = notFound || (Astro.props.noindex ?? false);
 const paths = Astro.props.paths ?? { pl: homePath('pl'), en: homePath('en') };
 const { site, today, todayOverridden } = getData();
 const t = copy(lang);
@@ -59,11 +62,18 @@ const jsonLd = graph([...nodes, ...(Astro.props.jsonLd ?? [])]);
     <title>{title}</title>
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex" />}
-    <link rel="canonical" href={canonical} />
-    {LANGS.map((l) => <link rel="alternate" hreflang={l} href={abs(paths[l])} />)}
-    <link rel="alternate" hreflang="x-default" href={abs(paths[DEFAULT_LANG])} />
+    {
+      !notFound && (
+        <>
+          <link rel="canonical" href={canonical} />
+          {LANGS.map((l) => <link rel="alternate" hreflang={l} href={abs(paths[l])} />)}
+          <link rel="alternate" hreflang="x-default" href={abs(paths[DEFAULT_LANG])} />
+        </>
+      )
+    }
     <meta name="theme-color" content="#2b0020" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     {markdown && <link rel="alternate" type="text/markdown" href={markdown} />}
     <link rel="alternate" type="application/rss+xml" title={fill(t.markdown.feedTitle, {})} href={FEEDS[lang]} />
 
@@ -71,7 +81,7 @@ const jsonLd = graph([...nodes, ...(Astro.props.jsonLd ?? [])]);
     <meta property="og:site_name" content={t.team.name} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:url" content={canonical} />
+    {!notFound && <meta property="og:url" content={canonical} />}
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />

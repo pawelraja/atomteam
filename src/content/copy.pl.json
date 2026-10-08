@@ -212,7 +212,7 @@
     "medalsNote": "we wszystkich kategoriach",
     "archive": "Archiwum {season}",
     "tableCaption": "Wybrane wyniki {season} · MP = mistrzostwa Polski · ME = mistrzostwa Europy",
-    "riderTableCaption": "Wyniki: {name}, sezon {season}",
+    "riderTableCaption": "Wyniki: {name}, sezon {season} · MP = mistrzostwa Polski · ME = mistrzostwa Europy",
     "place": "Miejsce",
     "rider": "Zawodniczka",
     "classification": "Klasyfikacja",
@@ -891,6 +891,13 @@
     "honeypot": "Nie wypełniaj tego pola",
     "errorTooFast": "Chwileczkę – spróbuj ponownie za kilka sekund.",
     "errorNotLive": "Zapisy ruszą wkrótce. Do tego czasu napisz do nas: {email}."
+  },
+  "notFound": {
+    "metaTitle": "Nie ma takiej strony — {TEAM}",
+    "eyebrow": "Błąd 404",
+    "title": "Nie ma takiej strony.",
+    "lead": "Adres mógł się zmienić albo zawiera literówkę. Zacznij od jednej z tych stron:",
+    "linksLabel": "Najważniejsze strony"
   },
   "privacyPage": {
     "title": "Polityka prywatności.",

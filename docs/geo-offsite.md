@@ -34,6 +34,8 @@ When the UCI code is confirmed, set it in `src/data/team.json` (`uciCode.value`,
 
 Search for an existing item first ("Atom Deweloper", "MADW"). Create one only if none exists.
 
+> **Status, 8 Oct 2026:** the team item exists: [Q30329897](https://www.wikidata.org/wiki/Q30329897). It already has the official website (P856 = `https://www.atomteam.pl/`) and links to both Wikipedia articles. It is in `team.json → profiles` (`verify: false`). Edit that item; don't create a new one.
+
 **Team item.** Add or correct the following, each with a reference to the matching atomteam.pl page (use the "reference URL" property):
 
 - [ ] instance of: a cycling team / women's cycling team item
@@ -68,7 +70,7 @@ Requests to make:
 - [ ] 2026 results: 30 Polish national titles and 58 national-championship medals. Cite independent media (naszosie.pl reports, PZKol results) first and atomteam.pl race pages second.
 - [ ] External links: the website, and the English page for en.wikipedia.
 
-Then add the article URLs to `team.json → profiles.wikipediaPl / wikipediaEn`.
+Then add the article URLs to `team.json → profiles.wikipediaPl / wikipediaEn`. (Done 8 Oct 2026: both articles exist as "MAT Atom Deweloper Wrocław". The EN infobox listed no website then, so that edit request is still open.)
 
 ---
 

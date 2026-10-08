@@ -212,7 +212,7 @@
     "medalsNote": "across all categories",
     "archive": "{season} archive",
     "tableCaption": "Selected {season} results · NC = Polish national championships · EC = European championships",
-    "riderTableCaption": "Results: {name}, {season} season",
+    "riderTableCaption": "Results: {name}, {season} season · NC = Polish national championships · EC = European championships",
     "place": "Place",
     "rider": "Rider",
     "classification": "Classification",
@@ -891,6 +891,13 @@
     "honeypot": "Leave this field empty",
     "errorTooFast": "Just a moment – please try again in a few seconds.",
     "errorNotLive": "Sign-ups open soon. Until then, email us: {email}."
+  },
+  "notFound": {
+    "metaTitle": "Page not found — {TEAM}",
+    "eyebrow": "Error 404",
+    "title": "Page not found.",
+    "lead": "The address may have changed or contain a typo. Try one of these pages:",
+    "linksLabel": "Main pages"
   },
   "privacyPage": {
     "title": "Privacy policy.",

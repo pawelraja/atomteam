@@ -8,7 +8,7 @@ import { route, type PageKey } from '../lib/routes';
 
 interface Props {
   lang: Lang;
-  page: PageKey;
+  page: PageKey | null;
   /** This page in each language, for the language switch. */
   paths: Record<Lang, string>;
 }

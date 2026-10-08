@@ -6,6 +6,7 @@
 //  - every file link (/media/…, .ics, .pdf, .zip …) exists in the build
 //  - indexable pages have unique titles and meta descriptions
 //  - sitemap.xml lists exactly the indexable pages; robots.txt names the crawlers and the sitemap
+//  - /404.html exists, is noindex and has no canonical
 //  - every link in llms.txt / llms-full.txt and every Markdown / RSS alternate resolves
 //   node scripts/check-site.mjs [--dir dist]
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
@@ -126,6 +127,14 @@ for (const f of ['llms.txt', 'llms-full.txt']) {
   }
   for (const m of txt.matchAll(/\]\((https?:\/\/[^)\s]+)\)/g)) if (m[1].startsWith(SITE) && !resolves(m[1])) add(`/${f}`, `link does not resolve: ${m[1]}`);
   if (/\[VERIFY/i.test(txt)) add(`/${f}`, 'contains an unconfirmed [VERIFY] value');
+}
+
+// Vercel serves /404.html for every unknown address: it must never be indexed or claim an address.
+const notFound = read('404.html');
+if (!notFound) add('/404.html', 'missing');
+else {
+  if (!/<meta name="robots" content="noindex"/.test(notFound)) add('/404.html', 'should be noindex');
+  if (notFound.includes('rel="canonical"')) add('/404.html', 'should have no canonical URL');
 }
 
 if (problems.length) {

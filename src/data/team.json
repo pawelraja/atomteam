@@ -27,9 +27,9 @@
     "linkedin": "https://www.linkedin.com/company/atomteampl/"
   },
   "profiles": {
-    "wikipediaPl": { "url": null, "verify": true },
-    "wikipediaEn": { "url": null, "verify": true },
-    "wikidata": { "url": null, "verify": true },
+    "wikipediaPl": { "url": "https://pl.wikipedia.org/wiki/MAT_Atom_Deweloper_Wroc%C5%82aw", "verify": false },
+    "wikipediaEn": { "url": "https://en.wikipedia.org/wiki/MAT_Atom_Deweloper_Wroc%C5%82aw", "verify": false },
+    "wikidata": { "url": "https://www.wikidata.org/wiki/Q30329897", "verify": false },
     "procyclingstats": { "url": null, "verify": true },
     "firstcycling": { "url": null, "verify": true },
     "uci": { "url": null, "verify": true }

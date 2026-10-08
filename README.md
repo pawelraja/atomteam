@@ -301,7 +301,12 @@ MADW Website/
 The site is hosted on Vercel, connected to the GitHub repository `pawelraja/atomteam`.
 
 1. In Vercel: *Add New → Project → Import* `pawelraja/atomteam`. Vercel reads `vercel.json` (Astro, build `npm run sync-photos && npm run build`, output `dist`), so nothing else needs configuring. Add the two environment variables above.
-2. *Settings → Domains*: add `atomteam.pl` and `www.atomteam.pl` and follow the DNS instructions (switch DNS away from Wix only when you're ready to go live).
+2. **Domain.** The domain stays registered at **cyber_Folks**; only its DNS records point to Vercel.
+   - In Vercel, *Settings → Domains*: add `www.atomteam.pl` first, then `atomteam.pl`, and choose **"Redirect atomteam.pl to www.atomteam.pl"** (permanent). The site's canonical address is `https://www.atomteam.pl/`; all old links to `atomteam.pl` and `http://` land there. (Don't also add this redirect to `vercel.json`: if the dashboard is ever set the other way round, the two loop.)
+   - In the cyber_Folks panel (*Domeny → atomteam.pl → Strefa DNS*), set the records Vercel shows on the Domains page. Usually that's an `A` record for `atomteam.pl` → `76.76.21.21` and a `CNAME` for `www` → `cname.vercel-dns.com`, but copy the exact values Vercel gives you.
+   - Delete the old `A` and `AAAA` records for `atomteam.pl` and `www`. A leftover `AAAA` record sends some visitors to the old server.
+   - **Don't touch the `MX`, `TXT` (SPF/DKIM/DMARC) or mail `CNAME` records**: they deliver `kontakt@atomteam.pl`. If there's a `CAA` record, add `0 issue "letsencrypt.org"` so Vercel can issue the HTTPS certificate.
+   - Until then, the temporary `*.vercel.app` address sends `X-Robots-Tag: noindex` (set in `vercel.json`), so only `www.atomteam.pl` gets indexed. Nothing needs changing at launch.
 3. **Every merge to `main` publishes the site.** Every pull request gets its own preview link, handy for checking a data change before it goes live.
 4. **Nightly rebuild:** *Settings → Git → Deploy Hooks* → create a hook named "nightly" on branch `main`. Copy its URL into GitHub → repository *Settings → Secrets and variables → Actions* as `VERCEL_DEPLOY_HOOK`. The workflow `.github/workflows/nightly-rebuild.yml` then rebuilds every night. Run it by hand from the *Actions* tab any time.
 5. **Checks on every pull request:** `.github/workflows/checks.yml` runs `npm run verify`, so a broken data edit is caught before it can be merged.

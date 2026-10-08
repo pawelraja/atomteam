@@ -147,7 +147,9 @@ const disc = tc.discipline as Record<string, string>;
                       >
                         <article class:list={['row', `row--${status}`]} aria-labelledby={nameId} data-row-article>
                           <p class="row__date">
-                            {e.start && e.end ? (
+                            {e.start && e.end && e.start === e.end ? (
+                              <time class:list={{ strike: e.status === 'cancelled' }} datetime={e.start}>{formatRange(e.start, e.end, t.meta.locale)}</time>
+                            ) : e.start && e.end ? (
                               <span class:list={{ strike: e.status === 'cancelled' }}>{formatRange(e.start, e.end, t.meta.locale)}</span>
                             ) : (
                               <span class="tbc-chip">{statusText.tbc}</span>

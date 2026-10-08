@@ -1,0 +1,65 @@
+---
+// /404.html: Vercel serves it for every address that doesn't exist, in either language, so it
+// speaks Polish first with an English block below. Never indexed, no canonical.
+import PageIntro from '../components/PageIntro.astro';
+import Shell from '../components/Shell.astro';
+import { copy, type Lang } from '../lib/i18n';
+import { route, ROUTES } from '../lib/routes';
+
+const LINKS = ['home', 'team', 'calendar', 'media'] as const;
+const t = copy('pl');
+const links = (lang: Lang) => LINKS.map((p) => ({ href: route(lang, p), label: copy(lang).nav[p] }));
+const en = copy('en').notFound;
+---
+
+<Shell lang="pl" page={null} paths={ROUTES.home} title={t.notFound.metaTitle} notFound>
+  <PageIntro lang="pl" eyebrow={t.notFound.eyebrow} title={t.notFound.title} lead={t.notFound.lead} />
+  <section class="lost">
+    <div class="container">
+      <div class="lost__inner">
+        <nav aria-label={t.notFound.linksLabel}>
+          <ul role="list" class="lost__links">
+            {links('pl').map((l) => <li><a class="btn btn--secondary" href={l.href}>{l.label}</a></li>)}
+          </ul>
+        </nav>
+        <div class="lost__other" lang="en">
+          <h2 class="lost__title">{en.title}</h2>
+          <p>{en.lead}</p>
+          <nav aria-label={en.linksLabel}>
+            <ul role="list" class="lost__links">
+              {links('en').map((l) => <li><a class="btn btn--secondary" href={l.href} hreflang="en">{l.label}</a></li>)}
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </section>
+</Shell>
+
+<style>
+  .lost {
+    padding-block: 48px 96px;
+  }
+  .lost__inner {
+    display: grid;
+    gap: 64px;
+    max-width: 760px;
+  }
+  .lost__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+  }
+  .lost__other {
+    display: grid;
+    gap: 16px;
+    padding-top: 32px;
+    border-top: 1px solid var(--line);
+  }
+  .lost__title {
+    font-size: 28px;
+    line-height: 36px;
+  }
+</style>
