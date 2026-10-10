@@ -5,16 +5,16 @@
     "aspect": "16:9",
     "feature": true,
     "alt": {
-      "pl": "Zawodniczki drużyny w peletonie na belgijskim klasyku",
-      "en": "The team riding together in the peloton on a Belgian classic"
+      "pl": "Zawodniczka drużyny z rękami w górze przejeżdża linię mety, kibice za barierkami",
+      "en": "A team rider crosses the finish line with both arms raised, fans behind the barriers"
     },
     "race": {
-      "pl": "Ronde de Mouscron",
-      "en": "Ronde de Mouscron"
+      "pl": "Ręce w górze na mecie",
+      "en": "Arms up at the finish"
     },
     "place": {
-      "pl": "Mouscron, BEL",
-      "en": "Mouscron, BEL"
+      "pl": "Wyścig szosowy",
+      "en": "Road race"
     },
     "credit": "[autor / credit]"
   },
@@ -23,34 +23,34 @@
     "photo": "photo-02.jpg",
     "aspect": "3:4",
     "alt": {
-      "pl": "Zawodniczka w sprincie na ostatnich metrach przed metą",
-      "en": "A rider sprinting out of the saddle towards the finish line"
+      "pl": "Zawodniczka w stroju drużyny na rowerze w słoneczny dzień, przed startem",
+      "en": "A rider in team kit on her bike on a sunny day, before the start"
     },
     "race": {
-      "pl": "Umag Classic Ladies",
-      "en": "Umag Classic Ladies"
+      "pl": "Przed startem",
+      "en": "Before the start"
     },
     "place": {
-      "pl": "Umag, CRO",
-      "en": "Umag, CRO"
+      "pl": "Za kulisami",
+      "en": "Behind the scenes"
     },
     "credit": "[autor / credit]"
   },
   {
     "use": "story",
     "photo": "photo-03.jpg",
-    "aspect": "4:3",
+    "aspect": "3:4",
     "alt": {
-      "pl": "Samochód zespołu i mechanik przygotowujący rowery przed startem",
-      "en": "Team car and mechanic preparing bikes before the start"
+      "pl": "Rowery drużyny ustawione przed samochodem zespołu",
+      "en": "Team bikes lined up in front of the team car"
     },
     "race": {
-      "pl": "Tour de Pologne Women",
-      "en": "Tour de Pologne Women"
+      "pl": "Rowery gotowe do startu",
+      "en": "Bikes ready to race"
     },
     "place": {
-      "pl": "POL",
-      "en": "POL"
+      "pl": "Za kulisami",
+      "en": "Behind the scenes"
     },
     "credit": "[autor / credit]"
   },
@@ -59,52 +59,52 @@
     "photo": "photo-04.jpg",
     "aspect": "3:4",
     "alt": {
-      "pl": "Juniorka w białej koszulce z różowymi rękawami na podjeździe",
-      "en": "Junior rider in the white jersey with pink sleeves on a climb"
+      "pl": "Zawodniczka w kasku siedzi na rowerze i ustawia licznik",
+      "en": "A rider in her helmet sits on the bike and sets up her bike computer"
     },
     "race": {
-      "pl": "Sowiogórski Tour",
-      "en": "Sowiogórski Tour"
+      "pl": "Ostatnie ustawienia",
+      "en": "Final checks"
     },
     "place": {
-      "pl": "POL",
-      "en": "POL"
+      "pl": "Za kulisami",
+      "en": "Behind the scenes"
     },
     "credit": "[autor / credit]"
   },
   {
     "use": "story",
     "photo": "photo-05.jpg",
-    "aspect": "4:3",
+    "aspect": "3:4",
     "alt": {
-      "pl": "Zawodniczki na torze kolarskim w szyku drużynowym",
-      "en": "Riders on the velodrome in team pursuit formation"
+      "pl": "Zawodniczka pochyla się nad rowerem i sprawdza sprzęt",
+      "en": "A rider leans over her bike to check it"
     },
     "race": {
-      "pl": "Torowe Mistrzostwa Polski",
-      "en": "Polish Track Championships"
+      "pl": "Kontrola sprzętu",
+      "en": "Checking the bike"
     },
     "place": {
-      "pl": "POL",
-      "en": "POL"
+      "pl": "Za kulisami",
+      "en": "Behind the scenes"
     },
     "credit": "[autor / credit]"
   },
   {
     "use": "story",
     "photo": "photo-06.jpg",
-    "aspect": "16:9",
+    "aspect": "3:4",
     "alt": {
-      "pl": "Drużyna na rampie startowej jazdy drużynowej na czas",
-      "en": "The squad on the start ramp of a team time trial"
+      "pl": "Zawodniczka stoi z rowerem przy kamiennym murze",
+      "en": "A rider stands with her bike by a stone wall"
     },
     "race": {
-      "pl": "Mistrzostwa Polski Drużyn na czas",
-      "en": "Polish Team Time Trial Championships"
+      "pl": "Chwila przed wyścigiem",
+      "en": "Moments before the race"
     },
     "place": {
-      "pl": "POL",
-      "en": "POL"
+      "pl": "Za kulisami",
+      "en": "Behind the scenes"
     },
     "credit": "[autor / credit]"
   },
@@ -113,8 +113,8 @@
     "photo": "photo-07.jpg",
     "aspect": "3:4",
     "alt": {
-      "pl": "Zawodniczka świętuje z koleżankami z drużyny po mecie",
-      "en": "A rider celebrating with teammates after the finish"
+      "pl": "Zawodniczka unosi rękę na mecie na bruku, obok koleżanka z drużyny i kibice",
+      "en": "A rider raises her arm at the finish on the cobbles, a teammate and fans beside her"
     },
     "race": {
       "pl": "Puchar Polski",
@@ -131,16 +131,16 @@
     "photo": "photo-band-01.jpg",
     "aspect": "16:9",
     "alt": {
-      "pl": "Peleton w ruchu, zawodniczki drużyny na czele",
-      "en": "The peloton in motion, team riders at the front"
+      "pl": "Zawodniczka na rowerze czasowym z pełnymi kołami na torze kolarskim",
+      "en": "A rider on a time-trial track bike with disc wheels on the velodrome"
     },
     "race": {
-      "pl": "Peleton",
-      "en": "The peloton"
+      "pl": "Jazda na czas",
+      "en": "Time trial"
     },
     "place": {
-      "pl": "Sezon 2026",
-      "en": "2026 season"
+      "pl": "Tor",
+      "en": "Track"
     },
     "credit": "[autor / credit]"
   },
@@ -149,16 +149,16 @@
     "photo": "photo-08.jpg",
     "aspect": "4:3",
     "alt": {
-      "pl": "Zawodniczka atakuje na podjeździe",
-      "en": "A rider attacking on a climb"
+      "pl": "Rowery drużyny w rzędzie na stojaku w słońcu",
+      "en": "Team bikes in a row on a rack in the sun"
     },
     "race": {
-      "pl": "Atak na podjeździe",
-      "en": "Attack on a climb"
+      "pl": "Rowery drużyny",
+      "en": "Team bikes"
     },
     "place": {
-      "pl": "Sezon 2026",
-      "en": "2026 season"
+      "pl": "Za kulisami",
+      "en": "Behind the scenes"
     },
     "credit": "[autor / credit]"
   },
@@ -167,16 +167,16 @@
     "photo": "photo-09.jpg",
     "aspect": "3:4",
     "alt": {
-      "pl": "Portret zawodniczki w stroju drużyny",
-      "en": "Portrait of a rider in team kit"
+      "pl": "Biały rower szosowy drużyny z bidonami, oparty o ścianę",
+      "en": "A white team road bike with bottles, leaning against a wall"
     },
     "race": {
-      "pl": "Portret zawodniczki",
-      "en": "Rider portrait"
+      "pl": "Rower na wyścig",
+      "en": "Race bike"
     },
     "place": {
-      "pl": "Sezon 2026",
-      "en": "2026 season"
+      "pl": "Za kulisami",
+      "en": "Behind the scenes"
     },
     "credit": "[autor / credit]"
   },

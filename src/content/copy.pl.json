@@ -88,7 +88,7 @@
     "summary": "{TEAM} to kobieca drużyna kolarska {UCI_STATUS} z Wrocławia, założona w {founded} roku, z własną drużyną juniorek. W sezonie {statsSeason}: {statsRiders}, {titles} i {races} w {countries}.",
     "primary": "Poznaj zespół",
     "secondary": "Kalendarz {season}",
-    "alt": "Peleton w ruchu: zawodniczki {TEAM} w strojach drużyny",
+    "alt": "Zawodniczki {TEAM} jadą w szyku drogą pod skalną ścianą",
     "credentialsLabel": "Drużyna w faktach",
     "credentials": {
       "licence": { "term": "Licencja", "value": "{UCI_STATUS}" },

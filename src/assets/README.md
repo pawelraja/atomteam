@@ -6,6 +6,8 @@ Every picture on the site has a fixed slot. Until a file is supplied, the page s
 
 **Do not** download images from the old Wix site — use originals from the photographers, with permission and a credit.
 
+**Temporary files (October 2026).** Until the high-resolution originals arrive, the team supplied low-resolution copies (max. 1600 px) that are committed to the repo: the hero, gallery photos `photo-01`–`photo-09` and `photo-band-01`, all 25 portraits, the 21 partner logos and `logo.svg` (the hexagon mark, built from a 400 px JPG). Gallery captions describe what each temporary photo shows; credits are still `[autor / credit]`. Still empty: `photo-10`, `photo-11`, `hero-mobile`, the highlight photos and the press library. When an original goes into Drive under the same name, `npm run sync-photos` overwrites the copy. Use the same extension (`.jpg`), or delete the old file, so that two versions of one slot don't exist side by side.
+
 ## Hero (`src/assets/photos/`)
 
 | File | Crop | Minimum size | Notes |

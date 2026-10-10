@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg preserveAspectRatio="xMidYMid meet" data-bbox="0 0 430.94 106.33" viewBox="0 0 430.94 106.33" xmlns="http://www.w3.org/2000/svg" data-type="color" role="presentation" aria-hidden="true" aria-label="">
+    <g>
+        <path fill="#1d1d1b" d="M207.42 0v106.33h-26.63V0z" data-color="1"></path>
+        <path fill="#1d1d1b" d="M430.94 0v106.33h-26.63V0z" data-color="1"></path>
+        <path d="m229.61 4.16 21.03 20.99c.91.91 2.15 1.43 3.45 1.43h94.64c1.35 0 2.44 1.09 2.44 2.44v48.29c0 1.35-1.09 2.44-2.44 2.44H228.89v26.58h110.22c24.24 0 43.9-19.65 43.9-43.9V43.9c0-24.24-19.65-43.9-43.9-43.9H231.33c-2.17 0-3.26 2.63-1.72 4.16" fill="#1d1d1b" data-color="1"></path>
+        <path d="M127.59 53.16V77.3c0 1.35-1.09 2.44-2.44 2.44H0v26.58h115.59c24.24 0 43.9-19.65 43.9-43.9v-9.26z" fill="#1d1d1b" data-color="1"></path>
+        <path d="M159.49 0H43.9C19.65 0 0 19.65 0 43.9v9.26h49.18c2.17 0 3.26-2.63 1.72-4.17L32.61 30.74c-1.54-1.54-.45-4.17 1.72-4.17h125.15V0Z" fill="#1d1d1b" data-color="1"></path>
+    </g>
+</svg>

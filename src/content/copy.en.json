@@ -88,7 +88,7 @@
     "summary": "{TEAM} is a {UCI_STATUS} women's cycling team from Wrocław, Poland, founded in {founded}, with its own junior squad. In {statsSeason}: {statsRiders}, {titles} and {races} in {countries}.",
     "primary": "Meet the team",
     "secondary": "{season} calendar",
-    "alt": "The peloton in motion: {TEAM} riders in team kit",
+    "alt": "{TEAM} riders in a paceline on a road beneath a rock face",
     "credentialsLabel": "The team in facts",
     "credentials": {
       "licence": { "term": "Licence", "value": "{UCI_STATUS}" },

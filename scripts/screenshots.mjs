@@ -65,6 +65,21 @@ for (const width of widths) {
     await page.waitForTimeout(150);
     await el.screenshot({ path: file, animations: 'disabled' });
   } else {
+    if (args.full) {
+      // Lazy images only load near the viewport: scroll the whole page once, then wait for them.
+      await page.evaluate(async () => {
+        for (let y = 0; y < document.documentElement.scrollHeight; y += 300) {
+          window.scrollTo({ top: y, behavior: 'instant' });
+          await new Promise((r) => setTimeout(r, 60));
+        }
+        // Images in hidden panels never load, so only wait for visible ones, and never for long.
+        const pending = [...document.images].filter((img) => !img.complete && img.getClientRects().length);
+        const loaded = Promise.all(pending.map((img) => new Promise((r) => img.addEventListener('load', r) || img.addEventListener('error', r))));
+        await Promise.race([loaded, new Promise((r) => setTimeout(r, 5000))]);
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      });
+      await page.waitForTimeout(200);
+    }
     await page.screenshot({ path: file, fullPage: Boolean(args.full), animations: 'disabled' });
   }
   console.log(`  ✓ ${file}`);

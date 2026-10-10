@@ -39,15 +39,10 @@ test-results/
 playwright-report/
 dist-scenarios/
 
-# Photos and logos come from Google Drive (npm run sync-photos); only the folders are kept.
-src/assets/photos/*
-!src/assets/photos/.gitkeep
-src/assets/riders/*
-!src/assets/riders/.gitkeep
-public/partners/*
-!public/partners/.gitkeep
-public/brand/*
-!public/brand/.gitkeep
+# Photos and logos come from Google Drive (npm run sync-photos), which overwrites files of the
+# same name. Until the originals arrive, temporary low-resolution copies of photos, portraits and
+# logos are committed (src/assets/photos, src/assets/riders, public/partners, public/brand).
+# Press originals and downloads are never committed.
 src/assets/media/*
 !src/assets/media/.gitkeep
 public/media/*
