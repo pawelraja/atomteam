@@ -47,8 +47,8 @@ const caption = (g: (typeof items)[number]) => `${g.race} · ${g.place}`;
                     file={g.photo}
                     alt=""
                     decorative
-                    aspect={g.aspect}
-                    sizes={g === feature ? '100vw' : '(min-width: 768px) 55vw, 100vw'}
+                    aspect={g === feature ? g.aspect : '3:4'}
+                    sizes={g === feature ? '100vw' : '(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw'}
                     widths={g === feature ? [640, 960, 1440, 1920, 2560] : [480, 720, 1080, 1440]}
                   />
                 </button>
@@ -166,21 +166,21 @@ const caption = (g: (typeof items)[number]) => `${g.race} · ${g.place}`;
     margin: 0 auto 64px;
     padding-inline: calc(var(--gutter) - 16px);
   }
+  /* The feature photo spans the width; the rest sit in an even grid of equal 3:4 tiles
+     (the lightbox still shows each photo uncropped). */
   .story__grid {
     display: grid;
-    grid-template-columns: 7fr 5fr;
-    gap: 56px 24px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 48px 24px;
     align-items: start;
   }
   .story__item--feature {
     grid-column: 1 / -1;
   }
-  /* Stagger the right-hand column for an editorial rhythm. */
-  .story__item:not(.story__item--feature):nth-child(odd) {
-    margin-top: var(--s-6);
-  }
-  .story__item:not(.story__item--feature):nth-child(4n + 2) {
-    padding-right: 12%;
+  @media (max-width: 1023px) {
+    .story__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
   figure {
     display: grid;
@@ -227,12 +227,6 @@ const caption = (g: (typeof items)[number]) => `${g.race} · ${g.place}`;
     .story__grid {
       grid-template-columns: 1fr;
       gap: var(--s-5);
-    }
-    .story__item:not(.story__item--feature):nth-child(odd) {
-      margin-top: 0;
-    }
-    .story__item:not(.story__item--feature):nth-child(4n + 2) {
-      padding-right: 0;
     }
   }
 

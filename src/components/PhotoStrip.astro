@@ -13,7 +13,7 @@ const { lang } = Astro.props;
 const { gallery } = getData();
 const t = copy(lang);
 const photos = gallery.filter((g) => g.use === 'strip').slice(0, 4);
-const sizes = ['(min-width: 900px) 38vw, 100vw', '(min-width: 900px) 19vw, 50vw', '(min-width: 900px) 26vw, 50vw', '(min-width: 900px) 19vw, 100vw'];
+const sizes = '(min-width: 900px) 25vw, 50vw';
 ---
 
 <section class="strip" aria-labelledby="strip-title">
@@ -23,7 +23,7 @@ const sizes = ['(min-width: 900px) 38vw, 100vw', '(min-width: 900px) 19vw, 50vw'
       photos.map((p, i) => (
         <li class:list={['shot', `shot--${i + 1}`]}>
           <figure>
-            <Photo lang={lang} dir="photos" file={p.photo} alt={pick(lang, p.alt)} aspect={i === 0 ? '4:3' : '3:4'} sizes={sizes[i]} widths={[360, 540, 720, 1080]} class="shot__img" />
+            <Photo lang={lang} dir="photos" file={p.photo} alt={pick(lang, p.alt)} aspect="3:4" sizes={sizes} widths={[360, 540, 720, 1080]} class="shot__img" />
             <figcaption class="shot__caption">
               {pick(lang, p.race)} · {pick(lang, p.place)} · {fill(t.gallery.credit, { credit: p.credit })}
             </figcaption>
@@ -42,7 +42,9 @@ const sizes = ['(min-width: 900px) 38vw, 100vw', '(min-width: 900px) 19vw, 50vw'
   }
   .strip__row {
     display: grid;
-    grid-template-columns: 2fr 1fr 1.4fr 1fr;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    /* One row exactly as tall as the strip, so a tall photo can't stretch it into the ticker. */
+    grid-template-rows: minmax(0, 1fr);
     gap: 16px;
     padding: 0 16px;
     height: clamp(420px, 40vw, 640px);
@@ -54,9 +56,6 @@ const sizes = ['(min-width: 900px) 38vw, 100vw', '(min-width: 900px) 19vw, 50vw'
     overflow: hidden;
     border-radius: var(--r-card);
     background: var(--surface-muted);
-  }
-  .shot--1 figure {
-    border-radius: var(--r-feature);
   }
   .shot :global(.shot__img) {
     height: 100%;
@@ -81,15 +80,13 @@ const sizes = ['(min-width: 900px) 38vw, 100vw', '(min-width: 900px) 19vw, 50vw'
     }
     .strip__row {
       grid-template-columns: 1fr 1fr;
+      grid-template-rows: none;
       height: auto;
       margin-bottom: 32px;
     }
     .shot figure {
-      height: clamp(200px, 56vw, 360px);
-    }
-    .shot--1,
-    .shot--4 {
-      grid-column: 1 / -1;
+      height: auto;
+      aspect-ratio: 3 / 4;
     }
   }
 </style>
