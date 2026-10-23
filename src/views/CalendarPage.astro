@@ -8,7 +8,7 @@ import { getData } from '../lib/data';
 import { copy, fill, type Lang } from '../lib/i18n';
 import { ROUTES } from '../lib/routes';
 import { seasonNumber } from '../lib/season';
-import { upcomingEventNodes } from '../lib/pageld';
+import { raceListNodes, upcomingEventNodes } from '../lib/pageld';
 import { factVars } from '../lib/facts';
 
 interface Props {
@@ -26,7 +26,7 @@ const season = site.currentSeason;
   paths={ROUTES.calendar}
   title={fill(t.meta.pages.calendar.title, { season })}
   description={fill(t.meta.pages.calendar.description, { season }, lang)}
-  jsonLd={upcomingEventNodes(lang)}
+  jsonLd={[...upcomingEventNodes(lang), ...raceListNodes(lang)]}
 >
   <PageIntro
     lang={lang}

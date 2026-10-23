@@ -12,7 +12,7 @@ const links = (lang: Lang) => LINKS.map((p) => ({ href: route(lang, p), label: c
 const en = copy('en').notFound;
 ---
 
-<Shell lang="pl" page={null} paths={ROUTES.home} title={t.notFound.metaTitle} notFound>
+<Shell lang="pl" page={null} paths={ROUTES.home} title={t.notFound.metaTitle} description={t.notFound.lead} notFound>
   <PageIntro lang="pl" eyebrow={t.notFound.eyebrow} title={t.notFound.title} lead={t.notFound.lead} />
   <section class="lost">
     <div class="container">

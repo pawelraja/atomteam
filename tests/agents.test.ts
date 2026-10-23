@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { faqItems } from '../src/lib/faq';
 import { newsletterConfig } from '../src/lib/newsletter';
 import { dataFile, DATA_FILES, type DataFile } from '../src/lib/opendata';
+import { TEAM } from '../src/lib/team';
 
 const parse = (f: DataFile) => JSON.parse(dataFile(f));
 
@@ -25,8 +26,9 @@ describe('public data files', () => {
 
   it('keep unconfirmed values out and flag unchecked results', () => {
     const team = parse('team').data;
-    expect(team.uciCode).toBeNull();
-    expect(team.legalName).toBeNull();
+    // Each value appears only once team.json marks it confirmed ("verify": false).
+    expect(team.uciCode).toBe(TEAM.uciCode.verify ? null : TEAM.uciCode.value);
+    expect(team.legalName).toBe(TEAM.officialName.verify ? null : TEAM.officialName.value);
     expect(JSON.stringify(parse('races'))).not.toMatch(/VERIFY/);
     const rows = parse('results').data as { checkedByTeam: boolean; source: string }[];
     expect(rows.every((r) => typeof r.checkedByTeam === 'boolean' && r.source.startsWith('http'))).toBe(true);

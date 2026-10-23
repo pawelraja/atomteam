@@ -9,6 +9,7 @@ import Shell from '../components/Shell.astro';
 import { anchor } from '../lib/anchors';
 import { copy, fill, pick, type Lang } from '../lib/i18n';
 import { findOriginal } from '../lib/images';
+import { ogPaths } from '../lib/og';
 import { DOWNLOADS, riderPaths, route } from '../lib/routes';
 import type { Rider } from '../lib/schemas';
 import { formatBytes } from '../lib/showcase';
@@ -56,6 +57,8 @@ const profiles =
   title={fill(t.meta.pages.rider.title, { name: rider.name })}
   description={fill(t.meta.pages.rider.description, { name: rider.name, squad }, lang)}
   jsonLd={riderNodes(lang, rider, slug)}
+  ogImage={{ path: ogPaths.rider(lang, slug), alt: rider.name }}
+  ogType="profile"
 >
   <section class="profile" id={anchor(lang, 'profile')} data-section="profile" aria-labelledby="page-title">
     <div class="container profile__grid">

@@ -7,13 +7,14 @@ import ResultsTable from '../components/ResultsTable.astro';
 import Shell from '../components/Shell.astro';
 import { anchor } from '../lib/anchors';
 import { getData } from '../lib/data';
+import { ogPaths } from '../lib/og';
 import { podiums, wheelMentionsOn, wheelsFor } from '../lib/equipment';
 import { copy, fill, type Lang } from '../lib/i18n';
 import { raceDates, raceNodes, raceSummary, raceWhere } from '../lib/pageld';
 import { racePaths, route } from '../lib/routes';
 import { eventState, isConfirmedRace, raceLocation, raceName, type RaceEvent } from '../lib/season';
 import { typo } from '../lib/text';
-import type { RacePageView } from '../lib/view';
+import { racePages, type RacePageView } from '../lib/view';
 
 interface Props {
   lang: Lang;
@@ -25,9 +26,14 @@ const t = copy(lang);
 const tr = t.race;
 const e = page.event as RaceEvent & { start: string; end: string };
 const name = typo(lang, raceName(e, lang));
-// Titles name the place too: several Polish Cup rounds share one race name.
+// Descriptions name the place too: several Polish Cup rounds share one race name. Titles stay
+// short (Google cuts them at about 60 characters), so they add the place only to a shared name.
 const place = raceLocation(e, lang);
 const metaName = place ? `${name}, ${place}` : name;
+const sharedName = racePages().some((p) => p.season === page.season && p.slug !== page.slug && raceName(p.event, lang) === raceName(e, lang));
+const titleName = sharedName ? metaName : name;
+const fullTitle = fill(tr.metaTitle, { race: titleName, season: page.season });
+const title = fullTitle.length > 65 ? fill(tr.metaTitleShort, { race: titleName, season: page.season }) : fullTitle;
 const state = e.status === 'cancelled' ? 'cancelled' : eventState(e, today);
 const classified = page.rows.filter((r) => r.position !== null);
 // Mention the wheels once, where it counts: podiums won on the partner's wheels.
@@ -41,9 +47,10 @@ const eyebrow = [e.onTeamCalendar === false ? tr.offCalendar : null, t.calendar.
   lang={lang}
   page="calendar"
   paths={racePaths(page.season, page.slug)}
-  title={fill(tr.metaTitle, { race: metaName, season: page.season })}
+  title={title}
   description={fill(tr.metaDescription, { race: metaName, season: page.season }, lang)}
   jsonLd={raceNodes(lang, page, today)}
+  ogImage={{ path: ogPaths.race(lang, page.season, page.slug), alt: `${name} ${page.season}` }}
 >
   <section class="race" id={anchor(lang, 'profile')} data-section="race" aria-labelledby="page-title">
     <div class="container race__grid">

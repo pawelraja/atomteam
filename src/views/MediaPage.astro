@@ -16,7 +16,7 @@ import { formatBytes, isContactComplete, riderSlug, rosterSplit, wordCount } fro
 import { numbersView, officialRosterView, teamView } from '../lib/view';
 import { MARKDOWN } from '../lib/markdown';
 import { DATA_FILES } from '../lib/opendata';
-import { TEAM } from '../lib/team';
+import { TEAM, uciCode } from '../lib/team';
 
 interface Props {
   lang: Lang;
@@ -42,6 +42,7 @@ const riders = (l: Lang) => plural(copy(l).mediaPage.riderCount, split.total, l)
 const facts = [
   { term: tm.facts.name, value: t.team.name },
   { term: tm.facts.licence, value: tm.facts.licenceValue },
+  ...(uciCode() ? [{ term: tm.facts.uciCode, value: uciCode()! }] : []),
   { term: tm.facts.founded, value: fill(tm.facts.foundedValue, { founded: site.foundedYear }, lang) },
   {
     term: fill(tm.facts.roster, { season: rosterSeason }, lang),
@@ -88,6 +89,7 @@ const rosterRows = roster.items.map((r) => {
   const original = findOriginal('riders', r.photo);
   return { r, portrait: original ? DOWNLOADS.portrait(original.name) : null };
 });
+const mediaUrl = new URL(ROUTES.media[lang], TEAM.website).href;
 /* Press photos as ImageObject structured data, with the photographer's credit (supplied photos only). */
 const photoNodes = photos
   .filter((p) => p.download && !/^\[/.test(p.credit))
@@ -98,6 +100,9 @@ const photoNodes = photos
     creator: { '@type': 'Person', name: p.credit },
     creditText: fill(t.story.credit, { credit: p.credit }),
     copyrightNotice: p.credit,
+    // The usage rules on this page are the licence: editorial use, credit the photographer.
+    license: `${mediaUrl}#${anchor(lang, 'rules')}`,
+    acquireLicensePage: mediaUrl,
   }));
 const press = site.pressContact;
 const responseTime = isContactComplete(press) && press?.responseTime ? pick(lang, press.responseTime) : null;
@@ -340,7 +345,7 @@ const responseTime = isContactComplete(press) && press?.responseTime ? pick(lang
         </p>
       </div>
       <ContactCard lang={lang} contact={press} label={tm.pressLabel} class="press__card" />
-      <div class="press__rules">
+      <div class="press__rules" id={anchor(lang, 'rules')}>
         <h3 class="press__rules-title">{tm.rulesTitle}</h3>
         <ul role="list">
           {tm.rules.map((r) => <li>{r}</li>)}
@@ -720,6 +725,12 @@ const responseTime = isContactComplete(press) && press?.responseTime ? pick(lang
   }
   .roster tbody th a {
     color: inherit;
+  }
+  /* Links in the table stay one 24 px+ target each (WCAG 2.5.8), even when a long handle would wrap. */
+  .roster tbody a {
+    display: inline-block;
+    min-height: 24px;
+    padding-block: 2px;
   }
   .roster abbr {
     text-decoration: none;

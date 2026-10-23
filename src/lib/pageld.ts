@@ -138,6 +138,35 @@ export function raceNodes(lang: Lang, page: RacePageView, today: string): Node[]
   ];
 }
 
+/* ---------- lists ---------- */
+
+function itemList(name: string, items: { name: string; url: string }[]): Node {
+  return {
+    '@type': 'ItemList',
+    name,
+    numberOfItems: items.length,
+    itemListElement: items.map((it, i) => ({ '@type': 'ListItem', position: i + 1, name: it.name, url: it.url })),
+  };
+}
+
+/** The team page: the roster as a list of rider profiles, in the order the page shows them. */
+export function rosterListNodes(lang: Lang): Node[] {
+  const t = copy(lang);
+  const roster = officialRosterView();
+  const slugs = new Map(profileRiders().map((p) => [p.rider.name, p.slug]));
+  const items = roster.items.flatMap((r) => (slugs.has(r.name) ? [{ name: r.name, url: abs(riderPath(lang, slugs.get(r.name)!)) }] : []));
+  if (!items.length) return [];
+  return [itemList(`${t.nav.team} ${roster.season ?? ''}`.trim(), items)];
+}
+
+/** The calendar page: every race page, newest season first, each season in date order. */
+export function raceListNodes(lang: Lang): Node[] {
+  const t = copy(lang);
+  const pages = [...racePages()].sort((a, b) => b.season - a.season || (a.event.start ?? '').localeCompare(b.event.start ?? ''));
+  if (!pages.length) return [];
+  return [itemList(t.nav.calendar, pages.map((p) => ({ name: `${typo(lang, raceName(p.event, lang))} ${p.season}`, url: abs(racePath(lang, p.season, p.slug)) })))];
+}
+
 /** SportsEvent nodes for the current season's confirmed races that are still to come (home and calendar). */
 export function upcomingEventNodes(lang: Lang): Node[] {
   const { site, today } = getData();

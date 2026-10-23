@@ -23,10 +23,10 @@ export function legalName(team: Team = TEAM): string | null {
   return team.officialName.verify ? null : team.officialName.value;
 }
 
-/** Confirmed external profile URLs (Wikipedia, Wikidata, ProCyclingStats, FirstCycling, UCI). */
+/** Confirmed external profile URLs (Wikipedia, Wikidata, ProCyclingStats, FirstCycling, UCI, PZKol). */
 export function teamProfiles(team: Team = TEAM): string[] {
   return Object.values(team.profiles)
-    .filter((p) => !p.verify && p.url)
+    .filter((p) => p && !p.verify && p.url)
     .map((p) => p.url!);
 }
 
@@ -37,11 +37,12 @@ export function teamSameAs(team: Team = TEAM): string[] {
 
 /**
  * Global tokens that copy strings may use without the caller passing them:
- * {TEAM} → "Mat Atom Deweloper Wrocław", {UCI_STATUS} → "UCI Continental", {EMAIL} → contact e-mail.
+ * {TEAM} → "Mat Atom Deweloper Wrocław", {SHORT} → "MADW", {UCI_STATUS} → "UCI Continental", {EMAIL} → contact e-mail.
  * Uppercase so they never collide with the per-call {placeholders} that fill() checks.
  */
 export const COPY_TOKENS: Record<string, string> = {
   TEAM: TEAM.name,
+  SHORT: TEAM.shortName,
   UCI_STATUS: TEAM.uciStatus.label,
   EMAIL: TEAM.contact.email,
 };

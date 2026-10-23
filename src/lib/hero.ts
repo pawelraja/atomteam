@@ -10,9 +10,16 @@ export interface HeroSource {
   width: number;
   height: number;
   sizes: string;
+  type: 'image/avif' | 'image/webp';
 }
 
-async function build(file: string, crop: [number, number], widths: number[]): Promise<HeroSource | null> {
+/** One crop in both formats: AVIF first (about half the bytes), WebP as the fallback. */
+export interface HeroCrop {
+  avif: HeroSource;
+  webp: HeroSource;
+}
+
+async function encode(file: string, crop: [number, number], widths: number[], format: 'avif' | 'webp'): Promise<HeroSource | null> {
   const img = findImage('photos', file);
   if (!img) return null;
   const usable = widths.filter((w) => w <= img.width);
@@ -24,8 +31,9 @@ async function build(file: string, crop: [number, number], widths: number[]): Pr
     width: Math.max(...usable),
     height,
     fit: 'cover',
-    format: 'webp',
-    quality: 72,
+    format,
+    // The hero sits under a dark gradient with text on top, so it tolerates stronger compression.
+    quality: format === 'avif' ? 45 : 68,
   });
   return {
     srcset: result.srcSet.attribute,
@@ -33,7 +41,13 @@ async function build(file: string, crop: [number, number], widths: number[]): Pr
     width: Number(result.attributes.width ?? Math.max(...usable)),
     height: Number(result.attributes.height ?? height),
     sizes: '100vw',
+    type: `image/${format}`,
   };
+}
+
+async function build(file: string, crop: [number, number], widths: number[]): Promise<HeroCrop | null> {
+  const [avif, webp] = await Promise.all([encode(file, crop, widths, 'avif'), encode(file, crop, widths, 'webp')]);
+  return avif && webp ? { avif, webp } : null;
 }
 
 /**

@@ -4,7 +4,7 @@ import { getData } from './data';
 import { copy, fill, plural, type Lang } from './i18n';
 import { listJoin, rosterSplit } from './showcase';
 import { isConfirmedRace, pickPartners } from './season';
-import { TEAM } from './team';
+import { TEAM, uciCode } from './team';
 import { numbersView, officialRosterView, resultsView } from './view';
 import type { Partner, Rider } from './schemas';
 
@@ -22,6 +22,8 @@ export function teamFacts() {
   return {
     asOf: site.factsAsOf,
     founded: TEAM.founded,
+    /** null until the code is confirmed in team.json. */
+    uciCode: uciCode(),
     roster: {
       season: roster.season,
       split,
@@ -80,6 +82,12 @@ export function factVars(lang: Lang) {
     eliteNames: join(f.roster.names.Elite),
     staff: plural(c.staff, f.roster.staff, lang),
     juniors: plural(c.juniors, f.roster.split.junior, lang),
+    // Databases that list only the UCI-registered riders (ProCyclingStats, UCI.org) show the
+    // continental squad, so the answers say how the two squads add up to the full roster.
+    uciRoster: f.roster.split.continental && f.roster.split.junior
+      ? fill(t.faq.uciRoster, { continental: plural(t.mediaPage.riderCount, f.roster.split.continental, lang), u19: f.roster.split.junior }, lang)
+      : '',
+    uciSentence: f.uciCode ? fill(t.faq.uciCode, { code: f.uciCode }, lang) : '',
     resultsSeason: f.honours?.season ?? '',
     titles: plural(c.titles, f.honours?.titles ?? 0, lang),
     medals: plural(c.medals, f.honours?.medals ?? 0, lang),

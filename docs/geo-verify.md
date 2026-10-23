@@ -6,7 +6,7 @@ Every item below is in the data with `"verify": true` (or `null`). It is **never
 ## Priority summary (end of GEO phases 0–7)
 
 **Before launch**
-1. **UCI team code** (ATO or MAV) and the **registered name**: `team.json`.
+1. ~~UCI team code and registered name~~ **Done 23 Oct 2026**: code **MAT** and "MAT ATOM DEWELOPER WROCŁAW", taken from the UCI's 2026 team page ([team-details/21213](https://www.uci.org/team-details/21213)). The code was MAW in 2022–2024; English Wikipedia (ATO) and the old site (MAV) are wrong. Re-check when the UCI publishes the 2027 registrations.
 2. **Privacy policy** text naming MailerLite, before the newsletter goes live.
 3. **MailerLite**: set the two Vercel variables, then do one test sign-up after deploying.
 4. **Crawler policy**: confirm the team is fine with AI training crawlers (or switch those four to `Disallow`).
@@ -18,7 +18,7 @@ Every item below is in the data with `"verify": true` (or `null`). It is **never
 **From the team**
 7. Rider quotes about the wheels; what each technical partner supplies (bikes, tyres, shoes…).
 8. UCI tier wording in the FAQ; the junior recruitment process; the bike brand.
-9. External profile URLs (Wikipedia, Wikidata, ProCyclingStats, FirstCycling, UCI) for the team and riders, once they exist. See `docs/geo-offsite.md`.
+9. External profile URLs: **done 23 Oct 2026** for the team (Wikipedia, Wikidata, ProCyclingStats 2026, UCI 2026, PZKol) and the 12 continental riders (ProCyclingStats, UCI). Still open: FirstCycling (blocks automated checks), and the 8 juniors, who are not on the UCI team page. The ProCyclingStats and UCI pages are per season: update them for 2027. See `docs/geo-offsite.md`.
 10. Race organisers; the date of X16 and the country of X10; partner `sameAs` links; whether the Velo brands are the partner or Velo is.
 11. Whether to add a formal licence to `/data/*.json`.
 12. Keep `site.json → factsAsOf` current whenever the roster or calendar changes.
@@ -28,17 +28,18 @@ Everything below is the full list by area.
 ## Team identity (`src/data/team.json`)
 | Field | Current state | What to confirm |
 |---|---|---|
-| `uciCode` | `null` (candidates: ATO, MAV) | The UCI team code. The old site says MAV, Wikipedia says ATO. Check the UCI registration or the federation. |
-| `officialName` | "MAT ATOM DEWELOPER WROCŁAW" | The exact registered form and casing. The site displays "Mat Atom Deweloper Wrocław". |
+| `uciCode` | **MAT**, confirmed from the UCI 2026 team page (23 Oct 2026) | Re-check for 2027. |
+| `officialName` | "MAT ATOM DEWELOPER WROCŁAW", confirmed (UCI 2026) | The site displays "Mat Atom Deweloper Wrocław"; "MAT Atom Deweloper Wrocław" is an alternate name. |
+| `address` | Grabiszyńska 208, 53-235 Wrocław (UCI and PZKol registrations) | Structured data only. Remove it from `team.json` if the team prefers not to publish it. |
 | `uciStatus.category` | "UCI Women's Continental Team" | The 2027 registration category, once the UCI publishes the list. |
-| `profiles.wikipediaPl` / `wikipediaEn` | `null` | Article URLs. |
-| `profiles.wikidata` | `null` | Item URL (`https://www.wikidata.org/wiki/Q…`). |
-| `profiles.procyclingstats` | `null` | Team page URL. |
-| `profiles.firstcycling` | `null` | Team page URL. |
-| `profiles.uci` | `null` | UCI team page URL. |
+| `profiles.wikipediaPl` / `wikipediaEn` / `wikidata` | Set (8 Oct 2026) | — |
+| `profiles.procyclingstats` | 2026 team page | Update to the 2027 page each season. |
+| `profiles.firstcycling` | `null` | Team page URL (FirstCycling refused automated checks). |
+| `profiles.uci` | 2026 team page (team-details/21213) | Update to the 2027 page each season. |
+| `profiles.pzkol` | DZKol club listing | — |
 
 ## Riders (`src/data/riders.json`)
-- `profiles.procyclingstats`, `profiles.firstcycling` and `profiles.uci` are `null` for all 20 riders. Fill in the ones that exist and set `"verify": false` per rider.
+- The 12 continental riders have their ProCyclingStats and UCI profiles set (`"verify": false`, 23 Oct 2026, from the UCI and ProCyclingStats 2026 team pages). `firstcycling` is still `null`. The 8 juniors are not on either team page; add their profiles if they exist.
 - Instagram handles come from the seed package. Every rider has a distinct handle; none points to `@bunia953`. Ask each rider to confirm hers.
 
 ## Races (`src/data/calendar/<year>.json`)

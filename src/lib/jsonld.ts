@@ -87,6 +87,10 @@ export function teamFull(ctx: Ctx, input: FullTeamInput): Node[] {
     name: team.city,
     address: { '@type': 'PostalAddress', addressLocality: team.city, addressRegion: team.region, addressCountry: team.country },
   };
+  // Where the team is registered today (UCI, PZKol); the founding place stays the city alone.
+  const seat = team.address
+    ? { ...place, address: { ...place.address, streetAddress: team.address.street, postalCode: team.address.postalCode } }
+    : place;
   const node: Node = {
     ...teamStub(ctx, input),
     alternateName: team.alternateNames,
@@ -97,7 +101,7 @@ export function teamFull(ctx: Ctx, input: FullTeamInput): Node[] {
     gender: GENDER[team.gender],
     foundingDate: String(team.founded),
     foundingLocation: place,
-    location: place,
+    location: seat,
     memberOf: ref(ids.uci(ctx)),
     ...(code ? { identifier: { '@type': 'PropertyValue', propertyID: 'UCI team code', value: code } } : {}),
     athlete: input.riders.map(({ rider, slug }) => ({ '@type': 'Person', '@id': ids.rider(ctx, slug), name: rider.name, url: abs(ctx, riderPath(ctx.lang, slug)) })),

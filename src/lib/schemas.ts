@@ -300,6 +300,11 @@ export const teamSchema = z
     city: z.string().min(1),
     region: z.string().min(1),
     country: z.string().regex(/^[A-Z]{2}$/, 'is a two-letter country code, e.g. "PL"'),
+    address: z
+      .object({ street: z.string().min(1), postalCode: z.string().regex(/^\d{2}-\d{3}$/, 'is a Polish postal code, e.g. "50-001"'), note: z.string().optional() })
+      .strict()
+      .nullable()
+      .optional(),
     sport: z.string().min(1),
     gender: z.enum(['Female', 'Male', 'Mixed']),
     squads: z.array(z.enum(['continental', 'junior'])),
@@ -317,6 +322,7 @@ export const teamSchema = z
         procyclingstats: checkedUrl,
         firstcycling: checkedUrl,
         uci: checkedUrl,
+        pzkol: checkedUrl.optional(),
       })
       .strict(),
   })

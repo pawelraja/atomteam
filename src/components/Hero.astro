@@ -30,13 +30,14 @@ const credentials = [
     {
       desktop || mobile ? (
         <picture>
-          {mobile && <source media={HERO_MOBILE_MEDIA} srcset={mobile.srcset} sizes="100vw" width={mobile.width} height={mobile.height} type="image/webp" />}
-          {desktop && <source media={HERO_DESKTOP_MEDIA} srcset={desktop.srcset} sizes="100vw" width={desktop.width} height={desktop.height} type="image/webp" />}
+          {[mobile && { media: HERO_MOBILE_MEDIA, crop: mobile }, desktop && { media: HERO_DESKTOP_MEDIA, crop: desktop }].flatMap((s) =>
+            s ? [s.crop.avif, s.crop.webp].map((f) => <source media={s.media} srcset={f.srcset} sizes="100vw" width={f.width} height={f.height} type={f.type} />) : [],
+          )}
           <img
-            src={(desktop ?? mobile)!.src}
+            src={(desktop ?? mobile)!.webp.src}
             alt={t.hero.alt}
-            width={(desktop ?? mobile)!.width}
-            height={(desktop ?? mobile)!.height}
+            width={(desktop ?? mobile)!.webp.width}
+            height={(desktop ?? mobile)!.webp.height}
             fetchpriority="high"
             loading="eager"
             decoding="sync"
@@ -51,8 +52,11 @@ const credentials = [
   </div>
 
   <div class="hero__content container">
-    <p class="hero__eyebrow">{t.hero.eyebrow}</p>
-    <h1 id="hero-title">{t.hero.title}</h1>
+    <!-- The eyebrow (team name) is part of the H1, so the page's main heading names the team. -->
+    <h1 id="hero-title" class="hero__heading">
+      <span class="hero__eyebrow">{t.hero.eyebrow}</span><span class="visually-hidden">. </span>
+      <span class="hero__title">{t.hero.title}</span>
+    </h1>
     <div class="hero__row">
       <p class="hero__mission">{fill(t.hero.summary, factVars(lang), lang)}</p>
       <div class="hero__buttons">
@@ -124,8 +128,14 @@ const credentials = [
     gap: 28px;
     padding-top: calc(var(--header-h) + 96px);
   }
+  .hero__heading {
+    display: grid;
+    gap: inherit;
+  }
   .hero__eyebrow {
     font-size: 14px;
+    font-weight: 400;
+    line-height: 1.4;
     letter-spacing: var(--ls-eyebrow);
     text-transform: uppercase;
     color: var(--accent);

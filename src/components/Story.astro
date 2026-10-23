@@ -45,8 +45,7 @@ const caption = (g: (typeof items)[number]) => `${g.race} · ${g.place}`;
                     lang={lang}
                     dir="photos"
                     file={g.photo}
-                    alt=""
-                    decorative
+                    alt={g.alt}
                     aspect={g === feature ? g.aspect : '3:4'}
                     sizes={g === feature ? '100vw' : '(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw'}
                     widths={g === feature ? [640, 960, 1440, 1920, 2560] : [480, 720, 1080, 1440]}

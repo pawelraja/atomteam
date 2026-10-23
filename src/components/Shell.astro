@@ -20,6 +20,8 @@ interface Props {
   fullTeam?: boolean;
   noindex?: boolean;
   notFound?: boolean;
+  ogImage?: { path: string; alt: string };
+  ogType?: 'website' | 'profile';
 }
 const { lang, page, paths, ...base } = Astro.props;
 ---

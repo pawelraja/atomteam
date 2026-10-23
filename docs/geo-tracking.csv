@@ -1,2 +1,6 @@
 date,engine,language,question,correct,wrong_facts,atomteam_cited,atomteam_url,other_sources,notes
-2026-11-02,ChatGPT,en,1,,,,,,example row: delete
+2026-10-23,ChatGPT (gpt-4.1-mini; web search),en,1,yes,,no,,en.wikipedia.org,"Baseline before launch (via DataForSEO). One combined prompt covered questions 1, 3, 4 and 9. Website given correctly."
+2026-10-23,ChatGPT (gpt-4.1-mini; web search),en,3,partly,"12 riders (the UCI-registered squad; the full roster is 20 with the juniors)",no,,en.wikipedia.org,
+2026-10-23,ChatGPT (gpt-4.1-mini; web search),en,4,partly,"Only four mid-pack placings; none of the 30 national titles",no,,cyclingnews.com,
+2026-10-23,ChatGPT (gpt-4.1-mini; web search),en,9,no,"UCI code ATO (actual: MAT)",no,,en.wikipedia.org,Source of the error: the English Wikipedia infobox
+2026-10-23,Perplexity (sonar),pl,3,yes,,yes,https://www.atomteam.pl/ (old site),"nprk.pzkol.pl; accent-bikes.com; wikidata.org; linkedin.com; uci.org; radiowroclaw.pl","Baseline before launch (via DataForSEO). Also named the website correctly; on 8 Oct it said matatom.pl."

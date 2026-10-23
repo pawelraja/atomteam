@@ -26,7 +26,8 @@ export function faqItems(lang: Lang): FaqItem[] {
     .map((it) => ({
       id: it.id,
       q: fill(it.q, vars, lang),
-      a: fill(it.a, vars, lang),
+      // Optional sentences ({uciSentence}, {uciRoster}) may be empty: drop the gap they leave.
+      a: fill(it.a, vars, lang).replace(/ {2,}/g, ' ').trim(),
       link: it.link ? { label: fill(it.link.label, vars, lang), href: href(lang, it.link.href) } : null,
     }));
 }

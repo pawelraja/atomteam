@@ -83,7 +83,7 @@
     "details": "Details"
   },
   "hero": {
-    "eyebrow": "Women's cycling team from Wrocław",
+    "eyebrow": "{TEAM} · women's cycling team",
     "title": "We are for women's cycling.",
     "summary": "{TEAM} is a {UCI_STATUS} women's cycling team from Wrocław, Poland, founded in {founded}, with its own junior squad. In {statsSeason}: {statsRiders}, {titles} and {races} in {countries}.",
     "primary": "Meet the team",
@@ -529,7 +529,8 @@
     "resultsLead": "Classified places of our riders. Every result links to its source.",
     "noResults": "Results will appear here after the race.",
     "tableCaption": "Team results: {race} {season}",
-    "metaTitle": "{race} {season}: dates and results — {TEAM}",
+    "metaTitle": "{race} {season}: dates and results — {SHORT}",
+    "metaTitleShort": "{race} {season} — {SHORT}",
     "metaDescription": "{race} {season}: date, place and the results of the {TEAM} riders."
   },
   "faq": {
@@ -538,6 +539,8 @@
     "lead": "The most common questions about {TEAM}. The answers come from the data on this site, as of {asOf}.",
     "calendarProvisional": "The {calSeason} calendar is provisional ({calRaces}): dates and UCI classes are added as organisers confirm them.",
     "calendarConfirmed": "The {calSeason} calendar lists {calRaces} with dates, places and UCI classes.",
+    "uciCode": "The team's UCI code is {code}.",
+    "uciRoster": "The {UCI_STATUS} team registered with the UCI has {continental}; the other {u19} riders form the junior team.",
     "counts": {
       "titles": {
         "one": "{n} Polish national title",
@@ -595,13 +598,13 @@
       {
         "id": "level",
         "q": "Is it a professional team? What UCI level is it?",
-        "a": "The team is registered with the UCI (Union Cycliste Internationale) as a {UCI_STATUS} women's team. That is the third tier of women's road cycling, after UCI Women's WorldTeams and UCI Women's ProTeams. Its riders race UCI-classified events across Europe and national races in Poland.",
+        "a": "The team is registered with the UCI (Union Cycliste Internationale) as a {UCI_STATUS} women's team. That is the third tier of women's road cycling, after UCI Women's WorldTeams and UCI Women's ProTeams. Its riders race UCI-classified events across Europe and national races in Poland. {uciSentence}",
         "link": null
       },
       {
         "id": "riders",
         "q": "Who rides for {TEAM} in {rosterSeason}?",
-        "a": "As of {asOf}, the {rosterSeason} roster has {riders}: {u19} U19, {u23} U23 and {elite} Elite. Elite: {eliteNames}. U23: {u23Names}. U19 juniors: {u19Names}.",
+        "a": "As of {asOf}, the {rosterSeason} roster has {riders}: {u19} U19, {u23} U23 and {elite} Elite. {uciRoster} Elite: {eliteNames}. U23: {u23Names}. U19 juniors: {u19Names}.",
         "link": {
           "label": "Riders and staff",
           "href": "team"
@@ -799,6 +802,7 @@
       "name": "Full name",
       "licence": "Licence",
       "licenceValue": "{UCI_STATUS} + junior team",
+      "uciCode": "UCI code",
       "founded": "Founded",
       "foundedValue": "{founded}, Wrocław, Poland",
       "roster": "{season} roster",

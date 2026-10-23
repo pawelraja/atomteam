@@ -83,7 +83,7 @@
     "details": "Szczegóły"
   },
   "hero": {
-    "eyebrow": "Kobieca drużyna kolarska z Wrocławia",
+    "eyebrow": "{TEAM} · kobieca drużyna kolarska",
     "title": "Jesteśmy dla kobiecego kolarstwa.",
     "summary": "{TEAM} to kobieca drużyna kolarska {UCI_STATUS} z Wrocławia, założona w {founded} roku, z własną drużyną juniorek. W sezonie {statsSeason}: {statsRiders}, {titles} i {races} w {countries}.",
     "primary": "Poznaj zespół",
@@ -529,7 +529,8 @@
     "resultsLead": "Sklasyfikowane miejsca naszych zawodniczek. Każdy wynik ma źródło.",
     "noResults": "Wyniki pojawią się tutaj po wyścigu.",
     "tableCaption": "Wyniki drużyny: {race} {season}",
-    "metaTitle": "{race} {season}: termin i wyniki — {TEAM}",
+    "metaTitle": "{race} {season}: termin i wyniki — {SHORT}",
+    "metaTitleShort": "{race} {season} — {SHORT}",
     "metaDescription": "{race} {season}: termin, miejsce i wyniki zawodniczek drużyny {TEAM}."
   },
   "faq": {
@@ -538,6 +539,8 @@
     "lead": "Najczęstsze pytania o drużynę {TEAM}. Odpowiedzi pochodzą z danych na tej stronie. Stan na {asOf}.",
     "calendarProvisional": "Kalendarz {calSeason} jest wstępny ({calRaces}): terminy i kategorie UCI dodajemy, gdy potwierdzą je organizatorzy.",
     "calendarConfirmed": "Kalendarz {calSeason} obejmuje {calRaces} z terminami, miejscami i kategoriami UCI.",
+    "uciCode": "Kod drużyny w UCI to {code}.",
+    "uciRoster": "Do UCI zgłoszona jest drużyna {UCI_STATUS}: {continental}. Pozostałe zawodniczki ({u19}) tworzą drużynę juniorek.",
     "counts": {
       "titles": {
         "one": "{n} tytuł mistrzyni Polski",
@@ -595,13 +598,13 @@
       {
         "id": "level",
         "q": "Czy to zawodowa drużyna? Na jakim poziomie UCI startuje?",
-        "a": "Drużyna jest zarejestrowana w UCI (Międzynarodowej Unii Kolarskiej) jako kobieca drużyna {UCI_STATUS}. To trzeci poziom kobiecego kolarstwa szosowego, po drużynach UCI Women's WorldTeam i UCI Women's ProTeam. Zawodniczki startują w wyścigach z kalendarza UCI w całej Europie oraz w wyścigach krajowych w Polsce.",
+        "a": "Drużyna jest zarejestrowana w UCI (Międzynarodowej Unii Kolarskiej) jako kobieca drużyna {UCI_STATUS}. To trzeci poziom kobiecego kolarstwa szosowego, po drużynach UCI Women's WorldTeam i UCI Women's ProTeam. Zawodniczki startują w wyścigach z kalendarza UCI w całej Europie oraz w wyścigach krajowych w Polsce. {uciSentence}",
         "link": null
       },
       {
         "id": "riders",
         "q": "Kto jeździ w drużynie {TEAM} w sezonie {rosterSeason}?",
-        "a": "Stan na {asOf}: skład na sezon {rosterSeason} to {riders} – {u19} w kategorii U19, {u23} w U23 i {elite} w elicie. Elita: {eliteNames}. U23: {u23Names}. U19 (juniorki): {u19Names}.",
+        "a": "Stan na {asOf}: skład na sezon {rosterSeason} to {riders} – {u19} w kategorii U19, {u23} w U23 i {elite} w elicie. {uciRoster} Elita: {eliteNames}. U23: {u23Names}. U19 (juniorki): {u19Names}.",
         "link": {
           "label": "Zawodniczki i sztab",
           "href": "team"
@@ -799,6 +802,7 @@
       "name": "Pełna nazwa",
       "licence": "Licencja",
       "licenceValue": "{UCI_STATUS} + drużyna juniorska",
+      "uciCode": "Kod UCI",
       "founded": "Założona",
       "foundedValue": "{founded}, Wrocław",
       "roster": "Skład {season}",

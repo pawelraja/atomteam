@@ -4,6 +4,7 @@
 import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { extname, join, resolve } from 'node:path';
+import { gzipSync } from 'node:zlib';
 import { chromium } from '@playwright/test';
 import * as chromeLauncher from 'chrome-launcher';
 import lighthouse from 'lighthouse';
@@ -24,9 +25,13 @@ const server = createServer(async (req, res) => {
   let p = decodeURIComponent(new URL(req.url, 'http://x').pathname);
   if (p.endsWith('/')) p += 'index.html';
   try {
-    const body = await readFile(join(dir, p));
+    const raw = await readFile(join(dir, p));
     const cache = p.startsWith('/_astro/') ? 'public, max-age=31536000, immutable' : 'no-cache';
-    res.writeHead(200, { 'content-type': types[extname(p)] ?? 'application/octet-stream', 'cache-control': cache });
+    // Compress text like Vercel does, so document size is measured as visitors receive it.
+    const text = /^(text\/|image\/svg)/.test(types[extname(p)] ?? '');
+    const gzip = text && /\bgzip\b/.test(req.headers['accept-encoding'] ?? '');
+    const body = gzip ? gzipSync(raw) : raw;
+    res.writeHead(200, { 'content-type': types[extname(p)] ?? 'application/octet-stream', 'cache-control': cache, ...(gzip ? { 'content-encoding': 'gzip' } : {}) });
     res.end(body);
   } catch {
     res.writeHead(404, { 'content-type': 'text/html' }).end('<!doctype html><title>404</title>');
@@ -48,7 +53,15 @@ for (const path of pages) {
       .map((r) => lhr.audits[r.id])
       .filter((a) => a.score !== null && a.score < 1 && a.scoreDisplayMode !== 'informative' && a.scoreDisplayMode !== 'notApplicable')
       .slice(0, 6);
-    for (const a of audits) console.log(`    - ${k}: ${a.id} (${a.title})`);
+    for (const a of audits) {
+      console.log(`    - ${k}: ${a.id} (${a.title})`);
+      // Name the elements, so an accessibility failure points at what to fix.
+      const items = Array.isArray(a.details?.items) ? a.details.items : [];
+      for (const item of items.slice(0, 3)) {
+        const node = item.node ?? item.targetNode ?? item.subItems?.items?.[0]?.relatedNode;
+        if (node?.selector) console.log(`        ${node.selector}${node.snippet ? `  ${node.snippet.slice(0, 120)}` : ''}`);
+      }
+    }
   }
 }
 await chrome.kill();

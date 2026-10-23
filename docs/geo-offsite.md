@@ -11,11 +11,12 @@ Work top to bottom: section 1 must come first, because every other entry copies 
 | Fact | Value | Status |
 |---|---|---|
 | Name | Mat Atom Deweloper Wrocław | ✔ |
-| Registered (UCI) name | MAT ATOM DEWELOPER WROCŁAW | [VERIFY] |
+| Registered (UCI) name | MAT ATOM DEWELOPER WROCŁAW | ✔ (UCI 2026 team page) |
 | Short name | MADW | ✔ |
-| Other names | Atom Deweloper, Atom Deweloper Wrocław, Atomówki | ✔ |
-| UCI team code | ATO or MAV | **[VERIFY] first.** Old site: MAV; Wikipedia: ATO |
-| UCI category | UCI Women's Continental Team | [VERIFY] for 2027 |
+| Other names | MAT Atom Deweloper Wrocław, Atom Deweloper, Atom Deweloper Wrocław, Atomówki | ✔ |
+| UCI team code | **MAT** (2025–2026; MAW in 2022–2024) | ✔ [UCI 2026 team page](https://www.uci.org/team-details/21213). English Wikipedia (ATO) and the old site (MAV) are wrong |
+| UCI category | UCI Women's Continental Team | ✔ 2026; [VERIFY] for 2027 |
+| UCI-registered riders | 12 (the continental squad); the 8 juniors are a separate squad | ✔ This is why ProCyclingStats and ChatGPT say "12 riders" |
 | Founded | 2016, Wrocław, Poland | ✔ |
 | Website | https://www.atomteam.pl/ (EN: https://www.atomteam.pl/en/) | ✔ |
 | E-mail | kontakt@atomteam.pl | ✔ |
@@ -26,7 +27,7 @@ Work top to bottom: section 1 must come first, because every other entry copies 
 | One-line description (PL) | Kobieca drużyna kolarska UCI Continental z Wrocławia, założona w 2016 roku, z własną drużyną juniorek. | ✔ |
 | One-line description (EN) | UCI Continental women's cycling team from Wrocław, Poland, founded in 2016, with its own junior squad. | ✔ |
 
-When the UCI code is confirmed, set it in `src/data/team.json` (`uciCode.value`, `"verify": false`) the same day you update the sites below.
+The UCI code is set in `src/data/team.json` (`uciCode.value: "MAT"`, `"verify": false`, 23 Oct 2026). It now appears in the FAQ, the media fact sheet and the structured data.
 
 ---
 
@@ -44,7 +45,8 @@ Search for an existing item first ("Atom Deweloper", "MADW"). Create one only if
 - [ ] headquarters location (P159): Wrocław; country (P17): Poland
 - [ ] sport (P641): road cycling (plus track cycling, cyclo-cross)
 - [ ] short name (P1813): MADW
-- [ ] UCI team code: the confirmed code (search Wikidata properties for "UCI"), only after [VERIFY]
+- [ ] UCI team code: **MAT** (search Wikidata properties for "UCI"), with the UCI 2026 team page as the reference
+- [ ] the 2026 season item [Q137767693](https://www.wikidata.org/wiki/Q137767693) ("2026 MAT Atom Deweloper Wrocław"): roster of 12 UCI riders, UCI code MAT, reference URLs. It is a separate entity (one season), so the site does not list it in the team's `sameAs`
 - [ ] logo image (P154): once the SVG logo is on Wikimedia Commons
 - [ ] sponsor (P859): Mat Atom Deweloper, NO LIMITED, and the other main partners, with a start-time qualifier of 2026
 - [ ] Instagram username (P2003), Facebook ID (P2013), LinkedIn company ID (P4264)
@@ -65,10 +67,18 @@ Then copy the new IDs into the site: `team.json → profiles.wikidata`, and each
 **Conflict of interest:** people paid by or close to the team must not edit the article directly. Disclose the connection on the article's talk page and post an edit request with the sources. Independent editors then apply it. This keeps the article (and the team's reputation) safe.
 
 Requests to make:
-- [ ] Infobox: UCI code (after [VERIFY]), website `https://www.atomteam.pl/`, UCI category, founded 2016, sponsors including NO LIMITED.
+- [ ] Infobox: UCI code **MAT** (2025–), website `https://www.atomteam.pl/`, UCI category, founded 2016, sponsors including NO LIMITED. The English infobox says ATO and lists no website, and ChatGPT repeats it (checked 23 Oct 2026). Use the request text below.
 - [ ] 2026 roster (20 riders: 8 U19, 10 U23, 2 Elite) and 2027 changes once announced.
 - [ ] 2026 results: 30 Polish national titles and 58 national-championship medals. Cite independent media (naszosie.pl reports, PZKol results) first and atomteam.pl race pages second.
 - [ ] External links: the website, and the English page for en.wikipedia.
+
+**Ready-to-post request for the English talk page** (Talk:MAT Atom Deweloper Wrocław, using the `{{Edit COI}}` template):
+
+> {{Edit COI|D}} I work with the team's website (conflict of interest disclosed). Please consider these corrections, each with an independent source:
+> 1. UCI code: MAT for 2025 and 2026 (MAW in 2022–2024), per the UCI team page https://www.uci.org/team-details/21213 and the team history on UCI rider pages, for example https://www.uci.org/rider-details/591822. The infobox currently says ATO.
+> 2. Website: https://www.atomteam.pl/ (listed on the UCI team page above).
+> 3. 2026 squad: 12 riders registered with the UCI, plus a junior (U19) squad of 8. Source: the UCI team page and https://www.procyclingstats.com/team/mat-atom-deweloper-wroclaw-2026.
+> Thank you. ~~~~
 
 Then add the article URLs to `team.json → profiles.wikipediaPl / wikipediaEn`. (Done 8 Oct 2026: both articles exist as "MAT Atom Deweloper Wrocław". The EN infobox listed no website then, so that edit request is still open.)
 
