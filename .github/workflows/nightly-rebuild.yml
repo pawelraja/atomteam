@@ -3,9 +3,12 @@
 # Needs the repository secret VERCEL_DEPLOY_HOOK (Vercel → Project → Settings → Git → Deploy Hooks).
 name: Nightly rebuild
 
+# PAUSED (25 Oct 2026): not needed until the 2027 calendar has dates, since every push to main
+# already rebuilds the site. To resume before the season: add the VERCEL_DEPLOY_HOOK secret, then
+# uncomment the two schedule lines below. "Run workflow" (manual) keeps working meanwhile.
 on:
-  schedule:
-    - cron: '0 2 * * *' # 02:00 UTC = 03:00/04:00 in Wrocław
+  # schedule:
+  #   - cron: '0 2 * * *' # 02:00 UTC = 03:00/04:00 in Wrocław
   workflow_dispatch: {}
 
 jobs:
