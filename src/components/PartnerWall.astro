@@ -135,7 +135,7 @@ const logo = (p: Partner) => (partnerLogoExists(p.logo) ? `/partners/${p.logo}` 
     height: 100%;
     min-height: 96px;
     padding: 12px;
-    border: 1px solid #e4e0e6;
+    border: 1px solid var(--line-soft);
     border-radius: var(--r-sm);
     color: #000;
     text-decoration: none;
@@ -226,7 +226,7 @@ const logo = (p: Partner) => (partnerLogoExists(p.logo) ? `/partners/${p.logo}` 
     place-items: center;
     height: 72px;
     padding: 12px;
-    border: 1px solid #e4e0e6;
+    border: 1px solid var(--line-soft);
     border-radius: var(--r-sm);
   }
   .technical__logos img {
@@ -262,6 +262,18 @@ const logo = (p: Partner) => (partnerLogoExists(p.logo) ? `/partners/${p.logo}` 
     .tile--main,
     .tile--inst {
       grid-column: span 6;
+    }
+    /* Three technical logos per row: half the scrolling of two, still about 100 px per logo. */
+    .technical__logos {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .technical__logos a {
+      height: 60px;
+      padding: 8px;
+    }
+    .technical__logos img {
+      max-height: 32px;
     }
   }
 </style>

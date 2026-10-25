@@ -204,7 +204,7 @@ const messages = {
     opacity: 1;
   }
   input[aria-invalid='true'] {
-    border-color: #ffb3c8;
+    border-color: var(--feedback-error-on-dark);
   }
   .newsletter button {
     flex: none;
@@ -220,9 +220,10 @@ const messages = {
     font-size: 14px;
     color: var(--ink-muted);
   }
+  /* 24 px: the WCAG 2.5.8 minimum without relying on the label. */
   .check input {
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
     margin: 0;
     accent-color: var(--accent);
   }
@@ -230,7 +231,7 @@ const messages = {
     color: var(--ink);
   }
   .field__error {
-    color: #ffb3c8;
+    color: var(--feedback-error-on-dark);
     font-size: 14px;
     font-weight: 700;
   }
@@ -247,12 +248,12 @@ const messages = {
     font-weight: 700;
   }
   .newsletter[data-state='success'] .newsletter__status {
-    background: #e6f4ea;
-    color: #0b5a23;
+    background: var(--feedback-success-bg);
+    color: var(--feedback-success-ink);
   }
   .newsletter[data-state='error'] .newsletter__status {
-    background: #fde8ec;
-    color: #8a0019;
+    background: var(--feedback-error-bg);
+    color: var(--feedback-error-ink);
   }
   .newsletter[data-state='sending'] .newsletter__status {
     background: var(--surface-alt);

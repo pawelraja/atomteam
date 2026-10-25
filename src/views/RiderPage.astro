@@ -4,18 +4,19 @@
 import { statSync } from 'node:fs';
 import Icon from '../components/Icon.astro';
 import Photo from '../components/Photo.astro';
+import PrevNext from '../components/PrevNext.astro';
 import ResultsTable from '../components/ResultsTable.astro';
 import Shell from '../components/Shell.astro';
 import { anchor } from '../lib/anchors';
 import { copy, fill, pick, type Lang } from '../lib/i18n';
 import { findOriginal } from '../lib/images';
 import { ogPaths } from '../lib/og';
-import { DOWNLOADS, riderPaths, route } from '../lib/routes';
+import { DOWNLOADS, riderPath, riderPaths, route } from '../lib/routes';
 import type { Rider } from '../lib/schemas';
 import { formatBytes } from '../lib/showcase';
 import { riderNodes, riderSummary } from '../lib/pageld';
 import { bestResult, resultLabel } from '../lib/results';
-import { riderResults } from '../lib/view';
+import { profileRiders, riderResults } from '../lib/view';
 
 interface Props {
   lang: Lang;
@@ -43,6 +44,11 @@ const bestLine = top
     }, lang)
   : null;
 // External profiles appear only once the team has checked them ("verify": false).
+// Previous and next rider, in the roster order of riders.json.
+const all = profileRiders();
+const at = all.findIndex((p) => p.slug === slug);
+const sibling = (i: number) => (all[i] ? { href: riderPath(lang, all[i].slug), name: all[i].rider.name } : null);
+const siblings = { prev: sibling(at - 1), next: sibling(at + 1) };
 const PROFILE_LABELS = { procyclingstats: 'ProCyclingStats', firstcycling: 'FirstCycling', uci: 'UCI' } as const;
 const profiles =
   rider.profiles && !rider.profiles.verify
@@ -159,6 +165,8 @@ const profiles =
       }
     </div>
   </section>
+
+  <PrevNext lang={lang} kind="rider" prev={siblings.prev} next={siblings.next} />
 </Shell>
 
 <style>
@@ -209,7 +217,7 @@ const profiles =
     display: grid;
     gap: 2px;
     padding: 14px 0;
-    border-top: 1px solid #d9d2dc;
+    border-top: 1px solid var(--line-soft);
   }
   .facts dt {
     font-size: 13px;

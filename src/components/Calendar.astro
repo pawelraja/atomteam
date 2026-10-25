@@ -45,7 +45,9 @@ const panels = seasons.map((season) => {
     ...g,
     rows: g.events.map((e) => ({ e, status: rowStatus(e, today, next?.id ?? null) })),
   }));
-  return { season, isCurrent, showPast, groups, id: seasonAnchor(lang, season), count: events.length };
+  // A season with no dates yet: one "termin wkrótce" chip per race is noise; the intro already says it.
+  const undated = events.every((e) => !e.start);
+  return { season, isCurrent, showPast, groups, undated, id: seasonAnchor(lang, season), count: events.length };
 });
 const statusText = tc.status as Record<string, string>;
 const disc = tc.discipline as Record<string, string>;
@@ -151,6 +153,8 @@ const disc = tc.discipline as Record<string, string>;
                               <time class:list={{ strike: e.status === 'cancelled' }} datetime={e.start}>{formatRange(e.start, e.end, t.meta.locale)}</time>
                             ) : e.start && e.end ? (
                               <span class:list={{ strike: e.status === 'cancelled' }}>{formatRange(e.start, e.end, t.meta.locale)}</span>
+                            ) : p.undated ? (
+                              <span class="visually-hidden">{statusText.tbc}</span>
                             ) : (
                               <span class="tbc-chip">{statusText.tbc}</span>
                             )}

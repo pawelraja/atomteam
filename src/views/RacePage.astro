@@ -3,6 +3,8 @@
 // that stands on its own (date, place, the team's best result), then the facts and every
 // classified place of our riders with its source. Static, generated from the calendar and results.
 import Icon from '../components/Icon.astro';
+import Photo from '../components/Photo.astro';
+import PrevNext from '../components/PrevNext.astro';
 import ResultsTable from '../components/ResultsTable.astro';
 import Shell from '../components/Shell.astro';
 import { anchor } from '../lib/anchors';
@@ -11,9 +13,9 @@ import { ogPaths } from '../lib/og';
 import { podiums, wheelMentionsOn, wheelsFor } from '../lib/equipment';
 import { copy, fill, type Lang } from '../lib/i18n';
 import { raceDates, raceNodes, raceSummary, raceWhere } from '../lib/pageld';
-import { racePaths, route } from '../lib/routes';
+import { racePath, racePaths, route } from '../lib/routes';
 import { eventState, isConfirmedRace, raceLocation, raceName, type RaceEvent } from '../lib/season';
-import { typo } from '../lib/text';
+import { isPlaceholder, pick, typo } from '../lib/text';
 import { racePages, type RacePageView } from '../lib/view';
 
 interface Props {
@@ -40,6 +42,16 @@ const classified = page.rows.filter((r) => r.position !== null);
 const wheels = wheelMentionsOn() ? wheelsFor(e) : null;
 const podiumCount = podiums(classified);
 const ics = isConfirmedRace(e) && e.onTeamCalendar !== false && state !== 'past' ? `/ics/${page.season}/${e.id}.ics` : null;
+// A photo from this race, when gallery.json tags one with "racePage".
+const photo = getData().gallery.find((g) => g.racePage === `${page.season}/${page.slug}`) ?? null;
+// Previous and next race of the same season, in date order.
+const seasonRaces = racePages()
+  .filter((p) => p.season === page.season)
+  .sort((a, b) => (a.event.start ?? '').localeCompare(b.event.start ?? ''));
+const at = seasonRaces.findIndex((p) => p.slug === page.slug);
+const sibling = (i: number) =>
+  seasonRaces[i] ? { href: racePath(lang, page.season, seasonRaces[i].slug), name: typo(lang, raceName(seasonRaces[i].event, lang)) } : null;
+const siblings = { prev: sibling(at - 1), next: sibling(at + 1) };
 const eyebrow = [e.onTeamCalendar === false ? tr.offCalendar : null, t.calendar.discipline[e.discipline], e.cls, String(page.season)].filter(Boolean).join(' · ');
 ---
 
@@ -64,11 +76,28 @@ const eyebrow = [e.onTeamCalendar === false ? tr.offCalendar : null, t.calendar.
         <p class="eyebrow">{eyebrow}</p>
         <h1 id="page-title" class:list={{ strike: state === 'cancelled' }}>{name}</h1>
         <p class="race__summary">{raceSummary(page, lang, today)}</p>
+        {
+          photo && (
+            <figure class="race__photo">
+              <Photo lang={lang} dir="photos" file={photo.photo} alt={pick(lang, photo.alt)} aspect="16:9" sizes="(min-width: 1024px) 66vw, 100vw" widths={[640, 960, 1440]} />
+              {!isPlaceholder(photo.credit) && <figcaption class="race__photo-credit">{fill(t.story.credit, { credit: photo.credit })}</figcaption>}
+            </figure>
+          )
+        }
         <dl class="facts">
           <div><dt>{tr.date}</dt><dd>{raceDates(e, lang)}</dd></div>
           <div><dt>{tr.place}</dt><dd>{raceWhere(e, lang)}</dd></div>
           <div><dt>{tr.discipline}</dt><dd>{t.calendar.discipline[e.discipline]}</dd></div>
-          {e.cls && <div><dt>{tr.class}</dt><dd>{e.cls}</dd></div>}
+          {/* The code plus what it means: "NCh." alone says nothing to most fans. */}
+          {e.cls && (
+            <div>
+              <dt>{tr.class}</dt>
+              <dd>
+                {e.cls}
+                {(tr.classNames as Record<string, string>)[e.cls] && <span class="facts__note"> · {(tr.classNames as Record<string, string>)[e.cls]}</span>}
+              </dd>
+            </div>
+          )}
           <div><dt>{tr.status}</dt><dd>{t.calendar.status[state]}</dd></div>
           {e.organizer && <div><dt>{tr.organizer}</dt><dd>{e.organizer.name}</dd></div>}
           {
@@ -113,6 +142,8 @@ const eyebrow = [e.onTeamCalendar === false ? tr.offCalendar : null, t.calendar.
       }
     </div>
   </section>
+
+  <PrevNext lang={lang} kind="race" prev={siblings.prev} next={siblings.next} />
 </Shell>
 
 <style>
@@ -166,7 +197,7 @@ const eyebrow = [e.onTeamCalendar === false ? tr.offCalendar : null, t.calendar.
     display: grid;
     gap: 2px;
     padding: 14px 0;
-    border-top: 1px solid #d9d2dc;
+    border-top: 1px solid var(--line-soft);
   }
   .facts dt {
     font-size: 13px;
@@ -174,6 +205,21 @@ const eyebrow = [e.onTeamCalendar === false ? tr.offCalendar : null, t.calendar.
   }
   .facts dd {
     font-size: 17px;
+  }
+  .facts__note {
+    color: var(--ink-muted);
+  }
+  .race__photo {
+    display: grid;
+    gap: 8px;
+  }
+  .race__photo :global(.photo) {
+    border-radius: var(--r-card);
+    overflow: hidden;
+  }
+  .race__photo-credit {
+    font-size: 14px;
+    color: var(--ink-muted);
   }
   .race-results {
     padding-block: 96px;

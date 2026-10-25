@@ -45,7 +45,8 @@ const { lang, eyebrow, title, lead, nav, navLabel } = Astro.props;
 
 <style>
   .intro {
-    padding: calc(var(--header-h) + 16px + 88px) 0 96px;
+    /* 64 px below: the next section brings its own top padding, so 96 left a large empty band. */
+    padding: calc(var(--header-h) + 16px + 88px) 0 64px;
     background: var(--surface-alt);
   }
   .intro__grid {

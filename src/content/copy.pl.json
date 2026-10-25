@@ -299,7 +299,7 @@
     "staffChip": "SZTAB",
     "newPill": "Nowa w {season}",
     "emptySquad": "Skład tej drużyny ogłosimy wkrótce.",
-    "profileLink": "Profil zawodniczki",
+    "profileLink": "Profil",
     "allRiders": "Cały zespół"
   },
   "teaser": {
@@ -531,6 +531,7 @@
     "tableCaption": "Wyniki drużyny: {race} {season}",
     "metaTitle": "{race} {season}: termin i wyniki — {SHORT}",
     "metaTitleShort": "{race} {season} — {SHORT}",
+    "classNames": { "NCh.": "mistrzostwa krajowe", "ECh.": "mistrzostwa Europy", "Nat.": "wyścig krajowy", "1.1": "wyścig jednodniowy UCI, kategoria 1.1", "1.2": "wyścig jednodniowy UCI, kategoria 1.2", "1.Pro": "wyścig jednodniowy UCI ProSeries", "2.2": "wyścig etapowy UCI, kategoria 2.2", "2.Pro": "wyścig etapowy UCI ProSeries", "1.Ncup": "Puchar Narodów UCI, wyścig jednodniowy", "2.Ncup": "Puchar Narodów UCI, wyścig etapowy", "CDM": "Puchar Narodów UCI na torze", "CM": "mistrzostwa świata UCI" },
     "metaDescription": "{race} {season}: termin, miejsce i wyniki zawodniczek drużyny {TEAM}."
   },
   "faq": {
@@ -854,6 +855,10 @@
     "downloadJpg": "Pobierz JPG",
     "downloadJpgName": "Pobierz JPG: {caption} ({size})",
     "photoSoon": "Wkrótce",
+    "faqLead": "Najczęstsze pytania o drużynę (poziom UCI, skład, wyniki, sprzęt):",
+    "faqLink": "Pytania i odpowiedzi",
+    "filesPending": "Logotypy i pliki prasowe opublikujemy wkrótce. Portrety zawodniczek można już pobrać z tabeli składu poniżej.",
+    "photosPending": "Zdjęcia z wyścigów w pełnej rozdzielczości opublikujemy wkrótce.",
     "rosterTitle": "Skład {season}.",
     "rosterNote": "Skład {next} pojawi się tu w dniu prezentacji drużyny.",
     "rosterTable": {
@@ -895,6 +900,11 @@
     "honeypot": "Nie wypełniaj tego pola",
     "errorTooFast": "Chwileczkę – spróbuj ponownie za kilka sekund.",
     "errorNotLive": "Zapisy ruszą wkrótce. Do tego czasu napisz do nas: {email}."
+  },
+  "pager": {
+    "label": { "race": "Inne wyścigi sezonu", "rider": "Inne zawodniczki" },
+    "prev": { "race": "Poprzedni wyścig", "rider": "Poprzednia zawodniczka" },
+    "next": { "race": "Następny wyścig", "rider": "Następna zawodniczka" }
   },
   "notFound": {
     "metaTitle": "Nie ma takiej strony — {TEAM}",

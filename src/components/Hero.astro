@@ -209,8 +209,14 @@ const credentials = [
       gap: 18px;
       padding-top: calc(var(--header-h) + 64px);
     }
+    /* On phones the eyebrow sits over the light top of the photo, where the plum wash is thin:
+       a plum backing keeps the pink text at 4.5:1 whatever the picture. */
     .hero__eyebrow {
-      font-size: 12px;
+      justify-self: start;
+      padding: 6px 10px;
+      border-radius: 8px;
+      background: rgba(43, 0, 32, 0.8);
+      font-size: 13px;
     }
     .hero__mission {
       font-size: 16px;
@@ -233,14 +239,9 @@ const credentials = [
     .credentials div:nth-child(1) {
       padding-left: 0;
     }
-    /* Terms stay for screen readers; phones show the values only. */
+    /* Short labels stay visible on phones: "2016" alone doesn't say it is the founding year. */
     dt {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      overflow: hidden;
-      clip: rect(0 0 0 0);
-      white-space: nowrap;
+      font-size: 12px;
     }
     dd {
       font-size: 14px;

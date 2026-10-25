@@ -3,6 +3,8 @@
 // credit, followed by the #allezatomówki ticker.
 import { getData } from '../lib/data';
 import { copy, fill, pick, type Lang } from '../lib/i18n';
+import { findImage } from '../lib/images';
+import { isPlaceholder } from '../lib/text';
 import Photo from './Photo.astro';
 import Ticker from './Ticker.astro';
 
@@ -12,11 +14,14 @@ interface Props {
 const { lang } = Astro.props;
 const { gallery } = getData();
 const t = copy(lang);
-const photos = gallery.filter((g) => g.use === 'strip').slice(0, 4);
+// Only slots with a supplied photo: an empty frame would show its file name to visitors.
+const photos = gallery.filter((g) => g.use === 'strip' && findImage('photos', g.photo)).slice(0, 4);
+const captionOf = (p: (typeof photos)[number]) =>
+  [pick(lang, p.race), pick(lang, p.place), isPlaceholder(p.credit) ? null : fill(t.gallery.credit, { credit: p.credit })].filter(Boolean).join(' · ');
 const sizes = '(min-width: 900px) 25vw, 50vw';
 ---
 
-<section class="strip" aria-labelledby="strip-title">
+<section class="strip" aria-labelledby="strip-title" style={`--shots:${Math.max(photos.length, 1)}`}>
   <h2 id="strip-title" class="visually-hidden">{t.gallery.title}</h2>
   <ul class="strip__row" role="list">
     {
@@ -25,7 +30,7 @@ const sizes = '(min-width: 900px) 25vw, 50vw';
           <figure>
             <Photo lang={lang} dir="photos" file={p.photo} alt={pick(lang, p.alt)} aspect="3:4" sizes={sizes} widths={[360, 540, 720, 1080]} class="shot__img" />
             <figcaption class="shot__caption">
-              {pick(lang, p.race)} · {pick(lang, p.place)} · {fill(t.gallery.credit, { credit: p.credit })}
+              {captionOf(p)}
             </figcaption>
           </figure>
         </li>
@@ -42,7 +47,7 @@ const sizes = '(min-width: 900px) 25vw, 50vw';
   }
   .strip__row {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(var(--shots), minmax(0, 1fr));
     /* One row exactly as tall as the strip, so a tall photo can't stretch it into the ticker. */
     grid-template-rows: minmax(0, 1fr);
     gap: 16px;

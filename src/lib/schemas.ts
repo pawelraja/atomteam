@@ -220,6 +220,8 @@ export const gallerySchema = z
     race: localized,
     place: localized,
     credit: z.string().min(1),
+    /** The race page this photo was taken at, as "<season>/<slug>" (e.g. "2026/puchar-polski-szosa-luban"); the page then shows it. */
+    racePage: z.string().regex(/^\d{4}\/[a-z0-9-]+$/, 'is "<season>/<race slug>", e.g. "2026/nxt-classic"').optional(),
   })
   .strict();
 

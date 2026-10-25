@@ -14,6 +14,13 @@
   --header-glass: rgba(241, 238, 243, 0.73);
   --ink-on-accent: #2b0020;
   --focus: #8c00ff;
+  /* Added Oct 2026 (UX audit): values the build already used, now named. Same in both themes. */
+  --line-soft: #e4e0e6;
+  --feedback-success-bg: #e6f4ea;
+  --feedback-success-ink: #0b5a23;
+  --feedback-error-bg: #fde8ec;
+  --feedback-error-ink: #8a0019;
+  --feedback-error-on-dark: #ffb3c8;
 
   /* Brand scales — tints only */
   --pink-100: #fecdf8;

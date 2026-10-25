@@ -299,7 +299,7 @@
     "staffChip": "STAFF",
     "newPill": "New for {season}",
     "emptySquad": "This squad will be announced soon.",
-    "profileLink": "Rider profile",
+    "profileLink": "Profile",
     "allRiders": "Full team"
   },
   "teaser": {
@@ -531,6 +531,7 @@
     "tableCaption": "Team results: {race} {season}",
     "metaTitle": "{race} {season}: dates and results — {SHORT}",
     "metaTitleShort": "{race} {season} — {SHORT}",
+    "classNames": { "NCh.": "national championships", "ECh.": "European championships", "Nat.": "national race", "1.1": "UCI one-day race, class 1.1", "1.2": "UCI one-day race, class 1.2", "1.Pro": "UCI ProSeries one-day race", "2.2": "UCI stage race, class 2.2", "2.Pro": "UCI ProSeries stage race", "1.Ncup": "UCI Nations Cup, one-day race", "2.Ncup": "UCI Nations Cup, stage race", "CDM": "UCI Track Nations Cup", "CM": "UCI World Championships" },
     "metaDescription": "{race} {season}: date, place and the results of the {TEAM} riders."
   },
   "faq": {
@@ -854,6 +855,10 @@
     "downloadJpg": "Download JPG",
     "downloadJpgName": "Download JPG: {caption} ({size})",
     "photoSoon": "Coming soon",
+    "faqLead": "Common questions about the team (UCI level, roster, results, equipment):",
+    "faqLink": "Questions and answers",
+    "filesPending": "Logos and press files are coming soon. Rider portraits can already be downloaded from the roster table below.",
+    "photosPending": "Full-resolution race photos are coming soon.",
     "rosterTitle": "{season} roster.",
     "rosterNote": "The {next} roster will appear here on the day of the team presentation.",
     "rosterTable": {
@@ -895,6 +900,11 @@
     "honeypot": "Leave this field empty",
     "errorTooFast": "Just a moment – please try again in a few seconds.",
     "errorNotLive": "Sign-ups open soon. Until then, email us: {email}."
+  },
+  "pager": {
+    "label": { "race": "Other races this season", "rider": "Other riders" },
+    "prev": { "race": "Previous race", "rider": "Previous rider" },
+    "next": { "race": "Next race", "rider": "Next rider" }
   },
   "notFound": {
     "metaTitle": "Page not found — {TEAM}",

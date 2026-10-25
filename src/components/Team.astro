@@ -35,12 +35,13 @@ const squads = [
 ] as const;
 ---
 
-<section class="team" id={anchor(lang, 'team')} data-section="team" aria-labelledby="team-title">
+<section class:list={['team', `team--${variant}`]} id={anchor(lang, 'team')} data-section="team" aria-labelledby="team-title">
   <div class="container team__inner">
     <div class="team__head">
       <div class="team__title">
-        <p class="eyebrow">{fill(ts.eyebrow, { season: shownSeason }, lang)}</p>
-        <h2 id="team-title" class="chapter">{ts.title}</h2>
+        {/* On /zespol the page intro already introduces the roster: keep the heading for screen readers only. */}
+        {variant === 'home' && <p class="eyebrow">{fill(ts.eyebrow, { season: shownSeason }, lang)}</p>}
+        <h2 id="team-title" class:list={['chapter', { 'visually-hidden': variant === 'page' }]}>{ts.title}</h2>
         {note && <p class="team__note">{note}</p>}
       </div>
       <div class="tablist" role="tablist" aria-label={ts.tabsLabel} data-tabs>
@@ -132,6 +133,18 @@ const squads = [
   .team__inner {
     display: grid;
     gap: 48px;
+  }
+  .team--page {
+    padding-top: 0;
+  }
+  /* The home page shows a taste of the roster; /zespol has everyone. Hidden cards stay in the HTML. */
+  .team--home .grid > li:nth-child(n + 9) {
+    display: none;
+  }
+  @media (max-width: 699px) {
+    .team--home .grid > li:nth-child(n + 5) {
+      display: none;
+    }
   }
   .team__head {
     display: flex;

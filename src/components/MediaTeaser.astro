@@ -1,10 +1,12 @@
 ---
-// "For media" teaser: four tiles that deep-link into the media centre. A tile whose file is
-// still "soon" in media.json says so.
+// "For media" teaser: tiles that deep-link into the media centre. Only materials that can be
+// downloaded today get a tile, so the heading ("ready to publish") stays true.
 import { anchor, type AnchorKey } from '../lib/anchors';
 import { getData } from '../lib/data';
 import { copy, fill, type Lang } from '../lib/i18n';
+import { findImage } from '../lib/images';
 import { route } from '../lib/routes';
+import { officialRosterView } from '../lib/view';
 import Icon from './Icon.astro';
 
 interface Props {
@@ -16,12 +18,15 @@ const t = copy(lang);
 const tm = t.mediaTeaser;
 const base = route(lang, 'media');
 const status = (id: string) => media.files.find((f) => f.id === id)?.status ?? 'soon';
-const tiles: { key: keyof typeof tm.tiles; target: AnchorKey; file: string }[] = [
-  { key: 'logos', target: 'files', file: 'logos' },
-  { key: 'photos', target: 'photos', file: 'season-photos' },
-  { key: 'portraits', target: 'roster', file: 'portraits' },
-  { key: 'info', target: 'files', file: 'team-info' },
+const rosterSeason = officialRosterView().season ?? site.currentSeason;
+const allTiles: { key: keyof typeof tm.tiles; target: AnchorKey; ready: boolean }[] = [
+  { key: 'logos', target: 'files', ready: status('logos') !== 'soon' },
+  { key: 'photos', target: 'photos', ready: media.photos.some((p) => findImage('media', p.file)) },
+  // Portraits of the current roster are downloadable from the roster table today.
+  { key: 'portraits', target: 'roster', ready: true },
+  { key: 'info', target: 'files', ready: status('team-info') !== 'soon' },
 ];
+const tiles = allTiles.filter((tile) => tile.ready);
 ---
 
 <section class="media-teaser" id={anchor(lang, 'for-media')} data-section="for-media" aria-labelledby="media-teaser-title">
@@ -39,14 +44,14 @@ const tiles: { key: keyof typeof tm.tiles; target: AnchorKey; file: string }[] =
       {
         tiles.map((tile) => {
           const x = tm.tiles[tile.key];
-          const text = fill(x.text, { season: site.currentSeason }, lang);
+          const text = fill(x.text, { season: rosterSeason }, lang);
           return (
             <li>
               <a class="tile" href={`${base}#${anchor(lang, tile.target)}`}>
                 <span class="tile__format">{x.format}</span>
                 <span class="tile__body">
                   <span class="tile__title">{x.title}</span>
-                  <span class="tile__text">{status(tile.file) === 'soon' && tile.key === 'portraits' ? `${text} · ${tm.soon}` : text}</span>
+                  <span class="tile__text">{text}</span>
                 </span>
               </a>
             </li>
@@ -91,7 +96,7 @@ const tiles: { key: keyof typeof tm.tiles; target: AnchorKey; file: string }[] =
     gap: 40px;
     height: 100%;
     padding: 28px;
-    border: 1px solid #e4e0e6;
+    border: 1px solid var(--line-soft);
     border-radius: var(--r-card);
     color: #000;
     text-decoration: none;

@@ -99,12 +99,11 @@ const dateFmt = new Intl.DateTimeFormat(t.meta.locale, { day: 'numeric', month: 
     font-size: 15px;
     line-height: 1.4;
   }
+  /* The caption explains the abbreviations (MP, ME…), so it is a sentence: 14 px, sentence case. */
   caption {
     text-align: left;
     padding-bottom: 12px;
-    font-size: 12px;
-    letter-spacing: var(--ls-eyebrow);
-    text-transform: uppercase;
+    font-size: 14px;
     color: var(--ink-muted);
   }
   thead th {

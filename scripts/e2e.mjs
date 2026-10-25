@@ -125,12 +125,19 @@ const check = (ok, msg) => {
   check(clip.startsWith('Mat Atom Deweloper Wrocław is'), 'Boilerplate: "Copy text" puts the text on the clipboard');
   check(((await page.locator('#boiler-en [data-copy-status]').textContent()) ?? '').length > 0, 'Boilerplate: confirmation is announced (aria-live)');
 
-  const soon = page.locator('.file__soon');
-  check((await soon.count()) > 0 && (await page.locator('.file a[href=""]').count()) === 0, 'Downloads: "soon" items are not links');
-  await page.locator('[data-photo-filter="track"]').click();
-  const visibleCats = await page.locator('[data-photo-library] li[data-cat]:not([hidden])').evaluateAll((els) => [...new Set(els.map((e) => e.dataset.cat))]);
-  check(visibleCats.join() === 'track', `Photo filter shows only track photos (${visibleCats.join()})`);
-  check((await page.locator('[data-photo-filter="track"]').getAttribute('aria-pressed')) === 'true', 'Photo filter reports aria-pressed');
+  // Files and press photos that aren't supplied yet are not listed; one line says they are coming.
+  const files = await page.locator('.file').count();
+  check(files > 0 ? (await page.locator('.file a[href=""]').count()) === 0 : await page.locator('#pliki .pending').isVisible(), files > 0 ? 'Downloads: every listed file is a real link' : 'Downloads: none ready yet, so the "coming soon" line is shown');
+  if (await page.locator('[data-photo-filter="track"]').count()) {
+    await page.locator('[data-photo-filter="track"]').click();
+    const visibleCats = await page.locator('[data-photo-library] li[data-cat]:not([hidden])').evaluateAll((els) => [...new Set(els.map((e) => e.dataset.cat))]);
+    check(visibleCats.every((c) => c === 'track'), `Photo filter shows only track photos (${visibleCats.join()})`);
+    check((await page.locator('[data-photo-filter="track"]').getAttribute('aria-pressed')) === 'true', 'Photo filter reports aria-pressed');
+  } else {
+    check(await page.locator('#zdjecia .pending').isVisible(), 'Photo library: no photos yet, so the "coming soon" line is shown');
+    check((await page.locator('[data-placeholder^="media/"]').count()) === 0, 'Photo library: no empty photo frames');
+  }
+  check(!/\[autor \/ credit\]/.test(await page.locator('main').innerText()), 'Media: no placeholder photo credits');
   check((await page.locator('table.roster tbody tr').count()) === 20, 'Roster table lists the 20-rider roster');
   await ctx.close();
 }

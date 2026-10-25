@@ -3,6 +3,7 @@
 // edge to edge, with its caption and credit.
 import { getData } from '../lib/data';
 import { copy, fill, pick, type Lang } from '../lib/i18n';
+import { isPlaceholder } from '../lib/text';
 import Photo from './Photo.astro';
 
 interface Props {
@@ -29,7 +30,7 @@ const photo = getData().gallery.filter((g) => g.use === 'band')[index];
         class="band__img"
       />
       <figcaption class="band__caption">
-        {pick(lang, photo.race)} · {pick(lang, photo.place)} · {fill(t.story.credit, { credit: photo.credit })}
+        {[pick(lang, photo.race), pick(lang, photo.place), isPlaceholder(photo.credit) ? null : fill(t.story.credit, { credit: photo.credit })].filter(Boolean).join(' · ')}
       </figcaption>
     </figure>
   )

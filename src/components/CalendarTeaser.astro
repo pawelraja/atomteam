@@ -23,6 +23,8 @@ const months = teaserMonths(calendars.get(season) ?? [], today).map((m) => ({
   more: Math.max(0, m.events.length - PER_MONTH),
 }));
 const pad = (n: number) => String(n).padStart(2, '0');
+// With no dates in the whole season, the note above the list says so once instead of a chip per race.
+const undated = (calendars.get(season) ?? []).every((e) => !e.start);
 // "Tychy · przełaj", "CRO · 1.2": the place (or country), then the class (or the discipline).
 const meta = (e: RaceEvent) =>
   [raceLocation(e, lang) ?? e.country, e.cls && e.cls !== 'Nat.' ? e.cls : t.numbers.disciplineNames[e.discipline]].join(' · ');
@@ -56,7 +58,7 @@ const meta = (e: RaceEvent) =>
                     <span class="race__meta">
                       {e.start && e.end ? (
                         <span class="race__date">{formatRange(e.start, e.end, t.meta.locale)}</span>
-                      ) : (
+                      ) : undated ? null : (
                         <span class="chip-tbc">{tt.tbc}</span>
                       )}
                       {e.id === m.nextId && <span class="chip-next">{tt.next}</span>}
@@ -137,7 +139,7 @@ const meta = (e: RaceEvent) =>
     flex-direction: column;
     gap: 4px;
     padding-bottom: 12px;
-    border-bottom: 1px solid #e4e0e6;
+    border-bottom: 1px solid var(--line-soft);
   }
   .race__name {
     font-size: 15px;

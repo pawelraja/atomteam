@@ -37,6 +37,11 @@ export function pick(lang: Lang, value: { pl: string; en: string }): string {
   return typo(lang, value[lang]);
 }
 
+/** A value the team has not supplied yet, written in the data as "[autor / credit]". Never shown. */
+export function isPlaceholder(value: string | null | undefined): boolean {
+  return !value || /^\[.*\]$/.test(value.trim());
+}
+
 type Vars = Record<string, string | number>;
 
 /** Replaces {name} placeholders. Throws on a missing variable so broken copy fails the build. */

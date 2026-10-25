@@ -6,6 +6,7 @@ import { anchor } from '../lib/anchors';
 import { getData } from '../lib/data';
 import { copy, fill, pick, type Lang } from '../lib/i18n';
 import { findImage } from '../lib/images';
+import { isPlaceholder } from '../lib/text';
 import Icon from './Icon.astro';
 import Photo from './Photo.astro';
 
@@ -19,7 +20,7 @@ const items = await Promise.all(
   gallery.filter((g) => g.use === 'story').slice(0, 9).map(async (g, i) => {
     const img = findImage('photos', g.photo);
     const large = img ? await getImage({ src: img, width: Math.min(img.width, 1920), format: 'webp' }) : null;
-    return { ...g, alt: pick(lang, g.alt), race: pick(lang, g.race), place: pick(lang, g.place), i, large: large ? { src: large.src, width: large.attributes.width, height: large.attributes.height } : null };
+    return { ...g, creditText: isPlaceholder(g.credit) ? '' : fill(t.story.credit, { credit: g.credit }), alt: pick(lang, g.alt), race: pick(lang, g.race), place: pick(lang, g.place), i, large: large ? { src: large.src, width: large.attributes.width, height: large.attributes.height } : null };
   }),
 );
 const feature = items.find((g) => g.feature) ?? items[0];
@@ -53,7 +54,7 @@ const caption = (g: (typeof items)[number]) => `${g.race} · ${g.place}`;
                 </button>
                 <figcaption class="caption story__cap">
                   <span>{caption(g)}</span>
-                  <span class="story__credit">{fill(t.story.credit, { credit: g.credit })}</span>
+                  {g.creditText && <span class="story__credit">{g.creditText}</span>}
                 </figcaption>
               </figure>
             </li>
@@ -85,7 +86,7 @@ const caption = (g: (typeof items)[number]) => `${g.race} · ${g.place}`;
     type="application/json"
     id="story-data"
     set:html={JSON.stringify({
-      items: items.map((g) => ({ alt: g.alt, caption: caption(g), credit: fill(t.story.credit, { credit: g.credit }), aspect: g.aspect, file: g.photo, large: g.large })),
+      items: items.map((g) => ({ alt: g.alt, caption: caption(g), credit: g.creditText, aspect: g.aspect, file: g.photo, large: g.large })),
       counter: t.story.counter,
     })}
   />
@@ -122,7 +123,7 @@ const caption = (g: (typeof items)[number]) => `${g.race} · ${g.place}`;
         ph.textContent = `photos/${it.file} · ${it.aspect}`;
         stage.append(ph);
       }
-      cap.textContent = `${it.caption} — ${it.credit} (${fill(counter, { i: index + 1, n: items.length })})`;
+      cap.textContent = `${it.caption}${it.credit ? ` — ${it.credit}` : ''} (${fill(counter, { i: index + 1, n: items.length })})`;
     };
 
     document.querySelectorAll<HTMLButtonElement>('[data-open]').forEach((btn) =>
@@ -223,9 +224,10 @@ const caption = (g: (typeof items)[number]) => `${g.race} · ${g.place}`;
     .story__head {
       margin-bottom: 32px;
     }
+    /* Two columns on phones too: one photo per screen made the gallery 4.5 screens long.
+       The feature photo still spans the width, and the lightbox shows each photo full size. */
     .story__grid {
-      grid-template-columns: 1fr;
-      gap: var(--s-5);
+      gap: 24px 12px;
     }
   }
 

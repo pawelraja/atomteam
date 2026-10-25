@@ -19,6 +19,10 @@ Every picture on the site has a fixed slot. Until a file is supplied, the page s
 
 Pictures carry the home page. Edit captions, credits ("Fot. …") and alt text in `src/data/gallery.json`; `"use"` says where each photo appears.
 
+- **Credits:** while a credit is still `[autor / credit]`, the site shows no credit line at all. Write the photographer's name to make it appear.
+- **Empty slots:** a photo-strip or press-library slot without a file is left out of the page (no grey placeholder). It appears once the file is in its folder.
+- **Race pages:** add `"racePage": "<season>/<slug>"` (e.g. `"2026/puchar-polski-szosa-luban"`, the end of the race page's address) to a photo taken at that race, and the race page shows it under its summary. Only tag a photo when the race and season are certain.
+
 **Race-day gallery** (`"use": "story"`, click to enlarge). The first photo runs full width; the other six sit in an even grid of equal 3:4 tiles (the lightbox shows them uncropped), so portrait shots work best:
 
 | File | Crop | Minimum width | Caption |

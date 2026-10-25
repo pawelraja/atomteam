@@ -43,6 +43,15 @@ const repeats = Array.from({ length: 8 });
     overflow: hidden;
     padding-block: var(--s-3);
   }
+  /* The text fades out before the pause button, so the button never sits on top of a word. */
+  .ticker::after {
+    content: '';
+    position: absolute;
+    inset: 0 0 0 auto;
+    width: 120px;
+    background: linear-gradient(to right, transparent, var(--surface) 55%);
+    pointer-events: none;
+  }
   .ticker__track {
     display: flex;
     width: max-content;
@@ -76,6 +85,7 @@ const repeats = Array.from({ length: 8 });
     }
   }
   .ticker__toggle {
+    z-index: 1;
     position: absolute;
     right: 16px;
     top: 50%;

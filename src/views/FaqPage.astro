@@ -31,7 +31,8 @@ const jsonLd = [
 
 <Shell lang={lang} page="faq" paths={ROUTES.faq} title={t.meta.pages.faq.title} description={t.meta.pages.faq.description} jsonLd={jsonLd}>
   <PageIntro lang={lang} eyebrow={t.faq.eyebrow} title={t.faq.title} lead={fill(t.faq.lead, factVars(lang), lang)} />
-  <section class="faq" aria-label={t.faq.title}>
+  {/* No accessible name: the page intro already is the "Pytania i odpowiedzi" landmark. */}
+  <section class="faq">
     <div class="container"><div class="faq__list">
       {
         items.map((it) => (

@@ -14,9 +14,10 @@ interface Props {
 }
 const { lang, page, paths } = Astro.props;
 const t = copy(lang);
+// "Podejście" (a section of the home page) lives in the footer: from an inner page a header link
+// to it jumped back to the home page unexpectedly (UX audit, Oct 2026).
 const nav = [
   { key: 'team', href: route(lang, 'team'), label: t.nav.team },
-  { key: 'approach', href: `${route(lang, 'home')}#${anchor(lang, 'approach')}`, label: t.nav.approach },
   { key: 'calendar', href: route(lang, 'calendar'), label: t.nav.calendar },
   { key: 'partners', href: route(lang, 'partners'), label: t.nav.partners },
   { key: 'media', href: route(lang, 'media'), label: t.nav.media },
@@ -77,6 +78,10 @@ const hasLogo = brandLogoExists();
     <ul role="list" class="menu__list">
       <li><a href={route(lang, 'home')} data-menu-link aria-current={current('home')}>{t.nav.home}</a></li>
       {nav.map((n) => <li><a href={n.href} data-menu-link aria-current={current(n.key)}>{n.label}</a></li>)}
+    </ul>
+    <ul role="list" class="menu__more">
+      <li><a href={route(lang, 'faq')} data-menu-link aria-current={current('faq')}>{t.footer.links.faq}</a></li>
+      <li><a href={route(lang, 'equipment')} data-menu-link aria-current={current('equipment')}>{t.footer.links.equipment}</a></li>
     </ul>
   </nav>
   <div class="menu__foot">
@@ -333,6 +338,20 @@ const hasLogo = brandLogoExists();
   }
   .menu__list a:hover,
   .menu__list a[aria-current='page'] {
+    color: var(--accent);
+  }
+  .menu__more {
+    display: grid;
+    gap: 4px;
+    padding: 0 20px;
+  }
+  .menu__more a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-size: 18px;
+  }
+  .menu__more a[aria-current='page'] {
     color: var(--accent);
   }
   .menu__social {
